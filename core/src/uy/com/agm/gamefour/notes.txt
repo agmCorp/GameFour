@@ -1,0 +1,1 @@
+- Tengo android 2.3.3 y libgdx ahora soporta android 3.1.2. Puedo tener ambos ides?
