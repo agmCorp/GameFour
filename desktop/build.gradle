@@ -24,11 +24,12 @@ task debug(dependsOn: classes, type: JavaExec) {
 }
 
 task dist(type: Jar) {
+    baseName = 'gameFour'
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
     from {configurations.compile.collect {zipTree(it)}}
     from files(project.assetsDir);
- 
+    exclude '**/raw/**'
     manifest {
         attributes 'Main-Class': project.mainClassName
     }

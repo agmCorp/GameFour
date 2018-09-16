@@ -1,4 +1,8 @@
 android {
+    aaptOptions {
+        ignoreAssetsPattern '!raw'
+    }
+
     buildToolsVersion "28.0.2"
     compileSdkVersion 27
     sourceSets {
@@ -19,15 +23,31 @@ android {
     }
     defaultConfig {
         applicationId "uy.com.agm.gamefour"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode project.versionMajor * 100 + project.versionMinor * 10 + project.versionPatch
+        versionName "gameFour-build-" + getDate() + "-$project.versionMajor.$project.versionMinor.$project.versionPatch"
     }
     buildTypes {
-        release {
-            minifyEnabled false
+        debug {
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Rename all output artifacts to include version information
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def apkName = android.defaultConfig.versionName;
+            apkName += "_" + variant.buildType.name;
+            apkName += ".apk";
+            output.outputFile = file("$project.buildDir/apk/" + apkName)
         }
     }
 }

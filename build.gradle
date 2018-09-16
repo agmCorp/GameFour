@@ -1,6 +1,18 @@
-buildscript {
-    
+// We must increase these values before publishing the apk in the PlayStore
+project.ext {
+    versionMajor = 1
+    versionMinor = 0
+    versionPatch = 0
+}
 
+// Returns date (String)
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmmss')
+    return formattedDate
+}
+
+buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
@@ -10,8 +22,6 @@ buildscript {
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
         classpath 'com.android.tools.build:gradle:2.3.3'
-        
-
     }
 }
 
@@ -27,6 +37,8 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
+        admobVersion = '15.0.1'
+        typingLabelVersion = '1.0.4'
     }
 
     repositories {
@@ -34,12 +46,12 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://maven.google.com" }
     }
 }
 
 project(":desktop") {
     apply plugin: "java"
-
 
     dependencies {
         compile project(":core")
@@ -47,7 +59,6 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-        
     }
 }
 
@@ -70,14 +81,13 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
-        
+        compile "com.google.android.gms:play-services-ads:$admobVersion"
     }
 }
 
 project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
-
 
     dependencies {
         compile project(":core")
@@ -93,11 +103,12 @@ project(":html") {
 project(":core") {
     apply plugin: "java"
 
-
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        
+        compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
+        // To use external jars just place them in a directory called GameThree/libs
+        compile fileTree(dir: '../libs', include: ['*.jar'])
     }
 }
 
