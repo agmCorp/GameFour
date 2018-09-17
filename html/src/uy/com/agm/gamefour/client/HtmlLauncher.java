@@ -3,14 +3,16 @@ package uy.com.agm.gamefour.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import uy.com.agm.gamefour.GameFour;
+
+import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.screens.AbstractScreen;
 
 public class HtmlLauncher extends GwtApplication {
 
         // USE THIS CODE FOR A FIXED SIZE APPLICATION
         @Override
         public GwtApplicationConfiguration getConfig () {
-                return new GwtApplicationConfiguration(480, 320);
+                return new GwtApplicationConfiguration(AbstractScreen.APPLICATION_WIDTH, AbstractScreen.APPLICATION_HEIGHT);
         }
         // END CODE FOR FIXED SIZE APPLICATION
 
