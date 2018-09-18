@@ -3,7 +3,7 @@ package uy.com.agm.gamefour.screens;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import uy.com.agm.gamefour.game.GameFour;
@@ -21,18 +21,18 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     // GUI Height
     protected static final int VIEWPORT_GUI_HEIGHT = APPLICATION_HEIGHT;
 
-    private Viewport viewport;
-    private Stage stage;
+    protected Viewport viewport;
+    protected Stage stage;
 
     public GUIAbstractScreen(GameFour game) {
         super(game);
-        viewport = new FitViewport(VIEWPORT_GUI_WIDTH, VIEWPORT_GUI_HEIGHT, new OrthographicCamera());
+        viewport = new ExtendViewport(VIEWPORT_GUI_WIDTH, VIEWPORT_GUI_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, game.getGuiBatch());
     }
 
     @Override
     public Viewport getViewport() {
-        return viewport;
+        return stage.getViewport();
     }
 
     @Override
@@ -42,7 +42,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        stage.getViewport().update(width, height, false);
     }
 
     @Override

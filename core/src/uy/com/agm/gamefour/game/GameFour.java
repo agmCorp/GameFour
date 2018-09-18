@@ -20,7 +20,6 @@ public class GameFour extends DirectedGame {
     private SpriteBatch gameBatch;
     private ShapeRenderer gameShapeRenderer;
 
-
     @Override
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);

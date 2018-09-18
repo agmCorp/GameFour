@@ -36,9 +36,9 @@ public class ScreenManager {
     public void showScreen(ScreenEnum screenEnum, ScreenTransitionEnum screenTransitionEnum, Object... params) {
         // Show new screen
         if (screenTransitionEnum != null) {
-            game.setScreen(screenEnum.getScreen(params), screenTransitionEnum.getScreenTransition());
+            game.setScreen(screenEnum.getScreen(game, params), screenTransitionEnum.getScreenTransition());
         } else {
-            game.setScreen(screenEnum.getScreen(params));
+            game.setScreen(screenEnum.getScreen(game, params));
         }
     }
 }

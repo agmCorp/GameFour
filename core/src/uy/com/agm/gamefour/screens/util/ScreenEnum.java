@@ -13,28 +13,28 @@ import uy.com.agm.gamefour.screens.SplashScreen;
 
 public enum ScreenEnum {
     SPLASH {
-        public AbstractScreen getScreen(Object... params) {
-            return new SplashScreen((GameFour) params[0]);
+        public AbstractScreen getScreen(GameFour game, Object... params) {
+            return new SplashScreen(game);
         }
     },
 
     MAIN_MENU {
-        public AbstractScreen getScreen(Object... params) {
-            return new MainMenuScreen((GameFour) params[0]);
+        public AbstractScreen getScreen(GameFour game, Object... params) {
+            return new MainMenuScreen(game);
         }
     },
 
     CREDITS {
-        public AbstractScreen getScreen(Object... params) {
-            return new CreditsScreen((GameFour) params[0]);
+        public AbstractScreen getScreen(GameFour game, Object... params) {
+            return new CreditsScreen(game);
         }
     },
 
     PLAY_GAME {
-        public AbstractScreen getScreen(Object... params) {
-            return new PlayScreen((GameFour) params[0]);
+        public AbstractScreen getScreen(GameFour game, Object... params) {
+            return new PlayScreen(game);
         }
     };
 
-    public abstract AbstractScreen getScreen(Object... params);
+    public abstract AbstractScreen getScreen(GameFour game, Object... params);
 }
