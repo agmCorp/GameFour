@@ -1,1 +1,4 @@
 - Tengo android 2.3.3 y libgdx ahora soporta android 3.1.2. Puedo tener ambos ides?
+- Para la ejecutar le version html: Ir al directorio del juego y ejecutar gradlew html:dist. En GameFour\html\build\dist quedo
+la aplicación a deployar. Para ejecutarla en xampp copiar ese contenido dentro de C:\xampp\htdocs\juego y luego
+levantar el apache y el tomcat del xampp y ejecutar http://localhost/juego/index.html
