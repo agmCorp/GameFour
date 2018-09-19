@@ -18,7 +18,7 @@ public class CreditsScreen extends GUIAbstractScreen {
 
     @Override
     public void render(float deltaTime) {
-
+        clearScreen();
     }
 
     @Override
@@ -27,12 +27,13 @@ public class CreditsScreen extends GUIAbstractScreen {
     }
 
     @Override
-    public void resume() {
+    public void stop() {
 
     }
 
     @Override
-    public void hide() {
+    public void resume() {
 
     }
+
 }

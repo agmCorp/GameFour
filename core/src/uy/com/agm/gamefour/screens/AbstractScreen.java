@@ -1,7 +1,9 @@
 package uy.com.agm.gamefour.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import uy.com.agm.gamefour.game.GameFour;
@@ -19,6 +21,13 @@ public abstract class AbstractScreen implements Screen {
         this.game = game;
     }
 
+    protected void clearScreen() {
+        // Clear the screen with black
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
+    /** Called by {@link uy.com.agm.gamefour.game.DirectedGame} when this screen becomes the current screen. */
     public abstract void show();
 
     public abstract void render(float deltaTime);
@@ -27,10 +36,12 @@ public abstract class AbstractScreen implements Screen {
 
     public abstract void pause();
 
-    // todo public abstract void pauseTransition();
+    /** Called by {@link uy.com.agm.gamefour.game.DirectedGame} when this screen must be paused before a transition. */
+    public abstract void stop();
 
     public abstract void resume();
 
+    /** Called by {@link uy.com.agm.gamefour.game.DirectedGame} when this screen is no longer the current screen. */
     public abstract void hide();
 
     public abstract void dispose();

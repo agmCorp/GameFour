@@ -21,7 +21,7 @@ public class PlayScreen extends GameAbstractScreen {
 
     @Override
     public void render(float deltaTime) {
-
+        clearScreen();
     }
 
     @Override
@@ -31,6 +31,11 @@ public class PlayScreen extends GameAbstractScreen {
 
     @Override
     public void pause() {
+
+    }
+
+    @Override
+    public void stop() {
 
     }
 
@@ -58,4 +63,5 @@ public class PlayScreen extends GameAbstractScreen {
     public Viewport getViewport() {
         return null;
     }
+
 }

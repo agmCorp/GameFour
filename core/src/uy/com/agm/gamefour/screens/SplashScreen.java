@@ -1,9 +1,6 @@
 package uy.com.agm.gamefour.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -28,30 +25,29 @@ public class SplashScreen extends GUIAbstractScreen {
     private static final float PIVOT = 450.0f;
     private static final float LOADING_BACKGROUND_HEIGHT = 55.0f;
     private static final float MIN_SPLASH_TIME = 3.0f;
+    private static final float ALPHA = 0.1f;
 
     private AssetManager assetManager;
     private float splashTime;
-    private boolean finishLoading;
 
     private Image logo;
     private Image loadingFrame;
     private Image loadingBarHidden;
     private Image screenBg;
     private Image loadingFrameBg;
+    private Image loadingBar;
 
     private float startX, endX;
     private float percent;
 
-    private Image loadingBar;
-
-    private boolean pause = false; // todo
+    private boolean stop;
 
     public SplashScreen(GameFour game) {
         super(game);
 
         this.assetManager = new AssetManager();
         splashTime = 0;
-        finishLoading = false;
+        stop = false;
     }
 
     @Override
@@ -71,13 +67,7 @@ public class SplashScreen extends GUIAbstractScreen {
         loadingBarHidden = new Image(atlas.findRegion("loadingBarHidden"));
         screenBg = new Image(atlas.findRegion("screenBg"));
         loadingFrameBg = new Image(atlas.findRegion("loadingFrameBg"));
-
-        // Add the loading bar animation
-        Animation anim = new Animation(0.05f, atlas.findRegions("loadingBarAnim"), Animation.PlayMode.LOOP_REVERSED);
-        //loadingBar = new AnimatedActor(anim);
         loadingBar = new Image(atlas.findRegion("loadingBar2"));
-        // Or if you only need a static bar, you can use loadingBar1 or loadingBar2
-        // loadingBar = new Image(atlas.findRegion("loadingBar2"));
 
         // Add all the actors to the stage
         stage.addActor(screenBg);
@@ -127,43 +117,49 @@ public class SplashScreen extends GUIAbstractScreen {
 
     @Override
     public void render(float deltaTime) {
-        // Clear the screen with black
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        if (!pause) {
-            splashTime += deltaTime;
-            if (assetManager.update() && splashTime >= MIN_SPLASH_TIME && !finishLoading) { // Load some, will return true if done loading
-                Assets.getInstance().finishLoading();
-                finishLoading = true;
-                ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_LEFT_LINEAR);
-            } else {
-                // Interpolate the percentage to make it more smooth
-                percent = Interpolation.linear.apply(percent, assetManager.getProgress(), 0.1f);
-
-                // Update positions (and size) to match the percentage
-                loadingBarHidden.setX(startX + endX * percent);
-                loadingFrameBg.setX(loadingBarHidden.getX() + loadingBarHidden.getWidth());
-                loadingFrameBg.setWidth(PIVOT - PIVOT * percent);
-                loadingFrameBg.invalidate();
-
-                // Show the loading screen
-                stage.act();
-//                stage.draw();
-            }
+        clearScreen();
+        if (!stop) {
+            updateLogic(deltaTime);
         }
-        stage.draw();
+        renderLogic();
+    }
 
+    private void updateLogic(float deltaTime) {
+        splashTime += deltaTime;
+        if (assetManager.update() && splashTime >= MIN_SPLASH_TIME) { // Load some, will return true if done loading
+            Assets.getInstance().finishLoading();
+            ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_LEFT_LINEAR);
+        } else {
+            // Interpolate the percentage to make it more smooth
+            percent = Interpolation.linear.apply(percent, assetManager.getProgress(), ALPHA);
+
+            // Update positions (and size) to match the percentage
+            loadingBarHidden.setX(startX + endX * percent);
+            loadingFrameBg.setX(loadingBarHidden.getX() + loadingBarHidden.getWidth());
+            loadingFrameBg.setWidth(PIVOT - PIVOT * percent);
+            loadingFrameBg.invalidate();
+
+            // Show the loading screen
+            stage.act();
+        }
+    }
+
+    private void renderLogic() {
+        stage.draw();
     }
 
     @Override
     public void pause() {
-        pause = true;
+    }
+
+    @Override
+    public void stop() {
+        stop = true;
     }
 
     @Override
     public void resume() {
-        pause = false;
+        stop = false;
     }
 
     @Override
