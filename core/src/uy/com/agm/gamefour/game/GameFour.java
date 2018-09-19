@@ -16,6 +16,11 @@ import uy.com.agm.gamefour.screens.util.ScreenTransitionEnum;
 public class GameFour extends DirectedGame {
     private static final String TAG = GameFour.class.getName();
 
+    public static final int APPLICATION_WIDTH = 480;
+    public static final int APPLICATION_HEIGHT = 800;
+    public static final float PPM = 100; // Scale (Pixels Per Meter)
+    public static final String TITLE = "Game Four";
+
     private SpriteBatch guiBatch;
     private SpriteBatch gameBatch;
     private ShapeRenderer gameShapeRenderer;

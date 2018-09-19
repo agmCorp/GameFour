@@ -63,10 +63,10 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.setErrorListener(this);
 
         // Loads i18n
-        loadI18NGameThree();
+    //    loadI18NGameThree();
 
         // Loads texture atlas
-        loadTextureAtlas();
+   //     loadTextureAtlas();
 
         // Loads all sounds
         loadSounds();
@@ -95,7 +95,7 @@ public class Assets implements Disposable, AssetErrorListener {
 //            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 //        }
 
-        i18NGameFour = new AssetI18NGameFour(assetManager);
+ //       i18NGameFour = new AssetI18NGameFour(assetManager);
 //        sprites = new AssetSprites(atlasSprites);
 //        gui = new AssetGUI(atlasGUI);
         fonts = new AssetFonts();

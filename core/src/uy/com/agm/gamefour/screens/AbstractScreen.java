@@ -13,12 +13,6 @@ import uy.com.agm.gamefour.game.GameFour;
 public abstract class AbstractScreen implements Screen {
     private static final String TAG = AbstractScreen.class.getName();
 
-    // Application width
-    public static final int APPLICATION_WIDTH = 480;
-
-    // Application height
-    public static final int APPLICATION_HEIGHT = 800;
-
     protected GameFour game;
 
     public AbstractScreen(GameFour game) {

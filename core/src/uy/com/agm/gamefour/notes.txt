@@ -3,3 +3,21 @@
 la aplicación a deployar. Para ejecutarla en xampp copiar ese contenido dentro de C:\xampp\htdocs\juego y luego
 levantar el apache y el tomcat del xampp y ejecutar http://localhost/juego/index.html
 - Debo usar una skin
+
+
+Primero existía ApplicationListener, todas las pantallas heredaban de allí.
+Los métodos de ApplicationListener son:
+create, resize, render, pause, resume, dispose.
+
+Su ciclo de vida para android está descripto acá:
+https://github.com/libgdx/libgdx/wiki/The-life-cycle
+
+Luego libgdx inventó la clase Game para ayudar a moverse entre pantallas.
+Para eso inventó la interfaz Screen que le agrega 2 métodos: show y hide.
+Game es un manejador de pantallas, con métodos setScreen, getScreen.
+Entonces si yo heredo de Game, cuando uso su "setScreen" la clase Game hace lo siguiente:
+- sobre la pantalla vieja hace un hide
+- sobre la pantalla nueva hace un show y luego un resize.
+
+Yo para hacer las transiciones inventé una clase llamada DirectedGame y voy a hacer lo mismo que Game.
+DirectedGame invoca sobre la pantalla vieja a un hide y sobre la nueva a un show y luego un resize.

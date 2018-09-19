@@ -42,7 +42,10 @@ public abstract class DirectedGame implements ApplicationListener {
         nextScreen = screen;
         nextScreen.show(); // Activate next screen
         nextScreen.resize(w, h);
-        // TODO nextScreen.buildStage();
+        if (currScreen != null) {
+            currScreen.pause();
+        }
+        nextScreen.pause();
         Gdx.input.setInputProcessor(null); // Disable input
         this.screenTransition = screenTransition;
         transitionTime = 0;
@@ -67,7 +70,7 @@ public abstract class DirectedGame implements ApplicationListener {
             if (screenTransition == null || transitionTime >= duration) {
                 // No transition effect set or transition has just finished
                 if (currScreen != null) {
-                    currScreen.dispose();
+                    currScreen.hide();
                 }
                 nextScreen.resume();
                 // Enable input for next screen
@@ -128,10 +131,10 @@ public abstract class DirectedGame implements ApplicationListener {
     @Override
     public void dispose() {
         if (currScreen != null) {
-            currScreen.dispose();
+            currScreen.hide();
         }
         if (nextScreen != null) {
-            nextScreen.dispose();
+            nextScreen.hide();
         }
         if (init) {
             currFbo.dispose();

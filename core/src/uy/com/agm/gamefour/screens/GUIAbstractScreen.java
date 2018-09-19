@@ -15,18 +15,14 @@ import uy.com.agm.gamefour.game.GameFour;
 public abstract class GUIAbstractScreen extends AbstractScreen {
     private static final String TAG = AbstractScreen.class.getName();
 
-    // GUI Width
-    protected static final int VIEWPORT_GUI_WIDTH = APPLICATION_WIDTH;
-
-    // GUI Height
-    protected static final int VIEWPORT_GUI_HEIGHT = APPLICATION_HEIGHT;
-
+    protected OrthographicCamera guiCamera;
     protected Viewport viewport;
     protected Stage stage;
 
     public GUIAbstractScreen(GameFour game) {
         super(game);
-        viewport = new ExtendViewport(VIEWPORT_GUI_WIDTH, VIEWPORT_GUI_HEIGHT, new OrthographicCamera());
+        guiCamera = new OrthographicCamera();
+        viewport = new ExtendViewport(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT, guiCamera);
         stage = new Stage(viewport, game.getGuiBatch());
     }
 
@@ -42,11 +38,16 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, false);
+        stage.getViewport().update(width, height);
     }
 
     @Override
-    public void dispose() {
+    public void hide() {
         stage.dispose();
+    }
+
+    @Override
+    public void dispose () {
+        hide();
     }
 }
