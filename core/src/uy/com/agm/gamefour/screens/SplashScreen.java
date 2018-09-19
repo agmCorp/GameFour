@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
@@ -24,7 +25,7 @@ public class SplashScreen extends GUIAbstractScreen {
     private static final float END_X = 430.0f;
     private static final float PIVOT = 450.0f;
     private static final float LOADING_BACKGROUND_HEIGHT = 55.0f;
-    private static final float MIN_SPLASH_TIME = 3.0f;
+    private static final float MIN_SPLASH_TIME = 31.0f;
     private static final float ALPHA = 0.1f;
 
     private AssetManager assetManager;
@@ -89,7 +90,7 @@ public class SplashScreen extends GUIAbstractScreen {
         loadingBarHidden = new Image(atlas.findRegion("loadingBarHidden"));
         screenBg = new Image(atlas.findRegion("screenBg"));
         loadingFrameBg = new Image(atlas.findRegion("loadingFrameBg"));
-        loadingBar = new Image(atlas.findRegion("loadingBar2"));
+        loadingBar = new Image(atlas.findRegion("loadingBar1"));
 
         // Add all the actors to the stage
         stage.addActor(screenBg);
@@ -122,14 +123,16 @@ public class SplashScreen extends GUIAbstractScreen {
         loadingBar.setX(loadingFrame.getX());
         loadingBar.setY(loadingFrame.getY());
 
+        // The start position and how far to move the hidden loading bar
+        startX = loadingBar.getX() + START_X;
+
+        Gdx.app.debug(TAG, "****" + (loadingBar.getX() + loadingBar.getWidth()));
+        endX = END_X;
+        percent = 0;
+
         // Place the image that will hide the bar on top of the bar
         loadingBarHidden.setX(startX);
         loadingBarHidden.setY(loadingBar.getY());
-
-        // The start position and how far to move the hidden loading bar
-        startX = START_X;
-        endX = END_X;
-        percent = 0;
 
         // The rest of the hidden bar
         loadingFrameBg.setSize(PIVOT, LOADING_BACKGROUND_HEIGHT);
