@@ -15,14 +15,19 @@ import uy.com.agm.gamefour.game.GameFour;
 public abstract class GUIAbstractScreen extends AbstractScreen {
     private static final String TAG = AbstractScreen.class.getName();
 
-    private boolean stop;
+    // Screen state
+    private enum ScreenState {
+        PAUSED, RUNNING
+    }
+    private ScreenState screenState;
+
     protected OrthographicCamera guiCamera;
     protected Viewport viewport;
     protected Stage stage;
 
     public GUIAbstractScreen(GameFour game) {
         super(game);
-        stop = false;
+        screenState = ScreenState.RUNNING;
         guiCamera = new OrthographicCamera();
         viewport = new ExtendViewport(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT, guiCamera);
         stage = new Stage(viewport, game.getGuiBatch());
@@ -39,9 +44,14 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     }
 
     @Override
+    public OrthographicCamera getCamera() {
+        return guiCamera;
+    }
+
+    @Override
     public void render(float deltaTime) {
         clearScreen();
-        if (!stop) {
+        if (screenState == ScreenState.RUNNING) {
             updateLogic(deltaTime);
         }
         renderLogic();
@@ -54,7 +64,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     @Override
     public void stop() {
-        stop = true;
+        screenState = ScreenState.PAUSED;
     }
 
     @Override
@@ -64,7 +74,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     @Override
     public void resume() {
-        stop = false;
+        screenState = ScreenState.RUNNING;
     }
 
     @Override

@@ -18,7 +18,7 @@ Luego libgdx inventó la clase Game para ayudar a los programadores a moverse en
 Entonces ahora las aplicaciones pueden extender Game para usar sus métodos setScreen y getScreen.
 Junto con el desarrollo de la clase Game vino la interfaz Screen.
 Screen agrega 2 métodos nuevos que utiliza la clase Game: show y hide.
-Entonces la interfaz screen tiene: show, hide, create, resize, render, pause, resume, dispose.
+Entonces la interfaz playScreen tiene: show, hide, create, resize, render, pause, resume, dispose.
 Si yo heredo de Game, cuando uso su "setScreen" la clase Game hace lo siguiente:
 - invoca al método hide de la pantalla vieja.
 - invoca al método show (automáticamente libgdx antes invocó al método create) y luego resize de la pantalla nueva.

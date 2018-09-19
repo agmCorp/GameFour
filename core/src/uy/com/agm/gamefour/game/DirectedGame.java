@@ -2,6 +2,7 @@ package uy.com.agm.gamefour.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -152,6 +153,11 @@ public abstract class DirectedGame implements ApplicationListener {
             batch.dispose();
             init = false;
         }
+    }
+
+    // Returns the currently active screen */
+    public Screen getCurrentScreen () {
+        return currentScreen;
     }
 }
 
