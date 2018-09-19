@@ -61,6 +61,9 @@ public class PlayScreen extends GameAbstractScreen {
     public PlayScreen(GameFour game) {
         super(game);
 
+        // Temporary GC friendly vector
+        tmp = new Vector2();
+
         // Creates a ExtendViewport to maintain virtual aspect ratio despite screen size
         // We use the convention 100 pixels = 1 meter to work with meters and therefore meters per seconds in velocity and so on.
         gameCamera = new OrthographicCamera();
@@ -175,7 +178,7 @@ public class PlayScreen extends GameAbstractScreen {
     }
 
     private void renderJumper(SpriteBatch batch) {
-        jumper.draw(batch);
+        //jumper.draw(batch);
     }
 
     private void renderDebugJumper(ShapeRenderer shapeRenderer) {

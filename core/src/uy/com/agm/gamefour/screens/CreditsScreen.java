@@ -1,6 +1,8 @@
 package uy.com.agm.gamefour.screens;
 
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -8,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.screens.util.ScreenEnum;
+import uy.com.agm.gamefour.screens.util.ScreenManager;
+import uy.com.agm.gamefour.screens.util.ScreenTransitionEnum;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
@@ -59,6 +64,19 @@ public class CreditsScreen extends GUIAbstractScreen {
         table.setFillParent(true);
         table.add(big).row();
         stage.addActor(table);
+
+        table.addListener(new InputListener() {
+                              @Override
+                              public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                                  ScreenManager.getInstance().showScreen(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.SLIDE_DOWN);
+                              }
+
+                              @Override
+                              public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                  return true;
+                              }
+                          }
+        );
     }
 
 }
