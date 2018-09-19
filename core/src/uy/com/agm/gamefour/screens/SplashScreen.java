@@ -13,7 +13,6 @@ import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.screens.util.ScreenEnum;
 import uy.com.agm.gamefour.screens.util.ScreenManager;
 import uy.com.agm.gamefour.screens.util.ScreenTransitionEnum;
-import uy.com.agm.gamefour.widget.AnimatedActor;
 
 /**
  * Created by AGMCORP on 17/9/2018.
@@ -43,7 +42,7 @@ public class SplashScreen extends GUIAbstractScreen {
     private float startX, endX;
     private float percent;
 
-    private AnimatedActor loadingBar;
+    private Image loadingBar;
 
     private boolean pause = false; // todo
 
@@ -75,8 +74,8 @@ public class SplashScreen extends GUIAbstractScreen {
 
         // Add the loading bar animation
         Animation anim = new Animation(0.05f, atlas.findRegions("loadingBarAnim"), Animation.PlayMode.LOOP_REVERSED);
-        loadingBar = new AnimatedActor(anim);
-
+        //loadingBar = new AnimatedActor(anim);
+        loadingBar = new Image(atlas.findRegion("loadingBar2"));
         // Or if you only need a static bar, you can use loadingBar1 or loadingBar2
         // loadingBar = new Image(atlas.findRegion("loadingBar2"));
 
