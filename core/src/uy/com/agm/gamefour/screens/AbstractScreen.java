@@ -27,6 +27,8 @@ public abstract class AbstractScreen implements Screen {
 
     public abstract void pause();
 
+    // todo public abstract void pauseTransition();
+
     public abstract void resume();
 
     public abstract void hide();

@@ -45,6 +45,8 @@ public class SplashScreen extends GUIAbstractScreen {
 
     private AnimatedActor loadingBar;
 
+    private boolean pause = false; // todo
+
     public SplashScreen(GameFour game) {
         super(game);
 
@@ -130,35 +132,39 @@ public class SplashScreen extends GUIAbstractScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        splashTime += deltaTime;
-        if (assetManager.update() && splashTime >= MIN_SPLASH_TIME && !finishLoading) { // Load some, will return true if done loading
-            Assets.getInstance().finishLoading();
-            finishLoading = true;
-            ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_LEFT_LINEAR);
-        } else {
-            // Interpolate the percentage to make it more smooth
-            percent = Interpolation.linear.apply(percent, assetManager.getProgress(), 0.1f);
+        if (!pause) {
+            splashTime += deltaTime;
+            if (assetManager.update() && splashTime >= MIN_SPLASH_TIME && !finishLoading) { // Load some, will return true if done loading
+                Assets.getInstance().finishLoading();
+                finishLoading = true;
+                ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_LEFT_LINEAR);
+            } else {
+                // Interpolate the percentage to make it more smooth
+                percent = Interpolation.linear.apply(percent, assetManager.getProgress(), 0.1f);
 
-            // Update positions (and size) to match the percentage
-            loadingBarHidden.setX(startX + endX * percent);
-            loadingFrameBg.setX(loadingBarHidden.getX() + loadingBarHidden.getWidth());
-            loadingFrameBg.setWidth(PIVOT - PIVOT * percent);
-            loadingFrameBg.invalidate();
+                // Update positions (and size) to match the percentage
+                loadingBarHidden.setX(startX + endX * percent);
+                loadingFrameBg.setX(loadingBarHidden.getX() + loadingBarHidden.getWidth());
+                loadingFrameBg.setWidth(PIVOT - PIVOT * percent);
+                loadingFrameBg.invalidate();
 
-            // Show the loading screen
-            stage.act();
-            stage.draw();
+                // Show the loading screen
+                stage.act();
+//                stage.draw();
+            }
         }
+        stage.draw();
+
     }
 
     @Override
     public void pause() {
-
+        pause = true;
     }
 
     @Override
     public void resume() {
-
+        pause = false;
     }
 
     @Override
