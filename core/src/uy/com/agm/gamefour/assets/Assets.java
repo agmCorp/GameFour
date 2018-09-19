@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -32,8 +33,8 @@ public class Assets implements Disposable, AssetErrorListener {
     public static final String MUSIC_FILE_GAME = "audio/music/game.ogg";
 
     // Texture atlas
-    private static final String TEXTURE_ATLAS_SPRITES = "atlas/sprites/sprites.atlas";
-    private static final String TEXTURE_ATLAS_GUI = "atlas/gui/gui.atlas";
+    private static final String TEXTURE_ATLAS_SPRITES = "atlas/sprites/dynamicObjects.atlas"; // todo
+    private static final String TEXTURE_ATLAS_GUI = "atlas/gui/scene2d.atlas"; // todo
 
     private static Assets instance;
     private AssetManager assetManager;
@@ -63,10 +64,10 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.setErrorListener(this);
 
         // Loads i18n
-    //    loadI18NGameThree();
+        loadI18NGameThree();
 
         // Loads texture atlas
-   //     loadTextureAtlas();
+        loadTextureAtlas();
 
         // Loads all sounds
         loadSounds();
@@ -83,21 +84,20 @@ public class Assets implements Disposable, AssetErrorListener {
         }
         Gdx.app.debug(TAG, "***************************");
 
-        // TODO DESCOMENTAR ESTO
         // Enables linear texture filtering for pixel smoothing
-//        TextureAtlas atlasSprites = assetManager.get(TEXTURE_ATLAS_SPRITES);
-//        for (Texture texture : atlasSprites.getTextures()) {
-//            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-//        }
+        TextureAtlas atlasSprites = assetManager.get(TEXTURE_ATLAS_SPRITES);
+        for (Texture texture : atlasSprites.getTextures()) {
+            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
 
-//        TextureAtlas atlasGUI = assetManager.get(TEXTURE_ATLAS_GUI);
-//        for (Texture texture : atlasGUI.getTextures()) {
-//            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-//        }
+        TextureAtlas atlasGUI = assetManager.get(TEXTURE_ATLAS_GUI);
+        for (Texture texture : atlasGUI.getTextures()) {
+            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
 
- //       i18NGameFour = new AssetI18NGameFour(assetManager);
-//        sprites = new AssetSprites(atlasSprites);
-//        gui = new AssetGUI(atlasGUI);
+        i18NGameFour = new AssetI18NGameFour(assetManager);
+        sprites = new AssetSprites(atlasSprites);
+        gui = new AssetGUI(atlasGUI);
         fonts = new AssetFonts();
         sounds = new AssetSounds(assetManager);
         music = new AssetMusic(assetManager);
