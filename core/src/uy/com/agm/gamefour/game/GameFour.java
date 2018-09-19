@@ -27,7 +27,13 @@ public class GameFour extends DirectedGame {
 
     @Override
     public void create() {
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        // Debug
+        if (DebugConstants.DEBUG_MODE) {
+            Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        } else {
+            Gdx.app.setLogLevel(Application.LOG_INFO);
+            Gdx.app.log(TAG, "**** Debug messages not enabled (set DEBUG_MODE = true to enable them) ****");
+        }
 
         // Constructs a new SpriteBatch
         guiBatch = new SpriteBatch();
