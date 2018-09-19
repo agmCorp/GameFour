@@ -50,11 +50,6 @@ public class PlayScreen extends GameAbstractScreen {
     }
 
     @Override
-    public void dispose() {
-
-    }
-
-    @Override
     public InputProcessor getInputProcessor() {
         return null;
     }
@@ -63,5 +58,6 @@ public class PlayScreen extends GameAbstractScreen {
     public Viewport getViewport() {
         return null;
     }
+
 
 }

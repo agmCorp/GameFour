@@ -12,4 +12,9 @@ public abstract class GameAbstractScreen  extends AbstractScreen {
     public GameAbstractScreen(GameFour game) {
         super(game);
     }
+
+    @Override
+    public void dispose () {
+        hide();
+    }
 }
