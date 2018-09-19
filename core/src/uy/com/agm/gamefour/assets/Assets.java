@@ -64,7 +64,7 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.setErrorListener(this);
 
         // Loads i18n
-        loadI18NGameThree();
+        loadI18NGameFour();
 
         // Loads texture atlas
         loadTextureAtlas();
@@ -103,8 +103,8 @@ public class Assets implements Disposable, AssetErrorListener {
         music = new AssetMusic(assetManager);
     }
 
-    private void loadI18NGameThree() {
-        assetManager.load("i18n/I18NGameThreeBundle", I18NBundle.class);
+    private void loadI18NGameFour() {
+        assetManager.load("i18n/I18NGameFourBundle", I18NBundle.class);
     }
 
     private void loadTextureAtlas() {

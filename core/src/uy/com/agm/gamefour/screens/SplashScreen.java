@@ -151,25 +151,6 @@ public class SplashScreen extends GUIAbstractScreen {
             stage.act();
             stage.draw();
         }
-
-//        if (assetManager.update()) { // Load some, will return true if done loading
-//            if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
-//                Gdx.app.exit();
-//            }
-//        }
-//
-//            // Interpolate the percentage to make it more smooth
-//            percent = Interpolation.linear.apply(percent, assetManager.getProgress(), 0.1f);
-//
-//            // Update positions (and size) to match the percentage
-//            loadingBarHidden.setX(startX + endX * percent);
-//            loadingFrameBg.setX(loadingBarHidden.getX() + loadingBarHidden.getWidth());
-//            loadingFrameBg.setWidth(PIVOT - PIVOT * percent);
-//            loadingFrameBg.invalidate();
-//
-//            // Show the loading screen
-//            stage.act();
-//            stage.draw();
     }
 
     @Override
