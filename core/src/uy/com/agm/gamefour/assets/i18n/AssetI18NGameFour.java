@@ -13,7 +13,7 @@ public class AssetI18NGameFour {
     private I18NBundle i18NGameFourBundle;
 
     public AssetI18NGameFour(AssetManager assetManager) {
-        // todo i18NGameFourBundle = assetManager.get("i18n/I18NGameFourBundle", I18NBundle.class);
+        i18NGameFourBundle = assetManager.get("i18n/I18NGameFourBundle", I18NBundle.class);
     }
 
     public I18NBundle getI18NGameFourBundle() {
