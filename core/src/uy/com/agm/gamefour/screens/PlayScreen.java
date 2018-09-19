@@ -58,6 +58,4 @@ public class PlayScreen extends GameAbstractScreen {
     public Viewport getViewport() {
         return null;
     }
-
-
 }

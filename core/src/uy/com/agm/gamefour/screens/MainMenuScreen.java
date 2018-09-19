@@ -22,6 +22,16 @@ public class MainMenuScreen extends GUIAbstractScreen {
     }
 
     @Override
+    protected void updateLogic(float deltaTime) {
+        stage.act();
+    }
+
+    @Override
+    protected void renderLogic() {
+        stage.draw();
+    }
+
+    @Override
     public void show() {
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
         labelStyleBig.font = Assets.getInstance().getFonts().getDefaultBig();
@@ -58,27 +68,4 @@ public class MainMenuScreen extends GUIAbstractScreen {
                           }
         );
     }
-
-    @Override
-    public void render(float deltaTime) {
-        clearScreen();
-        stage.act();
-        stage.draw();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
 }

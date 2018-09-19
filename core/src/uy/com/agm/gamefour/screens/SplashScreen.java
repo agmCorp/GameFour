@@ -40,14 +40,36 @@ public class SplashScreen extends GUIAbstractScreen {
     private float startX, endX;
     private float percent;
 
-    private boolean stop;
-
     public SplashScreen(GameFour game) {
         super(game);
 
         this.assetManager = new AssetManager();
         splashTime = 0;
-        stop = false;
+    }
+
+    @Override
+    protected void updateLogic(float deltaTime) {
+        splashTime += deltaTime;
+        if (assetManager.update() && splashTime >= MIN_SPLASH_TIME) { // Load some, will return true if done loading
+            Assets.getInstance().finishLoading();
+            ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_LEFT_LINEAR);
+        } else {
+            // Interpolate the percentage to make it more smooth
+            percent = Interpolation.linear.apply(percent, assetManager.getProgress(), ALPHA);
+
+            // Update positions (and size) to match the percentage
+            loadingBarHidden.setX(startX + endX * percent);
+            loadingFrameBg.setX(loadingBarHidden.getX() + loadingBarHidden.getWidth());
+            loadingFrameBg.setWidth(PIVOT - PIVOT * percent);
+            loadingFrameBg.invalidate();
+
+            // Show the loading screen
+            stage.act();
+        }
+    }
+
+    protected void renderLogic() {
+        stage.draw();
     }
 
     @Override
@@ -113,53 +135,6 @@ public class SplashScreen extends GUIAbstractScreen {
         loadingFrameBg.setSize(PIVOT, LOADING_BACKGROUND_HEIGHT);
         loadingFrameBg.setX(loadingBarHidden.getX() + loadingBarHidden.getWidth());
         loadingFrameBg.setY(loadingBarHidden.getY());
-    }
-
-    @Override
-    public void render(float deltaTime) {
-        clearScreen();
-        if (!stop) {
-            updateLogic(deltaTime);
-        }
-        renderLogic();
-    }
-
-    private void updateLogic(float deltaTime) {
-        splashTime += deltaTime;
-        if (assetManager.update() && splashTime >= MIN_SPLASH_TIME) { // Load some, will return true if done loading
-            Assets.getInstance().finishLoading();
-            ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_LEFT_LINEAR);
-        } else {
-            // Interpolate the percentage to make it more smooth
-            percent = Interpolation.linear.apply(percent, assetManager.getProgress(), ALPHA);
-
-            // Update positions (and size) to match the percentage
-            loadingBarHidden.setX(startX + endX * percent);
-            loadingFrameBg.setX(loadingBarHidden.getX() + loadingBarHidden.getWidth());
-            loadingFrameBg.setWidth(PIVOT - PIVOT * percent);
-            loadingFrameBg.invalidate();
-
-            // Show the loading screen
-            stage.act();
-        }
-    }
-
-    private void renderLogic() {
-        stage.draw();
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void stop() {
-        stop = true;
-    }
-
-    @Override
-    public void resume() {
-        stop = false;
     }
 
     @Override
