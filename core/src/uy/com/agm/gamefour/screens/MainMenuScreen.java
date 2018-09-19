@@ -48,7 +48,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
         table.addListener(new InputListener() {
                               @Override
                               public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                                  ScreenManager.getInstance().showScreen(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE);
+                                  ScreenManager.getInstance().showScreen(ScreenEnum.CREDITS, ScreenTransitionEnum.COLOR_FADE_WHITE);
                               }
 
                               @Override
