@@ -94,14 +94,12 @@ public class SplashScreen extends GUIAbstractScreen {
     public void resize(int width, int height) {
         super.resize(width, height);
 
-        Gdx.app.debug(TAG, "********" + width + " " + height + " " + logo.getWidth() + " " + logo.getHeight());
-
         // Make the background fill the screen
-        screenBg.setSize(width, height);
+        screenBg.setSize(stage.getWidth(), stage.getHeight());
 
         // Place the logo in the middle of the screen and LOGO_OFFSET_Y px up
-        logo.setX((width - logo.getWidth()) / 2);
-        logo.setY((height - logo.getHeight()) / 2 + LOGO_OFFSET_Y);
+        logo.setX((stage.getWidth() - logo.getWidth()) / 2);
+        logo.setY((stage.getHeight() - logo.getHeight()) / 2 + LOGO_OFFSET_Y);
 
         // Place the loading frame in the middle of the screen
         loadingFrame.setX((stage.getWidth() - loadingFrame.getWidth()) / 2);
