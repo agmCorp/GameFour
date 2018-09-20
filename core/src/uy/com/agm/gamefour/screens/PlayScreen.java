@@ -207,7 +207,7 @@ public class PlayScreen extends GameAbstractScreen {
 
     @Override
     public void resize(int width, int height) {
-
+        gameViewPort.update(width, height);
     }
 
     @Override

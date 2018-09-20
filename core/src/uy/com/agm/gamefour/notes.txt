@@ -4,6 +4,7 @@ la aplicación a deployar. Para ejecutarla en xampp copiar ese contenido dentro 
 levantar el apache y el tomcat del xampp y ejecutar http://localhost/juego/index.html
 - Debo usar una skin
 - me queda la duda de si implemento el dispose en alguna pantalla y hago super.dispose..a cual hide llama? al de la clase derivada o la madre?
+- En html, incio full y luego achico y no se actualiza la pantalla.
 
 LECCIONES APRENDIDAS
 --------------------
