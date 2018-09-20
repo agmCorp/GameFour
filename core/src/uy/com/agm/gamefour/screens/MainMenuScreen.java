@@ -17,6 +17,8 @@ import uy.com.agm.gamefour.screens.util.ScreenTransitionEnum;
  */
 
 public class MainMenuScreen extends GUIAbstractScreen {
+    private static final String TAG = MainMenuScreen.class.getName();
+
     public MainMenuScreen(GameFour game) {
         super(game);
     }

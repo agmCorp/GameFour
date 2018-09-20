@@ -3,6 +3,7 @@ package uy.com.agm.gamefour.screens;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -60,7 +61,10 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        // todo probar if (stage.getRoot() instanceof Table) ((Table) stage.getRoot()).invalidate();
+        // WA html version
+        if (stage.getRoot() instanceof Table) {
+            ((Table) stage.getRoot()).setFillParent(true);
+        }
     }
 
     @Override
