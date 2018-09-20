@@ -68,7 +68,7 @@ public class CreditsScreen extends GUIAbstractScreen {
         table.addListener(new InputListener() {
                               @Override
                               public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                                  ScreenManager.getInstance().showScreen(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.SLIDE_DOWN);
+                                  ScreenManager.getInstance().showScreen(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.SLICE_UP_DOWN_10);
                               }
 
                               @Override
