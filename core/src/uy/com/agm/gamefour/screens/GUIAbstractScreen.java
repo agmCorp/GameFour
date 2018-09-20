@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -82,17 +81,6 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        Gdx.app.error(TAG, "************ ERROR - xANTES");
-        Gdx.app.debug(TAG, "************ DEBUG - xANTES");
-        Gdx.app.log(TAG, "************ LOG - xANTES");
-        // WA html version
-        if (stage.getRoot() instanceof Table) {
-            Table table = ((Table) stage.getRoot());
-            // table.validate();
-            Gdx.app.error(TAG, "************ ERROR - xHOLA");
-            Gdx.app.debug(TAG, "************ DEBUG - xHOLA");
-            Gdx.app.log(TAG, "************ LOG - xHOLA");
-        }
     }
 
     @Override
