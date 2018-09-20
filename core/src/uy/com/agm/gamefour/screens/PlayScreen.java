@@ -1,7 +1,9 @@
 package uy.com.agm.gamefour.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -145,7 +147,11 @@ public class PlayScreen extends GameAbstractScreen {
     }
 
     private void renderLogic(float deltaTime) {
-        clearScreen();
+        //clearScreen();
+        // TODO SACAR ESTO Clear the screen with red
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 
         // Render Box2DDebugLines
         if (DebugConstants.DEBUG_LINES) {
