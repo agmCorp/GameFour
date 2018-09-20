@@ -96,7 +96,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     @Override
     public void pause() {
-        stop();
+        guiScreenState = guiScreenState.PAUSED;
     }
 
     @Override

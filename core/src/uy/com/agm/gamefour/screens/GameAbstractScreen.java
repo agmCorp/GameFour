@@ -28,7 +28,7 @@ public abstract class GameAbstractScreen  extends AbstractScreen {
 
     @Override
     public void pause() {
-        stop();
+        gameScreenState = GameScreenState.PAUSED;
     }
 
     @Override

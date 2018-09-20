@@ -196,6 +196,12 @@ public class PlayScreen extends GameAbstractScreen {
     }
 
     @Override
+    public void pause() {
+        super.pause();
+        // TODO INVOCAR A PANTALLA LINDA DE PAUSA
+    }
+
+    @Override
     public void hide() {
 
     }
