@@ -60,6 +60,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
+        // todo probar if (stage.getRoot() instanceof Table) ((Table) stage.getRoot()).invalidate();
     }
 
     @Override
