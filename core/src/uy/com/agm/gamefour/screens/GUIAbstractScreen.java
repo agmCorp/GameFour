@@ -63,7 +63,8 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
         stage.getViewport().update(width, height, true);
         // WA html version
         if (stage.getRoot() instanceof Table) {
-            ((Table) stage.getRoot()).setFillParent(true);
+            Table table = ((Table) stage.getRoot());
+            table.validate();
         }
     }
 
