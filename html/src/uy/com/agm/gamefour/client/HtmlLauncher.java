@@ -19,6 +19,53 @@ public class HtmlLauncher extends GwtApplication {
 //        }
         // END CODE FOR FIXED SIZE APPLICATION
 
+    // inicio alvaro
+    /*
+    @Override
+    public void log(String tag, String message) {
+        if (getLogLevel() >= LOG_INFO) {
+            consoleLog(tag + ": " + message);
+        }
+    }
+
+    @Override
+    public void log(String tag, String message, Throwable exception) {
+        if (getLogLevel() >= LOG_INFO) {
+            consoleLog(tag + ": " + message + "\n" + exception.getMessage());
+        }
+    }
+
+    @Override
+    public void error(String tag, String message) {
+        if (getLogLevel() >= LOG_ERROR) {
+            consoleLog(tag + ": " + message);
+        }
+    }
+
+    @Override
+    public void error(String tag, String message, Throwable exception) {
+        if (getLogLevel() >= LOG_ERROR) {
+            consoleLog(tag + ": " + message + "\n" + exception.getMessage());
+        }
+    }
+
+    @Override
+    public void debug(String tag, String message) {
+        if (getLogLevel() >= LOG_DEBUG) {
+            consoleLog(tag + ": " + message);
+        }
+    }
+
+    @Override
+    public void debug(String tag, String message, Throwable exception) {
+        if (getLogLevel() >= LOG_DEBUG) {
+            consoleLog(tag + ": " + message + "\n" + exception.getMessage());
+        }
+    }
+    */
+    // fin alvaro
+
+
         // UNCOMMENT THIS CODE FOR A RESIZABLE APPLICATION
         // PADDING is to avoid scrolling in iframes, set to 20 if you have problems
          private static final int PADDING = 0;
