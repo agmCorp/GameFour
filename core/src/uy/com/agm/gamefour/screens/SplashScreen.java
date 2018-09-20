@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
@@ -22,10 +21,9 @@ public class SplashScreen extends GUIAbstractScreen {
     private static final String TEXTURE_ATLAS_SPLASH_SCREEN = "atlas/loading/loading.atlas";
     private static final float LOGO_OFFSET_Y = 100.0f;
     private static final float START_X = 35.0f;
-    private static final float END_X = 430.0f;
-    private static final float PIVOT = 450.0f;
+    private static final float PIVOT = 405.0f;
     private static final float LOADING_BACKGROUND_HEIGHT = 55.0f;
-    private static final float MIN_SPLASH_TIME = 31.0f;
+    private static final float MIN_SPLASH_TIME = 3.0f;
     private static final float ALPHA = 0.1f;
 
     private AssetManager assetManager;
@@ -90,7 +88,7 @@ public class SplashScreen extends GUIAbstractScreen {
         loadingBarHidden = new Image(atlas.findRegion("loadingBarHidden"));
         screenBg = new Image(atlas.findRegion("screenBg"));
         loadingFrameBg = new Image(atlas.findRegion("loadingFrameBg"));
-        loadingBar = new Image(atlas.findRegion("loadingBar1"));
+        loadingBar = new Image(atlas.findRegion("loadingBar2"));
 
         // Add all the actors to the stage
         stage.addActor(screenBg);
@@ -108,16 +106,19 @@ public class SplashScreen extends GUIAbstractScreen {
     public void resize(int width, int height) {
         super.resize(width, height);
 
+        float w = stage.getWidth(); // Same as stage.getViewport().getWorldWidth()
+        float h = stage.getHeight();
+
         // Make the background fill the screen
-        screenBg.setSize(stage.getWidth(), stage.getHeight());
+        screenBg.setSize(w, h);
 
         // Place the logo in the middle of the screen and LOGO_OFFSET_Y px up
-        logo.setX((stage.getWidth() - logo.getWidth()) / 2);
-        logo.setY((stage.getHeight() - logo.getHeight()) / 2 + LOGO_OFFSET_Y);
+        logo.setX((w - logo.getWidth()) / 2);
+        logo.setY((h - logo.getHeight()) / 2 + LOGO_OFFSET_Y);
 
         // Place the loading frame in the middle of the screen
-        loadingFrame.setX((stage.getWidth() - loadingFrame.getWidth()) / 2);
-        loadingFrame.setY((stage.getHeight() - loadingFrame.getHeight()) / 2);
+        loadingFrame.setX((w - loadingFrame.getWidth()) / 2);
+        loadingFrame.setY((h - loadingFrame.getHeight()) / 2);
 
         // Place the loading bar at the same spot as the frame
         loadingBar.setX(loadingFrame.getX());
@@ -125,9 +126,7 @@ public class SplashScreen extends GUIAbstractScreen {
 
         // The start position and how far to move the hidden loading bar
         startX = loadingBar.getX() + START_X;
-
-        Gdx.app.debug(TAG, "****" + (loadingBar.getX() + loadingBar.getWidth()));
-        endX = END_X;
+        endX = PIVOT;
         percent = 0;
 
         // Place the image that will hide the bar on top of the bar
