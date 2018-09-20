@@ -41,6 +41,11 @@ public class CreditsScreen extends GUIAbstractScreen {
     }
 
     @Override
+    protected void goBack() {
+        ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.ROTATING_BOUNCE);
+    }
+
+    @Override
     public void show() {
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
         labelStyleBig.font = Assets.getInstance().getFonts().getDefaultBig();

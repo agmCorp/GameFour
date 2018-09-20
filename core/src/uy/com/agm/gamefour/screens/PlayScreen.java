@@ -1,9 +1,7 @@
 package uy.com.agm.gamefour.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -37,12 +35,6 @@ public class PlayScreen extends GameAbstractScreen {
     private static final float WORLD_TIME_STEP = 1/300.0f;
     private static final int WORLD_VELOCITY_ITERATIONS = 6;
     private static final int WORLD_POSITION_ITERATIONS = 2;
-
-    // Game state
-    private enum PlayScreenState {
-        PAUSED, RUNNING, STOPPED
-    }
-    private PlayScreenState playScreenState;
 
     // Basic PlayScreen variables
     private OrthographicCamera gameCamera;
@@ -88,22 +80,19 @@ public class PlayScreen extends GameAbstractScreen {
             box2DDebugRenderer = new Box2DDebugRenderer();
         }
 
-        // Get the main character
+        // Gets the main character
         box2DCreator = new Box2DCreator(this);
         jumper = box2DCreator.getJumper();
 
-        // Create the collision listener
+        // Creates the collision listener
         box2DWorld.setContactListener(new WorldContactListener());
 
         // Screen shaker
         shaker = new Shaker();
-
-        // PlayScreen running
-        playScreenState = PlayScreenState.RUNNING;
     }
 
     public boolean isPlayScreenStateRunning() {
-        return playScreenState == PlayScreenState.RUNNING;
+        return gameScreenState == GameScreenState.RUNNING;
     }
 
     // Key control
@@ -130,7 +119,7 @@ public class PlayScreen extends GameAbstractScreen {
     }
 
     private void updateCamera(float deltaTime) {
-        // Update camera
+        // Updates camera
         tmp.set(gameCamera.position.x, gameCamera.position.y);
         shaker.update(deltaTime, gameCamera, tmp);
     }
@@ -147,31 +136,27 @@ public class PlayScreen extends GameAbstractScreen {
     }
 
     private void renderLogic(float deltaTime) {
-        //clearScreen();
-        // TODO SACAR ESTO Clear the screen with red
-        Gdx.gl.glClearColor(1, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        clearScreen();
 
         // Render Box2DDebugLines
         if (DebugConstants.DEBUG_LINES) {
             box2DDebugRenderer.render(box2DWorld, gameCamera.combined);
         }
 
-        // Set our batch to now draw what the gameCamera sees.
+        // Sets the batch to now draw what the gameCamera sees.
         SpriteBatch batch = game.getGameBatch();
         batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
 
         // This order is important
-        // This determine if a sprite has to be drawn in front or behind another sprite
+        // This determines if a sprite has to be drawn in front or behind another sprite
         renderJumper(batch);
 
         batch.end();
 
         // Debug
         if (DebugConstants.DEBUG_LINES) {
-            // Set our batch to now draw what the gameCamera sees.
+            // Sets the shapeRenderer to now draw what the gameCamera sees.
             ShapeRenderer shapeRenderer = game.getGameShapeRenderer();
             shapeRenderer.setProjectionMatrix(gameCamera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -193,12 +178,12 @@ public class PlayScreen extends GameAbstractScreen {
 
     @Override
     public void show() {
-
+        // Nothing to do here.
     }
 
     @Override
     public void render(float deltaTime) {
-        if (playScreenState == PlayScreenState.RUNNING) {
+        if (gameScreenState == GameScreenState.RUNNING) {
             updateLogic(deltaTime);
         }
 
@@ -208,21 +193,6 @@ public class PlayScreen extends GameAbstractScreen {
     @Override
     public void resize(int width, int height) {
         gameViewPort.update(width, height);
-    }
-
-    @Override
-    public void pause() {
-        playScreenState = PlayScreenState.PAUSED;
-    }
-
-    @Override
-    public void stop() {
-        playScreenState = PlayScreenState.STOPPED;
-    }
-
-    @Override
-    public void resume() {
-        playScreenState = PlayScreenState.RUNNING;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package uy.com.agm.gamefour.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,11 +18,11 @@ import uy.com.agm.gamefour.game.GameFour;
 public abstract class GUIAbstractScreen extends AbstractScreen {
     private static final String TAG = AbstractScreen.class.getName();
 
-    // Screen state
-    private enum ScreenState {
-        PAUSED, RUNNING
+    // GUI state
+    private enum GUIScreenState {
+        PAUSED, RUNNING, STOPPED
     }
-    private ScreenState screenState;
+    private GUIScreenState guiScreenState;
 
     protected OrthographicCamera guiCamera;
     protected Viewport viewport;
@@ -28,7 +30,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     public GUIAbstractScreen(GameFour game) {
         super(game);
-        screenState = ScreenState.RUNNING;
+        guiScreenState = GUIScreenState.RUNNING;
         guiCamera = new OrthographicCamera();
         viewport = new ExtendViewport(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT, guiCamera);
         stage = new Stage(viewport, game.getGuiBatch());
@@ -51,10 +53,29 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     @Override
     public void render(float deltaTime) {
-        clearScreen();
-        if (screenState == ScreenState.RUNNING) {
+        // Update logic
+        update(deltaTime);
+
+        // Render logic
+        render();
+    }
+
+    private void update(float deltaTime) {
+        if (guiScreenState == guiScreenState.RUNNING) {
+            handleInput(deltaTime);
             updateLogic(deltaTime);
         }
+    }
+
+    private void handleInput(float deltaTime) {
+        // Back button Android
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+            goBack();
+        }
+    }
+
+    private void render() {
+        clearScreen();
         renderLogic();
     }
 
@@ -70,7 +91,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     @Override
     public void stop() {
-        screenState = ScreenState.PAUSED;
+        guiScreenState = guiScreenState.STOPPED;
     }
 
     @Override
@@ -80,7 +101,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     @Override
     public void resume() {
-        screenState = ScreenState.RUNNING;
+        guiScreenState = guiScreenState.RUNNING;
     }
 
     @Override
@@ -95,4 +116,5 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     protected abstract void updateLogic(float deltaTime);
     protected abstract void renderLogic();
+    protected abstract void goBack();
 }

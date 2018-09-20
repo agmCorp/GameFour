@@ -20,10 +20,13 @@ public abstract class AbstractScreen implements Screen {
 
     public AbstractScreen(GameFour game) {
         this.game = game;
+
+        // Back button Android
+        Gdx.input.setCatchBackKey(true);
     }
 
     protected void clearScreen() {
-        // Clear the screen with red
+        // Clear the screen with black
         Gdx.gl.glClearColor(0, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }

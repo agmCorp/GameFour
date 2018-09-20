@@ -72,6 +72,11 @@ public class SplashScreen extends GUIAbstractScreen {
     }
 
     @Override
+    protected void goBack() {
+        // Nothing to do here
+    }
+
+    @Override
     public void show() {
         // Tell the manager to load assets for the loading screen
         assetManager.load(TEXTURE_ATLAS_SPLASH_SCREEN, TextureAtlas.class);

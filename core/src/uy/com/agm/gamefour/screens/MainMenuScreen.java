@@ -34,6 +34,11 @@ public class MainMenuScreen extends GUIAbstractScreen {
     }
 
     @Override
+    protected void goBack() {
+        // Nothing to do here
+    }
+
+    @Override
     public void show() {
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
         labelStyleBig.font = Assets.getInstance().getFonts().getDefaultBig();
