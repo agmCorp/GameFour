@@ -82,10 +82,16 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
+        Gdx.app.error(TAG, "************ ERROR - ANTES");
+        Gdx.app.debug(TAG, "************ DEBUG - ANTES");
+        Gdx.app.log(TAG, "************ LOG - ANTES");
         // WA html version
         if (stage.getRoot() instanceof Table) {
             Table table = ((Table) stage.getRoot());
-            table.validate();
+            // table.validate();
+            Gdx.app.error(TAG, "************ ERROR - HOLA");
+            Gdx.app.debug(TAG, "************ DEBUG - HOLA");
+            Gdx.app.log(TAG, "************ LOG - HOLA");
         }
     }
 
