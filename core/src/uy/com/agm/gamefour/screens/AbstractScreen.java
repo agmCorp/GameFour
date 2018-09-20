@@ -23,8 +23,8 @@ public abstract class AbstractScreen implements Screen {
     }
 
     protected void clearScreen() {
-        // Clear the screen with black
-        Gdx.gl.glClearColor(0, 1, 0, 1);
+        // Clear the screen with red
+        Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
