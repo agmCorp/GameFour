@@ -38,7 +38,7 @@ public class PlayScreen extends GameAbstractScreen {
 
     // Game state
     private enum PlayScreenState {
-        PAUSED, RUNNING
+        PAUSED, RUNNING, STOPPED
     }
     private PlayScreenState playScreenState;
 
@@ -206,17 +206,17 @@ public class PlayScreen extends GameAbstractScreen {
 
     @Override
     public void pause() {
-
+        playScreenState = PlayScreenState.PAUSED;
     }
 
     @Override
     public void stop() {
-
+        playScreenState = PlayScreenState.STOPPED;
     }
 
     @Override
     public void resume() {
-
+        playScreenState = PlayScreenState.RUNNING;
     }
 
     @Override
