@@ -67,8 +67,8 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     }
 
     private void handleInput(float deltaTime) {
-        // Back button Android
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+        // BACK button (Android) or ESCAPE key (desktop/html)
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             goBack();
         }
     }

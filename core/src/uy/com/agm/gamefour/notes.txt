@@ -1,15 +1,13 @@
 - Tengo android 2.3.3 y libgdx ahora soporta android 3.1.2. Puedo tener ambos ides?
-- Para la ejecutar le version html: Ir al directorio del juego y ejecutar gradlew html:dist. En GameFour\html\build\dist quedo
-la aplicación a deployar. Para ejecutarla en xampp copiar ese contenido dentro de C:\xampp\htdocs\juego y luego
-levantar el apache y el tomcat del xampp y ejecutar http://localhost/juego/index.html
 - Debo usar una skin
 - me queda la duda de si implemento el dispose en alguna pantalla y hago super.dispose..a cual hide llama? al de la clase derivada o la madre?
+supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 - En html, incio full y luego achico y no se actualiza la pantalla.
-- agregar escape como tecla back en html.
+- Hacer el diseño de worldrenderer y de word y todo eso.
 
 LECCIONES APRENDIDAS
 --------------------
-- Primero existía ApplicationListener, todas las pantallas heredaban de allí.
+1) Primero existía ApplicationListener, todas las pantallas heredaban de allí.
 Los métodos de ApplicationListener son:
 create, resize, render, pause, resume, dispose.
 
@@ -32,3 +30,7 @@ reutiliza la mecánica de Game (es decir, usa los métodos show y hide con el mi
 La única diferencia (además de ejecutar la transición) es que necesito pausar la pantalla mientras la transición se hace y al finalizar la
 transición invoco al método resume.
 Para no usar el método pause y dar más flexibilidad, definí un método nuevo llamado stop.
+
+2) Para ejecutar la versión html: Ir al directorio del juego y ejecutar gradlew html:dist. En GameFour\html\build\dist quedó
+la aplicación a deployar. Para ejecutarla en xampp copiar ese contenido dentro de C:\xampp\htdocs\Alvaro\juego y luego
+levantar el apache y el tomcat del xampp y ejecutar http://localhost/Alvaro/juego/index.html

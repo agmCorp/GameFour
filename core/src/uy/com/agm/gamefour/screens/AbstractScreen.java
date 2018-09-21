@@ -21,7 +21,8 @@ public abstract class AbstractScreen implements Screen {
     public AbstractScreen(GameFour game) {
         this.game = game;
 
-        // Back button Android
+        // Sets whether the BACK button on Android should be caught.
+        // This will prevent the app from being paused. Will have no effect on the desktop/html.
         Gdx.input.setCatchBackKey(true);
     }
 
