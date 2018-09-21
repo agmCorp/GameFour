@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.screens.util.ScreenEnum;
 import uy.com.agm.gamefour.screens.util.ScreenManager;
 import uy.com.agm.gamefour.screens.util.ScreenTransitionEnum;
@@ -66,5 +67,6 @@ public class GameFour extends DirectedGame {
         super.dispose();
         gameBatch.dispose();
         gameShapeRenderer.dispose();
+        Assets.getInstance().dispose();
     }
 }
