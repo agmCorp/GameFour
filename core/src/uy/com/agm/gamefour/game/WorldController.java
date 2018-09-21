@@ -134,6 +134,10 @@ public class WorldController implements Disposable {
         return box2DWorld;
     }
 
+    public Jumper getJumper() {
+        return jumper;
+    }
+
     @Override
     public void dispose() {
         box2DWorld.dispose();

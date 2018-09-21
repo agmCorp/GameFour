@@ -27,7 +27,7 @@ public class PlayScreen {
 //    private World box2DWorld;
 //    private float accumulator;
 //    private Box2DDebugRenderer box2DDebugRenderer;
-//    private Box2DCreator box2DCreator;
+//    private SpriteCreator box2DCreator;
 //
 //    // Main character
 //    private Jumper jumper;
@@ -64,7 +64,7 @@ public class PlayScreen {
 //        }
 //
 //        // Gets the main character
-//        box2DCreator = new Box2DCreator(this);
+//        box2DCreator = new SpriteCreator(this);
 //        jumper = box2DCreator.getJumper();
 //
 //        // Creates the collision listener
