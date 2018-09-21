@@ -154,5 +154,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public void dispose() {
         assetManager.dispose();
         fonts.dispose();
+        assetManager = null;
+        fonts = null;
     }
 }

@@ -68,5 +68,7 @@ public class GameFour extends DirectedGame {
         gameBatch.dispose();
         gameShapeRenderer.dispose();
         Assets.getInstance().dispose();
+        gameBatch = null;
+        gameShapeRenderer = null;
     }
 }
