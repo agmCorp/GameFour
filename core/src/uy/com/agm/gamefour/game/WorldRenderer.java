@@ -4,11 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
-import uy.com.agm.gamefour.game.tools.GameWorld;
 import uy.com.agm.gamefour.screens.AbstractScreen;
 
 /**
@@ -16,78 +12,59 @@ import uy.com.agm.gamefour.screens.AbstractScreen;
  */
 
 public class WorldRenderer {
-    // Basic WorldRenderer variables
-    private OrthographicCamera gameCamera;
-    private Viewport gameViewPort;
-
-    // Box2d variables
-    private Box2DDebugRenderer box2DDebugRenderer;
-
-    private World box2dWorld;
-    private GameWorld gameWorld;
+    private WorldCamera worldCamera;
+    private WorldController worldController;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+    private Box2DDebugRenderer box2DDebugRenderer;
 
-    public WorldRenderer(World box2dWorld, GameWorld gameWorld, SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        this.box2dWorld = box2dWorld;
-        this.gameWorld = gameWorld;
+    public WorldRenderer(WorldCamera worldCamera, WorldController worldController, SpriteBatch batch, ShapeRenderer shapeRenderer, Box2DDebugRenderer box2DDebugRenderer) {
+        this.worldCamera = worldCamera;
+        this.worldController = worldController;
         this.batch = batch;
         this.shapeRenderer = shapeRenderer;
-
-        // Creates a ExtendViewport to maintain virtual aspect ratio despite screen size
-        // We use the convention 100 pixels = 1 meter to work with meters and therefore meters per seconds in velocity and so on.
-        gameCamera = new OrthographicCamera();
-        gameViewPort = new ExtendViewport(GameFour.APPLICATION_WIDTH / GameFour.PPM, GameFour.APPLICATION_HEIGHT / GameFour.PPM, gameCamera);
-
-        // Places the gameCamera in the middle of the screen
-        gameCamera.position.set(gameViewPort.getWorldWidth() / 2, gameViewPort.getWorldHeight() / 2, 0);
-
-        // Allows debug lines of the Box2D world.
-        if (DebugConstants.DEBUG_LINES) {
-            box2DDebugRenderer = new Box2DDebugRenderer();
-        }
+        this.box2DDebugRenderer = box2DDebugRenderer;
     }
 
     public void render() {
         AbstractScreen.clearScreen();
 
-        // Render Box2DDebugLines
-        if (DebugConstants.DEBUG_LINES) {
-            box2DDebugRenderer.render(box2dWorld, gameCamera.combined);
-        }
+        // Gets the world camera
+        OrthographicCamera wc = worldCamera.getWorldCamera();
 
-        // Sets the batch to now draw what the gameCamera sees.
-        batch.setProjectionMatrix(gameCamera.combined);
+        // Sets the batch to now draw what the world camera sees.
+        batch.setProjectionMatrix(wc.combined);
         batch.begin();
 
         // This order is important
         // This determines if a sprite has to be drawn in front or behind another sprite
-        gameWorld.render(batch);
+        renderJumper(batch);
 
         batch.end();
 
-        // Debug
-        if (DebugConstants.DEBUG_LINES) {
+        // Render bounding boxes
+        if (shapeRenderer != null) {
             // Sets the shapeRenderer to now draw what the gameCamera sees.
-            shapeRenderer.setProjectionMatrix(gameCamera.combined);
+            shapeRenderer.setProjectionMatrix(wc.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(1, 1, 0, 1);
 
-            gameWorld.renderDebug(shapeRenderer);
+            renderDebugJumper(shapeRenderer);
 
             shapeRenderer.end();
         }
+
+        // Render Box2DDebugLines
+        if (box2DDebugRenderer != null) {
+            box2DDebugRenderer.render(worldController.getBox2DWorld(), worldCamera.getWorldCamera().combined);
+        }
     }
 
-    public OrthographicCamera getGameCamera() {
-        return gameCamera;
+    private void renderJumper(SpriteBatch batch) {
+        //jumper.draw(batch);
     }
 
-    public Viewport getGameViewPort() {
-        return gameViewPort;
-    }
-
-    public void resize(int width, int height) {
-        gameViewPort.update(width, height);
+    private void renderDebugJumper(ShapeRenderer shapeRenderer) {
+        //jumper.renderDebug(shapeRenderer);
     }
 }

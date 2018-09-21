@@ -4,7 +4,7 @@ import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.screens.AbstractScreen;
 import uy.com.agm.gamefour.screens.CreditsScreen;
 import uy.com.agm.gamefour.screens.MainMenuScreen;
-import uy.com.agm.gamefour.screens.PlayScreen;
+import uy.com.agm.gamefour.screens.PlayScreen2;
 import uy.com.agm.gamefour.screens.SplashScreen;
 
 /**
@@ -32,7 +32,7 @@ public enum ScreenEnum {
 
     PLAY_GAME {
         public AbstractScreen getScreen(GameFour game, Object... params) {
-            return new PlayScreen(game);
+            return new PlayScreen2(game);
         }
     };
 

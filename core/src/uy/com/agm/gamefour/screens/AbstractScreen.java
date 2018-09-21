@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import uy.com.agm.gamefour.game.GameFour;
@@ -54,6 +53,4 @@ public abstract class AbstractScreen implements Screen {
     public abstract InputProcessor getInputProcessor();
 
     public abstract Viewport getViewport();
-
-    public abstract OrthographicCamera getCamera();
 }

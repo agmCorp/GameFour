@@ -21,7 +21,7 @@ public abstract class GameAbstractScreen extends AbstractScreen {
         gameScreenState = GameScreenState.RUNNING;
     }
 
-    protected boolean isGameScreenStateRunning() {
+    public boolean isGameScreenStateRunning() {
         return gameScreenState == GameScreenState.RUNNING;
     }
 

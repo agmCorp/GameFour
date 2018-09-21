@@ -4,6 +4,22 @@
 supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 - Hacer el diseño de worldrenderer y de word y todo eso.
 
+PASAR ESTO:
+para cambiar de rama:
+git checkout master
+
+git checkout develop
+
+Para traerme las cosas de una rama
+	git checkout master
+   git fetch origin
+   git reset --hard origin/master
+
+   git checkout develop
+   git fetch origin
+   git reset --hard origin/develop
+
+
 LECCIONES APRENDIDAS
 --------------------
 1) Primero existía ApplicationListener, todas las pantallas heredaban de allí.

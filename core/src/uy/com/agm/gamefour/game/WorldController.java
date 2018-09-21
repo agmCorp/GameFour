@@ -2,13 +2,13 @@ package uy.com.agm.gamefour.game;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
-import uy.com.agm.gamefour.game.tools.Box2DCreator;
 import uy.com.agm.gamefour.game.tools.Shaker;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
 import uy.com.agm.gamefour.sprites.Jumper;
@@ -26,11 +26,15 @@ public class WorldController implements Disposable {
     private static final int WORLD_VELOCITY_ITERATIONS = 6;
     private static final int WORLD_POSITION_ITERATIONS = 2;
 
+    // Reference to camera and viewport
+    private WorldCamera worldCamera;
+
+    // Temporary GC friendly vector
+    private Vector2 tmp;
+
     // Box2d variables
     private World box2DWorld;
     private float accumulator;
-    private Box2DDebugRenderer box2DDebugRenderer;
-    private Box2DCreator box2DCreator;
 
     // Main character
     private Jumper jumper;
@@ -38,7 +42,13 @@ public class WorldController implements Disposable {
     // Screen shaker
     private Shaker shaker;
 
-    public WorldController() {
+    public WorldController(WorldCamera worldCamera) {
+        // Reference to camera and viewport
+        this.worldCamera = worldCamera;
+
+        // Temporary GC friendly vector
+        tmp = new Vector2();
+
         // Creates the Box2D world, setting no gravity in x and GRAVITY in y, and allow bodies to sleep
         box2DWorld = new World(new Vector2(0, GRAVITY), true);
 
@@ -48,8 +58,9 @@ public class WorldController implements Disposable {
         // Sets accumulator for box2DWorld.step
         accumulator = 0;
 
-        // Gets the main character
-        jumper = box2DCreator.getJumper();
+        // Creates Jumper in the game world
+        Vector3 pos = worldCamera.getWorldCamera().position;
+        jumper = new Jumper(pos.x / 2, pos.y / 2);
 
         // Creates the collision listener
         box2DWorld.setContactListener(new WorldContactListener());
@@ -94,16 +105,12 @@ public class WorldController implements Disposable {
 
     private void updateCamera(float deltaTime) {
         // Updates camera
-//        tmp.set(gameCamera.position.x, gameCamera.position.y);
-//        shaker.update(deltaTime, gameCamera, tmp);
-        // EL SHAKER DEBERIA PODER LLEGAR A LA CAMARA Y ARREGLARSELAS EL MISMO.
+        OrthographicCamera wc = worldCamera.getWorldCamera();
+        tmp.set(wc.position.x, wc.position.y);
+        shaker.update(deltaTime, wc, tmp);
     }
 
-    public World getBox2DWorld() {
-        return box2DWorld;
-    }
-
-    public InputProcessor getInputProcessor() {
+    public InputProcessor getInputProcessor(GameController gameController) {
         /* GameController is an InputAdapter because it extends that class and
          * it's also a GestureListener because it implements that interface.
          * In GameController then I can recognize gestures (like fling) and I can
@@ -117,11 +124,14 @@ public class WorldController implements Disposable {
          * First I registered GestureDetector so that fling is executed before touchUp and as they are related,
          * when I return true in the fling event the touchUp is canceled. If I return false both are executed.
          * */
-        GameController gameController = new GameController(this);
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new GestureDetector(gameController)); // Detects gestures (tap, long press, fling, pan, zoom, pinch)
         multiplexer.addProcessor(gameController); // User input handler on PlayScreen
         return multiplexer;
+    }
+
+    public World getBox2DWorld() {
+        return box2DWorld;
     }
 
     @Override

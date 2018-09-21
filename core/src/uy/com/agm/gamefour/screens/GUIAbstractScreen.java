@@ -46,11 +46,6 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     }
 
     @Override
-    public OrthographicCamera getCamera() {
-        return guiCamera;
-    }
-
-    @Override
     public void render(float deltaTime) {
         // Update logic
         update(deltaTime);

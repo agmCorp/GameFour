@@ -1,13 +1,13 @@
 package uy.com.agm.gamefour.screens;
 
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import uy.com.agm.gamefour.game.GameController;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.game.WorldCamera;
 import uy.com.agm.gamefour.game.WorldController;
 import uy.com.agm.gamefour.game.WorldRenderer;
-import uy.com.agm.gamefour.game.tools.GameWorld;
 
 /**
  * Created by AGMCORP on 21/9/2018.
@@ -16,16 +16,16 @@ import uy.com.agm.gamefour.game.tools.GameWorld;
 public class PlayScreen2 extends GameAbstractScreen {
     private static final String TAG = PlayScreen2.class.getName();
 
-    private GameWorld gameWorld;
+    private WorldCamera worldCamera;
     private WorldController worldController;
     private WorldRenderer worldRenderer;
 
     public PlayScreen2(GameFour game) {
         super(game);
 
-        worldController = new WorldController();
-        worldRenderer = new WorldRenderer(worldController, game.getGameBatch(), game.getGameShapeRenderer());
-        gameWorld = new GameWorld(worldController, worldRenderer);
+        worldCamera = new WorldCamera();
+        worldController = new WorldController(worldCamera);
+        worldRenderer = new WorldRenderer(worldCamera, worldController, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
     }
 
     @Override
@@ -44,7 +44,7 @@ public class PlayScreen2 extends GameAbstractScreen {
 
     @Override
     public void resize(int width, int height) {
-        worldRenderer.resize(width, height);
+        worldCamera.resize(width, height);
     }
 
     @Override
@@ -56,21 +56,15 @@ public class PlayScreen2 extends GameAbstractScreen {
     @Override
     public void hide() {
         worldController.dispose();
-        // esto sería el dispose de esta pantalla, capaz llama al renderer.dispose y wordcontroller.dispose
     }
 
     @Override
     public InputProcessor getInputProcessor() {
-        return worldController.getInputProcessor();
+        return worldController.getInputProcessor(new GameController(this));
     }
 
     @Override
     public Viewport getViewport() {
-        return worldRenderer.getGameViewport();
-    }
-
-    @Override
-    public OrthographicCamera getCamera() {
-        return worldRenderer.getGameCamera();
+        return worldCamera.getWorldViewPort();
     }
 }
