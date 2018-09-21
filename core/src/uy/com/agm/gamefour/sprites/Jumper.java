@@ -2,14 +2,12 @@ package uy.com.agm.gamefour.sprites;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import uy.com.agm.gamefour.screens.PlayScreen;
-
 /**
  * Created by AGMCORP on 19/9/2018.
  */
 
 public class Jumper extends AbstractGameObject {
-    public Jumper(PlayScreen playScreen, float x, float y) {
+    public Jumper(float x, float y) {
 
     }
 

@@ -74,7 +74,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     }
 
     private void render() {
-        clearScreen();
+        AbstractScreen.clearScreen();
         renderLogic();
     }
 

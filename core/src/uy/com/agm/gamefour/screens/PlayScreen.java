@@ -31,6 +31,7 @@ public class PlayScreen extends GameAbstractScreen {
     private Vector2 tmp;
 
     // World physics simulation parameters
+    private static final float GRAVITY = -9.8f;
     private static final float MAX_FRAME_TIME = 0.25f;
     private static final float WORLD_TIME_STEP = 1/300.0f;
     private static final int WORLD_VELOCITY_ITERATIONS = 6;
@@ -66,8 +67,8 @@ public class PlayScreen extends GameAbstractScreen {
         // Places the gameCamera in the middle of the screen
         gameCamera.position.set(gameViewPort.getWorldWidth() / 2, gameViewPort.getWorldHeight() / 2, 0);
 
-        // Creates the Box2D world, setting no gravity in x and -9.8f gravity in y, and allow bodies to sleep
-        box2DWorld = new World(new Vector2(0, -9.8f), true);
+        // Creates the Box2D world, setting no gravity in x and GRAVITY in y, and allow bodies to sleep
+        box2DWorld = new World(new Vector2(0, GRAVITY), true);
 
         // Avoids "sticking to walls" when velocity is less than 1
         box2DWorld.setVelocityThreshold(0.0f);
@@ -89,10 +90,6 @@ public class PlayScreen extends GameAbstractScreen {
 
         // Screen shaker
         shaker = new Shaker();
-    }
-
-    public boolean isPlayScreenStateRunning() {
-        return gameScreenState == GameScreenState.RUNNING;
     }
 
     // Key control
@@ -135,7 +132,7 @@ public class PlayScreen extends GameAbstractScreen {
         }
     }
 
-    private void renderLogic(float deltaTime) {
+    private void renderLogic() {
         clearScreen();
 
         // Render Box2DDebugLines
@@ -183,11 +180,11 @@ public class PlayScreen extends GameAbstractScreen {
 
     @Override
     public void render(float deltaTime) {
-        if (gameScreenState == GameScreenState.RUNNING) {
+        if (isGameScreenStateRunning()) {
             updateLogic(deltaTime);
         }
 
-        renderLogic(deltaTime);
+        renderLogic();
     }
 
     @Override
