@@ -8,6 +8,7 @@ import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.WorldCamera;
 import uy.com.agm.gamefour.game.WorldController;
 import uy.com.agm.gamefour.game.WorldRenderer;
+import uy.com.agm.gamefour.game.tools.SpriteCreator;
 
 /**
  * Created by AGMCORP on 21/9/2018.
@@ -17,6 +18,7 @@ public class PlayScreen2 extends GameAbstractScreen {
     private static final String TAG = PlayScreen2.class.getName();
 
     private WorldCamera worldCamera;
+    private SpriteCreator spriteCreator;
     private WorldController worldController;
     private WorldRenderer worldRenderer;
 
@@ -24,6 +26,7 @@ public class PlayScreen2 extends GameAbstractScreen {
         super(game);
 
         worldCamera = new WorldCamera();
+        spriteCreator = new SpriteCreator(worldCamera);
         worldController = new WorldController(worldCamera);
         worldRenderer = new WorldRenderer(worldCamera, worldController, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
     }

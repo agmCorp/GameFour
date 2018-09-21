@@ -5,13 +5,11 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 import uy.com.agm.gamefour.game.tools.Shaker;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
-import uy.com.agm.gamefour.sprites.Jumper;
 
 /**
  * Created by AGMCORP on 21/9/2018.
@@ -36,9 +34,6 @@ public class WorldController implements Disposable {
     private World box2DWorld;
     private float accumulator;
 
-    // Main character
-    private Jumper jumper;
-
     // Screen shaker
     private Shaker shaker;
 
@@ -57,10 +52,6 @@ public class WorldController implements Disposable {
 
         // Sets accumulator for box2DWorld.step
         accumulator = 0;
-
-        // Creates Jumper in the game world
-        Vector3 pos = worldCamera.getWorldCamera().position;
-        jumper = new Jumper(pos.x / 2, pos.y / 2);
 
         // Creates the collision listener
         box2DWorld.setContactListener(new WorldContactListener());
@@ -100,7 +91,7 @@ public class WorldController implements Disposable {
     }
 
     private void updateJumper(float deltaTime) {
-        jumper.update(deltaTime);
+        spri.update(deltaTime);
     }
 
     private void updateCamera(float deltaTime) {
@@ -132,10 +123,6 @@ public class WorldController implements Disposable {
 
     public World getBox2DWorld() {
         return box2DWorld;
-    }
-
-    public Jumper getJumper() {
-        return jumper;
     }
 
     @Override
