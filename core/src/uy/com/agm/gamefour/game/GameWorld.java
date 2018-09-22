@@ -40,13 +40,15 @@ public class GameWorld {
         gameWorldViewPort = new ExtendViewport(GameFour.APPLICATION_WIDTH / GameFour.PPM, GameFour.APPLICATION_HEIGHT / GameFour.PPM, gameWorldCamera);
 
         // Places the gameWorldCamera in the middle of the screen
-        gameWorldCamera.position.set(gameWorldViewPort.getWorldWidth() / 2, gameWorldViewPort.getWorldHeight() / 2, 0);
+        float x = gameWorldViewPort.getWorldWidth() / 2;
+        float y = gameWorldViewPort.getWorldHeight() / 2;
+        gameWorldCamera.position.set(x, y, 0);
 
         // Screen shaker
         shaker = new Shaker();
 
         // Creates Jumper in the game world
-        jumper = new Jumper(40, 40);
+        jumper = new Jumper(x, y);
     }
 
     public void resize(int width, int height) {
@@ -63,18 +65,22 @@ public class GameWorld {
 
     public void update(float deltaTime) {
         jumper.update(deltaTime);
+
+        // Always at the end
         updateCamera(deltaTime);
     }
 
     private void updateCamera(float deltaTime) {
-        // TODO OPTIMIZAR ESTO
+        // New game camera position
         tmp.set(gameWorldCamera.position.x, gameWorldCamera.position.y);
+
+        // Update the game camera with correct coordinates after changes
         shaker.update(deltaTime, gameWorldCamera, tmp);
     }
 
     public void render(SpriteBatch batch) {
-        // This order is important
-        // This determines if a sprite has to be drawn in front or behind another sprite
+        // This order is important.
+        // This determines if a sprite has to be drawn in front or behind another sprite.
         jumper.draw(batch);
     }
 

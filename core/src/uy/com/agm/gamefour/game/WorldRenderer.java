@@ -12,6 +12,8 @@ import uy.com.agm.gamefour.screens.AbstractScreen;
  */
 
 public class WorldRenderer {
+    private static final String TAG = WorldRenderer.class.getName();
+
     private WorldController worldController;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
@@ -34,7 +36,10 @@ public class WorldRenderer {
         // Sets the batch to now draw what the world camera sees.
         batch.setProjectionMatrix(gameWorldCamera.combined);
         batch.begin();
+
+        // Render the game world
         gameWorld.render(batch);
+
         batch.end();
 
         // Render bounding boxes
@@ -43,7 +48,10 @@ public class WorldRenderer {
             shapeRenderer.setProjectionMatrix(gameWorldCamera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(1, 1, 0, 1);
+
+            // Render the game world (debug)
             gameWorld.renderDebug(shapeRenderer);
+
             shapeRenderer.end();
         }
 

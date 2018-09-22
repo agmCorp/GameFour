@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.sprites;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
@@ -17,7 +18,12 @@ public class Jumper extends AbstractGameObject {
     }
 
     @Override
+    public void render(SpriteBatch spriteBatch) {
+        //draw(spriteBatch);
+    }
+
+    @Override
     public void renderDebug(ShapeRenderer shapeRenderer) {
-        // shapeRenderer.rect(getBoundingRectangle().x, getBoundingRectangle().y, getBoundingRectangle().width, getBoundingRectangle().height);
+        //shapeRenderer.rect(getBoundingRectangle().x, getBoundingRectangle().y, getBoundingRectangle().width, getBoundingRectangle().height);
     }
 }

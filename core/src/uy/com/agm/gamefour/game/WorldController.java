@@ -14,15 +14,16 @@ import uy.com.agm.gamefour.game.tools.WorldContactListener;
  */
 
 public class WorldController implements Disposable {
+    private static final String TAG = WorldController.class.getName();
 
     // World physics simulation parameters
     private static final float GRAVITY = -9.8f;
     private static final float MAX_FRAME_TIME = 0.25f;
-    private static final float WORLD_TIME_STEP = 1/300.0f;
+    private static final float WORLD_TIME_STEP = 1 / 300.0f;
     private static final int WORLD_VELOCITY_ITERATIONS = 6;
     private static final int WORLD_POSITION_ITERATIONS = 2;
 
-    // Reference to the world
+    // Reference to the game world
     private GameWorld gameWorld;
 
     // Box2d variables
@@ -30,7 +31,7 @@ public class WorldController implements Disposable {
     private float accumulator;
 
     public WorldController(GameWorld gameWorld) {
-        // Reference to the world
+        // Reference to the game world
         this.gameWorld = gameWorld;
 
         // Creates the Box2D world, setting no gravity in x and GRAVITY in y, and allow bodies to sleep
@@ -57,7 +58,6 @@ public class WorldController implements Disposable {
         gameWorld.update(deltaTime);
     }
 
-    // Key control
     private void handleInput(float deltaTime) {
         // We use GameController instead of input.isKeyPressed.
     }
@@ -89,7 +89,7 @@ public class WorldController implements Disposable {
          * */
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new GestureDetector(gameController)); // Detects gestures (tap, long press, fling, pan, zoom, pinch)
-        multiplexer.addProcessor(gameController); // User input handler on PlayScreen
+        multiplexer.addProcessor(gameController); // User input handler
         return multiplexer;
     }
 

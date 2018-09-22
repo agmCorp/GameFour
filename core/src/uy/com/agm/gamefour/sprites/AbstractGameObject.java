@@ -1,6 +1,7 @@
 package uy.com.agm.gamefour.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
@@ -9,6 +10,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public abstract class AbstractGameObject extends Sprite {
     public abstract void update(float deltaTime);
+
+    public abstract void render(SpriteBatch spriteBatch);
 
     public abstract void renderDebug(ShapeRenderer shapeRenderer);
 }
