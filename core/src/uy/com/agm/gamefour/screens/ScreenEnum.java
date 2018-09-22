@@ -1,11 +1,10 @@
-package uy.com.agm.gamefour.screens.util;
+package uy.com.agm.gamefour.screens;
 
 import uy.com.agm.gamefour.game.GameFour;
-import uy.com.agm.gamefour.screens.AbstractScreen;
-import uy.com.agm.gamefour.screens.CreditsScreen;
-import uy.com.agm.gamefour.screens.MainMenuScreen;
-import uy.com.agm.gamefour.screens.PlayScreen2;
-import uy.com.agm.gamefour.screens.SplashScreen;
+import uy.com.agm.gamefour.screens.gui.CreditsScreen;
+import uy.com.agm.gamefour.screens.gui.MainMenuScreen;
+import uy.com.agm.gamefour.screens.gui.SplashScreen;
+import uy.com.agm.gamefour.screens.play.PlayScreen2;
 
 /**
  * Created by AGMCORP on 17/9/2018.

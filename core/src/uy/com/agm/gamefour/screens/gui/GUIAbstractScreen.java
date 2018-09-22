@@ -1,4 +1,4 @@
-package uy.com.agm.gamefour.screens;
+package uy.com.agm.gamefour.screens.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.screens.AbstractScreen;
 
 /**
  * Created by AGMCORP on 17/9/2018.
@@ -55,7 +56,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     }
 
     private void update(float deltaTime) {
-        if (guiScreenState == guiScreenState.RUNNING) {
+        if (guiScreenState == GUIScreenState.RUNNING) {
             handleInput(deltaTime);
             updateLogic(deltaTime);
         }
@@ -80,17 +81,17 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     @Override
     public void stop() {
-        guiScreenState = guiScreenState.STOPPED;
+        guiScreenState = GUIScreenState.STOPPED;
     }
 
     @Override
     public void pause() {
-        guiScreenState = guiScreenState.PAUSED;
+        guiScreenState = GUIScreenState.PAUSED;
     }
 
     @Override
     public void resume() {
-        guiScreenState = guiScreenState.RUNNING;
+        guiScreenState = GUIScreenState.RUNNING;
     }
 
     @Override

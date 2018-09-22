@@ -1,4 +1,4 @@
-package uy.com.agm.gamefour.screens;
+package uy.com.agm.gamefour.screens.play;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -14,7 +14,7 @@ import uy.com.agm.gamefour.game.tools.SpriteCreator;
  * Created by AGMCORP on 21/9/2018.
  */
 
-public class PlayScreen2 extends GameAbstractScreen {
+public class PlayScreen2 extends PlayAbstractScreen {
     private static final String TAG = PlayScreen2.class.getName();
 
     private WorldCamera worldCamera;
@@ -38,7 +38,7 @@ public class PlayScreen2 extends GameAbstractScreen {
 
     @Override
     public void render(float deltaTime) {
-        if (isGameScreenStateRunning()) {
+        if (isPlayScreenStateRunning()) {
             worldController.update(deltaTime);
         }
 

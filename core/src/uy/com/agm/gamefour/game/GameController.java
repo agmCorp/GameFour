@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
-import uy.com.agm.gamefour.screens.PlayScreen2;
+import uy.com.agm.gamefour.screens.play.PlayScreen2;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -23,7 +23,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        if (playScreen.isGameScreenStateRunning()) {
+        if (playScreen.isPlayScreenStateRunning()) {
             Gdx.app.debug(TAG, "**** Touch down");
         }
         return true;
@@ -71,7 +71,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean keyDown(int keycode) {
-        if (playScreen.isGameScreenStateRunning()) {
+        if (playScreen.isPlayScreenStateRunning()) {
             switch (keycode) {
                 case Input.Keys.SPACE:
                     Gdx.app.debug(TAG, "**** Space down");
@@ -83,7 +83,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean keyUp(int keycode) {
-        if (playScreen.isGameScreenStateRunning()) {
+        if (playScreen.isPlayScreenStateRunning()) {
             switch (keycode) {
                 case Input.Keys.SPACE:
                     Gdx.app.debug(TAG, "**** Space up");
@@ -105,7 +105,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (playScreen.isGameScreenStateRunning()) {
+        if (playScreen.isPlayScreenStateRunning()) {
             Gdx.app.debug(TAG, "**** Touch up");
         }
         return true;

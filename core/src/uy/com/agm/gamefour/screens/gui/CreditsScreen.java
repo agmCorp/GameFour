@@ -1,4 +1,4 @@
-package uy.com.agm.gamefour.screens;
+package uy.com.agm.gamefour.screens.gui;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
-import uy.com.agm.gamefour.screens.util.ScreenEnum;
-import uy.com.agm.gamefour.screens.util.ScreenManager;
-import uy.com.agm.gamefour.screens.util.ScreenTransitionEnum;
+import uy.com.agm.gamefour.screens.ScreenEnum;
+import uy.com.agm.gamefour.screens.ScreenManager;
+import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;

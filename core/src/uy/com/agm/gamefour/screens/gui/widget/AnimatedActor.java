@@ -1,4 +1,4 @@
-package uy.com.agm.gamefour.widget;
+package uy.com.agm.gamefour.screens.gui.widget;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;

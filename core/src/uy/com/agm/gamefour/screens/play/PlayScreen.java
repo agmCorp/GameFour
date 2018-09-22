@@ -1,4 +1,4 @@
-package uy.com.agm.gamefour.screens;
+package uy.com.agm.gamefour.screens.play;
 
 /**
  * Created by AGMCORP on 17/9/2018.
@@ -6,7 +6,7 @@ package uy.com.agm.gamefour.screens;
 public class PlayScreen {
 
 }
-//public class PlayScreen extends GameAbstractScreen {
+//public class PlayScreen extends PlayAbstractScreen {
 //    private static final String TAG = PlayScreen.class.getName();
 //
 //    // Temporary GC friendly vector
@@ -162,7 +162,7 @@ public class PlayScreen {
 //
 //    @Override
 //    public void render(float deltaTime) {
-//        if (isGameScreenStateRunning()) {
+//        if (isPlayScreenStateRunning()) {
 //            updateLogic(deltaTime);
 //        }
 //

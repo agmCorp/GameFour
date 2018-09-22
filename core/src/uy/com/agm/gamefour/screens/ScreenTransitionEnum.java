@@ -1,4 +1,4 @@
-package uy.com.agm.gamefour.screens.util;
+package uy.com.agm.gamefour.screens;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;

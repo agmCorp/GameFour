@@ -1,4 +1,4 @@
-package uy.com.agm.gamefour.screens.util;
+package uy.com.agm.gamefour.screens;
 
 import uy.com.agm.gamefour.game.GameFour;
 

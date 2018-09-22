@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 import uy.com.agm.gamefour.assets.Assets;
-import uy.com.agm.gamefour.screens.util.ScreenEnum;
-import uy.com.agm.gamefour.screens.util.ScreenManager;
-import uy.com.agm.gamefour.screens.util.ScreenTransitionEnum;
+import uy.com.agm.gamefour.screens.ScreenEnum;
+import uy.com.agm.gamefour.screens.ScreenManager;
+import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
 
 /**
  * Created by AGMCORP on 17/9/2018.
