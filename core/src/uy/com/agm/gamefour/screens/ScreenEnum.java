@@ -4,7 +4,7 @@ import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.screens.gui.CreditsScreen;
 import uy.com.agm.gamefour.screens.gui.MainMenuScreen;
 import uy.com.agm.gamefour.screens.gui.SplashScreen;
-import uy.com.agm.gamefour.screens.play.PlayScreen2;
+import uy.com.agm.gamefour.screens.play.PlayScreen;
 
 /**
  * Created by AGMCORP on 17/9/2018.
@@ -31,7 +31,7 @@ public enum ScreenEnum {
 
     PLAY_GAME {
         public AbstractScreen getScreen(GameFour game, Object... params) {
-            return new PlayScreen2(game);
+            return new PlayScreen(game);
         }
     };
 

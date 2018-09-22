@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
-import uy.com.agm.gamefour.screens.play.PlayScreen2;
+import uy.com.agm.gamefour.screens.play.PlayScreen;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -15,9 +15,9 @@ import uy.com.agm.gamefour.screens.play.PlayScreen2;
 public class GameController implements GestureDetector.GestureListener, InputProcessor {
     private static final String TAG = GameController.class.getName();
 
-    private PlayScreen2 playScreen;
+    private PlayScreen playScreen;
 
-    public GameController(PlayScreen2 playScreen) {
+    public GameController(PlayScreen playScreen) {
         this.playScreen = playScreen;
     }
 
