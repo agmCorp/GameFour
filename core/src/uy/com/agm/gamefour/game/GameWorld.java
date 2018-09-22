@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import uy.com.agm.gamefour.game.tools.Shaker;
@@ -37,7 +37,7 @@ public class GameWorld {
         // Creates a ExtendViewport to maintain virtual aspect ratio despite screen size
         // We use the convention 100 pixels = 1 meter to work with meters and therefore meters per seconds in velocity and so on.
         gameWorldCamera = new OrthographicCamera();
-        gameWorldViewPort = new FitViewport(GameFour.APPLICATION_WIDTH / GameFour.PPM, GameFour.APPLICATION_HEIGHT / GameFour.PPM, gameWorldCamera);
+        gameWorldViewPort = new ExtendViewport(GameFour.APPLICATION_WIDTH / GameFour.PPM, GameFour.APPLICATION_HEIGHT / GameFour.PPM, gameWorldCamera);
 
         // Places the gameWorldCamera in the middle of the screen
         float x = gameWorldViewPort.getWorldWidth() / 2;
@@ -45,7 +45,7 @@ public class GameWorld {
         gameWorldCamera.position.set(x, y, 0);
 
         // Screen shaker
-        shaker = new Shaker();
+        shaker = new Shaker(gameWorldCamera);
 
         // Creates Jumper in the game world
         jumper = new Jumper(this, 0, y);
@@ -71,19 +71,15 @@ public class GameWorld {
     }
 
     private void updateCamera(float deltaTime) {
-        // New game camera position
-        tmp.set(gameWorldCamera.position.x, gameWorldCamera.position.y);
-
         // Update the game camera with correct coordinates after changes
-        shaker.update(deltaTime, gameWorldCamera, tmp);
+        gameWorldCamera.update();
+
+        // Update the shaker
+        shaker.update(deltaTime);
     }
 
-    public void shake(float duration) {
-        shaker.shake(duration);
-    }
-
-    public void shake(float amplitude, float duration) {
-        shaker.shake(amplitude, duration);
+    public Shaker getShaker() {
+        return shaker;
     }
 
     public void render(SpriteBatch batch) {

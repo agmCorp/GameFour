@@ -28,6 +28,10 @@ public class PlayScreen2 extends PlayAbstractScreen {
         worldRenderer = new WorldRenderer(worldController, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
     }
 
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
+
     @Override
     public void show() {
         // Nothing to do here.

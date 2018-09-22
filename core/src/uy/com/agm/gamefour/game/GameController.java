@@ -107,6 +107,9 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (playScreen.isPlayScreenStateRunning()) {
             Gdx.app.debug(TAG, "**** Touch up");
+
+            // todo
+            playScreen.getGameWorld().getShaker().shake(1);
         }
         return true;
     }
