@@ -1,0 +1,54 @@
+   git fetch origin
+   git reset --hard origin/master
+
+   Puedo hacer un git pull, pero capaz lo mejor es hacer:
+   git fetch // trae cambios pero no los aplica
+   git diff // me muestra los cambios
+
+   usar Sourcetree: Reset current branch to this commit
+   Con eso hago un update forzado sobreescribiendo el local con el remoto.
+
+Para crear una nueva rama en gitHub hice:
+En android studio hit/repository/branches/new branch
+El comando git branch develop lo hace local y cuando hago push, automaticamente la crea remota.
+Para cambiar de rama:
+   git checkout master
+   git checkout develop
+
+Para traerme las cosas de una rama:
+   git checkout master
+   git fetch origin
+   git reset --hard origin/master
+
+   git checkout develop
+   git fetch origin
+   git reset --hard origin/develop
+
+Si tengo ramas en gitHub que en la pc local no tengo (porque la cree con otra pc por ejemplo), haciendo
+lo siguiente actualizo localmente las ramas:
+   git fetch
+
+Para ver las ramas local:
+   git branch (el asterisco indica en donde estoy parado)
+
+Para ver el estado:
+   git status
+
+Para FORZAR el contenido de develop en master:
+# Rename master to old-master, develop to master
+$ (develop) git checkout master
+$ (master) git branch -m old-master
+$ (old-master) git checkout develop
+$ (develop) git branch -m master
+
+# Force push develop (now master) into remote master
+$ (master) git push origin master -f
+
+# Change branch names back to original
+$ (master) git branch -m develop
+$ (develop) git checkout old-master
+$ (old-master) git branch -m master
+
+# Sync local master with remote master
+$ (master) git fetch --all
+$ (master) git reset --hard origin/master
