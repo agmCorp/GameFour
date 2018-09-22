@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -39,10 +40,14 @@ public class GameWorld {
         gameWorldCamera = new OrthographicCamera();
         gameWorldViewPort = new ExtendViewport(GameFour.APPLICATION_WIDTH / GameFour.PPM, GameFour.APPLICATION_HEIGHT / GameFour.PPM, gameWorldCamera);
 
+        Gdx.app.debug(TAG, "width e height: " + gameWorldViewPort.getWorldWidth() + " " + gameWorldViewPort.getWorldHeight());
+
         // Places the gameWorldCamera in the middle of the screen
         float x = gameWorldViewPort.getWorldWidth() / 2;
         float y = gameWorldViewPort.getWorldHeight() / 2;
         gameWorldCamera.position.set(x, y, 0);
+
+        Gdx.app.debug(TAG, "x e y: " + x + " " + y);
 
         // Screen shaker
         shaker = new Shaker(gameWorldCamera);
@@ -52,7 +57,7 @@ public class GameWorld {
     }
 
     public void resize(int width, int height) {
-        gameWorldViewPort.update(width, height);
+        gameWorldViewPort.update(width, height, true);
     }
 
     public OrthographicCamera getCamera() {

@@ -31,14 +31,14 @@ public class Jumper extends AbstractGameObject {
 
     @Override
     public void update(float deltaTime) {
-        stateTime += deltaTime;
-        if (stateTime > 3f) {
-            gameWorld.getCamera().position.x = getX();
-            stateTime = 0;
-        }
+//        stateTime += deltaTime;
+//        if (stateTime > 3f) {
+//            gameWorld.getCamera().position.x = getX();
+//            stateTime = 0;
+//        }
 
         float velocity = 0.5f;
-        setPosition(getX() + velocity * deltaTime, getY());
+        gameWorld.getCamera().position.x = gameWorld.getCamera().position.x + velocity * deltaTime;
     }
 
     @Override
