@@ -2,13 +2,11 @@ package uy.com.agm.gamefour.game;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
-import uy.com.agm.gamefour.game.tools.Shaker;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
 
 /**
@@ -24,40 +22,28 @@ public class WorldController implements Disposable {
     private static final int WORLD_VELOCITY_ITERATIONS = 6;
     private static final int WORLD_POSITION_ITERATIONS = 2;
 
-    // Reference to camera and viewport
-    private WorldCamera worldCamera;
-
-    // Temporary GC friendly vector
-    private Vector2 tmp;
+    // Reference to the world
+    private GameWorld gameWorld;
 
     // Box2d variables
     private World box2DWorld;
     private float accumulator;
 
-    // Screen shaker
-    private Shaker shaker;
-
-    public WorldController(WorldCamera worldCamera) {
-        // Reference to camera and viewport
-        this.worldCamera = worldCamera;
-
-        // Temporary GC friendly vector
-        tmp = new Vector2();
+    public WorldController(GameWorld gameWorld) {
+        // Reference to the world
+        this.gameWorld = gameWorld;
 
         // Creates the Box2D world, setting no gravity in x and GRAVITY in y, and allow bodies to sleep
         box2DWorld = new World(new Vector2(0, GRAVITY), true);
 
         // Avoids "sticking to walls" when velocity is less than 1
-        box2DWorld.setVelocityThreshold(0.0f);
+        World.setVelocityThreshold(0.0f);
 
         // Sets accumulator for box2DWorld.step
         accumulator = 0;
 
         // Creates the collision listener
         box2DWorld.setContactListener(new WorldContactListener());
-
-        // Screen shaker
-        shaker = new Shaker();
     }
 
     public void update(float deltaTime) {
@@ -67,11 +53,8 @@ public class WorldController implements Disposable {
         // Step in the physics simulation
         doPhysicsStep(deltaTime);
 
-        // The order is not important
-        updateJumper(deltaTime);
-
-        // Always at the end
-        updateCamera(deltaTime);
+        // Update game world
+        gameWorld.update(deltaTime);
     }
 
     // Key control
@@ -88,17 +71,6 @@ public class WorldController implements Disposable {
             box2DWorld.step(WORLD_TIME_STEP, WORLD_VELOCITY_ITERATIONS, WORLD_POSITION_ITERATIONS);
             accumulator -= WORLD_TIME_STEP;
         }
-    }
-
-    private void updateJumper(float deltaTime) {
-        spri.update(deltaTime);
-    }
-
-    private void updateCamera(float deltaTime) {
-        // Updates camera
-        OrthographicCamera wc = worldCamera.getWorldCamera();
-        tmp.set(wc.position.x, wc.position.y);
-        shaker.update(deltaTime, wc, tmp);
     }
 
     public InputProcessor getInputProcessor(GameController gameController) {
@@ -123,6 +95,10 @@ public class WorldController implements Disposable {
 
     public World getBox2DWorld() {
         return box2DWorld;
+    }
+
+    public GameWorld getGameWorld() {
+        return gameWorld;
     }
 
     @Override

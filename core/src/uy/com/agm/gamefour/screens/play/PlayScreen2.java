@@ -5,10 +5,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import uy.com.agm.gamefour.game.GameController;
 import uy.com.agm.gamefour.game.GameFour;
-import uy.com.agm.gamefour.game.WorldCamera;
+import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.WorldController;
 import uy.com.agm.gamefour.game.WorldRenderer;
-import uy.com.agm.gamefour.game.tools.SpriteCreator;
 
 /**
  * Created by AGMCORP on 21/9/2018.
@@ -17,18 +16,16 @@ import uy.com.agm.gamefour.game.tools.SpriteCreator;
 public class PlayScreen2 extends PlayAbstractScreen {
     private static final String TAG = PlayScreen2.class.getName();
 
-    private WorldCamera worldCamera;
-    private SpriteCreator spriteCreator;
+    private GameWorld gameWorld;
     private WorldController worldController;
     private WorldRenderer worldRenderer;
 
     public PlayScreen2(GameFour game) {
         super(game);
 
-        worldCamera = new WorldCamera();
-        spriteCreator = new SpriteCreator(worldCamera);
-        worldController = new WorldController(worldCamera);
-        worldRenderer = new WorldRenderer(worldCamera, worldController, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
+        gameWorld = new GameWorld();
+        worldController = new WorldController(gameWorld);
+        worldRenderer = new WorldRenderer(worldController, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
     }
 
     @Override
@@ -47,7 +44,7 @@ public class PlayScreen2 extends PlayAbstractScreen {
 
     @Override
     public void resize(int width, int height) {
-        worldCamera.resize(width, height);
+        gameWorld.resize(width, height);
     }
 
     @Override
@@ -68,6 +65,6 @@ public class PlayScreen2 extends PlayAbstractScreen {
 
     @Override
     public Viewport getViewport() {
-        return worldCamera.getWorldViewPort();
+        return gameWorld.getViewPort();
     }
 }

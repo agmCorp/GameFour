@@ -12,14 +12,12 @@ import uy.com.agm.gamefour.screens.AbstractScreen;
  */
 
 public class WorldRenderer {
-    private WorldCamera worldCamera;
     private WorldController worldController;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private Box2DDebugRenderer box2DDebugRenderer;
 
-    public WorldRenderer(WorldCamera worldCamera, WorldController worldController, SpriteBatch batch, ShapeRenderer shapeRenderer, Box2DDebugRenderer box2DDebugRenderer) {
-        this.worldCamera = worldCamera;
+    public WorldRenderer(WorldController worldController, SpriteBatch batch, ShapeRenderer shapeRenderer, Box2DDebugRenderer box2DDebugRenderer) {
         this.worldController = worldController;
         this.batch = batch;
         this.shapeRenderer = shapeRenderer;
@@ -29,42 +27,29 @@ public class WorldRenderer {
     public void render() {
         AbstractScreen.clearScreen();
 
-        // Gets the world camera
-        OrthographicCamera wc = worldCamera.getWorldCamera();
+        // Gets the game world and camera
+        GameWorld gameWorld = worldController.getGameWorld();
+        OrthographicCamera gameWorldCamera = gameWorld.getCamera();
 
         // Sets the batch to now draw what the world camera sees.
-        batch.setProjectionMatrix(wc.combined);
+        batch.setProjectionMatrix(gameWorldCamera.combined);
         batch.begin();
-
-        // This order is important
-        // This determines if a sprite has to be drawn in front or behind another sprite
-        renderJumper(batch);
-
+        gameWorld.render(batch);
         batch.end();
 
         // Render bounding boxes
         if (shapeRenderer != null) {
             // Sets the shapeRenderer to now draw what the gameCamera sees.
-            shapeRenderer.setProjectionMatrix(wc.combined);
+            shapeRenderer.setProjectionMatrix(gameWorldCamera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(1, 1, 0, 1);
-
-            renderDebugJumper(shapeRenderer);
-
+            gameWorld.renderDebug(shapeRenderer);
             shapeRenderer.end();
         }
 
         // Render Box2DDebugLines
         if (box2DDebugRenderer != null) {
-            box2DDebugRenderer.render(worldController.getBox2DWorld(), worldCamera.getWorldCamera().combined);
+            box2DDebugRenderer.render(worldController.getBox2DWorld(), gameWorldCamera.combined);
         }
-    }
-
-    private void renderJumper(SpriteBatch batch) {
-        //jumper.draw(batch);
-    }
-
-    private void renderDebugJumper(ShapeRenderer shapeRenderer) {
-        //jumper.renderDebug(shapeRenderer);
     }
 }
