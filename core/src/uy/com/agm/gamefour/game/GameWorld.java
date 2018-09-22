@@ -81,7 +81,7 @@ public class GameWorld {
     public void render(SpriteBatch batch) {
         // This order is important.
         // This determines if a sprite has to be drawn in front or behind another sprite.
-        jumper.draw(batch);
+        jumper.render(batch);
     }
 
     public void renderDebug(ShapeRenderer shapeRenderer) {

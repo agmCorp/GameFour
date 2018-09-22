@@ -15,4 +15,8 @@ public class AssetSprites {
     public AssetSprites(TextureAtlas atlasSprites) {
         jumper = new AssetJumper(atlasSprites);
     }
+
+    public AssetJumper getJumper() {
+        return jumper;
+    }
 }

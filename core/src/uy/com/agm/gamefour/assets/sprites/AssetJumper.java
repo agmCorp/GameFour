@@ -1,6 +1,7 @@
 package uy.com.agm.gamefour.assets.sprites;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
 /**
@@ -9,11 +10,19 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class AssetJumper {
     private static final String TAG = AssetJumper.class.getName();
+
+    private TextureRegion jumper;
+
     // todo
     public AssetJumper(TextureAtlas atlas) {
-
+        jumper = atlas.findRegion("heroDown", 1);
     }
-/*
+
+    public TextureRegion getJumper() {
+        return jumper;
+    }
+
+    /*
     // Constants (meters = pixels * resizeFactor / PPM)
     public static final float WIDTH_METERS = 127.0f * 0.6f / PlayScreen.PPM;
     public static final float HEIGHT_METERS = 127.0f * 0.6f / PlayScreen.PPM;
