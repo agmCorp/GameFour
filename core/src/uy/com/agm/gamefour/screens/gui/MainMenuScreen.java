@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.screens.gui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -75,9 +74,5 @@ public class MainMenuScreen extends GUIAbstractScreen {
                               }
                           }
         );
-
-        // todo
-        Gdx.app.debug(TAG, "*** width e height viewport en show **: " + viewport.getWorldWidth() + " " + viewport.getWorldHeight());
-        Gdx.app.debug(TAG, "*** width e height stage.getViewport() en show **: " + stage.getViewport().getWorldWidth() + " " + stage.getViewport().getWorldHeight());
     }
 }
