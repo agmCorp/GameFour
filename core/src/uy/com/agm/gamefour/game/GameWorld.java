@@ -40,20 +40,20 @@ public class GameWorld {
         gameWorldCamera = new OrthographicCamera();
         gameWorldViewPort = new ExtendViewport(GameFour.APPLICATION_WIDTH / GameFour.PPM, GameFour.APPLICATION_HEIGHT / GameFour.PPM, gameWorldCamera);
 
-        Gdx.app.debug(TAG, "width e height: " + gameWorldViewPort.getWorldWidth() + " " + gameWorldViewPort.getWorldHeight());
-
-        // Places the gameWorldCamera in the middle of the screen
-        float x = gameWorldViewPort.getWorldWidth() / 2;
-        float y = gameWorldViewPort.getWorldHeight() / 2;
-        gameWorldCamera.position.set(x, y, 0);
-
-        Gdx.app.debug(TAG, "x e y: " + x + " " + y);
+        debugputo("UNO");
 
         // Screen shaker
         shaker = new Shaker(gameWorldCamera);
 
         // Creates Jumper in the game world
+        float x = gameWorldViewPort.getWorldWidth() / 2;
+        float y = gameWorldViewPort.getWorldHeight() / 2;
         jumper = new Jumper(this, 0, y);
+    }
+
+    public void debugputo(String s) {
+        // todo
+        Gdx.app.debug(TAG, s + "*** width e height viewport en GAMEWORLD **: " + gameWorldViewPort.getWorldWidth() + " " + gameWorldViewPort.getWorldHeight());
     }
 
     public void resize(int width, int height) {

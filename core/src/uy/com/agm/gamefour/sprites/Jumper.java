@@ -38,7 +38,7 @@ public class Jumper extends AbstractGameObject {
 //        }
 
         float velocity = 0.5f;
-        gameWorld.getCamera().position.x = gameWorld.getCamera().position.x + velocity * deltaTime;
+        gameWorld.getCamera().position.y = gameWorld.getCamera().position.y + velocity * deltaTime;
     }
 
     @Override
