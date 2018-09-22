@@ -33,11 +33,9 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
         guiScreenState = GUIScreenState.RUNNING;
         guiCamera = new OrthographicCamera();
         guiViewport = new ExtendViewport(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT, guiCamera);
-        stage = new Stage(guiViewport, game.getGuiBatch());
 
-        // todo
-        Gdx.app.debug(TAG, "*** width e height guiViewport en constructor **: " + guiViewport.getWorldWidth() + " " + guiViewport.getWorldHeight());
-        Gdx.app.debug(TAG, "*** width e height stage.getViewport() en constructor **: " + stage.getViewport().getWorldWidth() + " " + stage.getViewport().getWorldHeight());
+        /** Internally calls guiViewport.update() (see {@link uy.com.agm.gamefour.game.GameWorld}) */
+        stage = new Stage(guiViewport, game.getGuiBatch());
     }
 
     @Override

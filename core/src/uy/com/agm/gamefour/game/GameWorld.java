@@ -42,21 +42,19 @@ public class GameWorld {
         gameWorldCamera = new OrthographicCamera();
         gameWorldViewPort = new ExtendViewport(width, height, gameWorldCamera);
 
+        /** WA: Only after update getWorldWidth() and getWorldHeight in ExtendViewport
+         * are defined (see {@link uy.com.agm.gamefour.screens.gui.GUIAbstractScreen}) */
+        gameWorldViewPort.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
         // Screen shaker
         shaker = new Shaker(gameWorldCamera);
 
         // Creates Jumper in the game world
-        jumper = new Jumper(this, 0, height / 2);
-
-        // todo
-        Gdx.app.debug(TAG, "*** width e height gameWorldViewPort en GAMEWORLD constructor **: " + gameWorldViewPort.getWorldWidth() + " " + gameWorldViewPort.getWorldHeight());
+        jumper = new Jumper(this, gameWorldViewPort.getWorldWidth() / 2, 0);
     }
 
     public void resize(int width, int height) {
         gameWorldViewPort.update(width, height, true);
-
-        // todo
-        Gdx.app.debug(TAG, "*** width e height gameWorldViewPort en GAMEWORLD resize **: " + gameWorldViewPort.getWorldWidth() + " " + gameWorldViewPort.getWorldHeight());
     }
 
     public OrthographicCamera getCamera() {

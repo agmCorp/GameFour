@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -41,10 +40,6 @@ public class Jumper extends AbstractGameObject {
         float velocity = 0.5f;
 //        gameWorld.getCamera().position.y = gameWorld.getCamera().position.y + velocity * deltaTime;
         setPosition(getX() + velocity * deltaTime, getY());
-
-        // todo
-        Gdx.app.debug(TAG, "*** width e height gameWorldViewPort en UPDATE DE JUMPER **: " + gameWorld.getViewPort().getWorldWidth() + " " + gameWorld.getViewPort().getWorldHeight());
-
     }
 
     @Override
