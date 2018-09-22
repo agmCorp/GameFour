@@ -37,27 +37,26 @@ public class GameWorld {
 
         // Creates a ExtendViewport to maintain virtual aspect ratio despite screen size
         // We use the convention 100 pixels = 1 meter to work with meters and therefore meters per seconds in velocity and so on.
+        float width = GameFour.APPLICATION_WIDTH / GameFour.PPM;
+        float height = GameFour.APPLICATION_HEIGHT / GameFour.PPM;
         gameWorldCamera = new OrthographicCamera();
-        gameWorldViewPort = new ExtendViewport(GameFour.APPLICATION_WIDTH / GameFour.PPM, GameFour.APPLICATION_HEIGHT / GameFour.PPM, gameWorldCamera);
-
-        debugputo("UNO");
+        gameWorldViewPort = new ExtendViewport(width, height, gameWorldCamera);
 
         // Screen shaker
         shaker = new Shaker(gameWorldCamera);
 
         // Creates Jumper in the game world
-        float x = gameWorldViewPort.getWorldWidth() / 2;
-        float y = gameWorldViewPort.getWorldHeight() / 2;
-        jumper = new Jumper(this, 0, y);
-    }
+        jumper = new Jumper(this, 0, height / 2);
 
-    public void debugputo(String s) {
         // todo
-        Gdx.app.debug(TAG, s + "*** width e height viewport en GAMEWORLD **: " + gameWorldViewPort.getWorldWidth() + " " + gameWorldViewPort.getWorldHeight());
+        Gdx.app.debug(TAG, "*** width e height gameWorldViewPort en GAMEWORLD constructor **: " + gameWorldViewPort.getWorldWidth() + " " + gameWorldViewPort.getWorldHeight());
     }
 
     public void resize(int width, int height) {
         gameWorldViewPort.update(width, height, true);
+
+        // todo
+        Gdx.app.debug(TAG, "*** width e height gameWorldViewPort en GAMEWORLD resize **: " + gameWorldViewPort.getWorldWidth() + " " + gameWorldViewPort.getWorldHeight());
     }
 
     public OrthographicCamera getCamera() {

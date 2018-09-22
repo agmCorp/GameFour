@@ -26,7 +26,6 @@ public class PlayScreen2 extends PlayAbstractScreen {
         gameWorld = new GameWorld();
         worldController = new WorldController(gameWorld);
         worldRenderer = new WorldRenderer(worldController, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
-        gameWorld.debugputo("DOS");
     }
 
     public GameWorld getGameWorld() {
@@ -35,7 +34,6 @@ public class PlayScreen2 extends PlayAbstractScreen {
 
     @Override
     public void show() {
-        gameWorld.debugputo("TRES");
         // Nothing to do here.
     }
 
@@ -44,14 +42,12 @@ public class PlayScreen2 extends PlayAbstractScreen {
         if (isPlayScreenStateRunning()) {
             worldController.update(deltaTime);
         }
-
         worldRenderer.render();
     }
 
     @Override
     public void resize(int width, int height) {
         gameWorld.resize(width, height);
-        gameWorld.debugputo("CUATRO");
     }
 
     @Override

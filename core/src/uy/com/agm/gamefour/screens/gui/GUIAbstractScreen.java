@@ -25,18 +25,18 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     private GUIScreenState guiScreenState;
 
     protected OrthographicCamera guiCamera;
-    protected Viewport viewport;
+    protected Viewport guiViewport;
     protected Stage stage;
 
     public GUIAbstractScreen(GameFour game) {
         super(game);
         guiScreenState = GUIScreenState.RUNNING;
         guiCamera = new OrthographicCamera();
-        viewport = new ExtendViewport(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT, guiCamera);
-        stage = new Stage(viewport, game.getGuiBatch());
+        guiViewport = new ExtendViewport(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT, guiCamera);
+        stage = new Stage(guiViewport, game.getGuiBatch());
 
         // todo
-        Gdx.app.debug(TAG, "*** width e height viewport en constructor **: " + viewport.getWorldWidth() + " " + viewport.getWorldHeight());
+        Gdx.app.debug(TAG, "*** width e height guiViewport en constructor **: " + guiViewport.getWorldWidth() + " " + guiViewport.getWorldHeight());
         Gdx.app.debug(TAG, "*** width e height stage.getViewport() en constructor **: " + stage.getViewport().getWorldWidth() + " " + stage.getViewport().getWorldHeight());
     }
 
