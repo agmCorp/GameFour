@@ -5,13 +5,16 @@ supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 - Hacer el diseño de worldrenderer y de word y todo eso.
 
 PASAR ESTO:
+Para crear una nueva rama en gitHub hice:
+En android studio hit/repository/branches/new branch
+El comando git branch develop lo hace local y cuando hago push, automaticamente la crea remota.
+
 para cambiar de rama:
 git checkout master
-
 git checkout develop
 
 Para traerme las cosas de una rama
-	git checkout master
+   git checkout master
    git fetch origin
    git reset --hard origin/master
 
@@ -19,6 +22,8 @@ Para traerme las cosas de una rama
    git fetch origin
    git reset --hard origin/develop
 
+Si tengo ramas en gitHub que en la pc local no tengo (porque la cree con otra pc por ejemplo), haciendo
+git fetch se actualizan las ramas.
 
 LECCIONES APRENDIDAS
 --------------------
