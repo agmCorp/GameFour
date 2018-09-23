@@ -12,14 +12,15 @@ import uy.com.agm.gamefour.game.GameFour;
 
 public class HtmlLauncher extends GwtApplication {
 
-    // USE THIS CODE FOR A FIXED SIZE APPLICATION
+    // FIXED SIZE APPLICATION
     //    @Override
     //    public GwtApplicationConfiguration getConfig () {
     //            return new GwtApplicationConfiguration(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT);
     //    }
     // END CODE FOR FIXED SIZE APPLICATION
 
-    // LIBGDX provides cfg.log to include a TextArea console, but I prefer to use the console (F12)
+    // LOG CONSOLE
+    // Libgdx provides cfg.log to include a TextArea console, but I prefer to use the console (F12)
     @Override
     public void log(String tag, String message) {
         if (getLogLevel() >= LOG_INFO) {
@@ -61,6 +62,7 @@ public class HtmlLauncher extends GwtApplication {
             consoleLog(tag + ": " + message + "\n" + exception.getMessage());
         }
     }
+    // END CODE FOR LOG CONSOLE
 
     // RESIZABLE APPLICATION
     // PADDING is to avoid scrolling in iframes, set to 20 if you have problems

@@ -49,8 +49,8 @@ public class MainMenuScreen extends GUIAbstractScreen {
         Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
         labelStyleSmall.font = Assets.getInstance().getFonts().getDefaultSmall();
 
-        Label big = new Label("Texto grande", labelStyleBig);
-        Label normal = new Label("Texto normal", labelStyleNormal);
+        Label big = new Label("Platform", labelStyleBig);
+        Label normal = new Label("Game Assets", labelStyleNormal);
         Label small = new Label("Texto chico", labelStyleSmall);
 
         Table table = new Table();
