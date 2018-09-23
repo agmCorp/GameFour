@@ -2,7 +2,6 @@ package uy.com.agm.gamefour.sprites;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.GameWorld;
@@ -37,18 +36,15 @@ public class Jumper extends AbstractGameObject {
 //            stateTime = 0;
 //        }
 
-        float velocity = 0.5f;
+//        float velocity = -3.5f;
+//        gameWorld.getGameCamera().position().x = gameWorld.getGameCamera().position().x + velocity * deltaTime;
+
 //        gameWorld.getCamera().position.y = gameWorld.getCamera().position.y + velocity * deltaTime;
-        setPosition(getX() + velocity * deltaTime, getY());
+        //setPosition(getX() + velocity * deltaTime, getY());
     }
 
     @Override
     public void render(SpriteBatch spriteBatch) {
         draw(spriteBatch);
-    }
-
-    @Override
-    public void renderDebug(ShapeRenderer shapeRenderer) {
-        shapeRenderer.rect(getBoundingRectangle().x, getBoundingRectangle().y, getBoundingRectangle().width, getBoundingRectangle().height);
     }
 }

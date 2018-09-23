@@ -20,7 +20,6 @@ public class GameFour extends DirectedGame {
 
     public static final int APPLICATION_WIDTH = 480;
     public static final int APPLICATION_HEIGHT = 800;
-    public static final float PPM = 100; // Scale (Pixels Per Meter)
     public static final String TITLE = "Game Four";
 
     private SpriteBatch guiBatch;

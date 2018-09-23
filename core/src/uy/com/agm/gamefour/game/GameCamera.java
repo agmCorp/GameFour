@@ -16,6 +16,8 @@ import uy.com.agm.gamefour.game.tools.Shaker;
 public class GameCamera {
     private static final String TAG = GameCamera.class.getName();
 
+    public static final float PPM = 100; // Scale (Pixels Per Meter)
+
     // Game camera and viewport
     private OrthographicCamera gameCamera;
     private Viewport gameViewPort;
@@ -26,8 +28,8 @@ public class GameCamera {
     public GameCamera() {
         // Creates a ExtendViewport to maintain virtual aspect ratio despite screen size
         // We use the convention 100 pixels = 1 meter to work with meters and therefore meters per seconds in velocity and so on.
-        float width = GameFour.APPLICATION_WIDTH / GameFour.PPM;
-        float height = GameFour.APPLICATION_HEIGHT / GameFour.PPM;
+        float width = GameFour.APPLICATION_WIDTH / PPM;
+        float height = GameFour.APPLICATION_HEIGHT / PPM;
         gameCamera = new OrthographicCamera();
         gameViewPort = new ExtendViewport(width, height, gameCamera);
 

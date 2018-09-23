@@ -61,9 +61,9 @@ public class MainMenuScreen extends GUIAbstractScreen {
         table.center();
         table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("mock.png"))));
         table.setFillParent(true);
-//        table.add(big).row();
-//        table.add(normal).row();
-//        table.add(small).row();
+        table.add(big).row();
+        table.add(normal).row();
+        table.add(small).row();
         stage.addActor(table);
 
         table.addListener(new InputListener() {
