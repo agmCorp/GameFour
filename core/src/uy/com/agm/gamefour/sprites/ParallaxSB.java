@@ -12,6 +12,14 @@ import uy.com.agm.gamefour.game.GameCamera;
  * Created by AGM on 9/23/2018.
  */
 
+/*
+LO QUE TENDRIA QUE PENSAR ACA SON DOS COSAS:
+EL SCROLL VERTICAL
+EL AGARRAR EL X INICIAL Y EL Y INICIAL Y PONERLO DE MANERA QUE LA PRIMER TEXTURA QUEDE CENTRADA.
+ASI HAGO TEXTURAS BIEN GRANDES PARA ABARCAR LOS POSIBLES TAMANOS DE PANTALLAS.
+VER DONDE DICE TODO. AHI DEBO CALCULAR EL X E Y CENTRANDO LA TEXTURA, LUEGO SIGUE TODO IGUAL.
+ */
+
 // Scrolling background
 public class ParallaxSB {
     private static final String TAG = ParallaxSB.class.getName();
@@ -25,6 +33,7 @@ public class ParallaxSB {
     }
 
     public void addLayer(Array<TextureRegion> colTextureRegion, boolean horizontalScroll, float velocity) {
+        // TODO
         float x = gameCamera.position().x - gameCamera.getFrustumWidth() / 2;
         float y = gameCamera.position().y - gameCamera.getFrustumHeight() / 2;
 
