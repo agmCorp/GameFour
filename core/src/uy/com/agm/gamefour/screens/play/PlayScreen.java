@@ -1,11 +1,9 @@
 package uy.com.agm.gamefour.screens.play;
 
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import uy.com.agm.gamefour.game.GameController;
 import uy.com.agm.gamefour.game.GameFour;
-import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.WorldController;
 import uy.com.agm.gamefour.game.WorldRenderer;
 
@@ -16,20 +14,22 @@ import uy.com.agm.gamefour.game.WorldRenderer;
 public class PlayScreen extends PlayAbstractScreen {
     private static final String TAG = PlayScreen.class.getName();
 
-    private GameWorld gameWorld;
     private WorldController worldController;
     private WorldRenderer worldRenderer;
 
     public PlayScreen(GameFour game) {
         super(game);
 
-        gameWorld = new GameWorld();
-        worldController = new WorldController(gameWorld);
+        worldController = new WorldController();
         worldRenderer = new WorldRenderer(worldController, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
     }
 
-    public GameWorld getGameWorld() {
-        return gameWorld;
+    public void shakeMe(float duration) {
+        worldController.getGameWorld().getGameCamera().shake(duration);
+    }
+
+    public void shakeMe(float amplitude, float duration) {
+        worldController.getGameWorld().getGameCamera().shake(amplitude, duration);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class PlayScreen extends PlayAbstractScreen {
 
     @Override
     public void resize(int width, int height) {
-        gameWorld.resize(width, height);
+        worldController.getGameWorld().getGameCamera().resize(width, height);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class PlayScreen extends PlayAbstractScreen {
     }
 
     @Override
-    public Viewport getViewport() {
-        return gameWorld.getViewPort();
+    public void applyViewport() {
+        worldController.getGameWorld().getGameCamera().applyViewport();
     }
 }

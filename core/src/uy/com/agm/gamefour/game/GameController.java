@@ -109,7 +109,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
             Gdx.app.debug(TAG, "**** Touch up");
 
             // todo
-            playScreen.getGameWorld().getShaker().shake(1);
+            playScreen.shakeMe(1);
         }
         return true;
     }

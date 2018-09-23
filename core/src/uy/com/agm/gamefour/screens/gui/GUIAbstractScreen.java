@@ -39,8 +39,8 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     }
 
     @Override
-    public Viewport getViewport() {
-        return stage.getViewport();
+    public void applyViewport() {
+        stage.getViewport().apply();
     }
 
     @Override

@@ -1,8 +1,8 @@
 package uy.com.agm.gamefour.game;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 import uy.com.agm.gamefour.screens.AbstractScreen;
@@ -29,12 +29,12 @@ public class WorldRenderer {
     public void render() {
         AbstractScreen.clearScreen();
 
-        // Gets the game world and camera
+        // Gets the game world and the combined projection and view matrix of the game camera
         GameWorld gameWorld = worldController.getGameWorld();
-        OrthographicCamera gameWorldCamera = gameWorld.getCamera();
+        Matrix4 combined = gameWorld.getGameCamera().getCombined();
 
-        // Sets the batch to now draw what the world camera sees.
-        batch.setProjectionMatrix(gameWorldCamera.combined);
+        // Sets the batch to now draw what the game camera sees.
+        batch.setProjectionMatrix(combined);
         batch.begin();
 
         // Render the game world
@@ -44,8 +44,8 @@ public class WorldRenderer {
 
         // Render bounding boxes
         if (shapeRenderer != null) {
-            // Sets the shapeRenderer to now draw what the gameCamera sees.
-            shapeRenderer.setProjectionMatrix(gameWorldCamera.combined);
+            // Sets the shapeRenderer to now draw what the game camera sees.
+            shapeRenderer.setProjectionMatrix(combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(1, 1, 0, 1);
 
@@ -57,7 +57,7 @@ public class WorldRenderer {
 
         // Render Box2DDebugLines
         if (box2DDebugRenderer != null) {
-            box2DDebugRenderer.render(worldController.getBox2DWorld(), gameWorldCamera.combined);
+            box2DDebugRenderer.render(worldController.getBox2DWorld(), combined);
         }
     }
 }

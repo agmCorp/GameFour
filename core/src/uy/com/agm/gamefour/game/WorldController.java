@@ -16,6 +16,9 @@ import uy.com.agm.gamefour.game.tools.WorldContactListener;
 public class WorldController implements Disposable {
     private static final String TAG = WorldController.class.getName();
 
+    // Reference to the game world
+    private GameWorld gameWorld;
+
     // World physics simulation parameters
     private static final float GRAVITY = -9.8f;
     private static final float MAX_FRAME_TIME = 0.25f;
@@ -23,16 +26,13 @@ public class WorldController implements Disposable {
     private static final int WORLD_VELOCITY_ITERATIONS = 6;
     private static final int WORLD_POSITION_ITERATIONS = 2;
 
-    // Reference to the game world
-    private GameWorld gameWorld;
-
     // Box2d variables
     private World box2DWorld;
     private float accumulator;
 
-    public WorldController(GameWorld gameWorld) {
-        // Reference to the game world
-        this.gameWorld = gameWorld;
+    public WorldController() {
+        // Creates out game world
+        gameWorld = new GameWorld();
 
         // Creates the Box2D world, setting no gravity in x and GRAVITY in y, and allow bodies to sleep
         box2DWorld = new World(new Vector2(0, GRAVITY), true);

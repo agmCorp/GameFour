@@ -2,7 +2,6 @@
 - Debo usar una skin
 - me queda la duda de si implemento el dispose en alguna pantalla y hago super.dispose..a cual hide llama? al de la clase derivada o la madre?
 supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
-- Hacer el diseño de worldrenderer y de word y todo eso.
 
 LECCIONES APRENDIDAS
 --------------------

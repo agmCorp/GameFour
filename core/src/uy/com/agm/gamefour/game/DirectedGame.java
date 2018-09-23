@@ -97,14 +97,14 @@ public abstract class DirectedGame implements ApplicationListener {
                 currentFbo.end();
                 // WA: Applies the viewport to the camera and sets the glViewport
                 if (currentScreen != null) {
-                    currentScreen.getViewport().apply();
+                    currentScreen.applyViewport();
                 }
 
                 nextFbo.begin();
                 nextScreen.render(deltaTime);
                 nextFbo.end();
                 // WA: Applies the viewport to the camera and sets the glViewport
-                nextScreen.getViewport().apply();
+                nextScreen.applyViewport();
 
                 // Render transition effect to screen
                 float alpha = transitionTime / duration;
