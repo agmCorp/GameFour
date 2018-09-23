@@ -1,9 +1,12 @@
 package uy.com.agm.gamefour.screens.gui;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.DebugConstants;
@@ -49,17 +52,18 @@ public class MainMenuScreen extends GUIAbstractScreen {
         Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
         labelStyleSmall.font = Assets.getInstance().getFonts().getDefaultSmall();
 
-        Label big = new Label("Platform", labelStyleBig);
+        Label big = new Label("PowerJump", labelStyleBig);
         Label normal = new Label("Game Assets", labelStyleNormal);
         Label small = new Label("Texto chico", labelStyleSmall);
 
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("mock.png"))));
         table.setFillParent(true);
-        table.add(big).row();
-        table.add(normal).row();
-        table.add(small).row();
+//        table.add(big).row();
+//        table.add(normal).row();
+//        table.add(small).row();
         stage.addActor(table);
 
         table.addListener(new InputListener() {
