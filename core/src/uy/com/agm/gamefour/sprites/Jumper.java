@@ -22,7 +22,7 @@ public class Jumper extends AbstractGameObject {
 
         // Sets initial values for location, width and height and initial frame as jumperStand.
         jumperStand = Assets.getInstance().getSprites().getJumper().getJumper();
-        setBounds(x, y, 0.762f, 0.762f);
+        setBounds(0, 0, 0.762f, 0.762f);
         setRegion(jumperStand);
 
         stateTime = 0;

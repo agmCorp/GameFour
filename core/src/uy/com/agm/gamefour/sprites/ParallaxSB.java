@@ -35,10 +35,8 @@ public class ParallaxSB {
     }
 
     public void addLayer(Array<TextureRegion> colTextureRegion, boolean horizontalScroll, float velocity) {
-        // Centers the first texture
-        TextureRegion first = colTextureRegion.first();
-        float x = gameCamera.position().x - ( first.getRegionWidth() / GameCamera.PPM ) / 2;
-        float y = gameCamera.position().y - ( first.getRegionHeight() / GameCamera.PPM ) / 2;
+        float x = 0;
+        float y = 0;
 
         Array<BackgroundObject> colBgObject = new Array<BackgroundObject>(colTextureRegion.size);
         BackgroundObject backgroundObject;
@@ -56,6 +54,7 @@ public class ParallaxSB {
     }
 
     public void update(float deltaTime) {
+        // TODO, ACA ESTA LO JODIDO, esto deberian ser las medidas de la pantalla.
         float frustumWidth = gameCamera.getFrustumWidth();
         float frustumHeight = gameCamera.getFrustumHeight();
         float gameCamLeft = gameCamera.position().x - frustumWidth / 2;
