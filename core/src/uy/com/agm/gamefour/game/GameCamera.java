@@ -34,7 +34,8 @@ public class GameCamera {
         gameViewPort = new ExtendViewport(width, height, gameCamera);
 
         /** WA: Only after update getWorldWidth() and getWorldHeight in ExtendViewport
-         * are defined (see {@link uy.com.agm.gamefour.screens.gui.GUIAbstractScreen}) */
+         * are defined (see {@link uy.com.agm.gamefour.screens.gui.GUIAbstractScreen})
+         * This is the same as this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) */
         gameViewPort.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         // Screen shaker

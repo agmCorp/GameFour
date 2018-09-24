@@ -34,7 +34,8 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
         guiCamera = new OrthographicCamera();
         guiViewport = new ExtendViewport(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT, guiCamera);
 
-        /** Internally calls guiViewport.update() (see {@link uy.com.agm.gamefour.game.GameWorld}) */
+        /** Internally calls guiViewport.update() (see {@link uy.com.agm.gamefour.game.GameWorld} and
+         * this.resize(int width, int height)) */
         stage = new Stage(guiViewport, game.getGuiBatch());
     }
 
