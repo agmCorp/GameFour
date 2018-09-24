@@ -12,6 +12,12 @@ import uy.com.agm.gamefour.game.GameCamera;
  * Created by AGM on 9/23/2018.
  */
 
+/*
+ver el tema del resize, creo que en el addlayer no tengo las dimenesiones de la pantalla bien establecidas.
+ver el direct game e inventar un nuevo metodo abstracto que luego del resize se invoque en directgame, asi me aseguro que esta todo bien
+modificar la splash y todo.
+ */
+
 // Scrolling background
 public class ParallaxSB {
     private static final String TAG = ParallaxSB.class.getName();
@@ -51,6 +57,20 @@ public class ParallaxSB {
         }
         Layer layer = new Layer(colBgObject, horizontalScroll, velocity);
         layers.add(layer);
+
+        float frustumWidth = gameCamera.getFrustumWidth();
+        float frustumHeight = gameCamera.getFrustumHeight();
+        float gameCamLeft = gameCamera.position().x - frustumWidth / 2;
+        float gameCamRight = gameCamera.position().x + frustumWidth / 2;
+        float gameCamBottom = gameCamera.position().y - frustumHeight / 2;
+        float gameCamTop = gameCamera.position().y + frustumHeight / 2;
+        Gdx.app.debug(TAG, "****** COMIENZO LOGUEOS 1*****");
+        Gdx.app.debug(TAG, "****** ancho del mundo " + frustumWidth);
+        Gdx.app.debug(TAG, "****** alto del mundo " + frustumHeight);
+        Gdx.app.debug(TAG, "****** camara left (debe ser cero) " + gameCamLeft);
+        Gdx.app.debug(TAG, "****** camara right " + gameCamRight);
+        Gdx.app.debug(TAG, "****** camara bottom (debe ser cero) " + gameCamBottom);
+        Gdx.app.debug(TAG, "****** camara top  " + gameCamTop);
     }
 
     public void update(float deltaTime) {
@@ -62,9 +82,9 @@ public class ParallaxSB {
         float gameCamBottom = gameCamera.position().y - frustumHeight / 2;
         float gameCamTop = gameCamera.position().y + frustumHeight / 2;
 
-        Gdx.app.debug(TAG, "****** COMIENZO LOGUEOS *****");
+        Gdx.app.debug(TAG, "****** COMIENZO LOGUEOS 2*****");
         Gdx.app.debug(TAG, "****** ancho del mundo " + frustumWidth);
-        Gdx.app.debug(TAG, "****** alto del mundo " + frustumWidth);
+        Gdx.app.debug(TAG, "****** alto del mundo " + frustumHeight);
         Gdx.app.debug(TAG, "****** camara left (debe ser cero) " + gameCamLeft);
         Gdx.app.debug(TAG, "****** camara right " + gameCamRight);
         Gdx.app.debug(TAG, "****** camara bottom (debe ser cero) " + gameCamBottom);
@@ -100,6 +120,8 @@ public class ParallaxSB {
 
         public void update(float gameCamLeft, float gameCamRight, float gameCamBottom, float gameCamTop, float deltaTime) {
             for (BackgroundObject backgroundObject : colBgObject) {
+
+                // todo aca creo deberia llamar al update de background object!!!!
                 if (horizontalScroll) {
                     backgroundObject.setPosition(backgroundObject.getX() + velocity * deltaTime, backgroundObject.getY());
                 } else {
@@ -130,6 +152,7 @@ public class ParallaxSB {
             }
         }
 
+        // esto esta todo mal porque el gusano crece hacia arriba cuando lo cree.
         private void updateVertical(float gameCamBottom, float gameCamTop) {
             if (velocity < 0) { // Layer is moving down
                 BackgroundObject bgFirst = colBgObject.first();
@@ -146,6 +169,7 @@ public class ParallaxSB {
             }
         }
 
+        // todo estas funciones deberian considerar si la coleccion no es vacia
         private void addHLast(BackgroundObject backgroundObject) {
             BackgroundObject bgLast = colBgObject.get(colBgObject.size - 1);
             backgroundObject.setPosition(bgLast.getX() + bgLast.getWidth(), bgLast.getY());
