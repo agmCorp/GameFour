@@ -12,7 +12,7 @@ public class DebugConstants {
     public static final boolean DEBUG_MODE = true && TURN_ON_DEBUG;
 
     // Boxes around sprites, box2d bodies and scene2d tables
-    public static final boolean DEBUG_LINES = false && TURN_ON_DEBUG;
+    public static final boolean DEBUG_LINES = true && TURN_ON_DEBUG;
 
     // Shows/hides background image
     public static final boolean HIDE_BACKGROUND = false && TURN_ON_DEBUG;

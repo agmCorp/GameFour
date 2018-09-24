@@ -12,11 +12,6 @@ import uy.com.agm.gamefour.game.GameCamera;
  * Created by AGM on 9/23/2018.
  */
 
-/*
-LO QUE TENDRIA QUE PENSAR es:
-EL SCROLL VERTICAL
- */
-
 // Scrolling background
 public class ParallaxSB {
     private static final String TAG = ParallaxSB.class.getName();
@@ -106,26 +101,38 @@ public class ParallaxSB {
             }
 
             if (horizontalScroll) {
-                if (velocity < 0) { // Layer is moving left
-                    BackgroundObject bgFirst = colBgObject.first();
-                    if (gameCamLeft > bgFirst.getX() + bgFirst.getWidth()) {
-                        addHLast(colBgObject.removeIndex(0));
-                    }
-                } else { // Layer is moving right
+                    updateHorizontal(gameCamLeft, gameCamRight);
+            } else {
+                updateVertical(gameCamBottom, gameCamTop);
+            }
+        }
+
+        private void updateHorizontal(float gameCamLeft, float gameCamRight) {
+            if (velocity < 0) { // Layer is moving left
+                BackgroundObject bgFirst = colBgObject.first();
+                if (gameCamLeft > bgFirst.getX() + bgFirst.getWidth()) {
+                    addHLast(colBgObject.removeIndex(0));
+                }
+            } else {
+                if (velocity > 0) { // Layer is moving right
                     BackgroundObject bgLast = colBgObject.peek();
                     if (gameCamRight < bgLast.getX()) {
                         addHFirst(colBgObject.pop());
                     }
                 }
+            }
+        }
+
+        private void updateVertical(float gameCamBottom, float gameCamTop) {
+            if (velocity < 0) { // Layer is moving down
+                BackgroundObject bgFirst = colBgObject.first();
+                if (gameCamTop > bgFirst.getY() + bgFirst.getHeight()) {
+                    addVFirst(colBgObject.pop());
+                }
             } else {
-                if (velocity < 0) { // Layer is moving down
+                if (velocity > 0) { // Layer is moving up
                     BackgroundObject bgLast = colBgObject.peek();
-                    if (gameCamTop < bgLast.getY() + bgLast.getHeight()) {
-                        addVFirst(colBgObject.pop());
-                    }
-                } else { // Layer is moving up
-                    BackgroundObject bgFirst = colBgObject.first();
-                    if (gameCamBottom < bgFirst.getY()) {
+                    if (gameCamBottom < bgLast.getY()) {
                         addVLast(colBgObject.removeIndex(0));
                     }
                 }
