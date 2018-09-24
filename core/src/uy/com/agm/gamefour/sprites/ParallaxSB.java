@@ -51,6 +51,7 @@ public class ParallaxSB {
     }
 
     public void addLayer(Array<TextureRegion> colTextureRegion, boolean horizontalScroll, float velocity) {
+        // TODO ESTO NO FUNCIONA PARA TAMAÑOS DISTINTOS!!
         Vector3 gameCamPos = gameCamera.position();
         TextureRegion bgFirst = colTextureRegion.first();
         float x = gameCamPos.x - ( bgFirst.getRegionWidth() / GameCamera.PPM ) / 2;

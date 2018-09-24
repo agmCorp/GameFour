@@ -29,8 +29,8 @@ public class GameWorld {
         parallaxSB = new ParallaxSB(gameCamera);
         Array<TextureRegion> colTextureRegion = new Array<TextureRegion>();
 
-        boolean horizontal = true;
-        float signo = 1;
+        boolean horizontal = false;
+        float signo = -1;
 
         if (horizontal) {
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer11.png")), 1, horizontal, signo * 0.0f); // background
