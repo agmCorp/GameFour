@@ -62,6 +62,14 @@ public class ParallaxSB {
         float gameCamBottom = gameCamera.position().y - frustumHeight / 2;
         float gameCamTop = gameCamera.position().y + frustumHeight / 2;
 
+        Gdx.app.debug(TAG, "****** COMIENZO LOGUEOS *****");
+        Gdx.app.debug(TAG, "****** ancho del mundo " + frustumWidth);
+        Gdx.app.debug(TAG, "****** alto del mundo " + frustumWidth);
+        Gdx.app.debug(TAG, "****** camara left (debe ser cero) " + gameCamLeft);
+        Gdx.app.debug(TAG, "****** camara right " + gameCamRight);
+        Gdx.app.debug(TAG, "****** camara bottom (debe ser cero) " + gameCamBottom);
+        Gdx.app.debug(TAG, "****** camara top  " + gameCamTop);
+
         for (Layer layer : layers) {
             layer.update(gameCamLeft, gameCamRight, gameCamBottom, gameCamTop, deltaTime);
         }
