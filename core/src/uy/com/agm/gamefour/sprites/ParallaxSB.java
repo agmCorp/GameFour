@@ -12,6 +12,22 @@ import uy.com.agm.gamefour.game.GameCamera;
  * Created by AGM on 9/23/2018.
  */
 
+//        TODO
+//        float frustumWidth = gameCamera.getWorldWidth();
+//        float frustumHeight = gameCamera.getWorldHeight();
+//        float gameCamLeft = gameCamera.position().x - frustumWidth / 2;
+//        float gameCamRight = gameCamera.position().x + frustumWidth / 2;
+//        float gameCamBottom = gameCamera.position().y - frustumHeight / 2;
+//        float gameCamTop = gameCamera.position().y + frustumHeight / 2;
+//        Gdx.app.debug(TAG, "****** COMIENZO LOGUEOS 1*****");
+//        Gdx.app.debug(TAG, "****** ancho del mundo " + frustumWidth);
+//        Gdx.app.debug(TAG, "****** alto del mundo " + frustumHeight);
+//        Gdx.app.debug(TAG, "****** camara left (debe ser cero) " + gameCamLeft);
+//        Gdx.app.debug(TAG, "****** camara right " + gameCamRight);
+//        Gdx.app.debug(TAG, "****** camara bottom (debe ser cero) " + gameCamBottom);
+//        Gdx.app.debug(TAG, "****** camara top  " + gameCamTop);
+
+
 // Scrolling background
 public class ParallaxSB {
     private static final String TAG = ParallaxSB.class.getName();
@@ -40,34 +56,28 @@ public class ParallaxSB {
         float x = gameCamPos.x - ( bgFirst.getRegionWidth() / GameCamera.PPM ) / 2;
         float y = gameCamPos.y - ( bgFirst.getRegionHeight() / GameCamera.PPM ) / 2;
 
+        // IMPORTANT: We set up the grow direction of colBgObject at our convenience.
         Array<BackgroundObject> colBgObject = new Array<BackgroundObject>(colTextureRegion.size);
         BackgroundObject backgroundObject;
         for (TextureRegion textureRegion : colTextureRegion) {
             backgroundObject = new BackgroundObject(textureRegion, x, y, horizontalScroll, velocity);
             if (horizontalScroll) {
-                x += textureRegion.getRegionWidth() / GameCamera.PPM; // Grows to the right
+                if (velocity < 0) {
+                    x += textureRegion.getRegionWidth() / GameCamera.PPM; // Grows to the right
+                } else {
+                    x -= textureRegion.getRegionWidth() / GameCamera.PPM; // Grows to the left
+                }
             } else {
-                y += textureRegion.getRegionHeight() / GameCamera.PPM; // Grows up
+                if (velocity < 0) {
+                    y += textureRegion.getRegionHeight() / GameCamera.PPM; // Grows up
+                } else {
+                    y -= textureRegion.getRegionHeight() / GameCamera.PPM; // Grows down
+                }
             }
             colBgObject.add(backgroundObject);
         }
         Layer layer = new Layer(colBgObject, horizontalScroll, velocity);
         layers.add(layer);
-
-//        TODO
-//        float frustumWidth = gameCamera.getWorldWidth();
-//        float frustumHeight = gameCamera.getWorldHeight();
-//        float gameCamLeft = gameCamera.position().x - frustumWidth / 2;
-//        float gameCamRight = gameCamera.position().x + frustumWidth / 2;
-//        float gameCamBottom = gameCamera.position().y - frustumHeight / 2;
-//        float gameCamTop = gameCamera.position().y + frustumHeight / 2;
-//        Gdx.app.debug(TAG, "****** COMIENZO LOGUEOS 1*****");
-//        Gdx.app.debug(TAG, "****** ancho del mundo " + frustumWidth);
-//        Gdx.app.debug(TAG, "****** alto del mundo " + frustumHeight);
-//        Gdx.app.debug(TAG, "****** camara left (debe ser cero) " + gameCamLeft);
-//        Gdx.app.debug(TAG, "****** camara right " + gameCamRight);
-//        Gdx.app.debug(TAG, "****** camara bottom (debe ser cero) " + gameCamBottom);
-//        Gdx.app.debug(TAG, "****** camara top  " + gameCamTop);
     }
 
     public void update(float deltaTime) {
@@ -119,62 +129,54 @@ public class ParallaxSB {
         }
 
         private void updateHorizontal(float gameCamLeft, float gameCamRight) {
+            BackgroundObject bgHead;
+            BackgroundObject bgTail;
+
             if (velocity < 0) { // Layer is moving left
                 BackgroundObject bgFirst = colBgObject.first();
                 if (gameCamLeft > bgFirst.getX() + bgFirst.getWidth()) {
-                    addHLast(colBgObject.removeIndex(0));
+                    bgHead = colBgObject.removeIndex(0);
+                    bgTail = colBgObject.get(colBgObject.size - 1);
+                    bgHead.setPosition(bgTail.getX() + bgTail.getWidth(), bgTail.getY());
+                    colBgObject.add(bgHead);
                 }
             } else {
                 if (velocity > 0) { // Layer is moving right
-                    BackgroundObject bgLast = colBgObject.peek();
-                    if (gameCamRight < bgLast.getX()) {
-                        addHFirst(colBgObject.pop());
+                    BackgroundObject bgFirst = colBgObject.first();
+                    if (gameCamRight < bgFirst.getX()) {
+                        bgHead = colBgObject.removeIndex(0);
+                        bgTail = colBgObject.get(colBgObject.size - 1);
+                        bgHead.setPosition(bgTail.getX() - bgHead.getWidth(), bgTail.getY());
+                        colBgObject.add(bgHead);
                     }
                 }
             }
         }
 
         private void updateVertical(float gameCamBottom, float gameCamTop) {
+            BackgroundObject bgHead;
+            BackgroundObject bgTail;
+
             if (velocity < 0) { // Layer is moving down
-                BackgroundObject bgLast = colBgObject.peek();
-                if (gameCamBottom > bgLast.getY() + bgLast.getHeight()) {
-                    addVFirst(colBgObject.pop());
+                BackgroundObject bgFirst = colBgObject.first();
+                if (gameCamBottom > bgFirst.getY() + bgFirst.getHeight()) {
+                    bgHead = colBgObject.removeIndex(0);
+                    bgTail = colBgObject.get(colBgObject.size - 1);
+                    bgHead.setPosition(bgTail.getX(), bgTail.getY() + bgTail.getHeight());
+                    colBgObject.add(bgHead);
                 }
             } else {
                 if (velocity > 0) { // Layer is moving up
                     BackgroundObject bgFirst = colBgObject.first();
                     if (gameCamTop < bgFirst.getY()) {
-                        addVLast(colBgObject.removeIndex(0));
+                        bgHead = colBgObject.removeIndex(0);
+                        bgTail = colBgObject.get(colBgObject.size - 1);
+                        bgHead.setPosition(bgTail.getX(), bgTail.getY() - bgHead.getHeight());
+                        colBgObject.add(bgHead);
                     }
                 }
             }
         }
-
-        // todo estas funciones deberian considerar si la coleccion no es vacia, para mi habría que asumir que tienen 2 o más elementos.
-        private void addHLast(BackgroundObject backgroundObject) {
-            BackgroundObject bgLast = colBgObject.get(colBgObject.size - 1);
-            backgroundObject.setPosition(bgLast.getX() + bgLast.getWidth(), bgLast.getY());
-            colBgObject.add(backgroundObject);
-        }
-
-        private void addVLast(BackgroundObject backgroundObject) {
-            BackgroundObject bgLast = colBgObject.get(colBgObject.size - 1);
-            backgroundObject.setPosition(bgLast.getX(), bgLast.getY() - backgroundObject.getHeight());
-            colBgObject.add(backgroundObject);
-        }
-
-        private void addHFirst(BackgroundObject backgroundObject) {
-            BackgroundObject bgFirst = colBgObject.first();
-            backgroundObject.setPosition(bgFirst.getX() - backgroundObject.getWidth(), bgFirst.getY());
-            colBgObject.insert(0, backgroundObject);
-        }
-
-        private void addVFirst(BackgroundObject backgroundObject) {
-            BackgroundObject bgFirst = colBgObject.first();
-            backgroundObject.setPosition(bgFirst.getX(), bgFirst.getY() +  bgFirst.getHeight());
-            colBgObject.insert(0, backgroundObject);
-        }
-        // fin todo estas funciones deberian considerar si la coleccion no es vacia
 
         public void render(SpriteBatch spriteBatch) {
             for (BackgroundObject backgroundObject : colBgObject) {

@@ -29,36 +29,26 @@ public class GameWorld {
         parallaxSB = new ParallaxSB(gameCamera);
         Array<TextureRegion> colTextureRegion = new Array<TextureRegion>();
 
-        boolean horizontal = false;
+        boolean horizontal = true;
         float signo = 1;
 
         if (horizontal) {
-            parallaxSB.addLayer(new TextureRegion(new Texture("Layer11.png")), 1, horizontal, signo * 0.0f); // background
-            parallaxSB.addLayer(new TextureRegion(new Texture("Layer12.png")), 1, horizontal, signo * 0.0f); // chol
-            parallaxSB.addLayer(new TextureRegion(new Texture("Layer10.png")), 1, horizontal, signo * 0.0f); // estrellas
-            parallaxSB.addLayer(new TextureRegion(new Texture("Layer8.png")), 2, horizontal, signo * 4.0f); // nubes 1
-            parallaxSB.addLayer(new TextureRegion(new Texture("Layer7.png")), 2, horizontal, signo * 5.0f); // nubes 2
-            parallaxSB.addLayer(new TextureRegion(new Texture("Layer5.png")), 2, horizontal, signo * 7.0f); // montanas mas distantes
-            parallaxSB.addLayer(new TextureRegion(new Texture("Layer4.png")), 2, horizontal, signo * 8.0f);
-            parallaxSB.addLayer(new TextureRegion(new Texture("Layer3.png")), 2, horizontal, signo * 9.0f);
-            parallaxSB.addLayer(new TextureRegion(new Texture("Layer2.png")), 2, horizontal, signo * 10.0f);
-            parallaxSB.addLayer(new TextureRegion(new Texture("Layer1.png")), 2, horizontal, signo * 11.0f);
+//            parallaxSB.addLayer(new TextureRegion(new Texture("Layer11.png")), 1, horizontal, signo * 0.0f); // background
+//            parallaxSB.addLayer(new TextureRegion(new Texture("Layer12.png")), 1, horizontal, signo * 0.0f); // chol
+//            parallaxSB.addLayer(new TextureRegion(new Texture("Layer10.png")), 1, horizontal, signo * 0.0f); // estrellas
+//            parallaxSB.addLayer(new TextureRegion(new Texture("Layer8.png")), 2, horizontal, signo * 4.0f); // nubes 1
+//            parallaxSB.addLayer(new TextureRegion(new Texture("Layer7.png")), 2, horizontal, signo * 5.0f); // nubes 2
+//            parallaxSB.addLayer(new TextureRegion(new Texture("Layer5.png")), 2, horizontal, signo * 7.0f); // montanas mas distantes
+//            parallaxSB.addLayer(new TextureRegion(new Texture("Layer4.png")), 2, horizontal, signo * 8.0f);
+//            parallaxSB.addLayer(new TextureRegion(new Texture("Layer3.png")), 2, horizontal, signo * 9.0f);
+//            parallaxSB.addLayer(new TextureRegion(new Texture("Layer2.png")), 2, horizontal, signo * 10.0f);
+//            parallaxSB.addLayer(new TextureRegion(new Texture("Layer1.png")), 2, horizontal, signo * 11.0f);
+
+            colTextureRegion.clear();
+            colTextureRegion.add(new TextureRegion(new Texture("TEST1.png")));
+            colTextureRegion.add(new TextureRegion(new Texture("TEST2.png")));
+            parallaxSB.addLayer(colTextureRegion, horizontal, signo * 2);
         } else {
-            // TODO
-            // SI HAY UNA IMAGEN SOLA DA ARRAY EMPY, DEBERIA FUNCIONAR CON 1 IMAGEN SOLA EN MOVIMIENTO.
-            // CONCLUSION, NO DEBO USAR LAS DIMENSIONES DE LA CAMARA, SINO LAS DIMENSIONES DEL MUNDO.
-            // YO SE QUE SI PONGO 00 ESTOY EN EL VERTICE DE ABAJO, NO SE EL TOP, ESO DEPENDE DE LA PANTALLA
-            // ES PROBABLE QUE ESTE MAS ALTO QUE EL FRUSTUMTOP.
-            parallaxSB.addLayer(new TextureRegion(new Texture("rotaLayer11.png")), 2, horizontal, signo * 2.0f); // background
-//            parallaxSB.addLayer(new TextureRegion(new Texture("rotaLayer12.png")), 1, horizontal, signo * 0.0f); // chol
-//            parallaxSB.addLayer(new TextureRegion(new Texture("rotaLayer10.png")), 1, horizontal, signo * 0.0f); // estrellas
-//            parallaxSB.addLayer(new TextureRegion(new Texture("rotaLayer8.png")), 2, horizontal, signo * 4.0f); // nubes 1
-//            parallaxSB.addLayer(new TextureRegion(new Texture("rotaLayer7.png")), 2, horizontal, signo * 5.0f); // nubes 2
-//            parallaxSB.addLayer(new TextureRegion(new Texture("rotaLayer5.png")), 2, horizontal, signo * 7.0f); // montanas mas distantes
-//            parallaxSB.addLayer(new TextureRegion(new Texture("rotaLayer4.png")), 2, horizontal, signo * 8.0f);
-//            parallaxSB.addLayer(new TextureRegion(new Texture("rotaLayer3.png")), 2, horizontal, signo * 9.0f);
-//            parallaxSB.addLayer(new TextureRegion(new Texture("rotaLayer2.png")), 2, horizontal, signo * 10.0f);
-//            parallaxSB.addLayer(new TextureRegion(new Texture("rotaLayer1.png")), 2, horizontal, signo * 11.0f);
         }
 
         // Creates Jumper in the game world
