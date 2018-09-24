@@ -1,21 +1,15 @@
 package uy.com.agm.gamefour.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 import uy.com.agm.gamefour.game.GameCamera;
 
 /**
  * Created by AGM on 9/23/2018.
- */
-
-/*
-ver el tema del resize, creo que en el addlayer no tengo las dimenesiones de la pantalla bien establecidas.
-ver el direct game e inventar un nuevo metodo abstracto que luego del resize se invoque en directgame, asi me aseguro que esta todo bien
-modificar la splash y todo.
  */
 
 // Scrolling background
@@ -41,54 +35,48 @@ public class ParallaxSB {
     }
 
     public void addLayer(Array<TextureRegion> colTextureRegion, boolean horizontalScroll, float velocity) {
-        float x = 0;
-        float y = 0;
+        Vector3 gameCamPos = gameCamera.position();
+        TextureRegion bgFirst = colTextureRegion.first();
+        float x = gameCamPos.x - ( bgFirst.getRegionWidth() / GameCamera.PPM ) / 2;
+        float y = gameCamPos.y - ( bgFirst.getRegionHeight() / GameCamera.PPM ) / 2;
 
         Array<BackgroundObject> colBgObject = new Array<BackgroundObject>(colTextureRegion.size);
         BackgroundObject backgroundObject;
         for (TextureRegion textureRegion : colTextureRegion) {
             backgroundObject = new BackgroundObject(textureRegion, x, y, horizontalScroll, velocity);
             if (horizontalScroll) {
-                x += textureRegion.getRegionWidth() / GameCamera.PPM;
+                x += textureRegion.getRegionWidth() / GameCamera.PPM; // Grows to the right
             } else {
-                y += textureRegion.getRegionHeight() / GameCamera.PPM;
+                y += textureRegion.getRegionHeight() / GameCamera.PPM; // Grows up
             }
             colBgObject.add(backgroundObject);
         }
         Layer layer = new Layer(colBgObject, horizontalScroll, velocity);
         layers.add(layer);
 
-        float frustumWidth = gameCamera.getFrustumWidth();
-        float frustumHeight = gameCamera.getFrustumHeight();
-        float gameCamLeft = gameCamera.position().x - frustumWidth / 2;
-        float gameCamRight = gameCamera.position().x + frustumWidth / 2;
-        float gameCamBottom = gameCamera.position().y - frustumHeight / 2;
-        float gameCamTop = gameCamera.position().y + frustumHeight / 2;
-        Gdx.app.debug(TAG, "****** COMIENZO LOGUEOS 1*****");
-        Gdx.app.debug(TAG, "****** ancho del mundo " + frustumWidth);
-        Gdx.app.debug(TAG, "****** alto del mundo " + frustumHeight);
-        Gdx.app.debug(TAG, "****** camara left (debe ser cero) " + gameCamLeft);
-        Gdx.app.debug(TAG, "****** camara right " + gameCamRight);
-        Gdx.app.debug(TAG, "****** camara bottom (debe ser cero) " + gameCamBottom);
-        Gdx.app.debug(TAG, "****** camara top  " + gameCamTop);
+//        TODO
+//        float frustumWidth = gameCamera.getWorldWidth();
+//        float frustumHeight = gameCamera.getWorldHeight();
+//        float gameCamLeft = gameCamera.position().x - frustumWidth / 2;
+//        float gameCamRight = gameCamera.position().x + frustumWidth / 2;
+//        float gameCamBottom = gameCamera.position().y - frustumHeight / 2;
+//        float gameCamTop = gameCamera.position().y + frustumHeight / 2;
+//        Gdx.app.debug(TAG, "****** COMIENZO LOGUEOS 1*****");
+//        Gdx.app.debug(TAG, "****** ancho del mundo " + frustumWidth);
+//        Gdx.app.debug(TAG, "****** alto del mundo " + frustumHeight);
+//        Gdx.app.debug(TAG, "****** camara left (debe ser cero) " + gameCamLeft);
+//        Gdx.app.debug(TAG, "****** camara right " + gameCamRight);
+//        Gdx.app.debug(TAG, "****** camara bottom (debe ser cero) " + gameCamBottom);
+//        Gdx.app.debug(TAG, "****** camara top  " + gameCamTop);
     }
 
     public void update(float deltaTime) {
-        // TODO, ACA ESTA LO JODIDO, esto deberian ser las medidas de la pantalla.
-        float frustumWidth = gameCamera.getFrustumWidth();
-        float frustumHeight = gameCamera.getFrustumHeight();
-        float gameCamLeft = gameCamera.position().x - frustumWidth / 2;
-        float gameCamRight = gameCamera.position().x + frustumWidth / 2;
-        float gameCamBottom = gameCamera.position().y - frustumHeight / 2;
-        float gameCamTop = gameCamera.position().y + frustumHeight / 2;
-
-        Gdx.app.debug(TAG, "****** COMIENZO LOGUEOS 2*****");
-        Gdx.app.debug(TAG, "****** ancho del mundo " + frustumWidth);
-        Gdx.app.debug(TAG, "****** alto del mundo " + frustumHeight);
-        Gdx.app.debug(TAG, "****** camara left (debe ser cero) " + gameCamLeft);
-        Gdx.app.debug(TAG, "****** camara right " + gameCamRight);
-        Gdx.app.debug(TAG, "****** camara bottom (debe ser cero) " + gameCamBottom);
-        Gdx.app.debug(TAG, "****** camara top  " + gameCamTop);
+        float worldWidth = gameCamera.getWorldWidth();
+        float worldHeight = gameCamera.getWorldHeight();
+        float gameCamLeft = gameCamera.position().x - worldWidth / 2;
+        float gameCamRight = gameCamera.position().x + worldWidth / 2;
+        float gameCamBottom = gameCamera.position().y - worldHeight / 2;
+        float gameCamTop = gameCamera.position().y + worldHeight / 2;
 
         for (Layer layer : layers) {
             layer.update(gameCamLeft, gameCamRight, gameCamBottom, gameCamTop, deltaTime);
@@ -120,13 +108,7 @@ public class ParallaxSB {
 
         public void update(float gameCamLeft, float gameCamRight, float gameCamBottom, float gameCamTop, float deltaTime) {
             for (BackgroundObject backgroundObject : colBgObject) {
-
-                // todo aca creo deberia llamar al update de background object!!!!
-                if (horizontalScroll) {
-                    backgroundObject.setPosition(backgroundObject.getX() + velocity * deltaTime, backgroundObject.getY());
-                } else {
-                    backgroundObject.setPosition(backgroundObject.getX(), backgroundObject.getY() + velocity * deltaTime);
-                }
+                backgroundObject.update(deltaTime);
             }
 
             if (horizontalScroll) {
@@ -152,24 +134,23 @@ public class ParallaxSB {
             }
         }
 
-        // esto esta todo mal porque el gusano crece hacia arriba cuando lo cree.
         private void updateVertical(float gameCamBottom, float gameCamTop) {
             if (velocity < 0) { // Layer is moving down
-                BackgroundObject bgFirst = colBgObject.first();
-                if (gameCamTop > bgFirst.getY() + bgFirst.getHeight()) {
+                BackgroundObject bgLast = colBgObject.peek();
+                if (gameCamBottom > bgLast.getY() + bgLast.getHeight()) {
                     addVFirst(colBgObject.pop());
                 }
             } else {
                 if (velocity > 0) { // Layer is moving up
-                    BackgroundObject bgLast = colBgObject.peek();
-                    if (gameCamBottom < bgLast.getY()) {
+                    BackgroundObject bgFirst = colBgObject.first();
+                    if (gameCamTop < bgFirst.getY()) {
                         addVLast(colBgObject.removeIndex(0));
                     }
                 }
             }
         }
 
-        // todo estas funciones deberian considerar si la coleccion no es vacia
+        // todo estas funciones deberian considerar si la coleccion no es vacia, para mi habría que asumir que tienen 2 o más elementos.
         private void addHLast(BackgroundObject backgroundObject) {
             BackgroundObject bgLast = colBgObject.get(colBgObject.size - 1);
             backgroundObject.setPosition(bgLast.getX() + bgLast.getWidth(), bgLast.getY());
@@ -193,6 +174,7 @@ public class ParallaxSB {
             backgroundObject.setPosition(bgFirst.getX(), bgFirst.getY() +  bgFirst.getHeight());
             colBgObject.insert(0, backgroundObject);
         }
+        // fin todo estas funciones deberian considerar si la coleccion no es vacia
 
         public void render(SpriteBatch spriteBatch) {
             for (BackgroundObject backgroundObject : colBgObject) {
@@ -215,7 +197,6 @@ public class ParallaxSB {
             this.horizontalScroll = horizontalScroll;
             this.velocity = velocity;
             setBounds(x, y, bgTextureRegion.getRegionWidth() / GameCamera.PPM, bgTextureRegion.getRegionHeight() / GameCamera.PPM);
-            Gdx.app.debug(TAG, "********" + getWidth() + " " + getHeight()); // TODO
             setRegion(bgTextureRegion);
         }
 

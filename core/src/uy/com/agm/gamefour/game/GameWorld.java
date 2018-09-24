@@ -62,7 +62,7 @@ public class GameWorld {
         }
 
         // Creates Jumper in the game world
-        jumper = new Jumper(this, gameCamera.getFrustumWidth() / 2, gameCamera.getFrustumHeight() / 2);
+        jumper = new Jumper(this, gameCamera.getWorldWidth() / 2, gameCamera.getWorldHeight() / 2);
     }
 
     public void update(float deltaTime) {

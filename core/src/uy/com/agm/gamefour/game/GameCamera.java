@@ -54,11 +54,11 @@ public class GameCamera {
         gameViewPort.update(width, height, true);
     }
 
-    public float getFrustumWidth() {
+    public float getWorldWidth() {
         return gameViewPort.getWorldWidth();
     }
 
-    public float getFrustumHeight() {
+    public float getWorldHeight() {
         return gameViewPort.getWorldHeight();
     }
 
