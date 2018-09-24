@@ -13,11 +13,8 @@ import uy.com.agm.gamefour.game.GameCamera;
  */
 
 /*
-LO QUE TENDRIA QUE PENSAR ACA SON DOS COSAS:
+LO QUE TENDRIA QUE PENSAR es:
 EL SCROLL VERTICAL
-EL AGARRAR EL X INICIAL Y EL Y INICIAL Y PONERLO DE MANERA QUE LA PRIMER TEXTURA QUEDE CENTRADA.
-ASI HAGO TEXTURAS BIEN GRANDES PARA ABARCAR LOS POSIBLES TAMANOS DE PANTALLAS.
-VER DONDE DICE TODO. AHI DEBO CALCULAR EL X E Y CENTRANDO LA TEXTURA, LUEGO SIGUE TODO IGUAL.
  */
 
 // Scrolling background
@@ -43,9 +40,10 @@ public class ParallaxSB {
     }
 
     public void addLayer(Array<TextureRegion> colTextureRegion, boolean horizontalScroll, float velocity) {
-        // TODO
-        float x = gameCamera.position().x - gameCamera.getFrustumWidth() / 2;
-        float y = gameCamera.position().y - gameCamera.getFrustumHeight() / 2;
+        // Centers the first texture
+        TextureRegion first = colTextureRegion.first();
+        float x = gameCamera.position().x - ( first.getRegionWidth() / GameCamera.PPM ) / 2;
+        float y = gameCamera.position().y - ( first.getRegionHeight() / GameCamera.PPM ) / 2;
 
         Array<BackgroundObject> colBgObject = new Array<BackgroundObject>(colTextureRegion.size);
         BackgroundObject backgroundObject;
@@ -119,25 +117,42 @@ public class ParallaxSB {
                         addHFirst(colBgObject.pop());
                     }
                 }
+            } else {
+                if (velocity < 0) { // Layer is moving down
+                    BackgroundObject bgLast = colBgObject.peek();
+                    if (gameCamTop < bgLast.getY() + bgLast.getHeight()) {
+                        addVFirst(colBgObject.pop());
+                    }
+                } else { // Layer is moving up
+                    BackgroundObject bgFirst = colBgObject.first();
+                    if (gameCamBottom < bgFirst.getY()) {
+                        addVLast(colBgObject.removeIndex(0));
+                    }
+                }
             }
-
-            // TODO ME FALTA RAZONAR SCROLL VERTICAL
         }
 
         private void addHLast(BackgroundObject backgroundObject) {
-            float x = 0;
-            for (BackgroundObject bgObject : colBgObject) {
-                x += bgObject.getX() + bgObject.getWidth();
-            }
+            BackgroundObject bgLast = colBgObject.get(colBgObject.size - 1);
+            backgroundObject.setPosition(bgLast.getX() + bgLast.getWidth(), bgLast.getY());
+            colBgObject.add(backgroundObject);
+        }
 
-            backgroundObject.setPosition(x, backgroundObject.getY());
+        private void addVLast(BackgroundObject backgroundObject) {
+            BackgroundObject bgLast = colBgObject.get(colBgObject.size - 1);
+            backgroundObject.setPosition(bgLast.getX(), bgLast.getY() - backgroundObject.getHeight());
             colBgObject.add(backgroundObject);
         }
 
         private void addHFirst(BackgroundObject backgroundObject) {
             BackgroundObject bgFirst = colBgObject.first();
             backgroundObject.setPosition(bgFirst.getX() - backgroundObject.getWidth(), bgFirst.getY());
+            colBgObject.insert(0, backgroundObject);
+        }
 
+        private void addVFirst(BackgroundObject backgroundObject) {
+            BackgroundObject bgFirst = colBgObject.first();
+            backgroundObject.setPosition(bgFirst.getX(), bgFirst.getY() +  bgFirst.getHeight());
             colBgObject.insert(0, backgroundObject);
         }
 
@@ -162,7 +177,7 @@ public class ParallaxSB {
             this.horizontalScroll = horizontalScroll;
             this.velocity = velocity;
             setBounds(x, y, bgTextureRegion.getRegionWidth() / GameCamera.PPM, bgTextureRegion.getRegionHeight() / GameCamera.PPM);
-            Gdx.app.debug(TAG, "********" + getWidth() + " " + getHeight());
+            Gdx.app.debug(TAG, "********" + getWidth() + " " + getHeight()); // TODO
             setRegion(bgTextureRegion);
         }
 

@@ -34,7 +34,7 @@ public class GameWorld {
         parallaxSB.addLayer(new TextureRegion(new Texture("Layer10.png")), 1, true, -0.0f); // estrellas
         parallaxSB.addLayer(new TextureRegion(new Texture("Layer8.png")), 2, true, -4.0f); // nubes 1
         parallaxSB.addLayer(new TextureRegion(new Texture("Layer7.png")), 2, true, -5.0f); // nubes 2
-        parallaxSB.addLayer(new TextureRegion(new Texture("Layer5.png")), 2, true, -7.0f); // montanas mas distantes
+        parallaxSB.addLayer(new TextureRegion(new Texture("Layer5.png")), 3, true, -7.0f); // montanas mas distantes
         parallaxSB.addLayer(new TextureRegion(new Texture("Layer4.png")), 2, true, -8.0f);
         parallaxSB.addLayer(new TextureRegion(new Texture("Layer3.png")), 2, true, -9.0f);
         parallaxSB.addLayer(new TextureRegion(new Texture("Layer2.png")), 2, true, -10.0f);
