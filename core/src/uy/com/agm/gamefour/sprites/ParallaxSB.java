@@ -32,12 +32,22 @@ public class ParallaxSB {
         layers = new Array<Layer>();
     }
 
+    public void addLayer(TextureRegion textureRegion, int repeat, boolean horizontalScroll, float velocity) {
+        if (repeat > 0) {
+            Array<TextureRegion> colTextureRegion = new Array<TextureRegion>(repeat);
+            for (int i = 0; i < repeat; i++) {
+                colTextureRegion.add(textureRegion);
+            }
+            addLayer(colTextureRegion, horizontalScroll, velocity);
+        }
+    }
+
     public void addLayer(Array<TextureRegion> colTextureRegion, boolean horizontalScroll, float velocity) {
         // TODO
         float x = gameCamera.position().x - gameCamera.getFrustumWidth() / 2;
         float y = gameCamera.position().y - gameCamera.getFrustumHeight() / 2;
 
-        Array<BackgroundObject> colBgObject = new Array<BackgroundObject>();
+        Array<BackgroundObject> colBgObject = new Array<BackgroundObject>(colTextureRegion.size);
         BackgroundObject backgroundObject;
         for (TextureRegion textureRegion : colTextureRegion) {
             backgroundObject = new BackgroundObject(textureRegion, x, y, horizontalScroll, velocity);
