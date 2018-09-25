@@ -133,7 +133,7 @@ public class ParallaxSB {
                 if (gameCamLeft > bgFirst.getX() + bgFirst.getWidth()) {
                     bgHead = colBgObject.removeIndex(0);
                     bgTail = colBgObject.get(colBgObject.size - 1);
-                    bgHead.setPosition(bgTail.getX() + bgTail.getWidth(), bgTail.getY());
+                    bgHead.setPosition(bgTail.getX() + bgTail.getWidth(), bgHead.getY());
                     colBgObject.add(bgHead);
                 }
             } else {
@@ -142,7 +142,7 @@ public class ParallaxSB {
                     if (gameCamRight < bgFirst.getX()) {
                         bgHead = colBgObject.removeIndex(0);
                         bgTail = colBgObject.get(colBgObject.size - 1);
-                        bgHead.setPosition(bgTail.getX() - bgHead.getWidth(), bgTail.getY());
+                        bgHead.setPosition(bgTail.getX() - bgHead.getWidth(), bgHead.getY());
                         colBgObject.add(bgHead);
                     }
                 }
@@ -158,7 +158,7 @@ public class ParallaxSB {
                 if (gameCamBottom > bgFirst.getY() + bgFirst.getHeight()) {
                     bgHead = colBgObject.removeIndex(0);
                     bgTail = colBgObject.get(colBgObject.size - 1);
-                    bgHead.setPosition(bgTail.getX(), bgTail.getY() + bgTail.getHeight());
+                    bgHead.setPosition(bgHead.getX(), bgTail.getY() + bgTail.getHeight());
                     colBgObject.add(bgHead);
                 }
             } else {
@@ -167,7 +167,7 @@ public class ParallaxSB {
                     if (gameCamTop < bgFirst.getY()) {
                         bgHead = colBgObject.removeIndex(0);
                         bgTail = colBgObject.get(colBgObject.size - 1);
-                        bgHead.setPosition(bgTail.getX(), bgTail.getY() - bgHead.getHeight());
+                        bgHead.setPosition(bgHead.getX(), bgTail.getY() - bgHead.getHeight());
                         colBgObject.add(bgHead);
                     }
                 }
