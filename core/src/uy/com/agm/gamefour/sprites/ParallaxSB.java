@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -13,7 +12,7 @@ import uy.com.agm.gamefour.game.GameCamera;
  * Created by AGM on 9/23/2018.
  */
 
-// Scrolling background
+// Parallax scrolling background (horizontal or vertical)
 public class ParallaxSB {
     private static final String TAG = ParallaxSB.class.getName();
 
@@ -37,13 +36,12 @@ public class ParallaxSB {
 
     public void addLayer(Array<TextureRegion> colTextureRegion, boolean horizontalScroll, float velocity) {
         Vector3 gameCamPos = gameCamera.position();
-        Array<BackgroundObject> colBgObject = new Array<BackgroundObject>(colTextureRegion.size);
         TextureRegion currTr;
-        float x = 0;
-        float y = 0;
+        float x, y;
         BackgroundObject currBo, prevBo;
+        Array<BackgroundObject> colBgObject = new Array<BackgroundObject>(colTextureRegion.size);
 
-        // IMPORTANT: We set up the grow direction of colBgObject at our convenience.
+        // IMPORTANT: We set up the "grow direction" of colBgObject at our convenience.
         for (int i = 0, n = colTextureRegion.size; i < n; i++) {
             currTr = colTextureRegion.get(i);
             if (i > 0) {
@@ -68,7 +66,6 @@ public class ParallaxSB {
                 y = gameCamPos.y - (currTr.getRegionHeight() / GameCamera.PPM ) / 2;
             }
             currBo = new BackgroundObject(currTr, x, y, horizontalScroll, velocity);
-            Gdx.app.debug(TAG, "**** CREO " + x + " " + y);
             colBgObject.add(currBo);
         }
         Layer layer = new Layer(colBgObject, horizontalScroll, velocity);
@@ -132,7 +129,7 @@ public class ParallaxSB {
                 BackgroundObject bgFirst = colBgObject.first();
                 if (gameCamLeft > bgFirst.getX() + bgFirst.getWidth()) {
                     bgHead = colBgObject.removeIndex(0);
-                    bgTail = colBgObject.get(colBgObject.size - 1);
+                    bgTail = colBgObject.size > 0 ? colBgObject.get(colBgObject.size - 1) : bgHead;
                     bgHead.setPosition(bgTail.getX() + bgTail.getWidth(), bgHead.getY());
                     colBgObject.add(bgHead);
                 }
@@ -141,7 +138,7 @@ public class ParallaxSB {
                     BackgroundObject bgFirst = colBgObject.first();
                     if (gameCamRight < bgFirst.getX()) {
                         bgHead = colBgObject.removeIndex(0);
-                        bgTail = colBgObject.get(colBgObject.size - 1);
+                        bgTail = colBgObject.size > 0 ? colBgObject.get(colBgObject.size - 1) : bgHead;
                         bgHead.setPosition(bgTail.getX() - bgHead.getWidth(), bgHead.getY());
                         colBgObject.add(bgHead);
                     }
@@ -157,7 +154,7 @@ public class ParallaxSB {
                 BackgroundObject bgFirst = colBgObject.first();
                 if (gameCamBottom > bgFirst.getY() + bgFirst.getHeight()) {
                     bgHead = colBgObject.removeIndex(0);
-                    bgTail = colBgObject.get(colBgObject.size - 1);
+                    bgTail = colBgObject.size > 0 ? colBgObject.get(colBgObject.size - 1) : bgHead;
                     bgHead.setPosition(bgHead.getX(), bgTail.getY() + bgTail.getHeight());
                     colBgObject.add(bgHead);
                 }
@@ -166,7 +163,7 @@ public class ParallaxSB {
                     BackgroundObject bgFirst = colBgObject.first();
                     if (gameCamTop < bgFirst.getY()) {
                         bgHead = colBgObject.removeIndex(0);
-                        bgTail = colBgObject.get(colBgObject.size - 1);
+                        bgTail = colBgObject.size > 0 ? colBgObject.get(colBgObject.size - 1) : bgHead;
                         bgHead.setPosition(bgHead.getX(), bgTail.getY() - bgHead.getHeight());
                         colBgObject.add(bgHead);
                     }
@@ -188,12 +185,10 @@ public class ParallaxSB {
     }
 
     private class BackgroundObject extends AbstractGameObject {
-        private TextureRegion textureRegion;
         private boolean horizontalScroll;
         private float velocity;
 
         public BackgroundObject(TextureRegion textureRegion, float x, float y, boolean horizontalScroll, float velocity) {
-            this.textureRegion = textureRegion;
             this.horizontalScroll = horizontalScroll;
             this.velocity = velocity;
             setBounds(x, y, textureRegion.getRegionWidth() / GameCamera.PPM, textureRegion.getRegionHeight() / GameCamera.PPM);

@@ -34,14 +34,16 @@ public class GameWorld {
 
         colTextureRegion.clear();
         colTextureRegion.add(new TextureRegion(new Texture("TEST1.png")));
-        colTextureRegion.add(new TextureRegion(new Texture("TEST2.png")));
-        parallaxSB.addLayer(colTextureRegion, horizontal, signo * 0.5f * 0);
+//        colTextureRegion.add(new TextureRegion(new Texture("TEST2.png")));
+//        colTextureRegion.add(new TextureRegion(new Texture("TEST3.png")));
+        parallaxSB.addLayer(colTextureRegion, horizontal, signo * 0.5f);
 
 
 
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer11.png")), 1, horizontal, signo * 0.0f); // background
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer12.png")), 1, horizontal, signo * 0.0f); // chol
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer10.png")), 1, horizontal, signo * 0.0f); // estrellas
+//
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer8.png")), 2, horizontal, signo * 4.0f); // nubes 1
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer7.png")), 2, horizontal, signo * 5.0f); // nubes 2
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer5.png")), 2, horizontal, signo * 7.0f); // montanas mas distantes
