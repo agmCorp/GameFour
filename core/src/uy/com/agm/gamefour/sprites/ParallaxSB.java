@@ -48,16 +48,16 @@ public class ParallaxSB {
                 prevBo = colBgObject.get(i - 1);
                 if (horizontalScroll) {
                     y = gameCamPos.y - (currTr.getRegionHeight() / GameCamera.PPM ) / 2;
-                    if (velocity < 0) {
+                    if (velocity < 0) { // Layer is moving to the left
                         x = prevBo.getX() + prevBo.getWidth(); // Grows to the right
-                    } else {
+                    } else { // Layer is moving to the right
                         x = prevBo.getX() - currTr.getRegionWidth() / GameCamera.PPM; // Grows to the left
                     }
                 } else {
                     x = gameCamPos.x - (currTr.getRegionWidth() / GameCamera.PPM ) / 2;
-                    if (velocity < 0) {
+                    if (velocity < 0) { // Layer is moving down
                         y = prevBo.getY() + prevBo.getHeight(); // Grows up
-                    } else {
+                    } else { // Layer is moving up
                         y = prevBo.getY() - currTr.getRegionHeight() / GameCamera.PPM; // Grows down
                     }
                 }
@@ -125,7 +125,7 @@ public class ParallaxSB {
             BackgroundObject bgHead;
             BackgroundObject bgTail;
 
-            if (velocity < 0) { // Layer is moving left
+            if (velocity < 0) { // Layer is moving to the left
                 BackgroundObject bgFirst = colBgObject.first();
                 if (gameCamLeft > bgFirst.getX() + bgFirst.getWidth()) {
                     bgHead = colBgObject.removeIndex(0);
@@ -134,7 +134,7 @@ public class ParallaxSB {
                     colBgObject.add(bgHead);
                 }
             } else {
-                if (velocity > 0) { // Layer is moving right
+                if (velocity > 0) { // Layer is moving to the right
                     BackgroundObject bgFirst = colBgObject.first();
                     if (gameCamRight < bgFirst.getX()) {
                         bgHead = colBgObject.removeIndex(0);
