@@ -29,10 +29,16 @@ public class GameWorld {
         parallaxSB = new ParallaxSB(gameCamera);
         Array<TextureRegion> colTextureRegion = new Array<TextureRegion>();
 
-        boolean horizontal = false;
-        float signo = -1;
+        boolean horizontal = true;
+        float signo = 1;
 
-        if (horizontal) {
+        colTextureRegion.clear();
+        colTextureRegion.add(new TextureRegion(new Texture("TEST1.png")));
+        colTextureRegion.add(new TextureRegion(new Texture("TEST2.png")));
+        parallaxSB.addLayer(colTextureRegion, horizontal, signo * 2);
+
+
+
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer11.png")), 1, horizontal, signo * 0.0f); // background
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer12.png")), 1, horizontal, signo * 0.0f); // chol
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer10.png")), 1, horizontal, signo * 0.0f); // estrellas
@@ -43,13 +49,6 @@ public class GameWorld {
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer3.png")), 2, horizontal, signo * 9.0f);
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer2.png")), 2, horizontal, signo * 10.0f);
 //            parallaxSB.addLayer(new TextureRegion(new Texture("Layer1.png")), 2, horizontal, signo * 11.0f);
-
-            colTextureRegion.clear();
-            colTextureRegion.add(new TextureRegion(new Texture("TEST1.png")));
-            colTextureRegion.add(new TextureRegion(new Texture("TEST2.png")));
-            parallaxSB.addLayer(colTextureRegion, horizontal, signo * 2);
-        } else {
-        }
 
         // Creates Jumper in the game world
         jumper = new Jumper(this, gameCamera.getWorldWidth() / 2, gameCamera.getWorldHeight() / 2);

@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,22 +12,6 @@ import uy.com.agm.gamefour.game.GameCamera;
 /**
  * Created by AGM on 9/23/2018.
  */
-
-//        TODO
-//        float frustumWidth = gameCamera.getWorldWidth();
-//        float frustumHeight = gameCamera.getWorldHeight();
-//        float gameCamLeft = gameCamera.position().x - frustumWidth / 2;
-//        float gameCamRight = gameCamera.position().x + frustumWidth / 2;
-//        float gameCamBottom = gameCamera.position().y - frustumHeight / 2;
-//        float gameCamTop = gameCamera.position().y + frustumHeight / 2;
-//        Gdx.app.debug(TAG, "****** COMIENZO LOGUEOS 1*****");
-//        Gdx.app.debug(TAG, "****** ancho del mundo " + frustumWidth);
-//        Gdx.app.debug(TAG, "****** alto del mundo " + frustumHeight);
-//        Gdx.app.debug(TAG, "****** camara left (debe ser cero) " + gameCamLeft);
-//        Gdx.app.debug(TAG, "****** camara right " + gameCamRight);
-//        Gdx.app.debug(TAG, "****** camara bottom (debe ser cero) " + gameCamBottom);
-//        Gdx.app.debug(TAG, "****** camara top  " + gameCamTop);
-
 
 // Scrolling background
 public class ParallaxSB {
@@ -51,31 +36,40 @@ public class ParallaxSB {
     }
 
     public void addLayer(Array<TextureRegion> colTextureRegion, boolean horizontalScroll, float velocity) {
-        // TODO ESTO NO FUNCIONA PARA TAMAÑOS DISTINTOS!!
         Vector3 gameCamPos = gameCamera.position();
-        TextureRegion bgFirst = colTextureRegion.first();
-        float x = gameCamPos.x - ( bgFirst.getRegionWidth() / GameCamera.PPM ) / 2;
-        float y = gameCamPos.y - ( bgFirst.getRegionHeight() / GameCamera.PPM ) / 2;
+        Array<BackgroundObject> colBgObject = new Array<BackgroundObject>(colTextureRegion.size);
+        TextureRegion currTr;
+        float x = 0;
+        float y = 0;
+        BackgroundObject currBo, prevBo;
 
         // IMPORTANT: We set up the grow direction of colBgObject at our convenience.
-        Array<BackgroundObject> colBgObject = new Array<BackgroundObject>(colTextureRegion.size);
-        BackgroundObject backgroundObject;
-        for (TextureRegion textureRegion : colTextureRegion) {
-            backgroundObject = new BackgroundObject(textureRegion, x, y, horizontalScroll, velocity);
-            if (horizontalScroll) {
-                if (velocity < 0) {
-                    x += textureRegion.getRegionWidth() / GameCamera.PPM; // Grows to the right
+        for (int i = 0, n = colTextureRegion.size; i < n; i++) {
+            currTr = colTextureRegion.get(i);
+            if (i > 0) {
+                prevBo = colBgObject.get(i - 1);
+                if (horizontalScroll) {
+                    y = gameCamPos.y - (currTr.getRegionHeight() / GameCamera.PPM ) / 2;
+                    if (velocity < 0) {
+                        x = prevBo.getX() + prevBo.getWidth(); // Grows to the right
+                    } else {
+                        x = prevBo.getX() - currTr.getRegionWidth() / GameCamera.PPM; // Grows to the left
+                    }
                 } else {
-                    x -= textureRegion.getRegionWidth() / GameCamera.PPM; // Grows to the left
+                    x = gameCamPos.x - (currTr.getRegionWidth() / GameCamera.PPM ) / 2;
+                    if (velocity < 0) {
+                        y = prevBo.getY() + prevBo.getHeight(); // Grows up
+                    } else {
+                        y = prevBo.getY() - currTr.getRegionHeight() / GameCamera.PPM; // Grows down
+                    }
                 }
             } else {
-                if (velocity < 0) {
-                    y += textureRegion.getRegionHeight() / GameCamera.PPM; // Grows up
-                } else {
-                    y -= textureRegion.getRegionHeight() / GameCamera.PPM; // Grows down
-                }
+                x = gameCamPos.x - (currTr.getRegionWidth() / GameCamera.PPM ) / 2;
+                y = gameCamPos.y - (currTr.getRegionHeight() / GameCamera.PPM ) / 2;
             }
-            colBgObject.add(backgroundObject);
+            currBo = new BackgroundObject(currTr, x, y, horizontalScroll, velocity);
+            Gdx.app.debug(TAG, "**** CREO " + x + " " + y);
+            colBgObject.add(currBo);
         }
         Layer layer = new Layer(colBgObject, horizontalScroll, velocity);
         layers.add(layer);
@@ -84,10 +78,11 @@ public class ParallaxSB {
     public void update(float deltaTime) {
         float worldWidth = gameCamera.getWorldWidth();
         float worldHeight = gameCamera.getWorldHeight();
-        float gameCamLeft = gameCamera.position().x - worldWidth / 2;
-        float gameCamRight = gameCamera.position().x + worldWidth / 2;
-        float gameCamBottom = gameCamera.position().y - worldHeight / 2;
-        float gameCamTop = gameCamera.position().y + worldHeight / 2;
+        Vector3 gameCameraPos = gameCamera.position();
+        float gameCamLeft = gameCameraPos.x - worldWidth / 2;
+        float gameCamRight = gameCameraPos.x + worldWidth / 2;
+        float gameCamBottom = gameCameraPos.y - worldHeight / 2;
+        float gameCamTop = gameCameraPos.y + worldHeight / 2;
 
         for (Layer layer : layers) {
             layer.update(gameCamLeft, gameCamRight, gameCamBottom, gameCamTop, deltaTime);
@@ -193,14 +188,16 @@ public class ParallaxSB {
     }
 
     private class BackgroundObject extends AbstractGameObject {
+        private TextureRegion textureRegion;
         private boolean horizontalScroll;
         private float velocity;
 
-        public BackgroundObject(TextureRegion bgTextureRegion, float x, float y, boolean horizontalScroll, float velocity) {
+        public BackgroundObject(TextureRegion textureRegion, float x, float y, boolean horizontalScroll, float velocity) {
+            this.textureRegion = textureRegion;
             this.horizontalScroll = horizontalScroll;
             this.velocity = velocity;
-            setBounds(x, y, bgTextureRegion.getRegionWidth() / GameCamera.PPM, bgTextureRegion.getRegionHeight() / GameCamera.PPM);
-            setRegion(bgTextureRegion);
+            setBounds(x, y, textureRegion.getRegionWidth() / GameCamera.PPM, textureRegion.getRegionHeight() / GameCamera.PPM);
+            setRegion(textureRegion);
         }
 
         @Override
