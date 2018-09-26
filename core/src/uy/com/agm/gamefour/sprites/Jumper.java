@@ -31,6 +31,7 @@ public class Jumper extends AbstractGameObject {
 
     public void onSuccessfulJump() {
         gameWorld.addLevel();
+        setPosition(getX() + 2.0f, getY());
     }
 
     public Vector2 position() {

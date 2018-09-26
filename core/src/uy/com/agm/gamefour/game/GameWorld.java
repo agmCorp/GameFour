@@ -64,8 +64,11 @@ public class GameWorld {
         // Always at the end
         // Update the game camera with correct coordinates after changes
         if (moveCamera) {
-            moveCamera = false;
-            gameCamera.position().x = gameCamera.position().x + 0.5f;
+            // TODO movecamera se pone en false cuando llego a la poscion de hero.
+            gameCamera.position().x = gameCamera.position().x + 1 * deltaTime;
+            if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 < jumper.position().x) {
+                moveCamera = false;
+            }
         }
         gameCamera.update(deltaTime);
     }
