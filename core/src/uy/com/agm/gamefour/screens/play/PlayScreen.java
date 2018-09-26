@@ -14,7 +14,9 @@ import uy.com.agm.gamefour.game.WorldRenderer;
 public class PlayScreen extends PlayAbstractScreen {
     private static final String TAG = PlayScreen.class.getName();
 
-    private WorldController worldController;
+    private static float SHAKE_DURATION = 3.0f;
+
+    public WorldController worldController; // TODO OJO!!!!!!!!!!!!!!!! LE PUSE PUBLIC PARA PROBAR!!! VOLVER A PRIVATE!!!!!!!
     private WorldRenderer worldRenderer;
 
     public PlayScreen(GameFour game) {
@@ -22,14 +24,6 @@ public class PlayScreen extends PlayAbstractScreen {
 
         worldController = new WorldController();
         worldRenderer = new WorldRenderer(worldController, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
-    }
-
-    public void shakeMe(float duration) {
-        worldController.getGameWorld().getGameCamera().shake(duration);
-    }
-
-    public void shakeMe(float amplitude, float duration) {
-        worldController.getGameWorld().getGameCamera().shake(amplitude, duration);
     }
 
     @Override
@@ -43,6 +37,18 @@ public class PlayScreen extends PlayAbstractScreen {
             worldController.update(deltaTime);
         }
         worldRenderer.render();
+
+        // Analyze game results
+        if (playScreenState == PlayScreenState.RUNNING) {
+            gameResults(deltaTime);
+        }
+    }
+
+    private void gameResults(float deltaTime) {
+        if (worldController.isGameOver()) {
+            worldController.getGameWorld().getGameCamera().shake(SHAKE_DURATION);
+            // TODO ACA MUESTRO PANTALLA SUPERPUESTA DE GAMEOVER?
+        }
     }
 
     @Override

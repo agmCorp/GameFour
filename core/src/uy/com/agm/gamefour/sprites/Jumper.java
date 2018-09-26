@@ -2,6 +2,7 @@ package uy.com.agm.gamefour.sprites;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.GameWorld;
@@ -27,6 +28,16 @@ public class Jumper extends AbstractGameObject {
 
         stateTime = 0;
     }
+
+    public void onSuccessfulJump() {
+        gameWorld.addLevel();
+    }
+
+    public Vector2 position() {
+        // TODO ESTO RETORNA LA POSICION DE BOX2D
+        return new Vector2(0,0);
+    }
+
 
     @Override
     public void update(float deltaTime) {

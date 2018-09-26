@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
+import uy.com.agm.gamefour.sprites.Jumper;
 
 /**
  * Created by AGMCORP on 21/9/2018.
@@ -30,9 +31,10 @@ public class WorldController implements Disposable {
     private World box2DWorld;
     private float accumulator;
 
+
     public WorldController() {
         // Creates out game world
-        gameWorld = new GameWorld();
+        gameWorld = new GameWorld(1);
 
         // Creates the Box2D world, setting no gravity in x and GRAVITY in y, and allow bodies to sleep
         box2DWorld = new World(new Vector2(0, GRAVITY), true);
@@ -99,6 +101,18 @@ public class WorldController implements Disposable {
 
     public GameWorld getGameWorld() {
         return gameWorld;
+    }
+
+    public boolean isGameOver() {
+        Jumper jumper = gameWorld.getJumper();
+        GameCamera gameCamera = gameWorld.getGameCamera();
+
+        //controla la posicion de jumper con respecto al bottom cam
+
+        // if (gameWorld.getJumper().getbox2d.position < gameWorld.getGameCamera().position().y - gameWorld.getGameCamera().getWorldHeight() / 2) {
+        // ir a la pagina de game over
+        // }
+        return false;
     }
 
     @Override
