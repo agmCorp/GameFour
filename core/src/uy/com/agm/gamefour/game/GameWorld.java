@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -40,7 +41,7 @@ public class GameWorld {
 
     private void createBackground() {
         boolean horizontal = true;
-        byte signo = 1;
+        byte signo = -1;
 
         parallaxSB = new ParallaxSB(gameCamera);
         parallaxSB.addLayer(new TextureRegion(new Texture("Layer11.png")), 1, horizontal, signo * 0.0f); // background
@@ -64,9 +65,12 @@ public class GameWorld {
         // Always at the end
         // Update the game camera with correct coordinates after changes
         if (moveCamera) {
+            Gdx.app.debug(TAG, "**** muevo camara");
+
             // TODO movecamera se pone en false cuando llego a la poscion de hero.
             gameCamera.position().x = gameCamera.position().x + 1 * deltaTime;
-            if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 < jumper.position().x) {
+            if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > jumper.position().x) {
+                Gdx.app.debug(TAG, "**** dejo de mover camara " + (gameCamera.position().x - gameCamera.getWorldWidth() / 2) + " JUMPER: " + jumper.position().x );
                 moveCamera = false;
             }
         }

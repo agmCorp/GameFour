@@ -12,16 +12,26 @@ import uy.com.agm.gamefour.game.GameCamera;
  * Created by AGM on 9/23/2018.
  */
 
+
+// TODO, ME CANSE, NECESITO UN OBJETO COMO BACKGROUDNOBJECT QUE SEA UN SPRITE!
+    // STATICBACKGROUNDOBJECT O ALGO ASI. PUEDO USAR STATICBACKGROUND VS DYNAMICBACKGROUND! REVISAR TODO ESTO ES MUY FACIL PERO ESTOY CANSADO
+
 // Parallax scrolling background (horizontal or vertical)
 public class ParallaxSB {
     private static final String TAG = ParallaxSB.class.getName();
 
     private GameCamera gameCamera;
     private Array<Layer> layers;
+    private Array<TextureRegion> staticBackgrounds;
 
     public ParallaxSB(GameCamera gameCamera) {
         this.gameCamera = gameCamera;
+        staticBackgrounds = new Array<TextureRegion>();
         layers = new Array<Layer>();
+    }
+
+    public void addStaticBackground(TextureRegion textureRegion) {
+        staticBackgrounds.add(textureRegion);
     }
 
     public void addLayer(TextureRegion textureRegion, int repeat, boolean horizontalScroll, float velocity) {
@@ -81,9 +91,19 @@ public class ParallaxSB {
         float gameCamBottom = gameCameraPos.y - worldHeight / 2;
         float gameCamTop = gameCameraPos.y + worldHeight / 2;
 
+        for (TextureRegion textureRegion : staticBackgrounds) {
+            center(textureRegion, gameCameraPos.x, gameCameraPos.y);
+        }
+
         for (Layer layer : layers) {
             layer.update(gameCamLeft, gameCamRight, gameCamBottom, gameCamTop, deltaTime);
         }
+    }
+
+    private void center(TextureRegion textureRegion, float gameCamPosX, float gameCamPosY) {
+        x = gameCamPosX - (textureRegion.getRegionWidth() / GameCamera.PPM ) / 2;
+        y = gameCamPosY - (textureRegion.getRegionHeight() / GameCamera.PPM ) / 2;
+
     }
 
     public void render(SpriteBatch spriteBatch) {

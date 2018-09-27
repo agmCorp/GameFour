@@ -30,13 +30,13 @@ public class Jumper extends AbstractGameObject {
     }
 
     public void onSuccessfulJump() {
-        gameWorld.addLevel();
         setPosition(getX() + 2.0f, getY());
+        gameWorld.addLevel();
     }
 
     public Vector2 position() {
         // TODO ESTO RETORNA LA POSICION DE BOX2D
-        return new Vector2(0,0);
+        return new Vector2(getX(),getY());
     }
 
 
