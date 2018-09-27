@@ -26,22 +26,22 @@ public class ParallaxSB {
         layers = new Array<Layer>();
     }
 
-    public void addBackground(TextureRegion textureRegion) {
+    public void addStaticLayer(TextureRegion textureRegion) {
         StaticBackground staticBackground = new StaticBackground(textureRegion, gameCamera);
         staticBackgrounds.add(staticBackground);
     }
 
-    public void addLayer(TextureRegion textureRegion, int repeat, boolean horizontalScroll, float velocity) {
+    public void addDynamicLayer(TextureRegion textureRegion, int repeat, boolean horizontalScroll, float velocity) {
         if (repeat > 0) {
             Array<TextureRegion> colTextureRegion = new Array<TextureRegion>(repeat);
             for (int i = 0; i < repeat; i++) {
                 colTextureRegion.add(textureRegion);
             }
-            addLayer(colTextureRegion, horizontalScroll, velocity);
+            addDynamicLayer(colTextureRegion, horizontalScroll, velocity);
         }
     }
 
-    public void addLayer(Array<TextureRegion> colTextureRegion, boolean horizontalScroll, float velocity) {
+    public void addDynamicLayer(Array<TextureRegion> colTextureRegion, boolean horizontalScroll, float velocity) {
         Vector3 gameCamPos = gameCamera.position();
         TextureRegion currTr;
         float x, y;
@@ -75,25 +75,17 @@ public class ParallaxSB {
             currDBg = new DynamicBackground(currTr, x, y, horizontalScroll, velocity);
             dynamicBackgrounds.add(currDBg);
         }
-        Layer layer = new Layer(dynamicBackgrounds, horizontalScroll, velocity);
+        Layer layer = new Layer(dynamicBackgrounds, horizontalScroll, velocity, gameCamera);
         layers.add(layer);
     }
 
     public void update(float deltaTime) {
-        float worldWidth = gameCamera.getWorldWidth();
-        float worldHeight = gameCamera.getWorldHeight();
-        Vector3 gameCameraPos = gameCamera.position();
-        float gameCamLeft = gameCameraPos.x - worldWidth / 2;
-        float gameCamRight = gameCameraPos.x + worldWidth / 2;
-        float gameCamBottom = gameCameraPos.y - worldHeight / 2;
-        float gameCamTop = gameCameraPos.y + worldHeight / 2;
-
         for (StaticBackground staticBackground : staticBackgrounds) {
             staticBackground.update(deltaTime);
         }
 
         for (Layer layer : layers) {
-            layer.update(gameCamLeft, gameCamRight, gameCamBottom, gameCamTop, deltaTime);
+            layer.update(deltaTime);
         }
     }
 
@@ -121,22 +113,28 @@ public class ParallaxSB {
         private Array<DynamicBackground> dynamicBackgrounds;
         private boolean horizontalScroll;
         private float velocity;
+        private GameCamera gameCamera;
 
-        public Layer(Array<DynamicBackground> dynamicBackgrounds, boolean horizontalScroll, float velocity) {
+        public Layer(Array<DynamicBackground> dynamicBackgrounds, boolean horizontalScroll, float velocity, GameCamera gameCamera) {
             this.dynamicBackgrounds = dynamicBackgrounds;
             this.horizontalScroll = horizontalScroll;
             this.velocity = velocity;
+            this.gameCamera = gameCamera;
         }
 
-        public void update(float gameCamLeft, float gameCamRight, float gameCamBottom, float gameCamTop, float deltaTime) {
+        public void update(float deltaTime) {
             for (DynamicBackground dynamicBackground : dynamicBackgrounds) {
                 dynamicBackground.update(deltaTime);
             }
 
+            float worldWidth = gameCamera.getWorldWidth();
+            float worldHeight = gameCamera.getWorldHeight();
+            Vector3 gameCameraPos = gameCamera.position();
+
             if (horizontalScroll) {
-                    updateHorizontal(gameCamLeft, gameCamRight);
+                    updateHorizontal(gameCameraPos.x - worldWidth / 2, gameCameraPos.x + worldWidth / 2);
             } else {
-                updateVertical(gameCamBottom, gameCamTop);
+                updateVertical(gameCameraPos.y - worldHeight / 2, gameCameraPos.y + worldHeight / 2);
             }
         }
 
