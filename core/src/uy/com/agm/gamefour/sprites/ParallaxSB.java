@@ -12,26 +12,23 @@ import uy.com.agm.gamefour.game.GameCamera;
  * Created by AGM on 9/23/2018.
  */
 
-
-// TODO, ME CANSE, NECESITO UN OBJETO COMO BACKGROUDNOBJECT QUE SEA UN SPRITE!
-    // STATICBACKGROUNDOBJECT O ALGO ASI. PUEDO USAR STATICBACKGROUND VS DYNAMICBACKGROUND! REVISAR TODO ESTO ES MUY FACIL PERO ESTOY CANSADO
-
 // Parallax scrolling background (horizontal or vertical)
 public class ParallaxSB {
     private static final String TAG = ParallaxSB.class.getName();
 
     private GameCamera gameCamera;
     private Array<Layer> layers;
-    private Array<TextureRegion> staticBackgrounds;
+    private Array<StaticBackground> staticBackgrounds;
 
     public ParallaxSB(GameCamera gameCamera) {
         this.gameCamera = gameCamera;
-        staticBackgrounds = new Array<TextureRegion>();
+        staticBackgrounds = new Array<StaticBackground>();
         layers = new Array<Layer>();
     }
 
-    public void addStaticBackground(TextureRegion textureRegion) {
-        staticBackgrounds.add(textureRegion);
+    public void addBackground(TextureRegion textureRegion) {
+        StaticBackground staticBackground = new StaticBackground(textureRegion, gameCamera);
+        staticBackgrounds.add(staticBackground);
     }
 
     public void addLayer(TextureRegion textureRegion, int repeat, boolean horizontalScroll, float velocity) {
@@ -48,37 +45,37 @@ public class ParallaxSB {
         Vector3 gameCamPos = gameCamera.position();
         TextureRegion currTr;
         float x, y;
-        BackgroundObject currBo, prevBo;
-        Array<BackgroundObject> colBgObject = new Array<BackgroundObject>(colTextureRegion.size);
+        DynamicBackground currDBg, prevDBg;
+        Array<DynamicBackground> dynamicBackgrounds = new Array<DynamicBackground>(colTextureRegion.size);
 
-        // IMPORTANT: We set up the "grow direction" of colBgObject at our convenience.
+        // IMPORTANT: We set up the "grow direction" of dynamicBackgrounds at our convenience.
         for (int i = 0, n = colTextureRegion.size; i < n; i++) {
             currTr = colTextureRegion.get(i);
             if (i > 0) {
-                prevBo = colBgObject.get(i - 1);
+                prevDBg = dynamicBackgrounds.get(i - 1);
                 if (horizontalScroll) {
                     y = gameCamPos.y - (currTr.getRegionHeight() / GameCamera.PPM ) / 2;
                     if (velocity < 0) { // Layer is moving to the left
-                        x = prevBo.getX() + prevBo.getWidth(); // Grows to the right
+                        x = prevDBg.getX() + prevDBg.getWidth(); // Grows to the right
                     } else { // Layer is moving to the right
-                        x = prevBo.getX() - currTr.getRegionWidth() / GameCamera.PPM; // Grows to the left
+                        x = prevDBg.getX() - currTr.getRegionWidth() / GameCamera.PPM; // Grows to the left
                     }
                 } else {
                     x = gameCamPos.x - (currTr.getRegionWidth() / GameCamera.PPM ) / 2;
                     if (velocity < 0) { // Layer is moving down
-                        y = prevBo.getY() + prevBo.getHeight(); // Grows up
+                        y = prevDBg.getY() + prevDBg.getHeight(); // Grows up
                     } else { // Layer is moving up
-                        y = prevBo.getY() - currTr.getRegionHeight() / GameCamera.PPM; // Grows down
+                        y = prevDBg.getY() - currTr.getRegionHeight() / GameCamera.PPM; // Grows down
                     }
                 }
             } else {
                 x = gameCamPos.x - (currTr.getRegionWidth() / GameCamera.PPM ) / 2;
                 y = gameCamPos.y - (currTr.getRegionHeight() / GameCamera.PPM ) / 2;
             }
-            currBo = new BackgroundObject(currTr, x, y, horizontalScroll, velocity);
-            colBgObject.add(currBo);
+            currDBg = new DynamicBackground(currTr, x, y, horizontalScroll, velocity);
+            dynamicBackgrounds.add(currDBg);
         }
-        Layer layer = new Layer(colBgObject, horizontalScroll, velocity);
+        Layer layer = new Layer(dynamicBackgrounds, horizontalScroll, velocity);
         layers.add(layer);
     }
 
@@ -91,8 +88,8 @@ public class ParallaxSB {
         float gameCamBottom = gameCameraPos.y - worldHeight / 2;
         float gameCamTop = gameCameraPos.y + worldHeight / 2;
 
-        for (TextureRegion textureRegion : staticBackgrounds) {
-            center(textureRegion, gameCameraPos.x, gameCameraPos.y);
+        for (StaticBackground staticBackground : staticBackgrounds) {
+            staticBackground.update(deltaTime);
         }
 
         for (Layer layer : layers) {
@@ -100,38 +97,40 @@ public class ParallaxSB {
         }
     }
 
-    private void center(TextureRegion textureRegion, float gameCamPosX, float gameCamPosY) {
-        x = gameCamPosX - (textureRegion.getRegionWidth() / GameCamera.PPM ) / 2;
-        y = gameCamPosY - (textureRegion.getRegionHeight() / GameCamera.PPM ) / 2;
-
-    }
-
     public void render(SpriteBatch spriteBatch) {
+        for (StaticBackground staticBackground : staticBackgrounds) {
+            staticBackground.render(spriteBatch);
+        }
+
         for (Layer layer : layers) {
             layer.render(spriteBatch);
         }
     }
 
     public void renderDebug(ShapeRenderer shapeRenderer) {
+        for (StaticBackground staticBackground : staticBackgrounds) {
+            staticBackground.renderDebug(shapeRenderer);
+        }
+
         for (Layer layer : layers) {
             layer.renderDebug(shapeRenderer);
         }
     }
 
     private class Layer {
-        private Array<BackgroundObject> colBgObject;
+        private Array<DynamicBackground> dynamicBackgrounds;
         private boolean horizontalScroll;
         private float velocity;
 
-        public Layer(Array<BackgroundObject> colBgObject, boolean horizontalScroll, float velocity) {
-            this.colBgObject = colBgObject;
+        public Layer(Array<DynamicBackground> dynamicBackgrounds, boolean horizontalScroll, float velocity) {
+            this.dynamicBackgrounds = dynamicBackgrounds;
             this.horizontalScroll = horizontalScroll;
             this.velocity = velocity;
         }
 
         public void update(float gameCamLeft, float gameCamRight, float gameCamBottom, float gameCamTop, float deltaTime) {
-            for (BackgroundObject backgroundObject : colBgObject) {
-                backgroundObject.update(deltaTime);
+            for (DynamicBackground dynamicBackground : dynamicBackgrounds) {
+                dynamicBackground.update(deltaTime);
             }
 
             if (horizontalScroll) {
@@ -142,73 +141,73 @@ public class ParallaxSB {
         }
 
         private void updateHorizontal(float gameCamLeft, float gameCamRight) {
-            BackgroundObject bgHead;
-            BackgroundObject bgTail;
+            DynamicBackground dBgHead;
+            DynamicBackground dBgTail;
 
             if (velocity < 0) { // Layer is moving to the left
-                BackgroundObject bgFirst = colBgObject.first();
+                DynamicBackground bgFirst = dynamicBackgrounds.first();
                 if (gameCamLeft > bgFirst.getX() + bgFirst.getWidth()) {
-                    bgHead = colBgObject.removeIndex(0);
-                    bgTail = colBgObject.size > 0 ? colBgObject.get(colBgObject.size - 1) : bgHead;
-                    bgHead.setPosition(bgTail.getX() + bgTail.getWidth(), bgHead.getY());
-                    colBgObject.add(bgHead);
+                    dBgHead = dynamicBackgrounds.removeIndex(0);
+                    dBgTail = dynamicBackgrounds.size > 0 ? dynamicBackgrounds.get(dynamicBackgrounds.size - 1) : dBgHead;
+                    dBgHead.setPosition(dBgTail.getX() + dBgTail.getWidth(), dBgHead.getY());
+                    dynamicBackgrounds.add(dBgHead);
                 }
             } else {
                 if (velocity > 0) { // Layer is moving to the right
-                    BackgroundObject bgFirst = colBgObject.first();
+                    DynamicBackground bgFirst = dynamicBackgrounds.first();
                     if (gameCamRight < bgFirst.getX()) {
-                        bgHead = colBgObject.removeIndex(0);
-                        bgTail = colBgObject.size > 0 ? colBgObject.get(colBgObject.size - 1) : bgHead;
-                        bgHead.setPosition(bgTail.getX() - bgHead.getWidth(), bgHead.getY());
-                        colBgObject.add(bgHead);
+                        dBgHead = dynamicBackgrounds.removeIndex(0);
+                        dBgTail = dynamicBackgrounds.size > 0 ? dynamicBackgrounds.get(dynamicBackgrounds.size - 1) : dBgHead;
+                        dBgHead.setPosition(dBgTail.getX() - dBgHead.getWidth(), dBgHead.getY());
+                        dynamicBackgrounds.add(dBgHead);
                     }
                 }
             }
         }
 
         private void updateVertical(float gameCamBottom, float gameCamTop) {
-            BackgroundObject bgHead;
-            BackgroundObject bgTail;
+            DynamicBackground dBgHead;
+            DynamicBackground dBgTail;
 
             if (velocity < 0) { // Layer is moving down
-                BackgroundObject bgFirst = colBgObject.first();
+                DynamicBackground bgFirst = dynamicBackgrounds.first();
                 if (gameCamBottom > bgFirst.getY() + bgFirst.getHeight()) {
-                    bgHead = colBgObject.removeIndex(0);
-                    bgTail = colBgObject.size > 0 ? colBgObject.get(colBgObject.size - 1) : bgHead;
-                    bgHead.setPosition(bgHead.getX(), bgTail.getY() + bgTail.getHeight());
-                    colBgObject.add(bgHead);
+                    dBgHead = dynamicBackgrounds.removeIndex(0);
+                    dBgTail = dynamicBackgrounds.size > 0 ? dynamicBackgrounds.get(dynamicBackgrounds.size - 1) : dBgHead;
+                    dBgHead.setPosition(dBgHead.getX(), dBgTail.getY() + dBgTail.getHeight());
+                    dynamicBackgrounds.add(dBgHead);
                 }
             } else {
                 if (velocity > 0) { // Layer is moving up
-                    BackgroundObject bgFirst = colBgObject.first();
+                    DynamicBackground bgFirst = dynamicBackgrounds.first();
                     if (gameCamTop < bgFirst.getY()) {
-                        bgHead = colBgObject.removeIndex(0);
-                        bgTail = colBgObject.size > 0 ? colBgObject.get(colBgObject.size - 1) : bgHead;
-                        bgHead.setPosition(bgHead.getX(), bgTail.getY() - bgHead.getHeight());
-                        colBgObject.add(bgHead);
+                        dBgHead = dynamicBackgrounds.removeIndex(0);
+                        dBgTail = dynamicBackgrounds.size > 0 ? dynamicBackgrounds.get(dynamicBackgrounds.size - 1) : dBgHead;
+                        dBgHead.setPosition(dBgHead.getX(), dBgTail.getY() - dBgHead.getHeight());
+                        dynamicBackgrounds.add(dBgHead);
                     }
                 }
             }
         }
 
         public void render(SpriteBatch spriteBatch) {
-            for (BackgroundObject backgroundObject : colBgObject) {
-                backgroundObject.draw(spriteBatch);
+            for (DynamicBackground dynamicBackground : dynamicBackgrounds) {
+                dynamicBackground.draw(spriteBatch);
             }
         }
 
         public void renderDebug(ShapeRenderer shapeRenderer) {
-            for (BackgroundObject backgroundObject : colBgObject) {
-                backgroundObject.renderDebug(shapeRenderer);
+            for (DynamicBackground dynamicBackground : dynamicBackgrounds) {
+                dynamicBackground.renderDebug(shapeRenderer);
             }
         }
     }
 
-    private class BackgroundObject extends AbstractGameObject {
+    private class DynamicBackground extends AbstractGameObject {
         private boolean horizontalScroll;
         private float velocity;
 
-        public BackgroundObject(TextureRegion textureRegion, float x, float y, boolean horizontalScroll, float velocity) {
+        public DynamicBackground(TextureRegion textureRegion, float x, float y, boolean horizontalScroll, float velocity) {
             this.horizontalScroll = horizontalScroll;
             this.velocity = velocity;
             setBounds(x, y, textureRegion.getRegionWidth() / GameCamera.PPM, textureRegion.getRegionHeight() / GameCamera.PPM);
@@ -227,6 +226,38 @@ public class ParallaxSB {
         @Override
         public void render(SpriteBatch spriteBatch) {
             draw(spriteBatch);
+        }
+    }
+
+    private class StaticBackground extends AbstractGameObject {
+        private GameCamera gameCamera;
+        private float trWidth;
+        private float trHeight;
+
+        public StaticBackground(TextureRegion textureRegion, GameCamera gameCamera) {
+            this.gameCamera = gameCamera;
+            trWidth =  textureRegion.getRegionWidth() / GameCamera.PPM;
+            trHeight = textureRegion.getRegionHeight() / GameCamera.PPM;
+            setBounds(getCenterX(), getCenterY(), trWidth, trHeight);
+            setRegion(textureRegion);
+        }
+
+        @Override
+        public void update(float deltaTime) {
+            setPosition(getCenterX(), getCenterY());
+        }
+
+        @Override
+        public void render(SpriteBatch spriteBatch) {
+            draw(spriteBatch);
+        }
+
+        private float getCenterX() {
+            return gameCamera.position().x - trWidth / 2;
+        }
+
+        private float getCenterY() {
+            return gameCamera.position().y - trHeight / 2;
         }
     }
 }
