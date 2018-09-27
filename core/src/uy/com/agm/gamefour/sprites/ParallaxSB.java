@@ -17,8 +17,8 @@ public class ParallaxSB {
     private static final String TAG = ParallaxSB.class.getName();
 
     private GameCamera gameCamera;
-    private Array<Layer> layers;
     private Array<StaticBackground> staticBackgrounds;
+    private Array<Layer> layers;
 
     public ParallaxSB(GameCamera gameCamera) {
         this.gameCamera = gameCamera;
@@ -110,6 +110,10 @@ public class ParallaxSB {
     }
 
     private class Layer {
+        // TODO PARA MI UNA LAYER PUEDE SER ESTATICA O DINAMICA, TIENE UNA COLECCION DE STATICBG Y UNA DE DYNAMICBG.
+        // PODES ENTONCES CREAR UNA LAYER STATIC O UNA DYNAMIC. NECESITO UN BOOLEANO PRIVADO EN ESTA CLASE QUE ME DIGA QUE SOY.
+
+
         private Array<DynamicBackground> dynamicBackgrounds;
         private boolean horizontalScroll;
         private float velocity;
