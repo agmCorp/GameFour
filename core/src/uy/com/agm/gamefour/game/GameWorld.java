@@ -53,6 +53,8 @@ public class GameWorld {
         En caso de que no, deberian moverse para alinearse con la camara que se movio.
         OTRA COSA QUE ANDA MAL ES EL RESIZE: LO QUE PASA CON EL RESIZE ES QUE TIENE CENTER CAMERA EN TRUE Y ESO
         PARA EL JUEGO ESTA MUY MAL. EL CENTER LA VUELVE A 00.
+        arregle todo creo. si la camara se mueve recien llamo a update, sino no.
+        el resize lo arregle, ver que no se haya roto nada en web.
          */
 
         parallaxSB = new ParallaxSB(gameCamera);
@@ -72,7 +74,7 @@ public class GameWorld {
     public void update(float deltaTime) {
         jumper.update(deltaTime);
         centerCamera(deltaTime);
-        parallaxSB.update(deltaTime);
+//        parallaxSB.update(deltaTime);
         platforms.update(level, deltaTime);
 
         // Always at the end
@@ -82,11 +84,15 @@ public class GameWorld {
 
     private void centerCamera(float deltaTime) {
         if (moveCamera) {
-            float velocityDeCamara = 100.0f;
+            float velocityDeCamara = 1.0f;
             Gdx.app.debug(TAG, "**** muevo camara");
 
             // TODO movecamera se pone en false cuando llego a la poscion de hero.
             gameCamera.position().x = gameCamera.position().x + velocityDeCamara * deltaTime;
+
+
+            parallaxSB.update(deltaTime);
+
             if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > jumper.position().x) {
                 Gdx.app.debug(TAG, "**** dejo de mover camara " + (gameCamera.position().x - gameCamera.getWorldWidth() / 2) + " JUMPER: " + jumper.position().x );
                 moveCamera = false;
