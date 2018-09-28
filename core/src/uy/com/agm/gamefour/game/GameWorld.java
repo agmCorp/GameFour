@@ -55,6 +55,7 @@ public class GameWorld {
         PARA EL JUEGO ESTA MUY MAL. EL CENTER LA VUELVE A 00.
         arregle todo creo. si la camara se mueve recien llamo a update, sino no.
         el resize lo arregle, ver que no se haya roto nada en web.
+        LE ESTOY ERRANDO POR UN PIXEL PUTO AL UNIR TEXTURAS
          */
 
         parallaxSB = new ParallaxSB(gameCamera);
