@@ -49,6 +49,8 @@ public class GameWorld {
         Lo que implica tener un parallaxSB.update(dt) donde si la camara se movio, recien se mueven las capas
         un cachito. Pero si la camara esta quieta, deberia estar todo quieto.
         Igual no es lo que queria para mi juego.
+        yo creo que los fondos no se deberian mover solos, yo deberia elegir si se mueven automatico solos o no.
+        En caso de que no, deberian moverse para alinearse con la camara que se movio.
          */
 
         parallaxSB = new ParallaxSB(gameCamera);
