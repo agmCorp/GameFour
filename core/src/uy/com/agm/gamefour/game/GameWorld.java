@@ -43,18 +43,7 @@ public class GameWorld {
         boolean horizontal = true;
         byte signo = -1;
 
-        /*
-        solo se me ocurre que yo deberia crear layers con diferencia de velocidades.
-        luego cada vez que se mueva la camara, las layers se mueven tomando en cuenta esa diferencia.
-        Lo que implica tener un parallaxSB.update(dt) donde si la camara se movio, recien se mueven las capas
-        un cachito. Pero si la camara esta quieta, deberia estar todo quieto.
-        Igual no es lo que queria para mi juego.
-        yo creo que los fondos no se deberian mover solos, yo deberia elegir si se mueven automatico solos o no.
-        En caso de que no, deberian moverse para alinearse con la camara que se movio.
-        OTRA COSA QUE ANDA MAL ES EL RESIZE: LO QUE PASA CON EL RESIZE ES QUE TIENE CENTER CAMERA EN TRUE Y ESO
-        PARA EL JUEGO ESTA MUY MAL. EL CENTER LA VUELVE A 00.
-        arregle todo creo. si la camara se mueve recien llamo a update, sino no.
-        el resize lo arregle, ver que no se haya roto nada en web.
+        /* todo
         LE ESTOY ERRANDO POR UN PIXEL PUTO AL UNIR TEXTURAS
          */
 
