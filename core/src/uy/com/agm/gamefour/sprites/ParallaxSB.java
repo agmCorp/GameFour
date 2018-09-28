@@ -60,14 +60,14 @@ public class ParallaxSB {
             if (i > 0) {
                 prevDBg = dynamicBackgrounds.get(i - 1);
                 if (horizontalScroll) {
-                    y = gameCamPos.y - (currTr.getRegionHeight() / GameCamera.PPM ) / 2;
+                    y = gameCamPos.y - ( currTr.getRegionHeight() / GameCamera.PPM ) / 2;
                     if (velocity < 0) { // Layer is moving to the left
                         x = prevDBg.getX() + prevDBg.getWidth(); // Grows to the right
                     } else { // Layer is moving to the right
                         x = prevDBg.getX() - currTr.getRegionWidth() / GameCamera.PPM; // Grows to the left
                     }
                 } else {
-                    x = gameCamPos.x - (currTr.getRegionWidth() / GameCamera.PPM ) / 2;
+                    x = gameCamPos.x - ( currTr.getRegionWidth() / GameCamera.PPM ) / 2;
                     if (velocity < 0) { // Layer is moving down
                         y = prevDBg.getY() + prevDBg.getHeight(); // Grows up
                     } else { // Layer is moving up
