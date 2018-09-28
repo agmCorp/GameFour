@@ -51,6 +51,7 @@ public class GameWorld {
         Igual no es lo que queria para mi juego.
         yo creo que los fondos no se deberian mover solos, yo deberia elegir si se mueven automatico solos o no.
         En caso de que no, deberian moverse para alinearse con la camara que se movio.
+        OTRA COSA QUE ANDA MAL ES EL RESIZE
          */
 
         parallaxSB = new ParallaxSB(gameCamera);
