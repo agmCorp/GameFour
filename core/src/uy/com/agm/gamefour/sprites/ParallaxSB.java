@@ -17,18 +17,24 @@ public class ParallaxSB {
     private static final String TAG = ParallaxSB.class.getName();
 
     private GameCamera gameCamera;
-    private Array<StaticBackground> staticBackgrounds;
+    private Array<FarBackground> farBackgrounds;
     private Array<Layer> layers;
 
     public ParallaxSB(GameCamera gameCamera) {
         this.gameCamera = gameCamera;
-        staticBackgrounds = new Array<StaticBackground>();
+        farBackgrounds = new Array<FarBackground>();
         layers = new Array<Layer>();
     }
 
-    public void addStaticLayer(TextureRegion textureRegion) {
-        StaticBackground staticBackground = new StaticBackground(textureRegion, gameCamera);
-        staticBackgrounds.add(staticBackground);
+    public void addFarawayLayer(TextureRegion textureRegion) {
+        FarBackground farBackground = new FarBackground(textureRegion, gameCamera);
+        farBackgrounds.add(farBackground);
+    }
+
+    public void addFarawayLayer(Array<TextureRegion> colTextureRegion) {
+        for (TextureRegion textureRegion : colTextureRegion) {
+            addFarawayLayer(textureRegion);
+        }
     }
 
     public void addDynamicLayer(TextureRegion textureRegion, int repeat, boolean horizontalScroll, float velocity) {
@@ -80,8 +86,8 @@ public class ParallaxSB {
     }
 
     public void update(float deltaTime) {
-        for (StaticBackground staticBackground : staticBackgrounds) {
-            staticBackground.update(deltaTime);
+        for (FarBackground farBackground : farBackgrounds) {
+            farBackground.update(deltaTime);
         }
 
         for (Layer layer : layers) {
@@ -90,8 +96,8 @@ public class ParallaxSB {
     }
 
     public void render(SpriteBatch spriteBatch) {
-        for (StaticBackground staticBackground : staticBackgrounds) {
-            staticBackground.render(spriteBatch);
+        for (FarBackground farBackground : farBackgrounds) {
+            farBackground.render(spriteBatch);
         }
 
         for (Layer layer : layers) {
@@ -100,8 +106,8 @@ public class ParallaxSB {
     }
 
     public void renderDebug(ShapeRenderer shapeRenderer) {
-        for (StaticBackground staticBackground : staticBackgrounds) {
-            staticBackground.renderDebug(shapeRenderer);
+        for (FarBackground farBackground : farBackgrounds) {
+            farBackground.renderDebug(shapeRenderer);
         }
 
         for (Layer layer : layers) {
@@ -110,10 +116,6 @@ public class ParallaxSB {
     }
 
     private class Layer {
-        // TODO PARA MI UNA LAYER PUEDE SER ESTATICA O DINAMICA, TIENE UNA COLECCION DE STATICBG Y UNA DE DYNAMICBG.
-        // PODES ENTONCES CREAR UNA LAYER STATIC O UNA DYNAMIC. NECESITO UN BOOLEANO PRIVADO EN ESTA CLASE QUE ME DIGA QUE SOY.
-
-
         private Array<DynamicBackground> dynamicBackgrounds;
         private boolean horizontalScroll;
         private float velocity;
@@ -231,12 +233,12 @@ public class ParallaxSB {
         }
     }
 
-    private class StaticBackground extends AbstractGameObject {
+    private class FarBackground extends AbstractGameObject {
         private GameCamera gameCamera;
         private float trWidth;
         private float trHeight;
 
-        public StaticBackground(TextureRegion textureRegion, GameCamera gameCamera) {
+        public FarBackground(TextureRegion textureRegion, GameCamera gameCamera) {
             this.gameCamera = gameCamera;
             trWidth =  textureRegion.getRegionWidth() / GameCamera.PPM;
             trHeight = textureRegion.getRegionHeight() / GameCamera.PPM;

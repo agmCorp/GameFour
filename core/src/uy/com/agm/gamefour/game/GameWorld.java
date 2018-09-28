@@ -44,17 +44,17 @@ public class GameWorld {
         byte signo = -1;
 
         parallaxSB = new ParallaxSB(gameCamera);
-        parallaxSB.addStaticLayer(new TextureRegion(new Texture("Layer11.png"))); // background
-        parallaxSB.addStaticLayer(new TextureRegion(new Texture("Layer12.png"))); // sol
-        parallaxSB.addStaticLayer(new TextureRegion(new Texture("Layer10.png"))); // estrellas
+        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer11.png"))); // background
+        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer12.png"))); // sol
+        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer10.png"))); // estrellas
 
         parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer8.png")), 2, horizontal, signo * 1.0f); // nubes 1
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer7.png")), 2, horizontal, signo * 2.0f); // nubes 2
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer5.png")), 2, horizontal, signo * 3.0f); // montanas mas distantes
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer4.png")), 2, horizontal, signo * 4.0f);
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer3.png")), 2, horizontal, signo * 5.0f);
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer2.png")), 2, horizontal, signo * 6.0f);
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer1.png")), 2, horizontal, signo * 7.0f);
+        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer7.png")), 2, horizontal, signo * 1.5f); // nubes 2
+        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer5.png")), 2, horizontal, signo * 0.2f); // montanas mas distantes
+        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer4.png")), 2, horizontal, signo * 1.0f);
+        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer3.png")), 2, horizontal, signo * 1.5f);
+        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer2.png")), 2, horizontal, signo * 2.0f);
+        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer1.png")), 2, horizontal, signo * 5.0f);
     }
 
     public void update(float deltaTime) {
