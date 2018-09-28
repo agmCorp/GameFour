@@ -62,14 +62,17 @@ public class GameWorld {
     }
 
     public void update(float deltaTime) {
+        Gdx.app.debug(TAG, "*** LEVEL A " + level);
+
         jumper.update(deltaTime);
         centerCamera(deltaTime);
-//        parallaxSB.update(deltaTime);
         platforms.update(level, deltaTime);
 
         // Always at the end
         // Update the game camera with correct coordinates after changes
         gameCamera.update(deltaTime);
+
+        Gdx.app.debug(TAG, "*** LEVEL B " + level);
     }
 
     private void centerCamera(float deltaTime) {

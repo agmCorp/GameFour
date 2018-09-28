@@ -23,17 +23,19 @@ public class Jumper extends AbstractGameObject {
 
         // Sets initial values for location, width and height and initial frame as jumperStand.
         jumperStand = Assets.getInstance().getSprites().getJumper().getJumper();
-        setBounds(0, 0, 0.762f, 0.762f);
+        setBounds(0, gameWorld.getGameCamera().position().y, 0.4f, 0.4f);
         setRegion(jumperStand);
 
         stateTime = 0;
     }
 
     public void onSuccessfulJump() {
-        // todo ACA LO MUEVO A PREPO..ESTO NO ESTARIA
-        setPosition(getX() + 40.8f, getY());
-
         gameWorld.addLevel();
+
+        // todo ACA LO MUEVO A PREPO..ESTO NO ESTARIA
+        float x = gameWorld.getPlatforms().getPlatform(1).getX();
+        float y = gameWorld.getPlatforms().getPlatform(1).getY();
+        setPosition(x, y);
     }
 
     public Vector2 position() {

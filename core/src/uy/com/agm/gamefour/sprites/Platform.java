@@ -21,14 +21,21 @@ public class Platform extends AbstractGameObject {
     public Platform(float x, float y) {
         // Sets initial values for location, width and height and initial frame as platformStand.
         platformStand = Assets.getInstance().getSprites().getJumper().getJumper();
-        setBounds(x, y, 0.762f, 0.762f);
+        setBounds(x, y, 1.0f, 1.0f);
         setRegion(platformStand);
         stateTime = 0;
 
-        velocity = new Vector2(0,0);
+        velocity = new Vector2(0, 0);
     }
 
 
+    public void setVelocity(float vx, float vy) {
+        velocity.set(vx, vy);
+    }
+
+    public void reposition(float x) {
+        setPosition(x, getY());
+    }
 
     @Override
     public void update(float deltaTime) {
