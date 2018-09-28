@@ -75,8 +75,8 @@ public class ParallaxSB {
                     }
                 }
             } else {
-                x = gameCamPos.x - (currTr.getRegionWidth() / GameCamera.PPM ) / 2;
-                y = gameCamPos.y - (currTr.getRegionHeight() / GameCamera.PPM ) / 2;
+                x = gameCamPos.x - ( currTr.getRegionWidth() / GameCamera.PPM ) / 2;
+                y = gameCamPos.y - ( currTr.getRegionHeight() / GameCamera.PPM ) / 2;
             }
             currDBg = new DynamicBackground(currTr, x, y, horizontalScroll, velocity);
             dynamicBackgrounds.add(currDBg);
