@@ -43,6 +43,14 @@ public class GameWorld {
         boolean horizontal = true;
         byte signo = -1;
 
+        /*
+        solo se me ocurre que yo deberia crear layers con diferencia de velocidades.
+        luego cada vez que se mueva la camara, las layers se mueven tomando en cuenta esa diferencia.
+        Lo que implica tener un parallaxSB.update(dt) donde si la camara se movio, recien se mueven las capas
+        un cachito. Pero si la camara esta quieta, deberia estar todo quieto.
+        Igual no es lo que queria para mi juego.
+         */
+
         parallaxSB = new ParallaxSB(gameCamera);
         parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer11.png"))); // background
         parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer12.png"))); // sol
@@ -58,23 +66,28 @@ public class GameWorld {
     }
 
     public void update(float deltaTime) {
+        jumper.update(deltaTime);
+        centerCamera(deltaTime);
         parallaxSB.update(deltaTime);
         platforms.update(level, deltaTime);
-        jumper.update(deltaTime);
 
         // Always at the end
         // Update the game camera with correct coordinates after changes
+        gameCamera.update(deltaTime);
+    }
+
+    private void centerCamera(float deltaTime) {
         if (moveCamera) {
+            float velocityDeCamara = 100.0f;
             Gdx.app.debug(TAG, "**** muevo camara");
 
             // TODO movecamera se pone en false cuando llego a la poscion de hero.
-            gameCamera.position().x = gameCamera.position().x + 1 * deltaTime;
+            gameCamera.position().x = gameCamera.position().x + velocityDeCamara * deltaTime;
             if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > jumper.position().x) {
                 Gdx.app.debug(TAG, "**** dejo de mover camara " + (gameCamera.position().x - gameCamera.getWorldWidth() / 2) + " JUMPER: " + jumper.position().x );
                 moveCamera = false;
             }
         }
-        gameCamera.update(deltaTime);
     }
 
     public void render(SpriteBatch batch) {

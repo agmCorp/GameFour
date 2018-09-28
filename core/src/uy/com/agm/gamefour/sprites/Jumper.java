@@ -30,7 +30,9 @@ public class Jumper extends AbstractGameObject {
     }
 
     public void onSuccessfulJump() {
-        setPosition(getX() + 2.0f, getY());
+        // todo ACA LO MUEVO A PREPO..ESTO NO ESTARIA
+        setPosition(getX() + 40.8f, getY());
+
         gameWorld.addLevel();
     }
 
