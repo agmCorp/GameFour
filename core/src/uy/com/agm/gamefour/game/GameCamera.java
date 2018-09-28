@@ -51,7 +51,7 @@ public class GameCamera {
     }
 
     public void resize(int width, int height) {
-        gameViewPort.update(width, height, true);
+        gameViewPort.update(width, height, false);
     }
 
     public float getWorldWidth() {
