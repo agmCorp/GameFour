@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.sprites.AssetPlatformA;
+import uy.com.agm.gamefour.game.GameCamera;
 
 /**
  * Created by AGMCORP on 26/9/2018.
@@ -27,7 +28,9 @@ public class Platform extends AbstractGameObject {
         platformAnimation = assetPlatformA.getPlatformAAnimation();
 
         // Sets initial values for location, width and height and initial frame as platformStand.
-        setBounds(x, y, platformStand.getRegionWidth() * AssetPlatformA.SCALE, platformStand.getRegionHeight() * AssetPlatformA.SCALE);
+        setBounds(x, y,
+                ( platformStand.getRegionWidth() / GameCamera.PPM ) * AssetPlatformA.SCALE,
+                ( platformStand.getRegionHeight() / GameCamera.PPM ) * AssetPlatformA.SCALE);
         setRegion(platformStand);
 
         platformStateTime = 0;
@@ -49,7 +52,7 @@ public class Platform extends AbstractGameObject {
         //b2body.setLinearVelocity(velocity);
 
         setPosition(getX() + velocity.x * deltaTime, getY() + velocity.y * deltaTime);
-        setRegion(platformStand);
+        setRegion((TextureRegion) platformAnimation.getKeyFrame(platformStateTime, true));
         platformStateTime += deltaTime;
     }
 

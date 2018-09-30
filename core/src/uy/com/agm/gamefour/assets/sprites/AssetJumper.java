@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 public class AssetJumper {
     private static final String TAG = AssetJumper.class.getName();
 
-    public static final float SCALE = 0.5f;
+    public static final float SCALE = 0.7f;
 
     private TextureRegion jumperStand;
     private Animation jumperJumpAnimation;
@@ -31,7 +31,7 @@ public class AssetJumper {
 
         // Animation
         regions = atlas.findRegions("jumperIdle");
-        jumperIdleAnimation = new Animation(0.5f / 2.0f, regions, Animation.PlayMode.LOOP);
+        jumperIdleAnimation = new Animation(2.5f / 9.0f, regions, Animation.PlayMode.LOOP);
         regions.clear();
     }
 
