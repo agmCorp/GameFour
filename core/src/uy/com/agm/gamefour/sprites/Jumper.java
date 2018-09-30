@@ -1,10 +1,12 @@
 package uy.com.agm.gamefour.sprites;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import uy.com.agm.gamefour.assets.Assets;
+import uy.com.agm.gamefour.assets.sprites.AssetJumper;
 import uy.com.agm.gamefour.game.GameWorld;
 
 /**
@@ -16,17 +18,23 @@ public class Jumper extends AbstractGameObject {
 
     private GameWorld gameWorld;
     private TextureRegion jumperStand;
-    private float stateTime;
+    private Animation jumperIdleAnimation;
+    private Animation jumperJumpAnimation;
+    private float jumperStateTime;
 
     public Jumper(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
 
+        AssetJumper assetJumper = Assets.getInstance().getSprites().getJumper();
+        jumperStand = assetJumper.getJumperStand();
+        jumperIdleAnimation = assetJumper.getJumperIdleAnimation();
+        jumperJumpAnimation = assetJumper.getJumperJumpAnimation();
+
         // Sets initial values for location, width and height and initial frame as jumperStand.
-        jumperStand = Assets.getInstance().getSprites().getJumper().getJumper();
-        setBounds(0, gameWorld.getGameCamera().position().y, 0.4f, 0.4f);
+        setBounds(0, gameWorld.getGameCamera().position().y, jumperStand.getRegionWidth() * AssetJumper.SCALE, jumperStand.getRegionHeight() * AssetJumper.SCALE);
         setRegion(jumperStand);
 
-        stateTime = 0;
+        jumperStateTime = 0;
     }
 
     public void onSuccessfulJump() {
@@ -46,10 +54,10 @@ public class Jumper extends AbstractGameObject {
 
     @Override
     public void update(float deltaTime) {
-//        stateTime += deltaTime;
-//        if (stateTime > 3f) {
+//        jumperStateTime += deltaTime;
+//        if (jumperStateTime > 3f) {
 //            gameWorld.getCamera().position.x = getX();
-//            stateTime = 0;
+//            jumperStateTime = 0;
 //        }
 
 //        float velocity = -3.5f;
@@ -57,6 +65,9 @@ public class Jumper extends AbstractGameObject {
 
 //        gameWorld.getCamera().position.y = gameWorld.getCamera().position.y + velocity * deltaTime;
         //setPosition(getX() + velocity * deltaTime, getY());
+        setRegion((TextureRegion) jumperJumpAnimation.getKeyFrame(jumperStateTime, true));
+        jumperStateTime += deltaTime;
+
     }
 
     @Override

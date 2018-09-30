@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 
 import uy.com.agm.gamefour.assets.audio.music.AssetMusic;
 import uy.com.agm.gamefour.assets.audio.sound.AssetSounds;
+import uy.com.agm.gamefour.assets.backgrounds.AssetBackgrounds;
 import uy.com.agm.gamefour.assets.fonts.AssetFonts;
 import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.assets.i18n.AssetI18NGameFour;
@@ -33,12 +34,14 @@ public class Assets implements Disposable, AssetErrorListener {
     public static final String MUSIC_FILE_GAME = "audio/music/game.ogg";
 
     // Texture atlas
-    private static final String TEXTURE_ATLAS_SPRITES = "atlas/sprites/dynamicObjects.atlas"; // todo
+    private static final String TEXTURE_ATLAS_BACKGROUNDS = "atlas/backgrounds/backgrounds.atlas";
+    private static final String TEXTURE_ATLAS_SPRITES = "atlas/sprites/sprites.atlas";
     private static final String TEXTURE_ATLAS_GUI = "atlas/gui/scene2d.atlas"; // todo
 
     private static Assets instance;
     private AssetManager assetManager;
     private AssetI18NGameFour i18NGameFour;
+    private AssetBackgrounds backgrounds;
     private AssetSprites sprites;
     private AssetGUI gui;
     private AssetFonts fonts;
@@ -85,6 +88,11 @@ public class Assets implements Disposable, AssetErrorListener {
         Gdx.app.debug(TAG, "***************************");
 
         // Enables linear texture filtering for pixel smoothing
+        TextureAtlas atlasBackgrounds = assetManager.get(TEXTURE_ATLAS_BACKGROUNDS);
+        for (Texture texture : atlasBackgrounds.getTextures()) {
+            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
+
         TextureAtlas atlasSprites = assetManager.get(TEXTURE_ATLAS_SPRITES);
         for (Texture texture : atlasSprites.getTextures()) {
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -96,6 +104,7 @@ public class Assets implements Disposable, AssetErrorListener {
         }
 
         i18NGameFour = new AssetI18NGameFour(assetManager);
+        backgrounds = new AssetBackgrounds(atlasBackgrounds);
         sprites = new AssetSprites(atlasSprites);
         gui = new AssetGUI(atlasGUI);
         fonts = new AssetFonts();
@@ -108,6 +117,7 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
     private void loadTextureAtlas() {
+        assetManager.load(TEXTURE_ATLAS_BACKGROUNDS, TextureAtlas.class);
         assetManager.load(TEXTURE_ATLAS_SPRITES, TextureAtlas.class);
         assetManager.load(TEXTURE_ATLAS_GUI, TextureAtlas.class);
     }
@@ -123,6 +133,10 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public AssetI18NGameFour getI18NGameFour() {
         return i18NGameFour;
+    }
+
+    public AssetBackgrounds getBackgrounds() {
+        return backgrounds;
     }
 
     public AssetSprites getSprites() {

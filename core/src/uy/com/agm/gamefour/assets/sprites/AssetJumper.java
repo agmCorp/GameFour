@@ -1,7 +1,9 @@
 package uy.com.agm.gamefour.assets.sprites;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
 
 /**
@@ -11,78 +13,37 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class AssetJumper {
     private static final String TAG = AssetJumper.class.getName();
 
-    private TextureRegion jumper;
+    public static final float SCALE = 0.5f;
 
-    // todo
-    public AssetJumper(TextureAtlas atlas) {
-        jumper = atlas.findRegion("heroDown", 1);
-    }
-
-    public TextureRegion getJumper() {
-        return jumper;
-    }
-
-    /*
-    // Constants (meters = pixels * resizeFactor / PPM)
-    public static final float WIDTH_METERS = 127.0f * 0.6f / PlayScreen.PPM;
-    public static final float HEIGHT_METERS = 127.0f * 0.6f / PlayScreen.PPM;
-
-    private TextureRegion heroStandUp;
-    private TextureRegion heroStandDown;
-    private Animation heroDeathAnimation;
-    private Animation heroWalkUpAnimation;
-    private Animation heroWalkDownAnimation;
-    private Animation heroWalkLeftRightAnimation;
+    private TextureRegion jumperStand;
+    private Animation jumperJumpAnimation;
+    private Animation jumperIdleAnimation;
 
     public AssetJumper(TextureAtlas atlas) {
         Array<TextureAtlas.AtlasRegion> regions;
 
-        heroStandUp = atlas.findRegion("heroUp", 1);
-        heroStandDown = atlas.findRegion("heroDown", 1);
+        jumperStand = atlas.findRegion("jumperIdle", 1);
 
         // Animation
-        regions = atlas.findRegions("heroUp");
-        heroWalkUpAnimation = new Animation(0.5f / 37.0f, regions, Animation.PlayMode.LOOP);
+        regions = atlas.findRegions("jumperJump");
+        jumperJumpAnimation = new Animation(0.5f / 24.0f, regions, Animation.PlayMode.LOOP);
         regions.clear();
 
         // Animation
-        regions = atlas.findRegions("heroDown");
-        heroWalkDownAnimation = new Animation(0.5f / 37.0f, regions, Animation.PlayMode.LOOP);
-        regions.clear();
-
-        // Animation
-        regions = atlas.findRegions("heroUp");
-        heroWalkLeftRightAnimation = new Animation(0.5f / 37.0f, regions, Animation.PlayMode.LOOP); // We use the same animation as heroWalkUpAnimation
-        regions.clear();
-
-        // Animation
-        regions = atlas.findRegions("heroDead");
-        heroDeathAnimation = new Animation(0.5f / 25.0f, regions, Animation.PlayMode.LOOP);
+        regions = atlas.findRegions("jumperIdle");
+        jumperIdleAnimation = new Animation(0.5f / 2.0f, regions, Animation.PlayMode.LOOP);
         regions.clear();
     }
 
-    public TextureRegion getHeroStandUp() {
-        return heroStandUp;
+    public TextureRegion getJumperStand() {
+        return jumperStand;
     }
 
-    public TextureRegion getHeroStandDown() {
-        return heroStandDown;
+    public Animation getJumperJumpAnimation() {
+        return jumperJumpAnimation;
     }
 
-    public Animation getHeroDeathAnimation() {
-        return heroDeathAnimation;
+    public Animation getJumperIdleAnimation() {
+        return jumperIdleAnimation;
     }
-
-    public Animation getHeroWalkUpAnimation() {
-        return heroWalkUpAnimation;
-    }
-
-    public Animation getHeroWalkDownAnimation() {
-        return heroWalkDownAnimation;
-    }
-
-    public Animation getHeroWalkLeftRightAnimation() {
-        return heroWalkLeftRightAnimation;
-    }
-    */
 }

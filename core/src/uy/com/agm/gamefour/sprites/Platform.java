@@ -1,10 +1,12 @@
 package uy.com.agm.gamefour.sprites;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import uy.com.agm.gamefour.assets.Assets;
+import uy.com.agm.gamefour.assets.sprites.AssetPlatformA;
 
 /**
  * Created by AGMCORP on 26/9/2018.
@@ -14,17 +16,21 @@ public class Platform extends AbstractGameObject {
     private static final String TAG = Platform.class.getName();
 
     private TextureRegion platformStand;
-    private float stateTime;
+    private Animation platformAnimation;
+    private float platformStateTime;
     private Vector2 velocity;
 
 
     public Platform(float x, float y) {
-        // Sets initial values for location, width and height and initial frame as platformStand.
-        platformStand = Assets.getInstance().getSprites().getJumper().getJumper();
-        setBounds(x, y, 1.0f, 1.0f);
-        setRegion(platformStand);
-        stateTime = 0;
+        AssetPlatformA assetPlatformA = Assets.getInstance().getSprites().getPlatformA();
+        platformStand = assetPlatformA.getPlatformAStand();
+        platformAnimation = assetPlatformA.getPlatformAAnimation();
 
+        // Sets initial values for location, width and height and initial frame as platformStand.
+        setBounds(x, y, platformStand.getRegionWidth() * AssetPlatformA.SCALE, platformStand.getRegionHeight() * AssetPlatformA.SCALE);
+        setRegion(platformStand);
+
+        platformStateTime = 0;
         velocity = new Vector2(0, 0);
     }
 
@@ -44,7 +50,7 @@ public class Platform extends AbstractGameObject {
 
         setPosition(getX() + velocity.x * deltaTime, getY() + velocity.y * deltaTime);
         setRegion(platformStand);
-        stateTime += deltaTime;
+        platformStateTime += deltaTime;
     }
 
     @Override

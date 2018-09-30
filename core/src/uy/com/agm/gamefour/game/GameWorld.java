@@ -1,11 +1,11 @@
 package uy.com.agm.gamefour.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import uy.com.agm.gamefour.assets.Assets;
+import uy.com.agm.gamefour.assets.backgrounds.AssetDesert;
 import uy.com.agm.gamefour.sprites.Jumper;
 import uy.com.agm.gamefour.sprites.ParallaxSB;
 import uy.com.agm.gamefour.sprites.Platforms;
@@ -47,18 +47,19 @@ public class GameWorld {
         LE ESTOY ERRANDO POR UN PIXEL PUTO AL UNIR TEXTURAS
          */
 
+        AssetDesert assetDesert = Assets.getInstance().getBackgrounds().getDesert();
         parallaxSB = new ParallaxSB(gameCamera);
-        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer10.png"))); // background
-        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer9.png"))); // sol
-        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer8.png"))); // estrellas
+        parallaxSB.addFarawayLayer(assetDesert.getLayer10()); // background
+        parallaxSB.addFarawayLayer(assetDesert.getLayer9()); // sol
+        parallaxSB.addFarawayLayer(assetDesert.getLayer8()); // estrellas
 
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer7.png")), 2, horizontal, signo * 1.0f); // nubes 1
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer6.png")), 2, horizontal, signo * 1.5f); // nubes 2
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer5.png")), 2, horizontal, signo * 0.2f); // montanas mas distantes
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer4.png")), 2, horizontal, signo * 1.0f);
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer3.png")), 2, horizontal, signo * 1.5f);
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer2.png")), 2, horizontal, signo * 2.0f);
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer1.png")), 2, horizontal, signo * 5.0f);
+        parallaxSB.addDynamicLayer(assetDesert.getLayer7(), 2, horizontal, signo * 1.0f); // nubes 1
+        parallaxSB.addDynamicLayer(assetDesert.getLayer6(), 2, horizontal, signo * 1.5f); // nubes 2
+        parallaxSB.addDynamicLayer(assetDesert.getLayer5(), 2, horizontal, signo * 0.2f); // montanas mas distantes
+        parallaxSB.addDynamicLayer(assetDesert.getLayer4(), 2, horizontal, signo * 1.0f);
+        parallaxSB.addDynamicLayer(assetDesert.getLayer3(), 2, horizontal, signo * 1.5f);
+        parallaxSB.addDynamicLayer(assetDesert.getLayer2(), 2, horizontal, signo * 2.0f);
+        parallaxSB.addDynamicLayer(assetDesert.getLayer1(), 2, horizontal, signo * 5.0f);
     }
 
     public void update(float deltaTime) {

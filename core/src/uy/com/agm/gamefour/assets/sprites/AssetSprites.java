@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 public class AssetSprites {
     private static final String TAG = AssetSprites.class.getName();
 
+    private AssetPlatformA platformA;
     private AssetJumper jumper;
 
     public AssetSprites(TextureAtlas atlasSprites) {
@@ -18,5 +19,9 @@ public class AssetSprites {
 
     public AssetJumper getJumper() {
         return jumper;
+    }
+
+    public AssetPlatformA getPlatformA() {
+        return platformA;
     }
 }
