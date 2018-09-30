@@ -23,16 +23,16 @@ public class AssetDesert {
     private TextureRegion layer10;
 
     public AssetDesert(TextureAtlas atlas) {
-        layer1 = atlas.findRegion("desert1", 1);
-        layer2 = atlas.findRegion("desert2", 1);
-        layer3 = atlas.findRegion("desert3", 1);
-        layer4 = atlas.findRegion("desert4", 1);
-        layer5 = atlas.findRegion("desert5", 1);
-        layer6 = atlas.findRegion("desert6", 1);
-        layer7 = atlas.findRegion("desert7", 1);
-        layer8 = atlas.findRegion("desert8", 1);
-        layer9 = atlas.findRegion("desert9", 1);
-        layer10 = atlas.findRegion("desert10", 1);
+        layer1 = atlas.findRegion("desert1");
+        layer2 = atlas.findRegion("desert2");
+        layer3 = atlas.findRegion("desert3");
+        layer4 = atlas.findRegion("desert4");
+        layer5 = atlas.findRegion("desert5");
+        layer6 = atlas.findRegion("desert6");
+        layer7 = atlas.findRegion("desert7");
+        layer8 = atlas.findRegion("desert8");
+        layer9 = atlas.findRegion("desert9");
+        layer10 = atlas.findRegion("desert10");
     }
 
     public TextureRegion getLayer1() {

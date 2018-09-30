@@ -19,7 +19,7 @@ public class AssetJumper {
     private Animation jumperJumpAnimation;
     private Animation jumperIdleAnimation;
 
-    public AssetJumper(TextureAtlas atlas) {
+    public  AssetJumper(TextureAtlas atlas) {
         Array<TextureAtlas.AtlasRegion> regions;
 
         jumperStand = atlas.findRegion("jumperIdle", 1);
