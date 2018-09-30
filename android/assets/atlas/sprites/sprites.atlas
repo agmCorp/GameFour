@@ -13,81 +13,130 @@ jumperIdle
   index: 1
 jumperIdle
   rotate: false
-  xy: 2, 2
+  xy: 2, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 3
+jumperIdle
+  rotate: false
+  xy: 2, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 8
+jumperIdle
+  rotate: false
+  xy: 2, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 4
+jumperIdle
+  rotate: false
+  xy: 2, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 5
+jumperIdle
+  rotate: false
+  xy: 2, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 2
-jumperJump
+jumperIdle
+  rotate: false
+  xy: 2, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 6
+jumperIdle
+  rotate: false
+  xy: 2, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 7
+jumperIdle
   rotate: false
   xy: 142, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
-  index: 10
+  index: 9
 jumperJump
   rotate: false
-  xy: 142, 2
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 11
-jumperJump
-  rotate: false
-  xy: 282, 104
+  xy: 2, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 12
 jumperJump
   rotate: false
-  xy: 282, 2
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 13
-jumperJump
-  rotate: false
-  xy: 422, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 14
-jumperJump
-  rotate: false
-  xy: 422, 2
+  xy: 142, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 15
 jumperJump
   rotate: false
-  xy: 562, 104
+  xy: 282, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 16
 jumperJump
   rotate: false
-  xy: 562, 2
+  xy: 282, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 17
 jumperJump
   rotate: false
-  xy: 702, 104
+  xy: 422, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 18
 jumperJump
   rotate: false
-  xy: 702, 2
+  xy: 422, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 19
+jumperJump
+  rotate: false
+  xy: 562, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 13
+jumperJump
+  rotate: false
+  xy: 562, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 10
+jumperJump
+  rotate: false
+  xy: 702, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 11
+jumperJump
+  rotate: false
+  xy: 702, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 23
 jumperJump
   rotate: false
   xy: 842, 104
@@ -178,28 +227,28 @@ jumperJump
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
-  index: 24
+  index: 14
 jumperJump
   rotate: false
   xy: 1682, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
-  index: 23
+  index: 24
 platformA
   rotate: false
   xy: 1822, 144
   size: 150, 60
   orig: 150, 60
   offset: 0, 0
-  index: 3
+  index: 1
 platformA
   rotate: false
   xy: 1822, 82
   size: 150, 60
   orig: 150, 60
   offset: 0, 0
-  index: 1
+  index: 3
 platformA
   rotate: false
   xy: 1822, 20

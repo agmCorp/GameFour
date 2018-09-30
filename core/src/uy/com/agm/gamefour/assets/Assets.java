@@ -89,9 +89,10 @@ public class Assets implements Disposable, AssetErrorListener {
 
         // Enables linear texture filtering for pixel smoothing
         TextureAtlas atlasBackgrounds = assetManager.get(TEXTURE_ATLAS_BACKGROUNDS);
-        for (Texture texture : atlasBackgrounds.getTextures()) {
-            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        }
+        // TODO SI PONGO ESTO APARECEN LINEAS FEAS, NO PONERLO
+//        for (Texture texture : atlasBackgrounds.getTextures()) {
+//            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+//        }
 
         TextureAtlas atlasSprites = assetManager.get(TEXTURE_ATLAS_SPRITES);
         for (Texture texture : atlasSprites.getTextures()) {
