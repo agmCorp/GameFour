@@ -48,12 +48,12 @@ public class GameWorld {
          */
 
         parallaxSB = new ParallaxSB(gameCamera);
-        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer11.png"))); // background
-        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer12.png"))); // sol
-        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer10.png"))); // estrellas
+        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer10.png"))); // background
+        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer9.png"))); // sol
+        parallaxSB.addFarawayLayer(new TextureRegion(new Texture("Layer8.png"))); // estrellas
 
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer8.png")), 2, horizontal, signo * 1.0f); // nubes 1
-        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer7.png")), 2, horizontal, signo * 1.5f); // nubes 2
+        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer7.png")), 2, horizontal, signo * 1.0f); // nubes 1
+        parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer6.png")), 2, horizontal, signo * 1.5f); // nubes 2
         parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer5.png")), 2, horizontal, signo * 0.2f); // montanas mas distantes
         parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer4.png")), 2, horizontal, signo * 1.0f);
         parallaxSB.addDynamicLayer(new TextureRegion(new Texture("Layer3.png")), 2, horizontal, signo * 1.5f);

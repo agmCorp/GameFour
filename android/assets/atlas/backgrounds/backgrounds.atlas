@@ -1,0 +1,100 @@
+
+backgrounds.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+desert1
+  rotate: false
+  xy: 2, 904
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+desert2
+  rotate: false
+  xy: 2, 2
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+
+backgrounds2.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+desert3
+  rotate: false
+  xy: 2, 904
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+desert4
+  rotate: false
+  xy: 2, 2
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+
+backgrounds3.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+desert5
+  rotate: false
+  xy: 2, 904
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+desert6
+  rotate: false
+  xy: 2, 2
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+
+backgrounds4.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+desert7
+  rotate: false
+  xy: 2, 904
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+desert8
+  rotate: false
+  xy: 2, 2
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+
+backgrounds5.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+desert10
+  rotate: false
+  xy: 2, 2
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+desert9
+  rotate: false
+  xy: 2, 904
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
