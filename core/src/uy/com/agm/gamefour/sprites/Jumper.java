@@ -23,6 +23,9 @@ public class Jumper extends AbstractGameObject {
     private Animation jumperJumpAnimation;
     private float jumperStateTime;
 
+    // todo borrar
+    private boolean borrar = false;
+
     public Jumper(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
 
@@ -32,7 +35,7 @@ public class Jumper extends AbstractGameObject {
         jumperJumpAnimation = assetJumper.getJumperJumpAnimation();
 
         // Sets initial values for location, width and height and initial frame as jumperStand.
-        setBounds(0, gameWorld.getGameCamera().position().y,
+        setBounds(x, y,
                 ( jumperStand.getRegionWidth() / GameCamera.PPM ) * AssetJumper.SCALE,
                 ( jumperStand.getRegionHeight() / GameCamera.PPM ) * AssetJumper.SCALE); // todo mejorar esto no poder ppm, poner un metodo getwidth en cada asset
         setRegion(jumperStand);
@@ -47,6 +50,17 @@ public class Jumper extends AbstractGameObject {
         float x = gameWorld.getPlatforms().getPlatform(1).getX() + 0.6F;
         float y = gameWorld.getPlatforms().getPlatform(1).getY() + 0.4F;
         setPosition(x, y);
+
+        // TODO borrar esto, es para ver las animaciones
+        AssetJumper assetJumper = Assets.getInstance().getSprites().getJumper();
+        if (borrar) {
+            jumperJumpAnimation = assetJumper.getJumperJumpAnimation();
+            borrar = false;
+        } else {
+            jumperJumpAnimation = assetJumper.getJumperIdleAnimation();
+            borrar = true;
+        }
+
     }
 
     public Vector2 position() {

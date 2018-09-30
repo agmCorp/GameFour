@@ -32,9 +32,17 @@ public class Platforms {
         for (int i = 0; i < MAX_PLATFORMS; i++) {
             platform = new Platform(x, y);
             platforms.add(platform);
-            x = platform.getX() + platform.getWidth() + MathUtils.random(MIN_PLATFORM_SPACING, MAX_PLATFORM_SPACING);
-            y = MathUtils.random(0, gameCamera.position().y + gameCamera.getWorldHeight() / 2 - OFFSET_Y);
+            x = platform.getX() + platform.getWidth() + getRandomSpacing();
+            y = getRandomY();
         }
+    }
+
+    private float getRandomSpacing() {
+        return MathUtils.random(MIN_PLATFORM_SPACING, MAX_PLATFORM_SPACING);
+    }
+
+    private float getRandomY() {
+        return MathUtils.random(0, gameCamera.position().y + gameCamera.getWorldHeight() / 2 - OFFSET_Y);
     }
 
     public Platform getPlatform(int index) {
@@ -52,11 +60,11 @@ public class Platforms {
         if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > pFirst.getX() + pFirst.getWidth()) {
             pHead = platforms.removeIndex(0);
             pTail = platforms.size > 0 ? platforms.get(platforms.size - 1) : pHead;
-            pHead.setPosition(pTail.getX() + pTail.getWidth() + MathUtils.random(MIN_PLATFORM_SPACING, MAX_PLATFORM_SPACING), MathUtils.random(0, gameCamera.position().y + gameCamera.getWorldHeight() / 2 - OFFSET_Y));
+            pHead.setPosition(pTail.getX() + pTail.getWidth() + getRandomSpacing(), getRandomY());
             platforms.add(pHead);
         }
 
-        if (level == 4) {
+        if (level == 15) {
             for (Platform platform : platforms) {
                 platform.setVelocity(0, 0.3f);
             }

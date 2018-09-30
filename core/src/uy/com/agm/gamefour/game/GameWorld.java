@@ -36,7 +36,10 @@ public class GameWorld {
         platforms = new Platforms(gameCamera);
 
         // Jumper
-        jumper = new Jumper(this, gameCamera.getWorldWidth() / 2, gameCamera.getWorldHeight() / 2);
+        // todo esto esta repetido en jumper.
+        float x = platforms.getPlatform(0).getX() + 0.6F;
+        float y = platforms.getPlatform(0).getY() + 0.4F;
+        jumper = new Jumper(this, x, y);
     }
 
     private void createBackground() {
@@ -53,18 +56,18 @@ public class GameWorld {
         parallaxSB.addFarawayLayer(assetDesert.getLayer9()); // sol
         parallaxSB.addFarawayLayer(assetDesert.getLayer8()); // estrellas
 
-        parallaxSB.addDynamicLayer(assetDesert.getLayer7(), 2, horizontal, signo * 1.0f); // nubes 1
-        parallaxSB.addDynamicLayer(assetDesert.getLayer6(), 2, horizontal, signo * 1.5f); // nubes 2
-        parallaxSB.addDynamicLayer(assetDesert.getLayer5(), 2, horizontal, signo * 0.2f); // montanas mas distantes
-        parallaxSB.addDynamicLayer(assetDesert.getLayer4(), 2, horizontal, signo * 1.0f);
-        parallaxSB.addDynamicLayer(assetDesert.getLayer3(), 2, horizontal, signo * 1.5f);
+        parallaxSB.addDynamicLayer(assetDesert.getLayer7(), 2, horizontal, signo * 0.5f); // nubes 1
+        parallaxSB.addDynamicLayer(assetDesert.getLayer6(), 2, horizontal, signo * 1.0f); // nubes 2
+        parallaxSB.addDynamicLayer(assetDesert.getLayer5(), 2, horizontal, signo * 0.1f); // montanas mas distantes
+        parallaxSB.addDynamicLayer(assetDesert.getLayer4(), 2, horizontal, signo * 0.5f);
+        parallaxSB.addDynamicLayer(assetDesert.getLayer3(), 2, horizontal, signo * 1.0f);
         parallaxSB.addDynamicLayer(assetDesert.getLayer2(), 2, horizontal, signo * 2.0f);
         parallaxSB.addDynamicLayer(assetDesert.getLayer1(), 2, horizontal, signo * 5.0f);
     }
 
     public void update(float deltaTime) {
         Gdx.app.debug(TAG, "*** LEVEL A " + level);
-
+        parallaxSB.update(deltaTime);
         jumper.update(deltaTime);
         centerCamera(deltaTime);
         platforms.update(level, deltaTime);
@@ -85,7 +88,8 @@ public class GameWorld {
             gameCamera.position().x = gameCamera.position().x + velocityDeCamara * deltaTime;
 
 
-            parallaxSB.update(deltaTime);
+            // TODO poner aca esto si quiero que el fondo se mueva cuando avanza la camara.
+//            parallaxSB.update(deltaTime);
 
             if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > jumper.position().x) {
                 Gdx.app.debug(TAG, "**** dejo de mover camara " + (gameCamera.position().x - gameCamera.getWorldWidth() / 2) + " JUMPER: " + jumper.position().x );
