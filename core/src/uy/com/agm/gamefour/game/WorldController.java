@@ -107,6 +107,7 @@ public class WorldController implements Disposable {
         Jumper jumper = gameWorld.getJumper();
         GameCamera gameCamera = gameWorld.getGameCamera();
 
+        // todo
         //controla la posicion de jumper con respecto al bottom cam
 
         // if (gameWorld.getJumper().getbox2d.position < gameWorld.getGameCamera().position().y - gameWorld.getGameCamera().getWorldHeight() / 2) {

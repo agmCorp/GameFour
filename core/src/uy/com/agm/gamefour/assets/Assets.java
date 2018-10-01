@@ -87,19 +87,15 @@ public class Assets implements Disposable, AssetErrorListener {
         }
         Gdx.app.debug(TAG, "***************************");
 
-        // Enables linear texture filtering for pixel smoothing
         TextureAtlas atlasBackgrounds = assetManager.get(TEXTURE_ATLAS_BACKGROUNDS);
-        // TODO SI PONGO ESTO APARECEN LINEAS FEAS, NO PONERLO
-//        for (Texture texture : atlasBackgrounds.getTextures()) {
-//            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-//        }
-
         TextureAtlas atlasSprites = assetManager.get(TEXTURE_ATLAS_SPRITES);
+        TextureAtlas atlasGUI = assetManager.get(TEXTURE_ATLAS_GUI);
+
+        // Enables linear texture filtering for pixel smoothing
         for (Texture texture : atlasSprites.getTextures()) {
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         }
 
-        TextureAtlas atlasGUI = assetManager.get(TEXTURE_ATLAS_GUI);
         for (Texture texture : atlasGUI.getTextures()) {
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         }

@@ -66,7 +66,7 @@ public class GameWorld {
     }
 
     public void update(float deltaTime) {
-        Gdx.app.debug(TAG, "*** LEVEL A " + level);
+        Gdx.app.debug(TAG, "*** LEVEL A " + level); // todo
         parallaxSB.update(deltaTime);
         jumper.update(deltaTime);
         centerCamera(deltaTime);
@@ -76,7 +76,7 @@ public class GameWorld {
         // Update the game camera with correct coordinates after changes
         gameCamera.update(deltaTime);
 
-        Gdx.app.debug(TAG, "*** LEVEL B " + level);
+        Gdx.app.debug(TAG, "*** LEVEL B " + level); // todo
     }
 
     private void centerCamera(float deltaTime) {

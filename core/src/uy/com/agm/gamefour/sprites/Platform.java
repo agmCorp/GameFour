@@ -48,6 +48,7 @@ public class Platform extends AbstractGameObject {
 
     @Override
     public void update(float deltaTime) {
+        // todo
         // Set velocity because It could have been changed (see reverseVelocity)..blabla
         //b2body.setLinearVelocity(velocity);
 
