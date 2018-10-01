@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
+import uy.com.agm.gamefour.game.GameCamera;
+
 
 /**
  * Created by AGMCORP on 18/9/2018.
@@ -13,7 +15,7 @@ import com.badlogic.gdx.utils.Array;
 public class AssetJumper {
     private static final String TAG = AssetJumper.class.getName();
 
-    public static final float SCALE = 0.7f;
+    private static final float SCALE = 0.7f;
 
     private TextureRegion jumperStand;
     private Animation jumperJumpAnimation;
@@ -46,4 +48,13 @@ public class AssetJumper {
     public Animation getJumperIdleAnimation() {
         return jumperIdleAnimation;
     }
+
+    public float getWidth() {
+        return ( jumperStand.getRegionWidth() / GameCamera.PPM ) * AssetJumper.SCALE;
+    }
+
+    public float getHeight() {
+        return ( jumperStand.getRegionHeight() / GameCamera.PPM ) * AssetJumper.SCALE;
+    }
+
 }

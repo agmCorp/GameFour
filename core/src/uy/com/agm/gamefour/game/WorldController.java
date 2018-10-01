@@ -33,9 +33,6 @@ public class WorldController implements Disposable {
 
 
     public WorldController() {
-        // Creates out game world
-        gameWorld = new GameWorld(1);
-
         // Creates the Box2D world, setting no gravity in x and GRAVITY in y, and allow bodies to sleep
         box2DWorld = new World(new Vector2(0, GRAVITY), true);
 
@@ -47,6 +44,9 @@ public class WorldController implements Disposable {
 
         // Creates the collision listener
         box2DWorld.setContactListener(new WorldContactListener());
+
+        // Creates out game world
+        gameWorld = new GameWorld(box2DWorld, 1);
     }
 
     public void update(float deltaTime) {

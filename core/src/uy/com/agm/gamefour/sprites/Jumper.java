@@ -4,11 +4,16 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.sprites.AssetJumper;
-import uy.com.agm.gamefour.game.GameCamera;
 import uy.com.agm.gamefour.game.GameWorld;
+import uy.com.agm.gamefour.game.tools.WorldContactListener;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -17,14 +22,17 @@ import uy.com.agm.gamefour.game.GameWorld;
 public class Jumper extends AbstractGameObject {
     private static final String TAG = Jumper.class.getName();
 
+    private enum State {
+        IDLE, JUMPING, DEAD, DISPOSE
+    }
+
     private GameWorld gameWorld;
     private TextureRegion jumperStand;
     private Animation jumperIdleAnimation;
     private Animation jumperJumpAnimation;
-    private float jumperStateTime;
-
-    // todo borrar
-    private boolean borrar = false;
+    private float stateTime;
+    private Body body;
+    private State currentState;
 
     public Jumper(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
@@ -35,56 +43,89 @@ public class Jumper extends AbstractGameObject {
         jumperJumpAnimation = assetJumper.getJumperJumpAnimation();
 
         // Sets initial values for location, width and height and initial frame as jumperStand.
-        setBounds(x, y,
-                ( jumperStand.getRegionWidth() / GameCamera.PPM ) * AssetJumper.SCALE,
-                ( jumperStand.getRegionHeight() / GameCamera.PPM ) * AssetJumper.SCALE); // todo mejorar esto no poder ppm, poner un metodo getwidth en cada asset
+        setBounds(x, y, assetJumper.getWidth(), assetJumper.getHeight());
         setRegion(jumperStand);
+        stateTime = 0;
 
-        jumperStateTime = 0;
+        // Box2d
+        defineJumper();
+
+        // Initial state
+        currentState = State.IDLE;
+    }
+
+    private void defineJumper() {
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.position.set(getX() + getWidth() / 2, getY() + getHeight() / 2); // In b2box the origin is at the center of the body
+            bodyDef.type = BodyDef.BodyType.DynamicBody;
+            body = gameWorld.getBox2DWorld().createBody(bodyDef);
+            body.setFixedRotation(true);
+
+            FixtureDef fixtureDef = new FixtureDef();
+            CircleShape circleShape = new CircleShape();
+            circleShape.setRadius(0.3f); // TODO este numero queda muy bien
+            fixtureDef.filter.categoryBits = WorldContactListener.JUMPER_BIT; // Depicts what this fixture is
+            fixtureDef.filter.maskBits = WorldContactListener.PLATFORM_BIT |
+                    WorldContactListener.OBSTACLE_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
+            fixtureDef.shape = circleShape;
+            body.createFixture(fixtureDef).setUserData(this);
     }
 
     public void onSuccessfulJump() {
         gameWorld.addLevel();
-
-        // todo ACA LO MUEVO A PREPO..ESTO NO ESTARIA
-        float x = gameWorld.getPlatforms().getPlatform(1).getX() + 0.6F;
-        float y = gameWorld.getPlatforms().getPlatform(1).getY() + 0.4F;
-        setPosition(x, y);
-
-        // TODO borrar esto, es para ver las animaciones
-        AssetJumper assetJumper = Assets.getInstance().getSprites().getJumper();
-        if (borrar) {
-            jumperJumpAnimation = assetJumper.getJumperJumpAnimation();
-            borrar = false;
-        } else {
-            jumperJumpAnimation = assetJumper.getJumperIdleAnimation();
-            borrar = true;
-        }
-
+        currentState = State.IDLE;
+        stateTime = 0;
     }
 
-    public Vector2 position() {
-        // TODO ESTO RETORNA LA POSICION DE BOX2D
-        return new Vector2(getX(),getY());
+    public Vector2 getBodyPosition() {
+        return body.getPosition();
     }
 
+    public void jump() {
+        body.applyLinearImpulse(new Vector2(3.0f, 11f), body.getWorldCenter(), true); // todo
+        currentState = State.JUMPING;
+    }
 
     @Override
     public void update(float deltaTime) {
-//        jumperStateTime += deltaTime;
-//        if (jumperStateTime > 3f) {
-//            gameWorld.getCamera().position.x = getX();
-//            jumperStateTime = 0;
-//        }
+        switch (currentState) {
+            case IDLE:
+                stateIdle(deltaTime);
+                break;
+            case JUMPING:
+                stateJumping(deltaTime);
+                break;
+            case DEAD:
+                stateDead(deltaTime);
+                break;
+            case DISPOSE:
+                break;
+            default:
+                break;
+        }
+    }
 
-//        float velocity = -3.5f;
-//        gameWorld.getGameCamera().position().x = gameWorld.getGameCamera().position().x + velocity * deltaTime;
+    private void stateIdle(float deltaTime) {
+        // Update this Sprite to correspond with the position of the Box2D body.
+        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+        setRegion((TextureRegion) jumperIdleAnimation.getKeyFrame(stateTime, true));
+        stateTime += deltaTime;
+    }
 
-//        gameWorld.getCamera().position.y = gameWorld.getCamera().position.y + velocity * deltaTime;
-        //setPosition(getX() + velocity * deltaTime, getY());
-        setRegion((TextureRegion) jumperJumpAnimation.getKeyFrame(jumperStateTime, true));
-        jumperStateTime += deltaTime;
+    private void stateJumping(float deltaTime) {
+        // Update this Sprite to correspond with the position of the Box2D body.
+        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+        setRegion((TextureRegion) jumperJumpAnimation.getKeyFrame(stateTime, true));
+        stateTime += deltaTime;
+    }
 
+    private void stateDead(float deltaTime) {
+        // Destroy box2D body
+        World box2DWorld = gameWorld.getBox2DWorld();
+        if(!box2DWorld.isLocked()) {
+            box2DWorld.destroyBody(body);
+        }
+        currentState = State.DISPOSE;
     }
 
     @Override

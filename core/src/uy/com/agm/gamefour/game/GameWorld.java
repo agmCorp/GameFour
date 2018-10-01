@@ -3,6 +3,7 @@ package uy.com.agm.gamefour.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.backgrounds.AssetDesert;
@@ -17,14 +18,16 @@ import uy.com.agm.gamefour.sprites.Platforms;
 public class GameWorld {
     private static final String TAG = GameWorld.class.getName();
 
+    private World box2DWorld;
     private int level;
     private GameCamera gameCamera;
     private boolean moveCamera;
-    ParallaxSB parallaxSB;
+    private ParallaxSB parallaxSB;
     private Platforms platforms;
     private Jumper jumper;
 
-    public GameWorld(int level) {
+    public GameWorld(World box2DWorld, int level) {
+        this.box2DWorld = box2DWorld;
         this.level = level;
         gameCamera = new GameCamera();
         moveCamera = false;
@@ -36,7 +39,7 @@ public class GameWorld {
         platforms = new Platforms(gameCamera);
 
         // Jumper
-        // todo esto esta repetido en jumper.
+        // todo
         float x = platforms.getPlatform(0).getX() + 0.6F;
         float y = platforms.getPlatform(0).getY() + 0.4F;
         jumper = new Jumper(this, x, y);
@@ -80,22 +83,26 @@ public class GameWorld {
     }
 
     private void centerCamera(float deltaTime) {
-        if (moveCamera) {
-            float velocityDeCamara = 1.0f;
-            Gdx.app.debug(TAG, "**** muevo camara");
+        // no borrar esto
+//        if (moveCamera) {
+//            float velocityDeCamara = 1.0f;
+//            Gdx.app.debug(TAG, "**** muevo camara");
+//
+//            // TODO movecamera se pone en false cuando llego a la poscion de hero.
+//            gameCamera.position().x = gameCamera.position().x + velocityDeCamara * deltaTime;
+//
+//
+//            // TODO poner aca esto si quiero que el fondo se mueva cuando avanza la camara.
+////            parallaxSB.update(deltaTime);
+//
+//            if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > jumper.getBodyPosition().x) {
+//                Gdx.app.debug(TAG, "**** dejo de mover camara " + (gameCamera.position().x - gameCamera.getWorldWidth() / 2) + " JUMPER: " + jumper.getBodyPosition().x );
+//                moveCamera = false;
+//            }
+//        }
+        gameCamera.position().x = jumper.getBodyPosition().x;
+        gameCamera.position().y = jumper.getBodyPosition().y;
 
-            // TODO movecamera se pone en false cuando llego a la poscion de hero.
-            gameCamera.position().x = gameCamera.position().x + velocityDeCamara * deltaTime;
-
-
-            // TODO poner aca esto si quiero que el fondo se mueva cuando avanza la camara.
-//            parallaxSB.update(deltaTime);
-
-            if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > jumper.position().x) {
-                Gdx.app.debug(TAG, "**** dejo de mover camara " + (gameCamera.position().x - gameCamera.getWorldWidth() / 2) + " JUMPER: " + jumper.position().x );
-                moveCamera = false;
-            }
-        }
     }
 
     public void render(SpriteBatch batch) {
@@ -122,6 +129,10 @@ public class GameWorld {
 
     public Jumper getJumper() {
         return jumper;
+    }
+
+    public World getBox2DWorld() {
+        return box2DWorld;
     }
 
     public void addLevel() {
