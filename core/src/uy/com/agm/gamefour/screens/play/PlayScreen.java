@@ -16,14 +16,14 @@ public class PlayScreen extends PlayAbstractScreen {
 
     private static float SHAKE_DURATION = 3.0f;
 
-    public WorldController worldController; // TODO OJO!!!!!!!!!!!!!!!! LE PUSE PUBLIC PARA PROBAR!!! VOLVER A PRIVATE!!!!!!!
+    private WorldController worldController;
     private WorldRenderer worldRenderer;
 
     public PlayScreen(GameFour game) {
         super(game);
 
         worldController = new WorldController();
-        worldRenderer = new WorldRenderer(worldController, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
+        worldRenderer = new WorldRenderer(worldController.getGameWorld(), game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
     }
 
     @Override
@@ -69,7 +69,7 @@ public class PlayScreen extends PlayAbstractScreen {
 
     @Override
     public InputProcessor getInputProcessor() {
-        return worldController.getInputProcessor(new GameController(this));
+        return worldController.getInputProcessor(new GameController(worldController.getGameWorld(), this));
     }
 
     @Override

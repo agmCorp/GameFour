@@ -15,9 +15,11 @@ import uy.com.agm.gamefour.screens.play.PlayScreen;
 public class GameController implements GestureDetector.GestureListener, InputProcessor {
     private static final String TAG = GameController.class.getName();
 
+    private GameWorld gameWorld;
     private PlayScreen playScreen;
 
-    public GameController(PlayScreen playScreen) {
+    public GameController(GameWorld gameWorld, PlayScreen playScreen) {
+        this.gameWorld = gameWorld;
         this.playScreen = playScreen;
     }
 
@@ -107,7 +109,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (playScreen.isPlayScreenStateRunning()) {
             Gdx.app.debug(TAG, "**** Touch up");
-            playScreen.worldController.getGameWorld().getJumper().jump();
+            gameWorld.getJumper().jump();
         }
         return true;
     }

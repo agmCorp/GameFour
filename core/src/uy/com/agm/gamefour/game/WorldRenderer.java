@@ -14,13 +14,13 @@ import uy.com.agm.gamefour.screens.AbstractScreen;
 public class WorldRenderer {
     private static final String TAG = WorldRenderer.class.getName();
 
-    private WorldController worldController;
+    private GameWorld gameWorld;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private Box2DDebugRenderer box2DDebugRenderer;
 
-    public WorldRenderer(WorldController worldController, SpriteBatch batch, ShapeRenderer shapeRenderer, Box2DDebugRenderer box2DDebugRenderer) {
-        this.worldController = worldController;
+    public WorldRenderer(GameWorld gameWorld, SpriteBatch batch, ShapeRenderer shapeRenderer, Box2DDebugRenderer box2DDebugRenderer) {
+        this.gameWorld = gameWorld;
         this.batch = batch;
         this.shapeRenderer = shapeRenderer;
         this.box2DDebugRenderer = box2DDebugRenderer;
@@ -29,8 +29,7 @@ public class WorldRenderer {
     public void render() {
         AbstractScreen.clearScreen();
 
-        // Gets the game world and the combined projection and view matrix of the game camera
-        GameWorld gameWorld = worldController.getGameWorld();
+        // Gets the combined projection and view matrix of the game camera
         Matrix4 combined = gameWorld.getGameCamera().getCombined();
 
         // Sets the batch to now draw what the game camera sees.
@@ -50,14 +49,14 @@ public class WorldRenderer {
             shapeRenderer.setColor(1, 1, 0, 1);
 
             // Render the game world (debug)
-            gameWorld.renderDebug(shapeRenderer);
+            gameWorld.renderSpriteDebug(shapeRenderer);
 
             shapeRenderer.end();
         }
 
         // Render Box2DDebugLines
         if (box2DDebugRenderer != null) {
-            gameWorld.render(box2DDebugRenderer);
+            gameWorld.renderBox2DDebug(box2DDebugRenderer);
         }
     }
 }

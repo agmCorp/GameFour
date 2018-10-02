@@ -6,6 +6,8 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import uy.com.agm.gamefour.sprites.Jumper;
+
 /**
  * Created by AGMCORP on 19/9/2018.
  */
@@ -28,6 +30,8 @@ public class WorldContactListener implements ContactListener {
         int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
         switch (collisionDef) {
             case PLATFORM_BIT | JUMPER_BIT:
+                fixC = fixA.getFilterData().categoryBits == JUMPER_BIT ? fixA : fixB;
+                ((Jumper) fixC.getUserData()).onSuccessfulJump();
                 break;
 
             case OBSTACLE_BIT | JUMPER_BIT:

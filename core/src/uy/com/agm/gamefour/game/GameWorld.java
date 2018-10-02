@@ -35,17 +35,8 @@ public class GameWorld {
         gameCamera = new GameCamera();
         moveCamera = false;
 
-        // Background
         createBackground();
-
-        // Platforms
-        platforms = new Platforms(this);
-
-        // Jumper
-        // todo
-        float x = platforms.getPlatform(0).getX() + 0.6F;
-        float y = platforms.getPlatform(0).getY() + 0.7F;
-        jumper = new Jumper(this, x, y);
+        createSprites();
     }
 
     private void createBackground() {
@@ -71,8 +62,18 @@ public class GameWorld {
         parallaxSB.addDynamicLayer(assetDesert.getLayer1(), 2, horizontal, signo * 5.0f);
     }
 
+    private void createSprites() {
+        // Platforms
+        platforms = new Platforms(this);
+
+        // Jumper
+        // todo
+        float x = platforms.getPlatform(0).getX() + 0.6F;
+        float y = platforms.getPlatform(0).getY() + 0.7F;
+        jumper = new Jumper(this, x, y);
+    }
+
     public void update(float deltaTime) {
-        Gdx.app.debug(TAG, "*** LEVEL A " + level); // todo
         parallaxSB.update(deltaTime);
         jumper.update(deltaTime);
         centerCamera(deltaTime);
@@ -81,8 +82,6 @@ public class GameWorld {
         // Always at the end
         // Update the game camera with correct coordinates after changes
         gameCamera.update(deltaTime);
-
-        Gdx.app.debug(TAG, "*** LEVEL B " + level); // todo
     }
 
     private void centerCamera(float deltaTime) {
@@ -91,21 +90,14 @@ public class GameWorld {
             float velocityDeCamara = 1.0f;
             Gdx.app.debug(TAG, "**** muevo camara");
 
-            // TODO movecamera se pone en false cuando llego a la poscion de hero.
+            // TODO movecamera se pone en false cuando llego a la poscion de pajaro.
             gameCamera.position().x = gameCamera.position().x + velocityDeCamara * deltaTime;
-
-
-            // TODO poner aca esto si quiero que el fondo se mueva cuando avanza la camara.
-//            parallaxSB.update(deltaTime);
 
             if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > jumper.getBodyPosition().x) {
                 Gdx.app.debug(TAG, "**** dejo de mover camara " + (gameCamera.position().x - gameCamera.getWorldWidth() / 2) + " JUMPER: " + jumper.getBodyPosition().x );
                 moveCamera = false;
             }
         }
-//        gameCamera.position().x = jumper.getBodyPosition().x;
-//        gameCamera.position().y = jumper.getBodyPosition().y;
-
     }
 
     public void render(SpriteBatch batch) {
@@ -116,13 +108,13 @@ public class GameWorld {
         jumper.render(batch);
     }
 
-    public void renderDebug(ShapeRenderer shapeRenderer) {
+    public void renderSpriteDebug(ShapeRenderer shapeRenderer) {
         parallaxSB.renderDebug(shapeRenderer);
         platforms.renderDebug(shapeRenderer);
         jumper.renderDebug(shapeRenderer);
     }
 
-    public void render(Box2DDebugRenderer box2DDebugRenderer) {
+    public void renderBox2DDebug(Box2DDebugRenderer box2DDebugRenderer) {
         box2DDebugRenderer.render(box2DWorld, gameCamera.getCombined());
     }
 
