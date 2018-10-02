@@ -51,9 +51,10 @@ public class Platform extends AbstractGameObject {
         // Creates main body
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(getX() + getWidth() / 2, getY() + getHeight() / 2); // In b2box the origin is at the center of the body
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
         body = gameWorld.createBody(bodyDef);
         body.setFixedRotation(true);
+        body.setGravityScale(0); // No gravity
 
         FixtureDef fixtureDef = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();

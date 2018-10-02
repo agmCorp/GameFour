@@ -42,18 +42,18 @@ public class WorldRenderer {
 
         batch.end();
 
-//        // Render bounding boxes
-//        if (shapeRenderer != null) {
-//            // Sets the shapeRenderer to now draw what the game camera sees.
-//            shapeRenderer.setProjectionMatrix(combined);
-//            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//            shapeRenderer.setColor(1, 1, 0, 1);
-//
-//            // Render the game world (debug)
-//            gameWorld.renderDebug(shapeRenderer);
-//
-//            shapeRenderer.end();
-//        }
+        // Render bounding boxes
+        if (shapeRenderer != null) {
+            // Sets the shapeRenderer to now draw what the game camera sees.
+            shapeRenderer.setProjectionMatrix(combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(1, 1, 0, 1);
+
+            // Render the game world (debug)
+            gameWorld.renderDebug(shapeRenderer);
+
+            shapeRenderer.end();
+        }
 
         // Render Box2DDebugLines
         if (box2DDebugRenderer != null) {
