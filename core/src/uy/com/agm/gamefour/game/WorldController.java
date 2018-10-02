@@ -95,10 +95,6 @@ public class WorldController implements Disposable {
         return multiplexer;
     }
 
-    public World getBox2DWorld() {
-        return box2DWorld;
-    }
-
     public GameWorld getGameWorld() {
         return gameWorld;
     }

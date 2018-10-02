@@ -8,10 +8,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.sprites.AssetJumper;
+import uy.com.agm.gamefour.game.GameCamera;
 import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
 
@@ -22,10 +23,12 @@ import uy.com.agm.gamefour.game.tools.WorldContactListener;
 public class Jumper extends AbstractGameObject {
     private static final String TAG = Jumper.class.getName();
 
+    public static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
+    private static final float SENSOR_OFFSET_METERS = 0.1f;
+
     private enum State {
         IDLE, JUMPING, DEAD, DISPOSE
     }
-
     private GameWorld gameWorld;
     private TextureRegion jumperStand;
     private Animation jumperIdleAnimation;
@@ -55,20 +58,32 @@ public class Jumper extends AbstractGameObject {
     }
 
     private void defineJumper() {
-            BodyDef bodyDef = new BodyDef();
-            bodyDef.position.set(getX() + getWidth() / 2, getY() + getHeight() / 2); // In b2box the origin is at the center of the body
-            bodyDef.type = BodyDef.BodyType.DynamicBody;
-            body = gameWorld.getBox2DWorld().createBody(bodyDef);
-            body.setFixedRotation(true);
+        // Creates main body
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.position.set(getX() + getWidth() / 2, getY() + getHeight() / 2); // In b2box the origin is at the center of the body
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        body = gameWorld.createBody(bodyDef);
+        body.setFixedRotation(true);
 
-            FixtureDef fixtureDef = new FixtureDef();
-            CircleShape circleShape = new CircleShape();
-            circleShape.setRadius(0.3f); // TODO este numero queda muy bien
-            fixtureDef.filter.categoryBits = WorldContactListener.JUMPER_BIT; // Depicts what this fixture is
-            fixtureDef.filter.maskBits = WorldContactListener.PLATFORM_BIT |
-                    WorldContactListener.OBSTACLE_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
-            fixtureDef.shape = circleShape;
-            body.createFixture(fixtureDef).setUserData(this);
+        FixtureDef fixtureDef = new FixtureDef();
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(CIRCLE_SHAPE_RADIUS_METERS);
+        fixtureDef.filter.categoryBits = WorldContactListener.JUMPER_BIT; // Depicts what this fixture is
+        fixtureDef.filter.maskBits = WorldContactListener.PLATFORM_BIT |
+                WorldContactListener.OBSTACLE_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
+        fixtureDef.shape = circleShape;
+        body.createFixture(fixtureDef).setUserData(this);
+
+        // Creates the sensor
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(SENSOR_OFFSET_METERS, SENSOR_OFFSET_METERS, new Vector2(0, -CIRCLE_SHAPE_RADIUS_METERS - SENSOR_OFFSET_METERS), 0);
+        FixtureDef sensor = new FixtureDef();
+        sensor.shape = polygonShape;
+        sensor.filter.categoryBits = WorldContactListener.JUMPER_BIT;  // Depicts what this fixture is
+        sensor.filter.maskBits = WorldContactListener.PLATFORM_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
+        sensor.isSensor = true;
+        body.createFixture(sensor).setUserData(this);
+
     }
 
     public void onSuccessfulJump() {
@@ -82,7 +97,7 @@ public class Jumper extends AbstractGameObject {
     }
 
     public void jump() {
-        body.applyLinearImpulse(new Vector2(3.0f, 11f), body.getWorldCenter(), true); // todo
+        body.applyLinearImpulse(new Vector2(3.0f, 8f), body.getWorldCenter(), true); // todo
         currentState = State.JUMPING;
     }
 
@@ -121,10 +136,7 @@ public class Jumper extends AbstractGameObject {
 
     private void stateDead(float deltaTime) {
         // Destroy box2D body
-        World box2DWorld = gameWorld.getBox2DWorld();
-        if(!box2DWorld.isLocked()) {
-            box2DWorld.destroyBody(body);
-        }
+        gameWorld.destroyBody(body);
         currentState = State.DISPOSE;
     }
 

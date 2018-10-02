@@ -50,11 +50,10 @@ public class AssetJumper {
     }
 
     public float getWidth() {
-        return ( jumperStand.getRegionWidth() / GameCamera.PPM ) * AssetJumper.SCALE;
+        return ( jumperStand.getRegionWidth() / GameCamera.PPM ) * SCALE;
     }
 
     public float getHeight() {
-        return ( jumperStand.getRegionHeight() / GameCamera.PPM ) * AssetJumper.SCALE;
+        return ( jumperStand.getRegionHeight() / GameCamera.PPM ) * SCALE;
     }
-
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
 import uy.com.agm.gamefour.game.GameCamera;
+import uy.com.agm.gamefour.game.GameWorld;
 
 /**
  * Created by AGMCORP on 26/9/2018.
@@ -19,18 +20,18 @@ public class Platforms {
     private static float MAX_PLATFORM_SPACING = 3.0f;
     private static float OFFSET_Y = 1.0f;
 
-    private GameCamera gameCamera;
+    private GameWorld gameWorld;
     private Array<Platform> platforms;
 
-    public Platforms(GameCamera gameCamera) {
-        this.gameCamera = gameCamera;
+    public Platforms(GameWorld gameWorld) {
+        this.gameWorld = gameWorld;
         platforms = new Array<Platform>();
 
         Platform platform;
         float x = 0;
-        float y = gameCamera.position().y;
+        float y = gameWorld.getGameCamera().position().y;
         for (int i = 0; i < MAX_PLATFORMS; i++) {
-            platform = new Platform(x, y);
+            platform = new Platform(gameWorld, x, y);
             platforms.add(platform);
             x = platform.getX() + platform.getWidth() + getRandomSpacing();
             y = getRandomY();
@@ -42,6 +43,7 @@ public class Platforms {
     }
 
     private float getRandomY() {
+        GameCamera gameCamera = gameWorld.getGameCamera();
         return MathUtils.random(0, gameCamera.position().y + gameCamera.getWorldHeight() / 2 - OFFSET_Y);
     }
 
@@ -54,6 +56,7 @@ public class Platforms {
             platform.update(deltaTime);
         }
 
+        GameCamera gameCamera = gameWorld.getGameCamera();
         Platform pFirst = platforms.first();
         Platform pHead;
         Platform pTail;
