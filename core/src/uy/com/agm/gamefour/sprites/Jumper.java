@@ -3,6 +3,7 @@ package uy.com.agm.gamefour.sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -97,7 +98,10 @@ public class Jumper extends AbstractGameObject {
     }
 
     public void jump() {
-        body.applyLinearImpulse(new Vector2(3.0f, 8f), body.getWorldCenter(), true); // todo
+        // todo
+        float impulseX = MathUtils.random(1.0f, 3.0f);
+        float impulseY = MathUtils.random(4.0f, 8.0f);
+        body.applyLinearImpulse(new Vector2(impulseX, impulseY), body.getWorldCenter(), true);
         currentState = State.JUMPING;
     }
 
