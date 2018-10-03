@@ -89,7 +89,8 @@ public class Platform extends AbstractDynamicObject {
         setRegion((TextureRegion) platformAnimation.getKeyFrame(stateTime, true));
         stateTime += deltaTime;
 
-//        // todo
+//        // todo observacion: yo creo que el movimiento en general de todas las plataformas tiene que ser orquestado por platforms y no
+        // dentro de cada plataforma...no se.
 //        if (getY() + getHeight() > gameWorld.getGameCamera().position().y + gameWorld.getGameCamera().getWorldHeight() / 2
 //                || getY() < gameWorld.getGameCamera().position().y - gameWorld.getGameCamera().getWorldHeight() / 2) {
 //            velocity.scl(-1); // oscila, usar estados
