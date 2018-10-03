@@ -11,8 +11,11 @@ public class DebugConstants {
     // Sets the log level to debug
     public static final boolean DEBUG_MODE = true && TURN_ON_DEBUG;
 
-    // Boxes around sprites, box2d bodies and scene2d tables
+    // Debug lines around sprites and scene2d tables
     public static final boolean DEBUG_LINES = true && TURN_ON_DEBUG;
+
+    // Debug lines around box2d bodies
+    public static final boolean DEBUG_BOX2D = true && TURN_ON_DEBUG;
 
     // Shows/hides background image
     public static final boolean HIDE_BACKGROUND = false && TURN_ON_DEBUG;

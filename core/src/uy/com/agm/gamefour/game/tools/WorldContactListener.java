@@ -30,8 +30,12 @@ public class WorldContactListener implements ContactListener {
         int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
         switch (collisionDef) {
             case PLATFORM_BIT | JUMPER_BIT:
+                // todo aca debo tomar en cuenta el sensor
+
                 fixC = fixA.getFilterData().categoryBits == JUMPER_BIT ? fixA : fixB;
-                ((Jumper) fixC.getUserData()).onSuccessfulJump();
+                if (!fixC.isSensor()) {
+                    ((Jumper) fixC.getUserData()).onSuccessfulJump();
+                }
                 break;
 
             case OBSTACLE_BIT | JUMPER_BIT:

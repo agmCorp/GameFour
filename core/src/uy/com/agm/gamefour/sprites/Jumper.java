@@ -21,7 +21,7 @@ import uy.com.agm.gamefour.game.tools.WorldContactListener;
  * Created by AGMCORP on 19/9/2018.
  */
 
-public class Jumper extends AbstractGameObject {
+public class Jumper extends AbstractDynamicObject {
     private static final String TAG = Jumper.class.getName();
 
     public static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
@@ -93,6 +93,7 @@ public class Jumper extends AbstractGameObject {
         stateTime = 0;
     }
 
+    @Override
     public Vector2 getBodyPosition() {
         return body.getPosition();
     }
@@ -103,6 +104,13 @@ public class Jumper extends AbstractGameObject {
         float impulseY = MathUtils.random(4.0f, 8.0f);
         body.applyLinearImpulse(new Vector2(impulseX, impulseY), body.getWorldCenter(), true);
         currentState = State.JUMPING;
+    }
+
+    // todo borrar
+    public void falsoSalto() {
+        float x = gameWorld.getPlatforms().getPlatform(1).getBodyPosition().x;
+        float y = gameWorld.getPlatforms().getPlatform(1).getBodyPosition().y + 0.5f;
+        body.setTransform(x, y, body.getAngle());
     }
 
     @Override

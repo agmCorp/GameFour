@@ -43,12 +43,17 @@ public class GameFour extends DirectedGame {
         // Constructs a new gameBatch
         gameBatch = new SpriteBatch();
 
-        // Constructs a new gameShapeRenderer and a new box2DDebugRenderer for debugging purposes
+        // Constructs a new gameShapeRenderer for debugging purposes
         if (DebugConstants.DEBUG_LINES) {
             gameShapeRenderer = new ShapeRenderer();
-            box2DDebugRenderer = new Box2DDebugRenderer();
         } else {
             gameShapeRenderer = null;
+        }
+
+        // Constructs a new box2DDebugRenderer for debugging purposes
+        if (DebugConstants.DEBUG_BOX2D) {
+            box2DDebugRenderer = new Box2DDebugRenderer();
+        } else {
             box2DDebugRenderer = null;
         }
 
@@ -79,6 +84,8 @@ public class GameFour extends DirectedGame {
         gameBatch.dispose();
         if (DebugConstants.DEBUG_LINES) {
             gameShapeRenderer.dispose();
+        }
+        if (DebugConstants.DEBUG_BOX2D) {
             box2DDebugRenderer.dispose();
         }
         Assets.getInstance().dispose();

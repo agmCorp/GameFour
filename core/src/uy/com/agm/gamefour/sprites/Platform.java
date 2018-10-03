@@ -18,7 +18,7 @@ import uy.com.agm.gamefour.game.tools.WorldContactListener;
  * Created by AGMCORP on 26/9/2018.
  */
 
-public class Platform extends AbstractGameObject {
+public class Platform extends AbstractDynamicObject {
     private static final String TAG = Platform.class.getName();
 
     private GameWorld gameWorld;
@@ -58,7 +58,7 @@ public class Platform extends AbstractGameObject {
 
         FixtureDef fixtureDef = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(getWidth() / 2, getHeight() / 2);
+        polygonShape.setAsBox(getWidth() / 4, getHeight() / 4); // The surface to land on is arbitrarily smaller than the size of the image
         fixtureDef.filter.categoryBits = WorldContactListener.PLATFORM_BIT; // Depicts what this fixture is
         fixtureDef.filter.maskBits = WorldContactListener.JUMPER_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
         fixtureDef.shape = polygonShape;
@@ -69,19 +69,31 @@ public class Platform extends AbstractGameObject {
         velocity.set(vx, vy);
     }
 
-    public void reposition(float x) {
-        setPosition(x, getY());
+    public void reposition(float x, float y) {
+        body.setTransform(x + getWidth() / 2, y + getHeight() / 2, body.getAngle());
+        setPosition(x, y);
+    }
+
+    @Override
+    public Vector2 getBodyPosition() {
+        return body.getPosition();
     }
 
     @Override
     public void update(float deltaTime) {
-        // todo
-        // Set velocity because It could have been changed (see reverseVelocity)..blabla
-        //b2body.setLinearVelocity(velocity);
+        // Set new velocity
+        body.setLinearVelocity(velocity);
 
-        setPosition(getX() + velocity.x * deltaTime, getY() + velocity.y * deltaTime);
+        // Update this Sprite to correspond with the position of the Box2D body
+        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRegion((TextureRegion) platformAnimation.getKeyFrame(stateTime, true));
         stateTime += deltaTime;
+
+//        // todo
+//        if (getY() + getHeight() > gameWorld.getGameCamera().position().y + gameWorld.getGameCamera().getWorldHeight() / 2
+//                || getY() < gameWorld.getGameCamera().position().y - gameWorld.getGameCamera().getWorldHeight() / 2) {
+//            velocity.scl(-1); // oscila, usar estados
+//        }
     }
 
     @Override

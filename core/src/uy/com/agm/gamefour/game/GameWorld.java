@@ -88,13 +88,13 @@ public class GameWorld {
         // no borrar esto
         if (moveCamera) {
             float velocityDeCamara = 1.0f;
-            Gdx.app.debug(TAG, "**** muevo camara");
+            //Gdx.app.debug(TAG, "**** muevo camara");
 
             // TODO movecamera se pone en false cuando llego a la poscion de pajaro.
             gameCamera.position().x = gameCamera.position().x + velocityDeCamara * deltaTime;
 
-            if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > jumper.getBodyPosition().x) {
-                Gdx.app.debug(TAG, "**** dejo de mover camara " + (gameCamera.position().x - gameCamera.getWorldWidth() / 2) + " JUMPER: " + jumper.getBodyPosition().x );
+            if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > jumper.getBodyPosition().x - jumper.getWidth() / 2) {
+                //Gdx.app.debug(TAG, "**** dejo de mover camara " + (gameCamera.position().x - gameCamera.getWorldWidth() / 2) + " JUMPER: " + jumper.getBodyPosition().x );
                 moveCamera = false;
             }
         }
@@ -133,6 +133,9 @@ public class GameWorld {
     public void addLevel() {
         level++;
         moveCamera = true;
+
+        // // TODO: 10/2/2018
+        Gdx.app.debug(TAG, "****LEVEL " + level);
     }
 
     public Body createBody(BodyDef bodyDef) {

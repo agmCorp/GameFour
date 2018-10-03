@@ -17,8 +17,8 @@ public class Platforms {
 
     private static int MAX_PLATFORMS = 4;
     private static float MIN_PLATFORM_SPACING = 0.5f;
-    private static float MAX_PLATFORM_SPACING = 3.0f;
-    private static float OFFSET_Y = 1.0f;
+    private static float MAX_PLATFORM_SPACING = 2.2f;
+    private static float OFFSET_Y = 2.0f;
 
     private GameWorld gameWorld;
     private Array<Platform> platforms;
@@ -63,12 +63,12 @@ public class Platforms {
         if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > pFirst.getX() + pFirst.getWidth()) {
             pHead = platforms.removeIndex(0);
             pTail = platforms.size > 0 ? platforms.get(platforms.size - 1) : pHead;
-            pHead.setPosition(pTail.getX() + pTail.getWidth() + getRandomSpacing(), getRandomY());
+            pHead.reposition(pTail.getX() + pTail.getWidth() + getRandomSpacing(), getRandomY());
             platforms.add(pHead);
         }
 
         // todo
-        if (level == 15) {
+        if (level == 5) {
             for (Platform platform : platforms) {
                 platform.setVelocity(0, 0.3f);
             }

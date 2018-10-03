@@ -43,7 +43,9 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        return false;
+        // todo sacar esto y retornar false
+        gameWorld.getJumper().falsoSalto();
+        return true;
     }
 
     @Override
