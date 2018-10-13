@@ -4,18 +4,18 @@ size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-desert1
+forest1
   rotate: false
   xy: 2, 904
-  size: 1600, 900
-  orig: 1600, 900
+  size: 1767, 900
+  orig: 1767, 900
   offset: 0, 0
   index: -1
-desert2
+forest2
   rotate: false
   xy: 2, 2
-  size: 1600, 900
-  orig: 1600, 900
+  size: 1767, 900
+  orig: 1767, 900
   offset: 0, 0
   index: -1
 
@@ -24,18 +24,18 @@ size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-desert3
+forest3
   rotate: false
   xy: 2, 904
-  size: 1600, 900
-  orig: 1600, 900
+  size: 1767, 900
+  orig: 1767, 900
   offset: 0, 0
   index: -1
-desert4
+forest4
   rotate: false
   xy: 2, 2
-  size: 1600, 900
-  orig: 1600, 900
+  size: 1767, 900
+  orig: 1767, 900
   offset: 0, 0
   index: -1
 
@@ -44,18 +44,18 @@ size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-desert5
+forest5
   rotate: false
   xy: 2, 904
-  size: 1600, 900
-  orig: 1600, 900
+  size: 1767, 900
+  orig: 1767, 900
   offset: 0, 0
   index: -1
-desert6
+forest6
   rotate: false
   xy: 2, 2
-  size: 1600, 900
-  orig: 1600, 900
+  size: 1767, 900
+  orig: 1767, 900
   offset: 0, 0
   index: -1
 
@@ -64,16 +64,16 @@ size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-desert7
+desert1
   rotate: false
-  xy: 2, 904
+  xy: 2, 2
   size: 1600, 900
   orig: 1600, 900
   offset: 0, 0
   index: -1
-desert8
+desert10
   rotate: false
-  xy: 2, 2
+  xy: 2, 904
   size: 1600, 900
   orig: 1600, 900
   offset: 0, 0
@@ -84,16 +84,76 @@ size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-desert10
+desert2
+  rotate: false
+  xy: 2, 904
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+desert3
   rotate: false
   xy: 2, 2
   size: 1600, 900
   orig: 1600, 900
   offset: 0, 0
   index: -1
-desert9
+
+backgrounds6.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+desert4
   rotate: false
   xy: 2, 904
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+desert5
+  rotate: false
+  xy: 2, 2
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+
+backgrounds7.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+desert6
+  rotate: false
+  xy: 2, 904
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+desert7
+  rotate: false
+  xy: 2, 2
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+
+backgrounds8.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+desert8
+  rotate: false
+  xy: 2, 904
+  size: 1600, 900
+  orig: 1600, 900
+  offset: 0, 0
+  index: -1
+desert9
+  rotate: false
+  xy: 2, 2
   size: 1600, 900
   orig: 1600, 900
   offset: 0, 0

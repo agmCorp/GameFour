@@ -6,242 +6,242 @@ filter: Nearest,Nearest
 repeat: none
 jumperIdle
   rotate: false
-  xy: 2, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 1
-jumperIdle
-  rotate: false
-  xy: 2, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 8
-jumperIdle
-  rotate: false
-  xy: 2, 104
+  xy: 2, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 7
 jumperIdle
   rotate: false
-  xy: 2, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 4
-jumperIdle
-  rotate: false
-  xy: 2, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 6
-jumperIdle
-  rotate: false
-  xy: 2, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 5
-jumperIdle
-  rotate: false
-  xy: 2, 104
+  xy: 2, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 2
 jumperIdle
   rotate: false
-  xy: 2, 104
+  xy: 2, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 1
+jumperIdle
+  rotate: false
+  xy: 2, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 3
 jumperIdle
   rotate: false
-  xy: 142, 104
+  xy: 2, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 5
+jumperIdle
+  rotate: false
+  xy: 2, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 6
+jumperIdle
+  rotate: false
+  xy: 2, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 4
+jumperIdle
+  rotate: false
+  xy: 2, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 8
+jumperIdle
+  rotate: false
+  xy: 1402, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 9
 jumperJump
   rotate: false
-  xy: 2, 2
+  xy: 2, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
-  index: 12
+  index: 24
 jumperJump
   rotate: false
-  xy: 142, 2
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 15
-jumperJump
-  rotate: false
-  xy: 282, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 16
-jumperJump
-  rotate: false
-  xy: 282, 2
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 17
-jumperJump
-  rotate: false
-  xy: 422, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 18
-jumperJump
-  rotate: false
-  xy: 422, 2
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 19
-jumperJump
-  rotate: false
-  xy: 562, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 13
-jumperJump
-  rotate: false
-  xy: 562, 2
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 10
-jumperJump
-  rotate: false
-  xy: 702, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 11
-jumperJump
-  rotate: false
-  xy: 702, 2
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 23
-jumperJump
-  rotate: false
-  xy: 842, 104
+  xy: 142, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 20
 jumperJump
   rotate: false
-  xy: 842, 2
+  xy: 142, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 21
 jumperJump
   rotate: false
-  xy: 982, 104
+  xy: 282, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 22
 jumperJump
   rotate: false
-  xy: 982, 2
+  xy: 282, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 1
 jumperJump
   rotate: false
-  xy: 1122, 104
+  xy: 422, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 2
 jumperJump
   rotate: false
-  xy: 1122, 2
+  xy: 422, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 3
 jumperJump
   rotate: false
-  xy: 1262, 104
+  xy: 562, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 4
 jumperJump
   rotate: false
-  xy: 1262, 2
+  xy: 562, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 5
 jumperJump
   rotate: false
-  xy: 1402, 104
+  xy: 702, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 6
 jumperJump
   rotate: false
-  xy: 1402, 2
+  xy: 702, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 7
 jumperJump
   rotate: false
-  xy: 1542, 104
+  xy: 842, 104
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 8
 jumperJump
   rotate: false
-  xy: 1542, 2
+  xy: 842, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 9
 jumperJump
   rotate: false
-  xy: 1682, 104
+  xy: 982, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 13
+jumperJump
+  rotate: false
+  xy: 982, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 12
+jumperJump
+  rotate: false
+  xy: 1122, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 23
+jumperJump
+  rotate: false
+  xy: 1122, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 10
+jumperJump
+  rotate: false
+  xy: 1262, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 11
+jumperJump
+  rotate: false
+  xy: 1262, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
   index: 14
 jumperJump
   rotate: false
+  xy: 1402, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 15
+jumperJump
+  rotate: false
+  xy: 1542, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 16
+jumperJump
+  rotate: false
+  xy: 1542, 2
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 17
+jumperJump
+  rotate: false
+  xy: 1682, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 18
+jumperJump
+  rotate: false
   xy: 1682, 2
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
-  index: 24
+  index: 19
 platformA
   rotate: false
   xy: 1822, 144
   size: 202, 60
   orig: 202, 60
   offset: 0, 0
-  index: 1
+  index: 2
 platformA
   rotate: false
   xy: 1822, 82
@@ -255,4 +255,4 @@ platformA
   size: 202, 60
   orig: 202, 60
   offset: 0, 0
-  index: 2
+  index: 1

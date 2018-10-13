@@ -6,49 +6,49 @@ filter: Nearest,Nearest
 repeat: none
 loadingBar1
   rotate: false
-  xy: 2, 2
+  xy: 2, 188
   size: 480, 60
   orig: 480, 60
   offset: 0, 0
   index: -1
 loadingBar2
   rotate: false
-  xy: 484, 64
+  xy: 2, 126
   size: 480, 60
   orig: 480, 60
   offset: 0, 0
   index: -1
 loadingBarAnim
   rotate: false
-  xy: 2, 188
+  xy: 484, 188
   size: 480, 60
   orig: 480, 60
   offset: 0, 0
   index: 1
 loadingBarAnim
   rotate: false
-  xy: 2, 126
+  xy: 2, 64
   size: 480, 60
   orig: 480, 60
   offset: 0, 0
   index: 2
 loadingBarAnim
   rotate: false
-  xy: 484, 188
+  xy: 484, 126
   size: 480, 60
   orig: 480, 60
   offset: 0, 0
   index: 3
 loadingBarAnim
   rotate: false
-  xy: 2, 64
+  xy: 966, 188
   size: 480, 60
   orig: 480, 60
   offset: 0, 0
   index: 4
 loadingBarAnim
   rotate: false
-  xy: 484, 126
+  xy: 2, 2
   size: 480, 60
   orig: 480, 60
   offset: 0, 0
@@ -62,7 +62,7 @@ loadingBarHidden
   index: -1
 loadingFrame
   rotate: false
-  xy: 966, 188
+  xy: 484, 64
   size: 480, 60
   orig: 480, 60
   offset: 0, 0

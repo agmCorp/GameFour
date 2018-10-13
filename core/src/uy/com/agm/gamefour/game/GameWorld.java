@@ -1,8 +1,10 @@
 package uy.com.agm.gamefour.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -10,7 +12,9 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 import uy.com.agm.gamefour.assets.Assets;
+import uy.com.agm.gamefour.assets.backgrounds.AssetBackgrounds;
 import uy.com.agm.gamefour.assets.backgrounds.AssetDesert;
+import uy.com.agm.gamefour.assets.backgrounds.AssetForest;
 import uy.com.agm.gamefour.sprites.Jumper;
 import uy.com.agm.gamefour.sprites.ParallaxSB;
 import uy.com.agm.gamefour.sprites.Platform;
@@ -37,31 +41,26 @@ public class GameWorld {
         gameCamera = new GameCamera();
         moveCamera = false;
 
-        createBackground();
         createSprites();
+        createBackground();
     }
 
     private void createBackground() {
-        boolean horizontal = true;
-        byte signo = -1;
-
-        /* todo
-        LE ESTOY ERRANDO POR UN PIXEL PUTO AL UNIR TEXTURAS
-         */
-
-        AssetDesert assetDesert = Assets.getInstance().getBackgrounds().getDesert();
         parallaxSB = new ParallaxSB(gameCamera);
-        parallaxSB.addFarawayLayer(assetDesert.getLayer10()); // background
-        parallaxSB.addFarawayLayer(assetDesert.getLayer9()); // sol
-        parallaxSB.addFarawayLayer(assetDesert.getLayer8()); // estrellas
 
-        parallaxSB.addDynamicLayer(assetDesert.getLayer7(), 2, horizontal, signo * 0.5f); // nubes 1
-        parallaxSB.addDynamicLayer(assetDesert.getLayer6(), 2, horizontal, signo * 1.0f); // nubes 2
-        parallaxSB.addDynamicLayer(assetDesert.getLayer5(), 2, horizontal, signo * 0.1f); // montanas mas distantes
-        parallaxSB.addDynamicLayer(assetDesert.getLayer4(), 2, horizontal, signo * 0.5f);
-        parallaxSB.addDynamicLayer(assetDesert.getLayer3(), 2, horizontal, signo * 1.0f);
-        parallaxSB.addDynamicLayer(assetDesert.getLayer2(), 2, horizontal, signo * 2.0f);
-        parallaxSB.addDynamicLayer(assetDesert.getLayer1(), 2, horizontal, signo * 5.0f);
+        int background = MathUtils.random(1, AssetBackgrounds.MAX_BACKGROUNDS);
+        switch (background) {
+            case 1:
+                loadDesertBackground();
+                jumper.setColor(Color.NAVY);
+                break;
+            case 2:
+                loadForestBackground();
+                jumper.setColor(new Color(0xef524fff));
+                break;
+            default:
+                break;
+        }
     }
 
     private void createSprites() {
@@ -100,6 +99,31 @@ public class GameWorld {
                 moveCamera = false;
             }
         }
+    }
+
+    private void loadForestBackground() {
+        AssetForest assetForest = Assets.getInstance().getBackgrounds().getForest();
+        parallaxSB.addDynamicLayer(assetForest.getLayer6(), 2, true, -0.1f);
+        parallaxSB.addDynamicLayer(assetForest.getLayer5(), 2, true, -0.3f);
+        parallaxSB.addDynamicLayer(assetForest.getLayer4(), 2, true, -0.6f);
+        parallaxSB.addDynamicLayer(assetForest.getLayer3(), 2, true, -1.0f);
+        parallaxSB.addDynamicLayer(assetForest.getLayer2(), 2, true, -2.0f);
+        parallaxSB.addDynamicLayer(assetForest.getLayer1(), 2, true, -5.0f);
+    }
+
+    private void loadDesertBackground() {
+        AssetDesert assetDesert = Assets.getInstance().getBackgrounds().getDesert();
+        parallaxSB.addFarawayLayer(assetDesert.getLayer10()); // background
+        parallaxSB.addFarawayLayer(assetDesert.getLayer9()); // sun
+        parallaxSB.addFarawayLayer(assetDesert.getLayer8()); // stars
+
+        parallaxSB.addDynamicLayer(assetDesert.getLayer7(), 2, true, -0.5f); // clouds 1
+        parallaxSB.addDynamicLayer(assetDesert.getLayer6(), 2, true, -1.0f); // clouds 2
+        parallaxSB.addDynamicLayer(assetDesert.getLayer5(), 2, true, -0.1f); // distant mountains
+        parallaxSB.addDynamicLayer(assetDesert.getLayer4(), 2, true, -0.5f);
+        parallaxSB.addDynamicLayer(assetDesert.getLayer3(), 2, true, -1.0f);
+        parallaxSB.addDynamicLayer(assetDesert.getLayer2(), 2, true, -2.0f);
+        parallaxSB.addDynamicLayer(assetDesert.getLayer1(), 2, true, -5.0f);
     }
 
     public void render(SpriteBatch batch) {

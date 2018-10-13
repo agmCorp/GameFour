@@ -25,7 +25,7 @@ public class Jumper extends AbstractDynamicObject {
     private static final String TAG = Jumper.class.getName();
 
     public static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
-    private static final float SENSOR_HX = 0.2f;
+    private static final float SENSOR_HX = 0.1f;
     private static final float SENSOR_HY = 0.01f;
     private static final float IMPULSE_Y = 9.0f;
     private static final float SCALE_IMPUSE_X = 37.0f;
