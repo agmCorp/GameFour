@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.screens.play;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
 import uy.com.agm.gamefour.game.GameController;
@@ -16,11 +17,12 @@ import uy.com.agm.gamefour.screens.gui.Hud;
 public class PlayScreen extends PlayAbstractScreen {
     private static final String TAG = PlayScreen.class.getName();
 
-    private static float SHAKE_DURATION = 3.0f;
+    private static float SHAKE_DURATION = 2.0f;
 
-    private Hud hud;
     private WorldController worldController;
     private WorldRenderer worldRenderer;
+    private Hud hud;
+    private boolean endGame;
 
     public PlayScreen(GameFour game) {
         super(game);
@@ -29,6 +31,7 @@ public class PlayScreen extends PlayAbstractScreen {
         GameWorld gameWorld = worldController.getGameWorld();
         worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
         hud = new Hud(game, gameWorld);
+        endGame = false;
     }
 
     @Override
@@ -52,9 +55,11 @@ public class PlayScreen extends PlayAbstractScreen {
     }
 
     private void gameResults(float deltaTime) {
-        if (worldController.isGameOver()) {
+        if (worldController.isGameOver() && !endGame) {
             worldController.getGameWorld().getGameCamera().shake(SHAKE_DURATION);
-            // TODO ACA MUESTRO PANTALLA SUPERPUESTA DE GAMEOVER?
+            endGame = true;
+            // TODO ACA MUESTRO PANTALLA SUPERPUESTA DE GAMEOVER
+            Gdx.app.debug(TAG, "************** GAME OVER!!!!!");
         }
     }
 

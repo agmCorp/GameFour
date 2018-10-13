@@ -17,13 +17,6 @@ jumperIdle
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
-  index: 3
-jumperIdle
-  rotate: false
-  xy: 2, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
   index: 8
 jumperIdle
   rotate: false
@@ -31,7 +24,21 @@ jumperIdle
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
+  index: 7
+jumperIdle
+  rotate: false
+  xy: 2, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
   index: 4
+jumperIdle
+  rotate: false
+  xy: 2, 104
+  size: 138, 100
+  orig: 138, 100
+  offset: 0, 0
+  index: 6
 jumperIdle
   rotate: false
   xy: 2, 104
@@ -52,14 +59,7 @@ jumperIdle
   size: 138, 100
   orig: 138, 100
   offset: 0, 0
-  index: 6
-jumperIdle
-  rotate: false
-  xy: 2, 104
-  size: 138, 100
-  orig: 138, 100
-  offset: 0, 0
-  index: 7
+  index: 3
 jumperIdle
   rotate: false
   xy: 142, 104
@@ -238,21 +238,21 @@ jumperJump
 platformA
   rotate: false
   xy: 1822, 144
-  size: 150, 60
-  orig: 150, 60
+  size: 202, 60
+  orig: 202, 60
   offset: 0, 0
   index: 1
 platformA
   rotate: false
   xy: 1822, 82
-  size: 150, 60
-  orig: 150, 60
+  size: 202, 60
+  orig: 202, 60
   offset: 0, 0
   index: 3
 platformA
   rotate: false
   xy: 1822, 20
-  size: 150, 60
-  orig: 150, 60
+  size: 202, 60
+  orig: 202, 60
   offset: 0, 0
   index: 2

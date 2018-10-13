@@ -31,7 +31,6 @@ public class WorldController implements Disposable {
     private World box2DWorld;
     private float accumulator;
 
-
     public WorldController() {
         // Creates the Box2D world, setting no gravity in x and GRAVITY in y, and allow bodies to sleep
         box2DWorld = new World(new Vector2(0, GRAVITY), true);
@@ -103,13 +102,7 @@ public class WorldController implements Disposable {
         Jumper jumper = gameWorld.getJumper();
         GameCamera gameCamera = gameWorld.getGameCamera();
 
-        // todo
-        //controla la posicion de jumper con respecto al bottom cam
-
-        // if (gameWorld.getJumper().getbox2d.position < gameWorld.getGameCamera().position().y - gameWorld.getGameCamera().getWorldHeight() / 2) {
-        // ir a la pagina de game over
-        // }
-        return false;
+        return (jumper.getBodyPosition().y + jumper.getHeight() / 2 < gameCamera.position().y - gameCamera.getWorldHeight() / 2);
     }
 
     @Override

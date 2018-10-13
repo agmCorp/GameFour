@@ -3,6 +3,9 @@
 - me queda la duda de si implemento el dispose en alguna pantalla y hago super.dispose..a cual hide llama? al de la clase derivada o la madre?
 supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 
+- hacer un font mas grande, los numeros quedan bien con escala 1.5
+
+
 LECCIONES APRENDIDAS
 --------------------
 1) Primero existía ApplicationListener, todas las pantallas heredaban de allí.

@@ -3,8 +3,6 @@ package uy.com.agm.gamefour.screens.gui;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import java.util.Locale;
-
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
@@ -20,14 +18,13 @@ public class Hud extends GUIAbstractScreen {
 
     private static final float PAD = 50.0f;
     private static final float SWING_DELAY = 0.02f;
-    private static final String FORMAT_SCORE = "%d";
 
     private GameWorld gameWorld;
     private PowerBar powerBar;
     private boolean swing;
     private float swingTime;
     private int score;
-    private Label scoreValueLabel;
+    private Label scoreLabel;
 
     public Hud(GameFour game, GameWorld gameWorld) {
         super(game);
@@ -59,16 +56,14 @@ public class Hud extends GUIAbstractScreen {
     }
 
     private Table getScoreTable() {
-        // todo
-        // Personal fonts
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
         labelStyleBig.font = Assets.getInstance().getFonts().getDefaultBig();
-        scoreValueLabel = new Label(String.format(Locale.getDefault(), FORMAT_SCORE, score), labelStyleBig);
+        scoreLabel = new Label(String.valueOf(score), labelStyleBig);
 
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.top();
-        table.add(scoreValueLabel);
+        table.add(scoreLabel);
         table.padTop(PAD);
         return table;
     }
@@ -92,7 +87,7 @@ public class Hud extends GUIAbstractScreen {
 
     private void updateScore(int value) {
         score = value;
-        scoreValueLabel.setText(String.format(Locale.getDefault(), FORMAT_SCORE, score));
+        scoreLabel.setText(String.valueOf(score));
     }
 
     @Override

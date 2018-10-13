@@ -18,7 +18,7 @@ public class Platforms {
     private static int MAX_PLATFORMS = 4;
     private static float MIN_PLATFORM_SPACING = 0.5f;
     private static float MAX_PLATFORM_SPACING = 2.2f;
-    private static float OFFSET_Y = 2.0f;
+    private static float OFFSET_Y = 2.5f;
 
     private GameWorld gameWorld;
     private Array<Platform> platforms;
@@ -44,7 +44,7 @@ public class Platforms {
 
     private float getRandomY() {
         GameCamera gameCamera = gameWorld.getGameCamera();
-        return MathUtils.random(0, gameCamera.position().y + gameCamera.getWorldHeight() / 2 - OFFSET_Y);
+        return MathUtils.random(OFFSET_Y, gameCamera.position().y + gameCamera.getWorldHeight() / 2 - OFFSET_Y);
     }
 
     public Platform getPlatform(int index) {
@@ -67,7 +67,7 @@ public class Platforms {
             platforms.add(pHead);
         }
 
-        // todo
+        // todo ORQUESTA TODAS LAS VARIACIONES
         if (level == 50) {
             for (Platform platform : platforms) {
                 platform.setVelocity(0, 0.3f);

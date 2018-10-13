@@ -27,7 +27,7 @@ public class Platform extends AbstractDynamicObject {
     private float stateTime;
     private Body body;
     private Vector2 velocity;
-
+    private boolean touched;
 
     public Platform(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
@@ -45,6 +45,7 @@ public class Platform extends AbstractDynamicObject {
         definePlatform();
 
         velocity = new Vector2(0, 0);
+        touched = false;
     }
 
     private void definePlatform() {
@@ -72,14 +73,15 @@ public class Platform extends AbstractDynamicObject {
     public void reposition(float x, float y) {
         body.setTransform(x + getWidth() / 2, y + getHeight() / 2, body.getAngle());
         setPosition(x, y);
+        touched = false;
     }
 
     public float getBodyWidth() {
-        return getWidth() / 3; // The width of the body is arbitrarily smaller than the width of the image
+        return getWidth() / 4; // The width of the body is arbitrarily smaller than the width of the image
     }
 
     public float getBodyHeight() {
-        return getHeight() / 3; // The height of the body is arbitrarily smaller than the height of the image
+        return getHeight() / 4; // The height of the body is arbitrarily smaller than the height of the image
     }
 
     @Override
@@ -96,17 +98,18 @@ public class Platform extends AbstractDynamicObject {
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRegion((TextureRegion) platformAnimation.getKeyFrame(stateTime, true));
         stateTime += deltaTime;
-
-//        // todo observacion: yo creo que el movimiento en general de todas las plataformas tiene que ser orquestado por platforms y no
-        // dentro de cada plataforma...no se.
-//        if (getY() + getHeight() > gameWorld.getGameCamera().position().y + gameWorld.getGameCamera().getWorldHeight() / 2
-//                || getY() < gameWorld.getGameCamera().position().y - gameWorld.getGameCamera().getWorldHeight() / 2) {
-//            velocity.scl(-1); // oscila, usar estados
-//        }
     }
 
     @Override
     public void render(SpriteBatch spriteBatch) {
         draw(spriteBatch);
+    }
+
+    public boolean isTouched() {
+        return touched;
+    }
+
+    public void onTouched() {
+        this.touched = true;
     }
 }

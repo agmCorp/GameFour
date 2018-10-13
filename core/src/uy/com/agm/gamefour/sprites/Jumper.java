@@ -95,6 +95,10 @@ public class Jumper extends AbstractDynamicObject {
 
     public void onSuccessfulJump() {
         gameWorld.addLevel();
+        onJump();
+    }
+
+    public void onJump() {
         currentState = State.IDLE;
         stateTime = 0;
         stopJumper = true;
