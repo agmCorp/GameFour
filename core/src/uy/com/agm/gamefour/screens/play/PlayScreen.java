@@ -4,6 +4,7 @@ import com.badlogic.gdx.InputProcessor;
 
 import uy.com.agm.gamefour.game.GameController;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.WorldController;
 import uy.com.agm.gamefour.game.WorldRenderer;
 import uy.com.agm.gamefour.screens.gui.Hud;
@@ -24,9 +25,10 @@ public class PlayScreen extends PlayAbstractScreen {
     public PlayScreen(GameFour game) {
         super(game);
 
-        hud = new Hud(game);
         worldController = new WorldController();
-        worldRenderer = new WorldRenderer(worldController.getGameWorld(), game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
+        GameWorld gameWorld = worldController.getGameWorld();
+        worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
+        hud = new Hud(game, gameWorld);
     }
 
     @Override

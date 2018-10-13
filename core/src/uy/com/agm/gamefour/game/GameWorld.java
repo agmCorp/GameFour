@@ -140,6 +140,10 @@ public class GameWorld {
         Gdx.app.debug(TAG, "****LEVEL " + level);
     }
 
+    public int getLevel() {
+        return level;
+    }
+
     public Body createBody(BodyDef bodyDef) {
         return box2DWorld.createBody(bodyDef);
     }

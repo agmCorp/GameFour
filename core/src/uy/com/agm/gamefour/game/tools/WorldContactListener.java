@@ -30,6 +30,9 @@ public class WorldContactListener implements ContactListener {
         int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
         switch (collisionDef) {
             case PLATFORM_BIT | JUMPER_BIT:
+                // todo aca lo que tengo que hacer es ver que indice tiene la plataforma con la que choco en el arreglo de
+                // plataformas. Si es el indice 1 o posterior quiere decir que salte bien (y que no salte en el lugar por ejemplo).
+                // Si salte bien solo ahi debo aumentar el score, si salte en el lugar por ejempo igual debo setvelocity en cero y todo eso.
                 fixC = fixA.getFilterData().categoryBits == JUMPER_BIT ? fixA : fixB;
                 if (fixC.isSensor()) {
                     ((Jumper) fixC.getUserData()).onSuccessfulJump();

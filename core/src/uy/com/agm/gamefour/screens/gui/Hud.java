@@ -3,9 +3,12 @@ package uy.com.agm.gamefour.screens.gui;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import java.util.Locale;
+
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.screens.gui.widget.PowerBar;
 
 /**
@@ -17,16 +20,22 @@ public class Hud extends GUIAbstractScreen {
 
     private static final float PAD = 50.0f;
     private static final float SWING_DELAY = 0.02f;
+    private static final String FORMAT_SCORE = "%d";
 
+    private GameWorld gameWorld;
     private PowerBar powerBar;
     private boolean swing;
     private float swingTime;
+    private int score;
+    private Label scoreValueLabel;
 
-    public Hud(GameFour game) {
+    public Hud(GameFour game, GameWorld gameWorld) {
         super(game);
+        this.gameWorld = gameWorld;
         powerBar = new PowerBar();
         swing = false;
         swingTime = 0;
+        score = 0;
     }
 
     @Override
@@ -54,12 +63,12 @@ public class Hud extends GUIAbstractScreen {
         // Personal fonts
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
         labelStyleBig.font = Assets.getInstance().getFonts().getDefaultBig();
-        Label score = new Label("3", labelStyleBig);
+        scoreValueLabel = new Label(String.format(Locale.getDefault(), FORMAT_SCORE, score), labelStyleBig);
 
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.top();
-        table.add(score);
+        table.add(scoreValueLabel);
         table.padTop(PAD);
         return table;
     }
@@ -77,7 +86,13 @@ public class Hud extends GUIAbstractScreen {
                 }
             }
         }
+        updateScore(gameWorld.getLevel());
         stage.act();
+    }
+
+    private void updateScore(int value) {
+        score = value;
+        scoreValueLabel.setText(String.format(Locale.getDefault(), FORMAT_SCORE, score));
     }
 
     @Override

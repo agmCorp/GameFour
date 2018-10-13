@@ -75,11 +75,11 @@ public class Platform extends AbstractDynamicObject {
     }
 
     public float getBodyWidth() {
-        return getWidth() / 4; // The width of the body is arbitrarily smaller than the width of the image
+        return getWidth() / 3; // The width of the body is arbitrarily smaller than the width of the image
     }
 
     public float getBodyHeight() {
-        return getHeight() / 4; // The height of the body is arbitrarily smaller than the height of the image
+        return getHeight() / 3; // The height of the body is arbitrarily smaller than the height of the image
     }
 
     @Override
