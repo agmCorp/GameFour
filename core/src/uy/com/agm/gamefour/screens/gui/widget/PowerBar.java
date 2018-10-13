@@ -16,7 +16,7 @@ public class PowerBar extends ProgressBar {
     private static final String TAG = PowerBar.class.getName();
 
     private static final int WIDTH = 250;
-    private static final int HEIGHT = 20;
+    private static final int HEIGHT = 15;
     private static final float MIN = 0.0f;
     private static final float MAX = 100.0f;
     private static final float STEP = 4.0f;

@@ -14,7 +14,7 @@ public class PowerBarScreen extends GUIAbstractScreen {
     private static final String TAG = PowerBarScreen.class.getName();
 
     private static final float PAD = 50.0f;
-    private static final float SWING_DELAY = 0.015f;
+    private static final float SWING_DELAY = 0.014f;
 
     private PowerBar powerBar;
     private boolean swing;
