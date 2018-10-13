@@ -95,10 +95,10 @@ public class Jumper extends AbstractDynamicObject {
 
     public void onSuccessfulJump() {
         gameWorld.addLevel();
-        onJump();
+        onLanding();
     }
 
-    public void onJump() {
+    public void onLanding() {
         currentState = State.IDLE;
         stateTime = 0;
         stopJumper = true;
@@ -110,8 +110,8 @@ public class Jumper extends AbstractDynamicObject {
     }
 
     public void jump(float impulse) {
-        // todo
         Gdx.app.debug(TAG, "********* IMPULSO: " + impulse);
+        body.setGravityScale(1);
         body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPUSE_X, IMPULSE_Y), body.getWorldCenter(), true);
         currentState = State.JUMPING;
     }
@@ -152,6 +152,7 @@ public class Jumper extends AbstractDynamicObject {
         // Update this Sprite to correspond with the position of the Box2D body.
         if (stopJumper) {
             body.setLinearVelocity(0.0f, 0.0f);
+            body.setGravityScale(0);
             stopJumper = false;
         }
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);

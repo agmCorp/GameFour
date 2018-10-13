@@ -51,7 +51,7 @@ public class WorldContactListener implements ContactListener {
             jumper.onSuccessfulJump();
             platform.onTouched();
         } else {
-            jumper.onJump();
+            jumper.onLanding();
         }
     }
 
