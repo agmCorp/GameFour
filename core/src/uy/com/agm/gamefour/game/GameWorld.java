@@ -52,7 +52,7 @@ public class GameWorld {
         switch (background) {
             case 1:
                 loadDesertBackground();
-                jumper.setColor(Color.NAVY);
+                jumper.setColor(Color.SKY);
                 break;
             case 2:
                 loadForestBackground();
