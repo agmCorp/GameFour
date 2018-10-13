@@ -1,7 +1,9 @@
 package uy.com.agm.gamefour.screens.gui;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.screens.gui.widget.PowerBar;
@@ -10,8 +12,8 @@ import uy.com.agm.gamefour.screens.gui.widget.PowerBar;
  * Created by AGM on 10/12/2018.
  */
 
-public class PowerBarScreen extends GUIAbstractScreen {
-    private static final String TAG = PowerBarScreen.class.getName();
+public class Hud extends GUIAbstractScreen {
+    private static final String TAG = Hud.class.getName();
 
     private static final float PAD = 50.0f;
     private static final float SWING_DELAY = 0.02f;
@@ -20,7 +22,7 @@ public class PowerBarScreen extends GUIAbstractScreen {
     private boolean swing;
     private float swingTime;
 
-    public PowerBarScreen(GameFour game) {
+    public Hud(GameFour game) {
         super(game);
         powerBar = new PowerBar();
         swing = false;
@@ -31,11 +33,35 @@ public class PowerBarScreen extends GUIAbstractScreen {
     public void show() {
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
-        table.bottom();
+        table.center();
         table.setFillParent(true);
+        table.add(getScoreTable()).height(GameFour.APPLICATION_HEIGHT / 2).row();
+        table.add(getPowerBarTable()).height(GameFour.APPLICATION_HEIGHT / 2);
+        stage.addActor(table);
+    }
+
+    private Table getPowerBarTable() {
+        Table table = new Table();
+        table.setDebug(DebugConstants.DEBUG_LINES);
+        table.bottom();
         table.add(powerBar);
         table.padBottom(PAD);
-        stage.addActor(table);
+        return table;
+    }
+
+    private Table getScoreTable() {
+        // todo
+        // Personal fonts
+        Label.LabelStyle labelStyleBig = new Label.LabelStyle();
+        labelStyleBig.font = Assets.getInstance().getFonts().getDefaultBig();
+        Label score = new Label("3", labelStyleBig);
+
+        Table table = new Table();
+        table.setDebug(DebugConstants.DEBUG_LINES);
+        table.top();
+        table.add(score);
+        table.padTop(PAD);
+        return table;
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
-import uy.com.agm.gamefour.screens.gui.PowerBarScreen;
+import uy.com.agm.gamefour.screens.gui.Hud;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
 
 /**
@@ -43,7 +43,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     public boolean fling(float velocityX, float velocityY, int button) {
         // todo sacar esto y retornar false
         gameWorld.getJumper().falsoSalto();
-        playScreen.getPowerBarScreen().setSwing(false);
+        playScreen.getHud().setSwing(false);
         return true;
     }
 
@@ -126,7 +126,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     private void startJump() {
         if (playScreen.isPlayScreenStateRunning()) {
             if (gameWorld.getJumper().isIdle()) {
-                playScreen.getPowerBarScreen().setSwing(true);
+                playScreen.getHud().setSwing(true);
             }
         }
     }
@@ -134,9 +134,9 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     private void endJump() {
         if (playScreen.isPlayScreenStateRunning()) {
             if (gameWorld.getJumper().isIdle()) {
-                PowerBarScreen powerBarScreen = playScreen.getPowerBarScreen();
-                powerBarScreen.setSwing(false);
-                gameWorld.getJumper().jump(powerBarScreen.getValue());
+                Hud hud = playScreen.getHud();
+                hud.setSwing(false);
+                gameWorld.getJumper().jump(hud.getValue());
             }
         }
     }
