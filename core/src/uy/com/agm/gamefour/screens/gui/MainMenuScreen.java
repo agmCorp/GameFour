@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.screens.AbstractScreen;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenManager;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
@@ -39,6 +40,11 @@ public class MainMenuScreen extends GUIAbstractScreen {
     @Override
     protected void goBack() {
         // Nothing to do here
+    }
+
+    @Override
+    protected void clearScreen() {
+        AbstractScreen.clearScr();
     }
 
     @Override

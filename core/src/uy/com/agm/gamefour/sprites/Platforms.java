@@ -68,7 +68,7 @@ public class Platforms {
         }
 
         // todo
-        if (level == 5) {
+        if (level == 50) {
             for (Platform platform : platforms) {
                 platform.setVelocity(0, 0.3f);
             }

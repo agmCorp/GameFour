@@ -27,7 +27,7 @@ public class WorldRenderer {
     }
 
     public void render() {
-        AbstractScreen.clearScreen();
+        AbstractScreen.clearScr();
 
         // Gets the combined projection and view matrix of the game camera
         Matrix4 combined = gameWorld.getGameCamera().getCombined();

@@ -1,9 +1,9 @@
 package uy.com.agm.gamefour.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -25,7 +25,10 @@ public class Jumper extends AbstractDynamicObject {
     private static final String TAG = Jumper.class.getName();
 
     public static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
-    private static final float SENSOR_OFFSET_METERS = 0.1f;
+    private static final float SENSOR_HX = 0.2f;
+    private static final float SENSOR_HY = 0.01f;
+    private static final float IMPULSE_Y = 9.0f;
+    private static final float SCALE_IMPUSE_X = 35.0f;
 
     private enum State {
         IDLE, JUMPING, DEAD, DISPOSE
@@ -37,6 +40,7 @@ public class Jumper extends AbstractDynamicObject {
     private float stateTime;
     private Body body;
     private State currentState;
+    private boolean stopJumper;
 
     public Jumper(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
@@ -56,6 +60,7 @@ public class Jumper extends AbstractDynamicObject {
 
         // Initial state
         currentState = State.IDLE;
+        stopJumper = false;
     }
 
     private void defineJumper() {
@@ -73,11 +78,12 @@ public class Jumper extends AbstractDynamicObject {
         fixtureDef.filter.maskBits = WorldContactListener.PLATFORM_BIT |
                 WorldContactListener.OBSTACLE_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
         fixtureDef.shape = circleShape;
+        fixtureDef.density = 0.0f; // Light weight
         body.createFixture(fixtureDef).setUserData(this);
 
         // Creates the sensor
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(SENSOR_OFFSET_METERS, SENSOR_OFFSET_METERS, new Vector2(0, -CIRCLE_SHAPE_RADIUS_METERS - SENSOR_OFFSET_METERS), 0);
+        polygonShape.setAsBox(SENSOR_HX, SENSOR_HY, new Vector2(0, -CIRCLE_SHAPE_RADIUS_METERS - SENSOR_HY), 0);
         FixtureDef sensor = new FixtureDef();
         sensor.shape = polygonShape;
         sensor.filter.categoryBits = WorldContactListener.JUMPER_BIT;  // Depicts what this fixture is
@@ -91,6 +97,7 @@ public class Jumper extends AbstractDynamicObject {
         gameWorld.addLevel();
         currentState = State.IDLE;
         stateTime = 0;
+        stopJumper = true;
     }
 
     @Override
@@ -98,19 +105,24 @@ public class Jumper extends AbstractDynamicObject {
         return body.getPosition();
     }
 
-    public void jump() {
+    public void jump(float impulse) {
         // todo
-        float impulseX = MathUtils.random(1.0f, 3.0f);
-        float impulseY = MathUtils.random(4.0f, 8.0f);
-        body.applyLinearImpulse(new Vector2(impulseX, impulseY), body.getWorldCenter(), true);
+        Gdx.app.debug(TAG, "********* IMPULSO: " + impulse);
+        body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPUSE_X, IMPULSE_Y), body.getWorldCenter(), true);
         currentState = State.JUMPING;
     }
 
     // todo borrar
     public void falsoSalto() {
         float x = gameWorld.getPlatforms().getPlatform(1).getBodyPosition().x;
-        float y = gameWorld.getPlatforms().getPlatform(1).getBodyPosition().y + 0.5f;
+        float y = gameWorld.getPlatforms().getPlatform(1).getBodyPosition().y +
+                gameWorld.getPlatforms().getPlatform(1).getBodyHeight() / 2 +
+                CIRCLE_SHAPE_RADIUS_METERS;
         body.setTransform(x, y, body.getAngle());
+    }
+
+    public boolean isIdle() {
+        return currentState == State.IDLE;
     }
 
     @Override
@@ -134,6 +146,10 @@ public class Jumper extends AbstractDynamicObject {
 
     private void stateIdle(float deltaTime) {
         // Update this Sprite to correspond with the position of the Box2D body.
+        if (stopJumper) {
+            body.setLinearVelocity(0.0f, 0.0f);
+            stopJumper = false;
+        }
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRegion((TextureRegion) jumperIdleAnimation.getKeyFrame(stateTime, true));
         stateTime += deltaTime;

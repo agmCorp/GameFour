@@ -24,9 +24,9 @@ public abstract class AbstractScreen implements Screen {
         Gdx.input.setCatchBackKey(true);
     }
 
-    public static void clearScreen() {
+    public static void clearScr() {
         // Clear the screen with black
-        Gdx.gl.glClearColor(0, 1, 0, 1); // todo
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 

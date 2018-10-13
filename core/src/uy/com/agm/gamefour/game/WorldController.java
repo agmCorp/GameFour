@@ -45,7 +45,7 @@ public class WorldController implements Disposable {
         // Creates the collision listener
         box2DWorld.setContactListener(new WorldContactListener());
 
-        // Creates out game world
+        // Creates our game world
         gameWorld = new GameWorld(box2DWorld, 1);
     }
 

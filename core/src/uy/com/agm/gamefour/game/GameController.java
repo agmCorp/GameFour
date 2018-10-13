@@ -1,11 +1,11 @@
 package uy.com.agm.gamefour.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
+import uy.com.agm.gamefour.screens.gui.PowerBarScreen;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
 
 /**
@@ -25,9 +25,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        if (playScreen.isPlayScreenStateRunning()) {
-            Gdx.app.debug(TAG, "**** Touch down");
-        }
+        startJump();
         return true;
     }
 
@@ -45,6 +43,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     public boolean fling(float velocityX, float velocityY, int button) {
         // todo sacar esto y retornar false
         gameWorld.getJumper().falsoSalto();
+        playScreen.getPowerBarScreen().setSwing(false);
         return true;
     }
 
@@ -75,24 +74,20 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean keyDown(int keycode) {
-        if (playScreen.isPlayScreenStateRunning()) {
-            switch (keycode) {
-                case Input.Keys.SPACE:
-                    Gdx.app.debug(TAG, "**** Space down");
-                    break;
-            }
+        switch (keycode) {
+            case Input.Keys.SPACE:
+                startJump();
+                break;
         }
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        if (playScreen.isPlayScreenStateRunning()) {
-            switch (keycode) {
-                case Input.Keys.SPACE:
-                    Gdx.app.debug(TAG, "**** Space up");
-                    break;
-            }
+        switch (keycode) {
+            case Input.Keys.SPACE:
+                endJump();
+                break;
         }
         return true;
     }
@@ -109,10 +104,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (playScreen.isPlayScreenStateRunning()) {
-            Gdx.app.debug(TAG, "**** Touch up");
-            gameWorld.getJumper().jump();
-        }
+        endJump();
         return true;
     }
 
@@ -129,6 +121,24 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    private void startJump() {
+        if (playScreen.isPlayScreenStateRunning()) {
+            if (gameWorld.getJumper().isIdle()) {
+                playScreen.getPowerBarScreen().setSwing(true);
+            }
+        }
+    }
+
+    private void endJump() {
+        if (playScreen.isPlayScreenStateRunning()) {
+            if (gameWorld.getJumper().isIdle()) {
+                PowerBarScreen powerBarScreen = playScreen.getPowerBarScreen();
+                powerBarScreen.setSwing(false);
+                gameWorld.getJumper().jump(powerBarScreen.getValue());
+            }
+        }
     }
 }
 

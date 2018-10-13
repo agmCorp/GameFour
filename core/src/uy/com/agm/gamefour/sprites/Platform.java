@@ -58,7 +58,7 @@ public class Platform extends AbstractDynamicObject {
 
         FixtureDef fixtureDef = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(getWidth() / 4, getHeight() / 4); // The surface to land on is arbitrarily smaller than the size of the image
+        polygonShape.setAsBox(getBodyWidth(), getBodyHeight());
         fixtureDef.filter.categoryBits = WorldContactListener.PLATFORM_BIT; // Depicts what this fixture is
         fixtureDef.filter.maskBits = WorldContactListener.JUMPER_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
         fixtureDef.shape = polygonShape;
@@ -72,6 +72,14 @@ public class Platform extends AbstractDynamicObject {
     public void reposition(float x, float y) {
         body.setTransform(x + getWidth() / 2, y + getHeight() / 2, body.getAngle());
         setPosition(x, y);
+    }
+
+    public float getBodyWidth() {
+        return getWidth() / 4; // The width of the body is arbitrarily smaller than the width of the image
+    }
+
+    public float getBodyHeight() {
+        return getHeight() / 4; // The height of the body is arbitrarily smaller than the height of the image
     }
 
     @Override

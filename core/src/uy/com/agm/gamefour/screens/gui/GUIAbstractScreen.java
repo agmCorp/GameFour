@@ -73,7 +73,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     }
 
     private void render() {
-        AbstractScreen.clearScreen();
+        clearScreen();
         renderLogic();
     }
 
@@ -110,4 +110,5 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     protected abstract void updateLogic(float deltaTime);
     protected abstract void renderLogic();
     protected abstract void goBack();
+    protected abstract void clearScreen();
 }
