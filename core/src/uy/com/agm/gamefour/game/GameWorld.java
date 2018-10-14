@@ -3,6 +3,7 @@ package uy.com.agm.gamefour.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -10,11 +11,14 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.backgrounds.AssetBackgrounds;
+import uy.com.agm.gamefour.assets.backgrounds.AssetBeach;
 import uy.com.agm.gamefour.assets.backgrounds.AssetDesert;
 import uy.com.agm.gamefour.assets.backgrounds.AssetForest;
+import uy.com.agm.gamefour.assets.backgrounds.AssetHills;
 import uy.com.agm.gamefour.sprites.Jumper;
 import uy.com.agm.gamefour.sprites.ParallaxSB;
 import uy.com.agm.gamefour.sprites.Platform;
@@ -49,6 +53,7 @@ public class GameWorld {
         parallaxSB = new ParallaxSB(gameCamera);
 
         int background = MathUtils.random(1, AssetBackgrounds.MAX_BACKGROUNDS);
+        background = 4; // todo
         switch (background) {
             case 1:
                 loadDesertBackground();
@@ -57,6 +62,14 @@ public class GameWorld {
             case 2:
                 loadForestBackground();
                 jumper.setColor(new Color(0xef524fff));
+                break;
+            case 3:
+                loadBeachBackground();
+                jumper.setColor(Color.CHARTREUSE);
+                break;
+            case 4:
+                loadHillsBackground();
+                jumper.setColor(Color.GOLD);
                 break;
             default:
                 break;
@@ -124,6 +137,42 @@ public class GameWorld {
         parallaxSB.addDynamicLayer(assetDesert.getLayer3(), 2, true, -1.0f);
         parallaxSB.addDynamicLayer(assetDesert.getLayer2(), 2, true, -2.0f);
         parallaxSB.addDynamicLayer(assetDesert.getLayer1(), 2, true, -5.0f);
+    }
+
+    private void loadBeachBackground() {
+        AssetBeach assetBeach = Assets.getInstance().getBackgrounds().getBeach();
+        parallaxSB.addFarawayLayer(assetBeach.getLayer7()); // background
+        parallaxSB.addFarawayLayer(assetBeach.getLayer6()); // sun
+
+        parallaxSB.addDynamicLayer(assetBeach.getLayer5(), 2, true, -0.1f); // sea
+        parallaxSB.addDynamicLayer(assetBeach.getLayer4(), 2, true, -0.5f); // clouds 1
+        parallaxSB.addDynamicLayer(assetBeach.getLayer3(), 2, true, -1.0f); // clouds 2
+
+        Array<TextureRegion> colTextureRegion = new Array<TextureRegion>();
+        colTextureRegion.add(assetBeach.getLayer2A());
+        colTextureRegion.add(assetBeach.getLayer2B());
+        parallaxSB.addDynamicLayer(colTextureRegion, true, -0.5f); // island, boat
+
+        colTextureRegion.clear();
+        colTextureRegion.add(assetBeach.getLayer1A());
+        colTextureRegion.add(assetBeach.getLayer1B());
+        parallaxSB.addDynamicLayer(colTextureRegion, true, -3.0f); // sand
+    }
+
+    private void loadHillsBackground() {
+        AssetHills assetHills = Assets.getInstance().getBackgrounds().getHills();
+        parallaxSB.addFarawayLayer(assetHills.getLayer11()); // background
+
+        parallaxSB.addDynamicLayer(assetHills.getLayer10(), 2, true, -0.5f); // clouds 1
+        parallaxSB.addDynamicLayer(assetHills.getLayer9(), 2, true, -0.8f); // clouds 2
+        parallaxSB.addDynamicLayer(assetHills.getLayer8(), 2, true, -1.0f); // clouds 3
+        parallaxSB.addDynamicLayer(assetHills.getLayer7(), 2, true, -0.1f); // distant hills
+        parallaxSB.addDynamicLayer(assetHills.getLayer6(), 2, true, -0.4f);
+        parallaxSB.addDynamicLayer(assetHills.getLayer5(), 2, true, -0.7f);
+        parallaxSB.addDynamicLayer(assetHills.getLayer4(), 2, true, -0.9f);
+        parallaxSB.addDynamicLayer(assetHills.getLayer3(), 2, true, -1.3f);
+        parallaxSB.addDynamicLayer(assetHills.getLayer2(), 2, true, -2.0f);
+        parallaxSB.addDynamicLayer(assetHills.getLayer1(), 2, true, -4.0f);
     }
 
     public void render(SpriteBatch batch) {
