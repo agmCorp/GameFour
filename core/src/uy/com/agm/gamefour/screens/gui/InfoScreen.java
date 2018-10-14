@@ -30,7 +30,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     private static final String TAG = InfoScreen.class.getName();
 
     private static final float ANIMATION_DURATION = 1.0f;
-    private static final float PAD_BUTTON = 10.0f;
+    private static final float WIDTH_BUTTON = 85.0f;
 
     I18NBundle i18NGameThreeBundle;
     private Table mainTable;
@@ -85,8 +85,8 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
-        table.add(reload).pad(0, PAD_BUTTON, 0, PAD_BUTTON);
-        table.add(home).pad(0, PAD_BUTTON, 0, PAD_BUTTON);
+        table.add(reload).width(WIDTH_BUTTON);
+        table.add(home).width(WIDTH_BUTTON);
         return table;
     }
 
