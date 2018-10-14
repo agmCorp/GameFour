@@ -53,7 +53,6 @@ public class GameWorld {
         parallaxSB = new ParallaxSB(gameCamera);
 
         int background = MathUtils.random(1, AssetBackgrounds.MAX_BACKGROUNDS);
-        background = 4; // todo
         switch (background) {
             case 1:
                 loadDesertBackground();
