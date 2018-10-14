@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.screens.gui;
 
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
@@ -39,11 +40,15 @@ public abstract class GUIOverlayAbstractScreen implements Disposable {
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
         stage.dispose();
     }
 
-    public abstract void show();
+    public InputProcessor getInputProcessor() {
+        return stage;
+    }
+
+    public abstract void build();
     public abstract void update(float deltaTime);
     public abstract void render();
 }

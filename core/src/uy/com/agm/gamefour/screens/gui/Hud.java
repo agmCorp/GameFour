@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
-import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.screens.gui.widget.PowerBar;
 
 /**
@@ -18,25 +17,26 @@ public class Hud extends GUIOverlayAbstractScreen {
 
     private static final float PAD = 50.0f;
     private static final float SWING_DELAY = 0.02f;
+    private static final int POWER_BAR_WIDTH = 250;
+    private static final int POWER_BAR_HEIGHT = 15;
 
-    private GameWorld gameWorld;
     private PowerBar powerBar;
     private boolean swing;
     private float swingTime;
     private int score;
     private Label scoreLabel;
 
-    public Hud(GameFour game, GameWorld gameWorld) {
+    public Hud(GameFour game) {
         super(game);
-        this.gameWorld = gameWorld;
-        powerBar = new PowerBar();
+
+        powerBar = new PowerBar(POWER_BAR_WIDTH, POWER_BAR_HEIGHT);
         swing = false;
         swingTime = 0;
         score = 0;
     }
 
     @Override
-    public void show() {
+    public void build() {
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
@@ -50,7 +50,7 @@ public class Hud extends GUIOverlayAbstractScreen {
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.bottom();
-        table.add(powerBar);
+        table.add(powerBar).size(POWER_BAR_WIDTH, POWER_BAR_HEIGHT);
         table.padBottom(PAD);
         return table;
     }
@@ -87,6 +87,10 @@ public class Hud extends GUIOverlayAbstractScreen {
     public void addScore(int value) {
         score = value;
         scoreLabel.setText(String.valueOf(score));
+    }
+
+    public int getScore() {
+        return score;
     }
 
     @Override

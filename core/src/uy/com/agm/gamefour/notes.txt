@@ -6,6 +6,7 @@ supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 - hacer un font mas grande, los numeros quedan bien con escala 1.5
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
 - el armado del paralax deberia ir en cada asset que sabe como constuir el fondo, no se, pero no en gameworld creo.
+- hacer un skin
 
 LECCIONES APRENDIDAS
 --------------------

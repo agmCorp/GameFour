@@ -18,6 +18,7 @@ import uy.com.agm.gamefour.assets.backgrounds.AssetBeach;
 import uy.com.agm.gamefour.assets.backgrounds.AssetDesert;
 import uy.com.agm.gamefour.assets.backgrounds.AssetForest;
 import uy.com.agm.gamefour.assets.backgrounds.AssetHills;
+import uy.com.agm.gamefour.screens.play.PlayScreen;
 import uy.com.agm.gamefour.sprites.Jumper;
 import uy.com.agm.gamefour.sprites.ParallaxSB;
 import uy.com.agm.gamefour.sprites.Platforms;
@@ -29,7 +30,7 @@ import uy.com.agm.gamefour.sprites.Platforms;
 public class GameWorld {
     private static final String TAG = GameWorld.class.getName();
 
-    private GameFour game;
+    private PlayScreen playScreen;
     private World box2DWorld;
     private int level;
     private GameCamera gameCamera;
@@ -38,8 +39,8 @@ public class GameWorld {
     private Platforms platforms;
     private Jumper jumper;
 
-    public GameWorld(GameFour game, World box2DWorld, int level) {
-        this.game = game;
+    public GameWorld(PlayScreen playScreen, World box2DWorld, int level) {
+        this.playScreen = playScreen;
         this.box2DWorld = box2DWorld;
         this.level = level;
         gameCamera = new GameCamera();
@@ -77,10 +78,10 @@ public class GameWorld {
 
     private void createSprites() {
         // Platforms
-        platforms = new Platforms(game, this);
+        platforms = new Platforms(playScreen, this);
 
         // Jumper
-        jumper = new Jumper(game, this, platforms.getPlatform(0).getBodyPosition().x -
+        jumper = new Jumper(playScreen, this, platforms.getPlatform(0).getBodyPosition().x -
                 Assets.getInstance().getSprites().getJumper().getWidth() / 2,
                 gameCamera.position().y + gameCamera.getWorldHeight() / 2);
     }

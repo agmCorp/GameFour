@@ -11,19 +11,31 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class AssetGUI {
     private static final String TAG = AssetGUI.class.getName();
 
-    private TextureRegion play;
-    private TextureRegion playPressed;
+    private TextureRegion reload;
+    private TextureRegion reloadPressed;
+    private TextureRegion home;
+    private TextureRegion homePressed;
 
     public AssetGUI(TextureAtlas atlasGUI) {
-        play = atlasGUI.findRegion("play");
-        playPressed = atlasGUI.findRegion("playPressed");
+        reload = atlasGUI.findRegion("reload");
+        reloadPressed = atlasGUI.findRegion("reloadPressed");
+        home = atlasGUI.findRegion("home");
+        homePressed = atlasGUI.findRegion("homePressed");
     }
 
-    public TextureRegion getPlay() {
-        return play;
+    public TextureRegion getReload() {
+        return reload;
     }
 
-    public TextureRegion getPlayPressed() {
-        return playPressed;
+    public TextureRegion getReloadPressed() {
+        return reloadPressed;
+    }
+
+    public TextureRegion getHome() {
+        return home;
+    }
+
+    public TextureRegion getHomePressed() {
+        return homePressed;
     }
 }

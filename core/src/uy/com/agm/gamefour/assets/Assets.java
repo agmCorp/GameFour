@@ -36,7 +36,7 @@ public class Assets implements Disposable, AssetErrorListener {
     // Texture atlas
     private static final String TEXTURE_ATLAS_BACKGROUNDS = "atlas/backgrounds/backgrounds.atlas";
     private static final String TEXTURE_ATLAS_SPRITES = "atlas/sprites/sprites.atlas";
-    private static final String TEXTURE_ATLAS_GUI = "atlas/gui/scene2d.atlas"; // todo
+    private static final String TEXTURE_ATLAS_GUI = "atlas/gui/gui.atlas";
 
     private static Assets instance;
     private AssetManager assetManager;
@@ -140,7 +140,7 @@ public class Assets implements Disposable, AssetErrorListener {
         return sprites;
     }
 
-    public AssetGUI getGui() {
+    public AssetGUI getGUI() {
         return gui;
     }
 

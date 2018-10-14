@@ -51,7 +51,7 @@ public class SplashScreen extends GUIAbstractScreen {
         splashTime += deltaTime;
         if (assetManager.update() && splashTime >= MIN_SPLASH_TIME) { // Load some, will return true if done loading
             Assets.getInstance().finishLoading();
-            ScreenManager.getInstance().showScreen(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.SLIDE_LEFT_LINEAR);
+            ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_LEFT_LINEAR);
         } else {
             // Interpolate the percentage to make it more smooth
             percent = Interpolation.linear.apply(percent, assetManager.getProgress(), ALPHA);

@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
+import uy.com.agm.gamefour.screens.play.PlayScreen;
 import uy.com.agm.gamefour.sprites.Jumper;
 
 /**
@@ -17,8 +18,8 @@ import uy.com.agm.gamefour.sprites.Jumper;
 public class WorldController implements Disposable {
     private static final String TAG = WorldController.class.getName();
 
-    // Reference to the game
-    private GameFour game;
+    // Reference to the play screen
+    private PlayScreen playScreen;
 
     // Reference to the game world
     private GameWorld gameWorld;
@@ -34,8 +35,8 @@ public class WorldController implements Disposable {
     private World box2DWorld;
     private float accumulator;
 
-    public WorldController(GameFour game) {
-        this.game = game;
+    public WorldController(PlayScreen playScreen) {
+        this.playScreen = playScreen;
 
         // Creates the Box2D world, setting no gravity in x and GRAVITY in y, and allow bodies to sleep
         box2DWorld = new World(new Vector2(0, GRAVITY), true);
@@ -50,7 +51,7 @@ public class WorldController implements Disposable {
         box2DWorld.setContactListener(new WorldContactListener());
 
         // Creates our game world
-        gameWorld = new GameWorld(game, box2DWorld, 1);
+        gameWorld = new GameWorld(playScreen, box2DWorld, 1);
     }
 
     public void update(float deltaTime) {
@@ -94,6 +95,7 @@ public class WorldController implements Disposable {
          * when I return true in the fling event the touchUp is canceled. If I return false both are executed.
          * */
         InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(playScreen.getInfoScreen().getInputProcessor()); // InfoScreen also receives events
         multiplexer.addProcessor(new GestureDetector(gameController)); // Detects gestures (tap, long press, fling, pan, zoom, pinch)
         multiplexer.addProcessor(gameController); // User input handler
         return multiplexer;

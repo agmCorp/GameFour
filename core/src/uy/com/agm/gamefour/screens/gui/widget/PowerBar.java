@@ -15,21 +15,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class PowerBar extends ProgressBar {
     private static final String TAG = PowerBar.class.getName();
 
-    private static final int WIDTH = 250;
-    private static final int HEIGHT = 15;
     private static final float MIN = 0.0f;
     private static final float MAX = 100.0f;
     private static final float STEP = 4.0f;
 
-    public PowerBar() {
+    public PowerBar(int width, int height) {
         super(MIN, MAX, STEP, false, new ProgressBarStyle());
 
         ProgressBar.ProgressBarStyle progressBarStyle = getStyle();
-        progressBarStyle.background = getColoredDrawable(WIDTH, HEIGHT, Color.RED);
-        progressBarStyle.knob = getColoredDrawable(0, HEIGHT, Color.GREEN);
-        progressBarStyle.knobBefore = getColoredDrawable(WIDTH, HEIGHT, Color.YELLOW);
-
-        setHeight(HEIGHT);
+        progressBarStyle.background = getColoredDrawable(width, height, Color.RED);
+        progressBarStyle.knob = getColoredDrawable(0, height, Color.GREEN);
+        progressBarStyle.knobBefore = getColoredDrawable(width, height, Color.YELLOW);
     }
 
     private Drawable getColoredDrawable(int width, int height, Color color) {
@@ -47,12 +43,6 @@ public class PowerBar extends ProgressBar {
 
     public void increase() {
         setValue(getValue() + STEP);
-    }
-
-    @Override
-    public float getPrefWidth() {
-        // WA: Impossible to set 'width' on an horizontal ProgressBar using size, resize or setWidth
-        return (float) WIDTH;
     }
 
     public boolean isFull() {

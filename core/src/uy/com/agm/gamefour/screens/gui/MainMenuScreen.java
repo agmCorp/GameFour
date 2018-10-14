@@ -52,14 +52,14 @@ public class MainMenuScreen extends GUIAbstractScreen {
         Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
         labelStyleSmall.font = Assets.getInstance().getFonts().getDefaultSmall();
 
-        Label big = new Label("PowerJump", labelStyleBig);
-        Label normal = new Label("Game Assets", labelStyleNormal);
-        Label small = new Label("Texto chico", labelStyleSmall);
+        Label big = new Label("Label BIG", labelStyleBig);
+        Label normal = new Label("Label NORMAL", labelStyleNormal);
+        Label small = new Label("Label SMALL", labelStyleSmall);
 
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
-        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("mock.png"))));
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("raw/backup/mock.png"))));
         table.setFillParent(true);
         table.add(big).row();
         table.add(normal).row();
@@ -69,7 +69,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
         table.addListener(new InputListener() {
                               @Override
                               public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                                  ScreenManager.getInstance().showScreen(ScreenEnum.CREDITS, ScreenTransitionEnum.COLOR_FADE_WHITE);
+                                  ScreenManager.getInstance().showScreen(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE);
                               }
 
                               @Override

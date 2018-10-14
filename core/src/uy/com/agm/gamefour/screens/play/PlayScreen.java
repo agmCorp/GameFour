@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.screens.play;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
 import uy.com.agm.gamefour.game.GameController;
@@ -9,6 +8,7 @@ import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.WorldController;
 import uy.com.agm.gamefour.game.WorldRenderer;
 import uy.com.agm.gamefour.screens.gui.Hud;
+import uy.com.agm.gamefour.screens.gui.InfoScreen;
 
 /**
  * Created by AGMCORP on 21/9/2018.
@@ -19,34 +19,40 @@ public class PlayScreen extends PlayAbstractScreen {
 
     private static float SHAKE_DURATION = 2.0f;
 
+    private Hud hud;
+    private InfoScreen infoScreen;
     private WorldController worldController;
     private WorldRenderer worldRenderer;
-    private Hud hud;
     private boolean endGame;
 
     public PlayScreen(GameFour game) {
         super(game);
 
-        worldController = new WorldController(game);
+        hud = new Hud(game);
+        infoScreen = new InfoScreen(game);
+
+        worldController = new WorldController(this);
         GameWorld gameWorld = worldController.getGameWorld();
         worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
-        hud = new Hud(game, gameWorld);
         endGame = false;
     }
 
     @Override
     public void show() {
-        hud.show();
+        hud.build();
+        infoScreen.build();
     }
 
     @Override
     public void render(float deltaTime) {
         if (isPlayScreenStateRunning()) {
             hud.update(deltaTime);
+            infoScreen.update(deltaTime);
             worldController.update(deltaTime);
         }
         worldRenderer.render();
         hud.render();
+        infoScreen.render();
 
         // Analyze game results
         if (playScreenState == PlayScreenState.RUNNING) {
@@ -58,14 +64,14 @@ public class PlayScreen extends PlayAbstractScreen {
         if (worldController.isGameOver() && !endGame) {
             worldController.getGameWorld().getGameCamera().shake(SHAKE_DURATION);
             endGame = true;
-            // TODO ACA MUESTRO PANTALLA SUPERPUESTA DE GAMEOVER
-            Gdx.app.debug(TAG, "************** GAME OVER!!!!!");
+            infoScreen.showGameOver();
         }
     }
 
     @Override
     public void resize(int width, int height) {
         hud.resize(width, height);
+        infoScreen.resize(width, height);
         worldController.getGameWorld().getGameCamera().resize(width, height);
     }
 
@@ -78,6 +84,7 @@ public class PlayScreen extends PlayAbstractScreen {
     @Override
     public void hide() {
         hud.dispose();
+        infoScreen.dispose();
         worldController.dispose();
     }
 
@@ -89,10 +96,15 @@ public class PlayScreen extends PlayAbstractScreen {
     @Override
     public void applyViewport() {
         hud.applyViewport();
+        infoScreen.applyViewport();
         worldController.getGameWorld().getGameCamera().applyViewport();
     }
 
     public Hud getHud() {
         return hud;
+    }
+
+    public InfoScreen getInfoScreen() {
+        return infoScreen;
     }
 }
