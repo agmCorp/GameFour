@@ -13,7 +13,7 @@ import uy.com.agm.gamefour.screens.gui.widget.PowerBar;
  * Created by AGM on 10/12/2018.
  */
 
-public class Hud extends GUIAbstractScreen {
+public class Hud extends GUIOverlayAbstractScreen {
     private static final String TAG = Hud.class.getName();
 
     private static final float PAD = 50.0f;
@@ -69,7 +69,7 @@ public class Hud extends GUIAbstractScreen {
     }
 
     @Override
-    protected void updateLogic(float deltaTime) {
+    public void update(float deltaTime) {
         swingTime += deltaTime;
         if (swingTime > SWING_DELAY) {
             swingTime = 0;
@@ -91,26 +91,8 @@ public class Hud extends GUIAbstractScreen {
     }
 
     @Override
-    protected void renderLogic() {
-        stage.draw();
-    }
-
-    @Override
-    protected void goBack() {
-        // Nothing to do here
-    }
-
-    @Override
-    protected void clearScreen() {
-        // Nothing to do here
-    }
-
-    public void update(float deltaTime) {
-        updateLogic(deltaTime);
-    }
-
     public void render() {
-        renderLogic();
+        stage.draw();
     }
 
     public void setSwing(boolean swing) {

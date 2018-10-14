@@ -16,7 +16,7 @@ import uy.com.agm.gamefour.screens.AbstractScreen;
  */
 
 public abstract class GUIAbstractScreen extends AbstractScreen {
-    private static final String TAG = AbstractScreen.class.getName();
+    private static final String TAG = GUIAbstractScreen.class.getName();
 
     // GUI state
     private enum GUIScreenState {
@@ -73,7 +73,7 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     }
 
     private void render() {
-        clearScreen();
+        clearScr();
         renderLogic();
     }
 
@@ -110,5 +110,4 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
     protected abstract void updateLogic(float deltaTime);
     protected abstract void renderLogic();
     protected abstract void goBack();
-    protected abstract void clearScreen();
 }

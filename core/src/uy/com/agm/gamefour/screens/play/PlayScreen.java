@@ -72,7 +72,6 @@ public class PlayScreen extends PlayAbstractScreen {
     @Override
     public void pause() {
         super.pause();
-        hud.pause();
         // TODO INVOCAR A PANTALLA LINDA DE PAUSA
     }
 
