@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -21,7 +20,6 @@ import uy.com.agm.gamefour.assets.backgrounds.AssetForest;
 import uy.com.agm.gamefour.assets.backgrounds.AssetHills;
 import uy.com.agm.gamefour.sprites.Jumper;
 import uy.com.agm.gamefour.sprites.ParallaxSB;
-import uy.com.agm.gamefour.sprites.Platform;
 import uy.com.agm.gamefour.sprites.Platforms;
 
 /**
@@ -80,10 +78,9 @@ public class GameWorld {
         platforms = new Platforms(this);
 
         // Jumper
-        Platform platform = platforms.getPlatform(0);
-        Vector2 platformBodyPosition = platform.getBodyPosition();
-        jumper = new Jumper(this, platformBodyPosition.x - Jumper.CIRCLE_SHAPE_RADIUS_METERS,
-                platformBodyPosition.y + platform.getBodyHeight() / 2);
+        jumper = new Jumper(this, platforms.getPlatform(0).getBodyPosition().x -
+                Assets.getInstance().getSprites().getJumper().getWidth() / 2,
+                gameCamera.position().y + gameCamera.getWorldHeight() / 2);
     }
 
     public void update(float deltaTime) {

@@ -81,7 +81,7 @@ public class Hud extends GUIAbstractScreen {
                 }
             }
         }
-        updateScore(gameWorld.getLevel());
+        updateScore(gameWorld.getLevel() - 1);
         stage.act();
     }
 

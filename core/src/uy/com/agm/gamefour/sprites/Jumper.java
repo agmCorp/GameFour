@@ -59,7 +59,7 @@ public class Jumper extends AbstractDynamicObject {
         defineJumper();
 
         // Initial state
-        currentState = State.IDLE;
+        currentState = State.JUMPING;
         stopJumper = false;
     }
 
