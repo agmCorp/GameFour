@@ -17,6 +17,9 @@ import uy.com.agm.gamefour.sprites.Jumper;
 public class WorldController implements Disposable {
     private static final String TAG = WorldController.class.getName();
 
+    // Reference to the game
+    private GameFour game;
+
     // Reference to the game world
     private GameWorld gameWorld;
 
@@ -31,7 +34,9 @@ public class WorldController implements Disposable {
     private World box2DWorld;
     private float accumulator;
 
-    public WorldController() {
+    public WorldController(GameFour game) {
+        this.game = game;
+
         // Creates the Box2D world, setting no gravity in x and GRAVITY in y, and allow bodies to sleep
         box2DWorld = new World(new Vector2(0, GRAVITY), true);
 
@@ -45,7 +50,7 @@ public class WorldController implements Disposable {
         box2DWorld.setContactListener(new WorldContactListener());
 
         // Creates our game world
-        gameWorld = new GameWorld(box2DWorld, 1);
+        gameWorld = new GameWorld(game, box2DWorld, 1);
     }
 
     public void update(float deltaTime) {

@@ -70,10 +70,10 @@ public class Hud extends GUIOverlayAbstractScreen {
 
     @Override
     public void update(float deltaTime) {
-        swingTime += deltaTime;
-        if (swingTime > SWING_DELAY) {
-            swingTime = 0;
-            if (swing) {
+        if (swing) {
+            swingTime += deltaTime;
+            if (swingTime > SWING_DELAY) {
+                swingTime = 0;
                 if (powerBar.isFull()) {
                     powerBar.reset();
                 } else {
@@ -81,11 +81,10 @@ public class Hud extends GUIOverlayAbstractScreen {
                 }
             }
         }
-        updateScore(gameWorld.getLevel() - 1);
         stage.act();
     }
 
-    private void updateScore(int value) {
+    public void addScore(int value) {
         score = value;
         scoreLabel.setText(String.valueOf(score));
     }
@@ -95,9 +94,13 @@ public class Hud extends GUIOverlayAbstractScreen {
         stage.draw();
     }
 
-    public void setSwing(boolean swing) {
-        this.swing = swing;
+    public void startSwing() {
+        swing = true;
         swingTime = 0;
+    }
+
+    public void stopSwing() {
+        swing = false;
     }
 
     public float getValue() {

@@ -29,6 +29,7 @@ import uy.com.agm.gamefour.sprites.Platforms;
 public class GameWorld {
     private static final String TAG = GameWorld.class.getName();
 
+    private GameFour game;
     private World box2DWorld;
     private int level;
     private GameCamera gameCamera;
@@ -37,7 +38,8 @@ public class GameWorld {
     private Platforms platforms;
     private Jumper jumper;
 
-    public GameWorld(World box2DWorld, int level) {
+    public GameWorld(GameFour game, World box2DWorld, int level) {
+        this.game = game;
         this.box2DWorld = box2DWorld;
         this.level = level;
         gameCamera = new GameCamera();
@@ -75,10 +77,10 @@ public class GameWorld {
 
     private void createSprites() {
         // Platforms
-        platforms = new Platforms(this);
+        platforms = new Platforms(game, this);
 
         // Jumper
-        jumper = new Jumper(this, platforms.getPlatform(0).getBodyPosition().x -
+        jumper = new Jumper(game, this, platforms.getPlatform(0).getBodyPosition().x -
                 Assets.getInstance().getSprites().getJumper().getWidth() / 2,
                 gameCamera.position().y + gameCamera.getWorldHeight() / 2);
     }

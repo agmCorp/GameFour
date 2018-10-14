@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
 import uy.com.agm.gamefour.game.GameCamera;
+import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.GameWorld;
 
 /**
@@ -20,10 +21,12 @@ public class Platforms {
     private static float MAX_PLATFORM_SPACING = 2.2f;
     private static float OFFSET_Y = 2.5f;
 
+    private GameFour game;
     private GameWorld gameWorld;
     private Array<Platform> platforms;
 
-    public Platforms(GameWorld gameWorld) {
+    public Platforms(GameFour game, GameWorld gameWorld) {
+        this.game = game;
         this.gameWorld = gameWorld;
         platforms = new Array<Platform>();
 

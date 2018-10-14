@@ -43,7 +43,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     public boolean fling(float velocityX, float velocityY, int button) {
         // todo sacar esto y retornar false
         gameWorld.getJumper().falsoSalto();
-        playScreen.getHud().setSwing(false);
+        playScreen.getHud().stopSwing();
         return true;
     }
 
@@ -126,7 +126,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     private void startJump() {
         if (playScreen.isPlayScreenStateRunning()) {
             if (gameWorld.getJumper().isIdle()) {
-                playScreen.getHud().setSwing(true);
+                playScreen.getHud().startSwing();
             }
         }
     }
@@ -135,7 +135,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
         if (playScreen.isPlayScreenStateRunning()) {
             if (gameWorld.getJumper().isIdle()) {
                 Hud hud = playScreen.getHud();
-                hud.setSwing(false);
+                hud.stopSwing();
                 gameWorld.getJumper().jump(hud.getValue());
             }
         }

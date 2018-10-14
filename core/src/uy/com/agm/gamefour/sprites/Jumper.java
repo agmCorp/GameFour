@@ -14,8 +14,10 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.sprites.AssetJumper;
 import uy.com.agm.gamefour.game.GameCamera;
+import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
+import uy.com.agm.gamefour.screens.play.PlayScreen;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -33,6 +35,7 @@ public class Jumper extends AbstractDynamicObject {
     private enum State {
         IDLE, JUMPING, DEAD, DISPOSE
     }
+    private GameFour game;
     private GameWorld gameWorld;
     private TextureRegion jumperStand;
     private Animation jumperIdleAnimation;
@@ -42,7 +45,8 @@ public class Jumper extends AbstractDynamicObject {
     private State currentState;
     private boolean stopJumper;
 
-    public Jumper(GameWorld gameWorld, float x, float y) {
+    public Jumper(GameFour game, GameWorld gameWorld, float x, float y) {
+        this.game = game;
         this.gameWorld = gameWorld;
 
         AssetJumper assetJumper = Assets.getInstance().getSprites().getJumper();
@@ -94,6 +98,7 @@ public class Jumper extends AbstractDynamicObject {
     }
 
     public void onSuccessfulJump() {
+        ((PlayScreen) game.getCurrentScreen()).getHud().addScore(gameWorld.getLevel());
         gameWorld.addLevel();
         onLanding();
     }

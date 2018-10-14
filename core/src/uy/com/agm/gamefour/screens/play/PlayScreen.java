@@ -27,7 +27,7 @@ public class PlayScreen extends PlayAbstractScreen {
     public PlayScreen(GameFour game) {
         super(game);
 
-        worldController = new WorldController();
+        worldController = new WorldController(game);
         GameWorld gameWorld = worldController.getGameWorld();
         worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
         hud = new Hud(game, gameWorld);
