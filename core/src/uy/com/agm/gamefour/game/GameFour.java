@@ -37,6 +37,9 @@ public class GameFour extends DirectedGame {
             Gdx.app.log(TAG, "**** Debug messages not enabled (set DEBUG_MODE = true to enable them) ****");
         }
 
+        // Load preferences and settings
+        GameSettings.getInstance().load();
+
         // Constructs a new guiBatch
         guiBatch = new SpriteBatch();
 

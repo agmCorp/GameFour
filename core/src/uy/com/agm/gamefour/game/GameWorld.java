@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -55,15 +54,18 @@ public class GameWorld {
     private void createBackground() {
         parallaxSB = new ParallaxSB(gameCamera);
 
-        int background = MathUtils.random(1, AssetBackgrounds.MAX_BACKGROUNDS);
-        switch (background) {
+        GameSettings prefs = GameSettings.getInstance();
+        int backgroundId = prefs.getBackgroundId();
+        prefs.setBackgroundId((backgroundId % AssetBackgrounds.MAX_BACKGROUNDS) + 1);
+
+        switch (backgroundId) {
             case 1:
                 loadDesertBackground();
                 jumper.setColor(Color.SKY);
                 break;
             case 2:
                 loadForestBackground();
-                jumper.setColor(new Color(0xef524fff));
+                jumper.setColor(Color.SALMON);
                 break;
             case 3:
                 loadBeachBackground();

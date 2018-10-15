@@ -9,12 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.I18NBundle;
 
+import java.util.concurrent.Callable;
+
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.game.GameSettings;
+import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
-import uy.com.agm.gamefour.screens.ScreenNavigationFactory;
+import uy.com.agm.gamefour.screens.ScreenManager;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
 
@@ -79,8 +83,13 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         ImageButton home = new ImageButton(new TextureRegionDrawable(assetGUI.getHome()),
                 new TextureRegionDrawable(assetGUI.getHomePressed()));
 
-        reload.addListener(ScreenNavigationFactory.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
-        home.addListener(ScreenNavigationFactory.screenNavigationListener(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_DOWN));
+        reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
+        home.addListener(ListenerHelper.functionCallableListener(
+                new Callable<Void>() {
+                    public Void call() {
+                        return homeButton();
+                    }
+                }));
 
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
@@ -88,6 +97,12 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         table.add(reload).width(WIDTH_BUTTON);
         table.add(home).width(WIDTH_BUTTON);
         return table;
+    }
+
+    private Void homeButton(){
+        GameSettings.getInstance().save();
+        ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_DOWN);
+        return null;
     }
 
     @Override

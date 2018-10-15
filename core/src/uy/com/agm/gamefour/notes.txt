@@ -17,6 +17,7 @@ HACER
 - pensar alguna manera de que al apretar reload no se cargue el mismo background que ya tenia, usar una property?
 o arrancar desde 1 (valor de property) e incrementar con modulo.
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
+- Debo ver cuando hacer save de las propiedades
 
 
 LECCIONES APRENDIDAS
