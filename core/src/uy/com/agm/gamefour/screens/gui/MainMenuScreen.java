@@ -1,7 +1,5 @@
 package uy.com.agm.gamefour.screens.gui;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -9,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import uy.com.agm.gamefour.assets.Assets;
+import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.screens.ScreenEnum;
@@ -56,10 +55,12 @@ public class MainMenuScreen extends GUIAbstractScreen {
         Label normal = new Label("Power Jump", labelStyleNormal);
         Label small = new Label("Power Jump", labelStyleSmall);
 
+        AssetGUI assetGUI = Assets.getInstance().getGUI();
+
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
-        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("raw/backup/mock.png"))));
+        table.setBackground(new TextureRegionDrawable(assetGUI.getMain()));
         table.setFillParent(true);
         // TODO HACER UN MENU DECENTE
 //        table.add(big).row();

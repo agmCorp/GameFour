@@ -15,12 +15,14 @@ public class AssetGUI {
     private TextureRegion reloadPressed;
     private TextureRegion home;
     private TextureRegion homePressed;
+    private TextureRegion main; // TODO
 
     public AssetGUI(TextureAtlas atlasGUI) {
         reload = atlasGUI.findRegion("reload");
         reloadPressed = atlasGUI.findRegion("reloadPressed");
         home = atlasGUI.findRegion("home");
         homePressed = atlasGUI.findRegion("homePressed");
+        main = atlasGUI.findRegion("mock");
     }
 
     public TextureRegion getReload() {
@@ -37,5 +39,9 @@ public class AssetGUI {
 
     public TextureRegion getHomePressed() {
         return homePressed;
+    }
+
+    public TextureRegion getMain() {
+        return main;
     }
 }

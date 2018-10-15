@@ -1,33 +1,40 @@
 
 gui.png
-size: 256,128
+size: 512,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 home
   rotate: false
-  xy: 69, 57
+  xy: 2, 63
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
   index: -1
 homePressed
   rotate: false
-  xy: 136, 63
+  xy: 69, 136
   size: 59, 59
   orig: 59, 59
   offset: 0, 0
   index: -1
+mock
+  rotate: false
+  xy: 2, 197
+  size: 480, 800
+  orig: 480, 800
+  offset: 0, 0
+  index: -1
 reload
   rotate: false
-  xy: 2, 57
+  xy: 2, 130
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
   index: -1
 reloadPressed
   rotate: false
-  xy: 136, 2
+  xy: 2, 2
   size: 59, 59
   orig: 59, 59
   offset: 0, 0
