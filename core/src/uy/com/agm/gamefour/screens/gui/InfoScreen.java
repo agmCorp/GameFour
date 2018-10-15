@@ -9,8 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.I18NBundle;
 
-import java.util.concurrent.Callable;
-
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.game.DebugConstants;
@@ -84,10 +82,10 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
                 new TextureRegionDrawable(assetGUI.getHomePressed()));
 
         reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
-        home.addListener(ListenerHelper.functionCallableListener(
-                new Callable<Void>() {
-                    public Void call() {
-                        return homeButton();
+        home.addListener(ListenerHelper.runnableListener(
+                new Runnable() {
+                    public void run () {
+                        homeButton();
                     }
                 }));
 
@@ -99,10 +97,9 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         return table;
     }
 
-    private Void homeButton(){
+    private void homeButton(){
         GameSettings.getInstance().save();
         ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_DOWN);
-        return null;
     }
 
     @Override
