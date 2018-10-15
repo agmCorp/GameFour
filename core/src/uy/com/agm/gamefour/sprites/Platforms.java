@@ -17,8 +17,8 @@ public class Platforms {
     private static final String TAG = Platforms.class.getName();
 
     private static int MAX_PLATFORMS = 4;
-    private static float MIN_PLATFORM_SPACING = 0.5f;
-    private static float MAX_PLATFORM_SPACING = 2.2f;
+    private static float MIN_PLATFORM_SPACING = 0.3f;
+    private static float MAX_PLATFORM_SPACING = 2.0f;
     private static float OFFSET_Y = 2.5f;
 
     private PlayScreen playScreen;
