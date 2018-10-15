@@ -11,8 +11,9 @@ HACER
 - poner algun efecto de particulas cuando salte o nube.
 - agregar un obstaculo
 - programar los movimientos de las plataformas
-- random plataformas
-- menus
+- random texture plataformas
+- menus y todo eso
+- musica y efectos
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 
