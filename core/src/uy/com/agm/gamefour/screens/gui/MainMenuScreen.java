@@ -52,21 +52,22 @@ public class MainMenuScreen extends GUIAbstractScreen {
         Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
         labelStyleSmall.font = Assets.getInstance().getFonts().getDefaultSmall();
 
-        Label big = new Label("Label BIG", labelStyleBig);
-        Label normal = new Label("Label NORMAL", labelStyleNormal);
-        Label small = new Label("Label SMALL", labelStyleSmall);
+        Label big = new Label("Power Jump", labelStyleBig);
+        Label normal = new Label("Power Jump", labelStyleNormal);
+        Label small = new Label("Power Jump", labelStyleSmall);
 
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
         table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("raw/backup/mock.png"))));
         table.setFillParent(true);
-        table.add(big).row();
-        table.add(normal).row();
-        table.add(small).row();
+        // TODO HACER UN MENU DECENTE
+//        table.add(big).row();
+//        table.add(normal).row();
+//        table.add(small).row();
         stage.addActor(table);
 
-        table.addListener(new InputListener() {
+        stage.addListener(new InputListener() {
                               @Override
                               public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                                   ScreenManager.getInstance().showScreen(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE);

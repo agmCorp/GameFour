@@ -17,6 +17,8 @@ public class DebugConstants {
     // Debug lines around box2d bodies
     public static final boolean DEBUG_BOX2D = true && TURN_ON_DEBUG;
 
+    // todo programrar esto o sacarlo
+
     // Shows/hides background image
     public static final boolean HIDE_BACKGROUND = false && TURN_ON_DEBUG;
 

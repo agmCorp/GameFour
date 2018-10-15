@@ -120,15 +120,6 @@ public class Jumper extends AbstractDynamicObject {
         currentState = State.JUMPING;
     }
 
-    // todo borrar
-    public void falsoSalto() {
-        float x = gameWorld.getPlatforms().getPlatform(1).getBodyPosition().x;
-        float y = gameWorld.getPlatforms().getPlatform(1).getBodyPosition().y +
-                gameWorld.getPlatforms().getPlatform(1).getBodyHeight() / 2 +
-                CIRCLE_SHAPE_RADIUS_METERS;
-        body.setTransform(x, y, body.getAngle());
-    }
-
     public boolean isIdle() {
         return currentState == State.IDLE;
     }

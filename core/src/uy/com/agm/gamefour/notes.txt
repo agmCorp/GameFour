@@ -3,13 +3,18 @@
 - me queda la duda de si implemento el dispose en alguna pantalla y hago super.dispose..a cual hide llama? al de la clase derivada o la madre?
 supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 
-- hacer un font mas grande, los numeros quedan bien con escala 1.5
+HACER
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
 - el armado del paralax deberia ir en cada asset que sabe como constuir el fondo, no se, pero no en gameworld creo.
 - hacer un skin
 - en las settings debo meter algo que permita usar low o high por el paralax.
+- poner algun efecto de particulas cuando salte o nube.
+- agregar un obstaculo
+- programar los movimientos de las plataformas
+- random plataformas
+- menus
+- MAS NADA, LA FUNCIONALIDAD ES ESA.
 
-**** seguir estudiando el paralax y el movimiento de la camara emprolijar esa parte con muchos todos
 
 LECCIONES APRENDIDAS
 --------------------
