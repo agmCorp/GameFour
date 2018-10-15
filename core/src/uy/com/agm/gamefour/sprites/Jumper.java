@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -29,7 +28,7 @@ public class Jumper extends AbstractDynamicObject {
     private static final float SENSOR_HX = 0.1f;
     private static final float SENSOR_HY = 0.01f;
     private static final float IMPULSE_Y = 9.0f;
-    private static final float SCALE_IMPUSE_X = 37.0f;
+    private static final float SCALE_IMPULSE_X = 37.0f;
 
     private enum State {
         IDLE, JUMPING, DEAD, DISPOSE
@@ -114,9 +113,8 @@ public class Jumper extends AbstractDynamicObject {
     }
 
     public void jump(float impulse) {
-        Gdx.app.debug(TAG, "********* IMPULSO: " + impulse);
         body.setGravityScale(1);
-        body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPUSE_X, IMPULSE_Y), body.getWorldCenter(), true);
+        body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPULSE_X, IMPULSE_Y), body.getWorldCenter(), true);
         currentState = State.JUMPING;
     }
 
