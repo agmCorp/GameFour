@@ -130,8 +130,8 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     private void endJump() {
         if (playScreen.isPlayScreenStateRunning()) {
-            if (gameWorld.getJumper().isIdle()) {
-                Hud hud = playScreen.getHud();
+            Hud hud = playScreen.getHud();
+            if (gameWorld.getJumper().isIdle() && hud.isSwinging()) {
                 hud.stopSwing();
                 gameWorld.getJumper().jump(hud.getValue());
             }

@@ -107,6 +107,10 @@ public class Hud extends GUIOverlayAbstractScreen {
         swing = false;
     }
 
+    public boolean isSwinging() {
+        return swing;
+    }
+
     public float getValue() {
         return powerBar.getValue();
     }
