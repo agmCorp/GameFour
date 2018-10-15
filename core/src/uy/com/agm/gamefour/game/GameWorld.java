@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,6 +17,7 @@ import uy.com.agm.gamefour.assets.backgrounds.AssetBeach;
 import uy.com.agm.gamefour.assets.backgrounds.AssetDesert;
 import uy.com.agm.gamefour.assets.backgrounds.AssetForest;
 import uy.com.agm.gamefour.assets.backgrounds.AssetHills;
+import uy.com.agm.gamefour.assets.backgrounds.AssetWaterfall;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
 import uy.com.agm.gamefour.sprites.Jumper;
 import uy.com.agm.gamefour.sprites.ParallaxSB;
@@ -29,6 +29,8 @@ import uy.com.agm.gamefour.sprites.Platforms;
 
 public class GameWorld {
     private static final String TAG = GameWorld.class.getName();
+
+    private static final float CAMERA_VELOCITY = 4.0f;
 
     private PlayScreen playScreen;
     private World box2DWorld;
@@ -71,6 +73,10 @@ public class GameWorld {
                 loadHillsBackground();
                 jumper.setColor(Color.GOLD);
                 break;
+            case 5:
+                loadWaterfallBackground();
+                jumper.setColor(Color.VIOLET);
+                break;
             default:
                 break;
         }
@@ -98,18 +104,9 @@ public class GameWorld {
     }
 
     private void centerCamera(float deltaTime) {
-        // no borrar esto
         if (moveCamera) {
-            float velocityDeCamara = 1.0f;
-            //Gdx.app.debug(TAG, "**** muevo camara");
-
-            // TODO movecamera se pone en false cuando llego a la poscion de pajaro.
-            gameCamera.position().x = gameCamera.position().x + velocityDeCamara * deltaTime;
-
-            if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > jumper.getBodyPosition().x - jumper.getWidth() / 2) {
-                //Gdx.app.debug(TAG, "**** dejo de mover camara " + (gameCamera.position().x - gameCamera.getWorldWidth() / 2) + " JUMPER: " + jumper.getBodyPosition().x );
-                moveCamera = false;
-            }
+            gameCamera.position().x = gameCamera.position().x + CAMERA_VELOCITY * deltaTime;
+            moveCamera = gameCamera.position().x - gameCamera.getWorldWidth() / 2 <= jumper.getBodyPosition().x - jumper.getWidth() / 2;
         }
     }
 
@@ -174,6 +171,16 @@ public class GameWorld {
         parallaxSB.addDynamicLayer(assetHills.getLayer1(), 2, true, -4.0f);
     }
 
+    private void loadWaterfallBackground() {
+        AssetWaterfall assetWaterfall = Assets.getInstance().getBackgrounds().getWaterfall();
+        parallaxSB.addFarawayLayer(assetWaterfall.getLayer5()); // background
+
+        parallaxSB.addDynamicLayer(assetWaterfall.getLayer4(), 2, true, -0.5f);
+        parallaxSB.addDynamicLayer(assetWaterfall.getLayer3(), 2, true, -1.3f);
+        parallaxSB.addDynamicLayer(assetWaterfall.getLayer2(), 2, true, -2.0f);
+        parallaxSB.addDynamicLayer(assetWaterfall.getLayer1(), 2, true, -4.0f);
+    }
+
     public void render(SpriteBatch batch) {
         // This order is important.
         // This determines if a sprite has to be drawn in front or behind another sprite.
@@ -207,9 +214,6 @@ public class GameWorld {
     public void addLevel() {
         level++;
         moveCamera = true;
-
-        // // TODO: 10/2/2018
-        Gdx.app.debug(TAG, "****LEVEL " + level);
     }
 
     public int getLevel() {

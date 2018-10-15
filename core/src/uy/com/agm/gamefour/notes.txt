@@ -7,6 +7,9 @@ supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
 - el armado del paralax deberia ir en cada asset que sabe como constuir el fondo, no se, pero no en gameworld creo.
 - hacer un skin
+- en las settings debo meter algo que permita usar low o high por el paralax.
+
+**** seguir estudiando el paralax y el movimiento de la camara emprolijar esa parte con muchos todos
 
 LECCIONES APRENDIDAS
 --------------------

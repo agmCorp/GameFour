@@ -10,18 +10,20 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 public class AssetBackgrounds {
     private static final String TAG = AssetBackgrounds.class.getName();
 
-    public static final int MAX_BACKGROUNDS = 4;
+    public static final int MAX_BACKGROUNDS = 5;
 
     private AssetDesert desert;
     private AssetForest forest;
     private AssetBeach beach;
     private AssetHills hills;
+    private AssetWaterfall waterfall;
 
     public AssetBackgrounds(TextureAtlas atlasBackgrounds) {
         desert = new AssetDesert(atlasBackgrounds);
         forest = new AssetForest(atlasBackgrounds);
         beach = new AssetBeach(atlasBackgrounds);
         hills = new AssetHills(atlasBackgrounds);
+        waterfall = new AssetWaterfall(atlasBackgrounds);
     }
 
     public AssetDesert getDesert() {
@@ -38,5 +40,9 @@ public class AssetBackgrounds {
 
     public AssetHills getHills() {
         return hills;
+    }
+
+    public AssetWaterfall getWaterfall() {
+        return waterfall;
     }
 }
