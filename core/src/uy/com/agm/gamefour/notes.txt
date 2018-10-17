@@ -49,3 +49,9 @@ Para no usar el método pause y dar más flexibilidad, definí un método nuevo 
 2) Para ejecutar la versión html: Ir al directorio del juego y ejecutar gradlew html:dist. En GameFour\html\build\dist quedó
 la aplicación a deployar. Para ejecutarla en xampp copiar ese contenido dentro de C:\xampp\htdocs\Alvaro\juego y luego
 levantar el apache y el tomcat del xampp y ejecutar http://localhost/Alvaro/juego/index.html
+
+3) Para usar el editor de partículas mejor ejecutar el editor desde Android Studio ya que lo ejecuta desde la versión de libgdx que tengo.
+Para ello seguir este link https://www.gamefromscratch.com/post/2014/11/03/LibGDX-Tutorial-Part-15-Particles-Part-One-2D-Particles.aspx.
+Lo importante es que arriba del todo diga "Pixel per meter 100" (mi PPM) y "zoom level = 1" asi puedo ver en tamaño real el efecto.
+Todas las dimensiones deben ir en metros (ej: spawn width, X size, etc.), lo mismo con las velocidades.
+Estas propiedades son por cada emiter, si hay más de un emiter debo seleccionarlo para editar sus propiedades.

@@ -40,10 +40,10 @@ active: false
 - Spawn Shape - 
 shape: line
 - Spawn Width - 
-lowMin: 300.0
-lowMax: 300.0
-highMin: 300.0
-highMax: 300.0
+lowMin: 3.0
+lowMax: 3.0
+highMin: 3.0
+highMax: 3.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -59,22 +59,24 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Scale - 
+- X Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 10.0
-highMax: 10.0
+highMin: 0.1
+highMax: 0.1
 relative: false
 scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
+- Y Scale - 
+active: false
 - Velocity - 
 active: true
 lowMin: 0.0
 lowMax: 0.0
 highMin: 0.0
-highMax: 30.0
+highMax: 0.3
 relative: false
 scalingCount: 1
 scaling0: 0.19607843
@@ -135,5 +137,7 @@ aligned: false
 additive: false
 behind: false
 premultipliedAlpha: false
-- Image Path -
+spriteMode: single
+- Image Paths -
 particle.png
+

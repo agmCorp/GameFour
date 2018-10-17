@@ -27,9 +27,9 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Life Offset -
+- Life Offset - 
 active: false
-- X Offset -
+- X Offset - 
 active: false
 - Y Offset - 
 active: false
@@ -83,16 +83,7 @@ scaling0: 0.5
 timelineCount: 1
 timeline0: 0.0
 - Angle - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
+active: false
 - Rotation - 
 active: false
 - Wind - 

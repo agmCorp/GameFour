@@ -47,8 +47,8 @@ shape: square
 - Spawn Width - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 1280.0
-highMax: 1280.0
+highMin: 12.8
+highMax: 12.8
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -57,18 +57,18 @@ timeline0: 0.0
 - Spawn Height - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 720.0
-highMax: 720.0
+highMin: 7.2
+highMax: 7.2
 relative: false
 scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Scale - 
+- X Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 10.0
-highMax: 50.0
+highMin: 0.1
+highMax: 0.5
 relative: false
 scalingCount: 7
 scaling0: 0.0
@@ -86,12 +86,14 @@ timeline3: 0.5068493
 timeline4: 0.74657536
 timeline5: 0.8835617
 timeline6: 1.0
+- Y Scale - 
+active: false
 - Velocity - 
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 30.0
-highMax: 300.0
+highMin: 0.3
+highMax: 3.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -126,8 +128,8 @@ active: false
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 250.0
-highMax: -250.0
+highMin: 2.5
+highMax: -2.5
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -137,8 +139,8 @@ timeline0: 0.0
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 250.0
-highMax: -250.0
+highMin: 2.5
+highMax: -2.5
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -173,5 +175,8 @@ continuous: true
 aligned: false
 additive: true
 behind: false
-- Image Path -
+premultipliedAlpha: false
+spriteMode: single
+- Image Paths -
 particle.png
+
