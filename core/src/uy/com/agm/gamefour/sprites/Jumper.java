@@ -69,7 +69,7 @@ public class Jumper extends AbstractDynamicObject {
 
         // Particles effect
         particles = new ParticleEffect();
-        particles.load(Gdx.files.internal("effects/dust.p"), Gdx.files.internal("effects")); // todo
+        particles.load(Gdx.files.internal("effects/agm.p"), Gdx.files.internal("effects")); // todo
         particles.setPosition(gameWorld.getGameCamera().position().x, gameWorld.getGameCamera().position().y);
         //particles.allowCompletion();
     }
@@ -111,6 +111,10 @@ public class Jumper extends AbstractDynamicObject {
     }
 
     public void onLanding() {
+        // todo
+        particles.setPosition(body.getPosition().x, body.getPosition().y);
+        particles.start();
+
         currentState = State.IDLE;
         stateTime = 0;
         stopJumper = true;
@@ -123,8 +127,8 @@ public class Jumper extends AbstractDynamicObject {
 
     public void jump(float impulse) {
         // todo
-//        particles.setPosition(body.getPosition().x, body.getPosition().y);
-//        particles.start();
+        particles.setPosition(body.getPosition().x, body.getPosition().y);
+        particles.start();
 
         body.setGravityScale(1);
         body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPULSE_X, IMPULSE_Y), body.getWorldCenter(), true);
