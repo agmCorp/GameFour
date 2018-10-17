@@ -83,7 +83,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     public boolean keyUp(int keycode) {
         switch (keycode) {
             case Input.Keys.SPACE:
-                endJump();
+                performJump();
                 break;
         }
         return true;
@@ -101,7 +101,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        endJump();
+        performJump();
         return true;
     }
 
@@ -128,7 +128,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
         }
     }
 
-    private void endJump() {
+    private void performJump() {
         if (playScreen.isPlayScreenStateRunning()) {
             Hud hud = playScreen.getHud();
             if (gameWorld.getJumper().isIdle() && hud.isSwinging()) {

@@ -1,6 +1,8 @@
 package uy.com.agm.gamefour.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -42,6 +44,7 @@ public class Jumper extends AbstractDynamicObject {
     private Body body;
     private State currentState;
     private boolean stopJumper;
+    private ParticleEffect particles;
 
     public Jumper(PlayScreen playScreen, GameWorld gameWorld, float x, float y) {
         this.playScreen = playScreen;
@@ -63,6 +66,10 @@ public class Jumper extends AbstractDynamicObject {
         // Initial state
         currentState = State.JUMPING;
         stopJumper = false;
+
+        // Particles effect
+        particles = new ParticleEffect();
+        particles.load(Gdx.files.internal("effects/dust.p"), Gdx.files.internal("effects"));
     }
 
     private void defineJumper() {
@@ -113,6 +120,10 @@ public class Jumper extends AbstractDynamicObject {
     }
 
     public void jump(float impulse) {
+        // todo
+        particles.setPosition(body.getPosition().x, body.getPosition().y);
+        particles.start();
+
         body.setGravityScale(1);
         body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPULSE_X, IMPULSE_Y), body.getWorldCenter(), true);
         currentState = State.JUMPING;
@@ -124,6 +135,9 @@ public class Jumper extends AbstractDynamicObject {
 
     @Override
     public void update(float deltaTime) {
+        // Update particles
+        particles.update(deltaTime);
+
         switch (currentState) {
             case IDLE:
                 stateIdle(deltaTime);
@@ -168,6 +182,9 @@ public class Jumper extends AbstractDynamicObject {
 
     @Override
     public void render(SpriteBatch spriteBatch) {
+        // Draw Particles
+        particles.draw(spriteBatch);
+
         draw(spriteBatch);
     }
 }
