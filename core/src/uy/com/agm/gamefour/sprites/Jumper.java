@@ -69,7 +69,7 @@ public class Jumper extends AbstractDynamicObject {
 
         // Particles effect
         particles = new ParticleEffect();
-        particles.load(Gdx.files.internal("effects/agm.p"), Gdx.files.internal("effects")); // todo
+        particles.load(Gdx.files.internal("effects/snow.p"), Gdx.files.internal("effects")); // todo
         particles.setPosition(gameWorld.getGameCamera().position().x, gameWorld.getGameCamera().position().y);
         //particles.allowCompletion();
     }
