@@ -29,8 +29,8 @@ public class Jumper extends AbstractDynamicObject {
     public static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
     private static final float SENSOR_HX = 0.1f;
     private static final float SENSOR_HY = 0.01f;
-    private static final float IMPULSE_Y = 9.0f;
-    private static final float SCALE_IMPULSE_X = 37.0f;
+    private static final float IMPULSE_Y = 7.0f;
+    private static final float SCALE_IMPULSE_X = 27.0f;
 
     private enum State {
         IDLE, JUMPING, DEAD, DISPOSE
@@ -44,7 +44,8 @@ public class Jumper extends AbstractDynamicObject {
     private Body body;
     private State currentState;
     private boolean stopJumper;
-    private ParticleEffect particles;
+    private ParticleEffect magic;
+    private ParticleEffect fireworks;
 
     public Jumper(PlayScreen playScreen, GameWorld gameWorld, float x, float y) {
         this.playScreen = playScreen;
@@ -68,10 +69,17 @@ public class Jumper extends AbstractDynamicObject {
         stopJumper = false;
 
         // Particles effect
-        particles = new ParticleEffect();
-        particles.load(Gdx.files.internal("effects/snow.p"), Gdx.files.internal("effects")); // todo
-        particles.setPosition(gameWorld.getGameCamera().position().x, gameWorld.getGameCamera().position().y);
-        //particles.allowCompletion();
+        float gameCameraX = gameWorld.getGameCamera().position().x;
+        float gameCameraY = gameWorld.getGameCamera().position().y;
+
+        magic = new ParticleEffect();
+        magic.load(Gdx.files.internal("effects/magic.p"), Gdx.files.internal("effects")); // todo
+        magic.setPosition(gameCameraX, gameCameraY);
+
+        fireworks = new ParticleEffect();
+        fireworks.load(Gdx.files.internal("effects/firework_large.p"), Gdx.files.internal("effects")); // todo
+        fireworks.setPosition(gameCameraX, gameCameraY);
+
     }
 
     private void defineJumper() {
@@ -112,8 +120,8 @@ public class Jumper extends AbstractDynamicObject {
 
     public void onLanding() {
         // todo
-        particles.setPosition(body.getPosition().x, body.getPosition().y);
-        particles.start();
+        fireworks.setPosition(body.getPosition().x, body.getPosition().y);
+        fireworks.start();
 
         currentState = State.IDLE;
         stateTime = 0;
@@ -127,8 +135,8 @@ public class Jumper extends AbstractDynamicObject {
 
     public void jump(float impulse) {
         // todo
-        particles.setPosition(body.getPosition().x, body.getPosition().y);
-        particles.start();
+        magic.setPosition(body.getPosition().x, body.getPosition().y);
+        magic.start();
 
         body.setGravityScale(1);
         body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPULSE_X, IMPULSE_Y), body.getWorldCenter(), true);
@@ -142,7 +150,8 @@ public class Jumper extends AbstractDynamicObject {
     @Override
     public void update(float deltaTime) {
         // Update particles
-        particles.update(deltaTime);
+        magic.update(deltaTime);
+        fireworks.update(deltaTime);
 
         switch (currentState) {
             case IDLE:
@@ -189,7 +198,8 @@ public class Jumper extends AbstractDynamicObject {
     @Override
     public void render(SpriteBatch spriteBatch) {
         // Draw Particles (behind jumper)
-        particles.draw(spriteBatch);
+        magic.draw(spriteBatch);
+        fireworks.draw(spriteBatch);
 
         // Draw Jumper
         draw(spriteBatch);
