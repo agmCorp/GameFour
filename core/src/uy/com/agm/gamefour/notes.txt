@@ -21,9 +21,6 @@ o arrancar desde 1 (valor de property) e incrementar con modulo.
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 
-   private static final float IMPULSE_Y = 7.0f;//9.0f;
-    private static final float SCALE_IMPULSE_X = 27.0f;//37.0f;
-
 LECCIONES APRENDIDAS
 --------------------
 1) Primero existía ApplicationListener, todas las pantallas heredaban de allí.

@@ -1,0 +1,2 @@
+private static final float IMPULSE_Y = 7.0f;//9.0f;
+private static final float SCALE_IMPULSE_X = 27.0f;//37.0f;
