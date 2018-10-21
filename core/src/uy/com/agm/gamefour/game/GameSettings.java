@@ -13,6 +13,8 @@ public class GameSettings {
     private static final String SETTINGS = "powerJumpSettings";
     private static final String HIGH_SCORE = "highScore";
     private static final String BACKGROUND_ID = "backgroundId";
+    private static final String SOUND = "sound";
+    private static final String MUSIC = "music";
 
     // Singleton: unique instance
     private static GameSettings instance;
@@ -20,6 +22,8 @@ public class GameSettings {
     private Preferences prefs;
     private int highScore;
     private int backgroundId;
+    private boolean sound;
+    private boolean music;
 
     // Singleton: prevent instantiation from other classes
     private GameSettings() {
@@ -37,11 +41,15 @@ public class GameSettings {
     public void load() {
         highScore = prefs.getInteger(HIGH_SCORE, 0);
         backgroundId = prefs.getInteger(BACKGROUND_ID, 1);
+        sound = prefs.getBoolean(SOUND, true);
+        music = prefs.getBoolean(MUSIC, true);
     }
 
     public void save() {
         prefs.putInteger(HIGH_SCORE, highScore);
         prefs.putInteger(BACKGROUND_ID, backgroundId);
+        prefs.putBoolean(SOUND, sound);
+        prefs.putBoolean(MUSIC, music);
         prefs.flush();
     }
 
@@ -59,5 +67,21 @@ public class GameSettings {
 
     public void setBackgroundId(int backgroundId) {
         this.backgroundId = backgroundId;
+    }
+
+    public boolean isSound() {
+        return sound;
+    }
+
+    public void setSound(boolean sound) {
+        this.sound = sound;
+    }
+
+    public boolean isMusic() {
+        return music;
+    }
+
+    public void setMusic(boolean music) {
+        this.music = music;
     }
 }

@@ -7,17 +7,24 @@ HACER
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
 - el armado del paralax deberia ir en cada asset que sabe como constuir el fondo, no se, pero no en gameworld creo.
 - hacer un skin
-- en las settings debo meter algo que permita usar low o high por el paralax.
+- en las settings debo meter algo que permita usar low o high por el paralax (boton four state off, low, medium, high)
 - agregar mas fondos
 - agregar un obstaculo
-- programar los movimientos de las plataformas
+- agregar una estrellita para agarrar por puntos, es dificil si la estrellita debe seguir el movimiento de la plataforma.
 - random texture plataformas
 - menus y todo eso
+- definir avisos
 - musica y efectos
+*- programar los movimientos de las plataformas, arriba abajo.
 *- pensar alguna manera de que al apretar reload no se cargue el mismo background que ya tenia, usar una property?
 o arrancar desde 1 (valor de property) e incrementar con modulo.
 *- Debo ver cuando hacer save de las propiedades
 *- poner algun efecto de particulas cuando salte o nube.
+
+PARA HACER EL MENU: UN BACKGROUND GRANDE QUE LO UBICO CENTRADO EN EL STAGE (SOL Y FONDO)
+UNA IMAGEN CON EL TITULO Y EL PAJARO Y PLATAFORMAS
+Y TA, LUEGO LOS BOTONES.
+PUEDO HACER EL BICHO ANIMADO CAPAZ
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 

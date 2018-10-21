@@ -3,6 +3,9 @@ package uy.com.agm.gamefour.screens;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
+import uy.com.agm.gamefour.assets.Assets;
+import uy.com.agm.gamefour.tools.AudioManager;
+
 /**
  * Created by AGM on 10/14/2018.
  */
@@ -15,8 +18,7 @@ public class ListenerHelper {
                 new InputListener() {
                     @Override
                     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                        // todo Audio FX poner click
-
+                        AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getClick());
                         ScreenManager.getInstance().showScreen(screenEnum, screenTransitionEnum, params);
                     }
 
@@ -32,7 +34,7 @@ public class ListenerHelper {
                 new InputListener() {
                     @Override
                     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                        // todo Audio FX poner click
+                        AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getClick());
                         runnable.run();
                     }
 

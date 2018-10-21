@@ -54,6 +54,12 @@ public class GameWorld {
     private void createBackground() {
         parallaxSB = new ParallaxSB(gameCamera);
 
+        if (!DebugConstants.HIDE_BACKGROUND) {
+            loadBackground();
+        }
+    }
+
+    private void loadBackground() {
         GameSettings prefs = GameSettings.getInstance();
         int backgroundId = prefs.getBackgroundId();
         prefs.setBackgroundId((backgroundId % AssetBackgrounds.MAX_BACKGROUNDS) + 1);

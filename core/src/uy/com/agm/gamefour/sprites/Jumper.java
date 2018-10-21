@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
@@ -18,6 +20,7 @@ import uy.com.agm.gamefour.game.GameCamera;
 import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
+import uy.com.agm.gamefour.tools.AudioManager;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -29,8 +32,8 @@ public class Jumper extends AbstractDynamicObject {
     public static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
     private static final float SENSOR_HX = 0.1f;
     private static final float SENSOR_HY = 0.01f;
-    private static final float IMPULSE_Y = 7.0f;
-    private static final float SCALE_IMPULSE_X = 27.0f;
+    private static final float IMPULSE_Y = 7.5f;
+    private static final float SCALE_IMPULSE_X = 30.0f;
 
     private enum State {
         IDLE, JUMPING, DEAD, DISPOSE
@@ -44,6 +47,8 @@ public class Jumper extends AbstractDynamicObject {
     private Body body;
     private State currentState;
     private boolean stopJumper;
+    private boolean activateJumper;
+    private Platform currentPlatform;
     private ParticleEffect magic;
     private ParticleEffect fireworks;
 
@@ -67,19 +72,22 @@ public class Jumper extends AbstractDynamicObject {
         // Initial state
         currentState = State.JUMPING;
         stopJumper = false;
+        activateJumper = true;
+        currentPlatform = null;
 
         // Particles effect
         float gameCameraX = gameWorld.getGameCamera().position().x;
         float gameCameraY = gameWorld.getGameCamera().position().y;
 
+        // Particle magic
         magic = new ParticleEffect();
-        magic.load(Gdx.files.internal("effects/magic.p"), Gdx.files.internal("effects")); // todo
+        magic.load(Gdx.files.internal("effects/magic.p"), Gdx.files.internal("effects"));
         magic.setPosition(gameCameraX, gameCameraY);
 
+        // Particle firework
         fireworks = new ParticleEffect();
-        fireworks.load(Gdx.files.internal("effects/firework_large.p"), Gdx.files.internal("effects")); // todo
+        fireworks.load(Gdx.files.internal("effects/firework_large.p"), Gdx.files.internal("effects"));
         fireworks.setPosition(gameCameraX, gameCameraY);
-
     }
 
     private void defineJumper() {
@@ -90,12 +98,10 @@ public class Jumper extends AbstractDynamicObject {
         body = gameWorld.createBody(bodyDef);
         body.setFixedRotation(true);
 
+        // Creates main fixture
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(CIRCLE_SHAPE_RADIUS_METERS);
-        fixtureDef.filter.categoryBits = WorldContactListener.JUMPER_BIT; // Depicts what this fixture is
-        fixtureDef.filter.maskBits = WorldContactListener.PLATFORM_BIT |
-                WorldContactListener.OBSTACLE_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
         fixtureDef.shape = circleShape;
         fixtureDef.density = 0.0f; // Light weight
         body.createFixture(fixtureDef).setUserData(this);
@@ -105,42 +111,93 @@ public class Jumper extends AbstractDynamicObject {
         polygonShape.setAsBox(SENSOR_HX, SENSOR_HY, new Vector2(0, -CIRCLE_SHAPE_RADIUS_METERS - SENSOR_HY), 0);
         FixtureDef sensor = new FixtureDef();
         sensor.shape = polygonShape;
-        sensor.filter.categoryBits = WorldContactListener.JUMPER_BIT;  // Depicts what this fixture is
-        sensor.filter.maskBits = WorldContactListener.PLATFORM_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
         sensor.isSensor = true;
         body.createFixture(sensor).setUserData(this);
 
+        setFilters();
     }
 
-    public void onSuccessfulJump() {
+    private void setFilters() {
+        Filter filterJumper = new Filter();
+        filterJumper.categoryBits = WorldContactListener.JUMPER_BIT; // Depicts what this fixture is
+        filterJumper.maskBits = WorldContactListener.PLATFORM_BIT |
+                WorldContactListener.OBSTACLE_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
+
+        Filter filterSensor = new Filter();
+        filterSensor.categoryBits = WorldContactListener.JUMPER_BIT; // Depicts what this fixture is
+        filterSensor.maskBits = WorldContactListener.PLATFORM_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
+
+        // We set the previous filters in every fixture
+        for (Fixture fixture : body.getFixtureList()) {
+            if (fixture.isSensor()) {
+                fixture.setFilterData(filterSensor);
+            } else {
+                fixture.setFilterData(filterJumper);
+            }
+        }
+    }
+
+    private void removeFilters() {
+        // Jumper can't collide with anything
+        Filter filter = new Filter();
+        filter.categoryBits = WorldContactListener.JUMPER_BIT; // Depicts what this fixture is
+        filter.maskBits = WorldContactListener.NOTHING_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
+
+        // We set the previous filter in every fixture
+        for (Fixture fixture : body.getFixtureList()) {
+            fixture.setFilterData(filter);
+        }
+    }
+
+    public void onSuccessfulJump(Platform platform) {
+        // Particle effect
+        fireworks.setPosition(body.getPosition().x, body.getPosition().y);
+        fireworks.start();
+
+        // Current platform, score and level
+        currentPlatform = platform;
         playScreen.getHud().addScore(gameWorld.getLevel());
         gameWorld.addLevel();
+
         onLanding();
     }
 
     public void onLanding() {
-        // todo
-        fireworks.setPosition(body.getPosition().x, body.getPosition().y);
-        fireworks.start();
-
+        // State variables
         currentState = State.IDLE;
         stateTime = 0;
         stopJumper = true;
+
+        // Audio effect
+        AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getBodyImpact());
+    }
+
+    public void onHit() {
+        // Audio effect
+        AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getHit());
+    }
+
+    public void jump(float impulse) {
+        // Particle effect
+        magic.setPosition(body.getPosition().x, body.getPosition().y);
+        magic.start();
+
+        // Jump impulse
+        body.setGravityScale(1);
+        body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPULSE_X, IMPULSE_Y), body.getWorldCenter(), true);
+
+        // State variables
+        currentState = State.JUMPING;
+        stateTime = 0;
+        activateJumper = true;
+
+        // Audio effect
+        AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getJump());
     }
 
     @Override
     public Vector2 getBodyPosition() {
         return body.getPosition();
-    }
-
-    public void jump(float impulse) {
-        // todo
-        magic.setPosition(body.getPosition().x, body.getPosition().y);
-        magic.start();
-
-        body.setGravityScale(1);
-        body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPULSE_X, IMPULSE_Y), body.getWorldCenter(), true);
-        currentState = State.JUMPING;
     }
 
     public boolean isIdle() {
@@ -171,18 +228,31 @@ public class Jumper extends AbstractDynamicObject {
     }
 
     private void stateIdle(float deltaTime) {
-        // Update this Sprite to correspond with the position of the Box2D body.
+        // Disables Jumper
         if (stopJumper) {
             body.setLinearVelocity(0.0f, 0.0f);
             body.setGravityScale(0);
+            removeFilters();
             stopJumper = false;
         }
+
+        // Update the position of the Box2D body since the platform can be moving.
+        float y = currentPlatform.getBodyPosition().y + currentPlatform.getBodyHeight() / 2;
+        body.setTransform(body.getPosition().x, y + CIRCLE_SHAPE_RADIUS_METERS, body.getAngle());
+
+        // Update this Sprite to correspond with the position of the Box2D body.
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRegion((TextureRegion) jumperIdleAnimation.getKeyFrame(stateTime, true));
         stateTime += deltaTime;
     }
 
     private void stateJumping(float deltaTime) {
+        // Enables Jumper
+        if (activateJumper) {
+            setFilters();
+            activateJumper = false;
+        }
+
         // Update this Sprite to correspond with the position of the Box2D body.
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRegion((TextureRegion) jumperJumpAnimation.getKeyFrame(stateTime, true));

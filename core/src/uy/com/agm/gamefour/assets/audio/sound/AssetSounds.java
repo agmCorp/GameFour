@@ -13,12 +13,30 @@ public class AssetSounds {
     private static final String TAG = AssetSounds.class.getName();
 
     private Sound jump;
+    private Sound hit;
+    private Sound bodyImpact;
+    private Sound click;
 
     public AssetSounds(AssetManager am) {
         jump = am.get(Assets.FX_FILE_JUMP, Sound.class);
+        hit = am.get(Assets.FX_FILE_HIT, Sound.class);
+        bodyImpact = am.get(Assets.FX_FILE_BODY_IMPACT, Sound.class);
+        click = am.get(Assets.FX_FILE_CLICK, Sound.class);
     }
 
-    public static String getTAG() {
-        return TAG;
+    public Sound getJump() {
+        return jump;
+    }
+
+    public Sound getHit() {
+        return hit;
+    }
+
+    public Sound getBodyImpact() {
+        return bodyImpact;
+    }
+
+    public Sound getClick() {
+        return click;
     }
 }

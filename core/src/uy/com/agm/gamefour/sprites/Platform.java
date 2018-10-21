@@ -3,6 +3,7 @@ package uy.com.agm.gamefour.sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -21,15 +22,21 @@ import uy.com.agm.gamefour.game.tools.WorldContactListener;
 public class Platform extends AbstractDynamicObject {
     private static final String TAG = Platform.class.getName();
 
-    private static final float SCALE = 0.2f;
+    private static final float SCALE = 0.4f;
+    private static final float VELOCITY = 1.0f;
+    private static final float UPPER_LIMIT = 7.0f;
+    private static final float BOTTOM_LIMIT = 1.0f;
 
     private GameWorld gameWorld;
     private TextureRegion platformStand;
     private Animation platformAnimation;
     private float stateTime;
     private Body body;
-    private Vector2 velocity;
     private boolean touched;
+    private enum State {
+        STATIC, UP, DOWN
+    }
+    private State currentState;
 
     public Platform(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
@@ -46,8 +53,8 @@ public class Platform extends AbstractDynamicObject {
         // Box2d
         definePlatform();
 
-        velocity = new Vector2(0, 0);
         touched = false;
+        currentState = State.STATIC;
     }
 
     private void definePlatform() {
@@ -61,21 +68,28 @@ public class Platform extends AbstractDynamicObject {
 
         FixtureDef fixtureDef = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(getBodyWidth(), getBodyHeight());
+        polygonShape.setAsBox(getBodyWidth() / 2, getBodyHeight() / 2);
         fixtureDef.filter.categoryBits = WorldContactListener.PLATFORM_BIT; // Depicts what this fixture is
         fixtureDef.filter.maskBits = WorldContactListener.JUMPER_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
         fixtureDef.shape = polygonShape;
         body.createFixture(fixtureDef).setUserData(this);
     }
 
-    public void setVelocity(float vx, float vy) {
-        velocity.set(vx, vy);
+    public void startMovement() {
+        if (currentState == State.STATIC) {
+            currentState = MathUtils.randomBoolean() ? State.UP : State.DOWN;
+        }
+    }
+
+    public void stopMovement() {
+        currentState = State.STATIC;
     }
 
     public void reposition(float x, float y) {
         body.setTransform(x + getWidth() / 2, y + getHeight() / 2, body.getAngle());
         setPosition(x, y);
         touched = false;
+        currentState = State.STATIC;
     }
 
     public float getBodyWidth() {
@@ -93,9 +107,47 @@ public class Platform extends AbstractDynamicObject {
 
     @Override
     public void update(float deltaTime) {
-        // Set new velocity
-        body.setLinearVelocity(velocity);
+        switch (currentState) {
+            case UP:
+                stateMovingUp(deltaTime);
+                break;
+            case DOWN:
+                stateMovingDown(deltaTime);
+                break;
+            case STATIC:
+                stateStatic(deltaTime);
+                break;
+            default:
+                break;
+        }
+    }
 
+    private void stateMovingUp(float deltaTime) {
+        // Set new velocity
+        body.setLinearVelocity(0, VELOCITY);
+        updateSprite(deltaTime);
+
+        if (getY() + getHeight() >= UPPER_LIMIT) {
+            currentState = State.DOWN;
+        }
+    }
+
+    private void stateMovingDown(float deltaTime) {
+        // Set new velocity
+        body.setLinearVelocity(0, -VELOCITY);
+        updateSprite(deltaTime);
+        if (getY() <= BOTTOM_LIMIT) {
+            currentState = State.UP;
+        }
+    }
+
+    private void stateStatic(float deltaTime) {
+        // Set new velocity
+        body.setLinearVelocity(0, 0);
+        updateSprite(deltaTime);
+    }
+
+    private void updateSprite(float deltaTime) {
         // Update this Sprite to correspond with the position of the Box2D body
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRegion((TextureRegion) platformAnimation.getKeyFrame(stateTime, true));

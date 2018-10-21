@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.screens.gui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -25,6 +26,8 @@ public class Hud extends GUIOverlayAbstractScreen {
     private float swingTime;
     private int score;
     private Label scoreLabel;
+    private int fps;
+    private Label fpsLabel;
 
     public Hud(GameFour game) {
         super(game);
@@ -33,6 +36,7 @@ public class Hud extends GUIOverlayAbstractScreen {
         swing = false;
         swingTime = 0;
         score = 0;
+        fps = 0;
     }
 
     @Override
@@ -41,21 +45,24 @@ public class Hud extends GUIOverlayAbstractScreen {
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
         table.setFillParent(true);
-        table.add(getScoreTable()).height(GameFour.APPLICATION_HEIGHT / 2).row();
-        table.add(getPowerBarTable()).height(GameFour.APPLICATION_HEIGHT / 2);
+        table.add(getTopTable()).height(GameFour.APPLICATION_HEIGHT / 2).row();
+        table.add(getBottomTable()).height(GameFour.APPLICATION_HEIGHT / 2);
         stage.addActor(table);
     }
 
-    private Table getPowerBarTable() {
+    private Table getBottomTable() {
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.bottom();
+        if (DebugConstants.SHOW_FPS) {
+            table.add(getFPSTable()).row();
+        }
         table.add(powerBar).size(POWER_BAR_WIDTH, POWER_BAR_HEIGHT);
         table.padBottom(PAD);
         return table;
     }
 
-    private Table getScoreTable() {
+    private Table getTopTable() {
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
         labelStyleBig.font = Assets.getInstance().getFonts().getDefaultBig();
         scoreLabel = new Label(String.valueOf(score), labelStyleBig);
@@ -66,6 +73,26 @@ public class Hud extends GUIOverlayAbstractScreen {
         table.add(scoreLabel);
         table.padTop(PAD);
         return table;
+    }
+
+    private Table getFPSTable() {
+        Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
+        labelStyleSmall.font = Assets.getInstance().getFonts().getDefaultSmall();
+        Label fpsTitle = new Label(Assets.getInstance().getI18NGameFour().getI18NGameFourBundle().format("hud.FPS"), labelStyleSmall);
+        fpsLabel = new Label(String.valueOf(fps), labelStyleSmall);
+
+        Table table = new Table();
+        table.setDebug(DebugConstants.DEBUG_LINES);
+        table.add(fpsTitle).row();
+        table.add(fpsLabel);
+        return table;
+    }
+
+    private void updateFPS() {
+        if (DebugConstants.SHOW_FPS) {
+            fps = Gdx.graphics.getFramesPerSecond();
+            fpsLabel.setText(String.valueOf(fps));
+        }
     }
 
     @Override
@@ -82,6 +109,7 @@ public class Hud extends GUIOverlayAbstractScreen {
             }
         }
         stage.act();
+        updateFPS();
     }
 
     public void addScore(int value) {

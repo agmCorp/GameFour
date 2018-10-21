@@ -28,6 +28,9 @@ public class Assets implements Disposable, AssetErrorListener {
 
     // Sound FXs
     public static final String FX_FILE_JUMP = "audio/sounds/jump.ogg";
+    public static final String FX_FILE_HIT = "audio/sounds/hit.ogg";
+    public static final String FX_FILE_BODY_IMPACT = "audio/sounds/bodyImpact.ogg";
+    public static final String FX_FILE_CLICK = "audio/sounds/click.ogg";
 
     // Music
     public static final String MUSIC_FILE_MAIN_MENU = "audio/music/mainMenu.ogg";
@@ -121,6 +124,9 @@ public class Assets implements Disposable, AssetErrorListener {
 
     private void loadSounds() {
         assetManager.load(FX_FILE_JUMP, Sound.class);
+        assetManager.load(FX_FILE_HIT, Sound.class);
+        assetManager.load(FX_FILE_BODY_IMPACT, Sound.class);
+        assetManager.load(FX_FILE_CLICK, Sound.class);
     }
 
     private void loadMusic() {
