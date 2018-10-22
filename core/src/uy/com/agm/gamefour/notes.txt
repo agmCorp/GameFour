@@ -37,6 +37,9 @@ Se me ocurre que haya un misil o algo que se mueva horizontal en la pantalla de 
 que hacer explotar soltando un huevo o algo lindo al hacer touch.
 Creo que eso es mejor que el obstaculo.
 
+PONER UNA ZONA DE SALTO PERFECTO. SI EL PAJARO CAE JUSTO AHI (SU X EN MEDIO DE LA PLATAFORMA) SACO ALGUN CARTEL
+Y DOY PUNTOS EXTRA.
+
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 
