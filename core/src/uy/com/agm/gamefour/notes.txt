@@ -40,6 +40,12 @@ Creo que eso es mejor que el obstaculo.
 PONER UNA ZONA DE SALTO PERFECTO. SI EL PAJARO CAE JUSTO AHI (SU X EN MEDIO DE LA PLATAFORMA) SACO ALGUN CARTEL
 Y DOY PUNTOS EXTRA.
 
+
+el istouch lo uso para no contabilizar puntaje 2 veces.
+para que el pajaro si salta en el lugar y le erra se reviente, usar isidle.
+el currentlatform lo necesito para seguir el movimineto de la plataforma cuando estoy sobre ella.
+
+
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 
