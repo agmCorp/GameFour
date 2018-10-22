@@ -26,6 +26,17 @@ PARA HACER EL MENU: UN BACKGROUND GRANDE QUE LO UBICO CENTRADO EN EL STAGE (SOL 
 UNA IMAGEN CON EL TITULO Y EL PAJARO Y PLATAFORMAS
 Y TA, LUEGO LOS BOTONES.
 PUEDO HACER EL BICHO ANIMADO CAPAZ
+
+
+Lo que pasa es que a veces se escucha el audio de reventada y luego el de aterrizar.
+Otra cosa que me pasó fue que si el pajaro salta en su propia plataforma y aterriza en ella pero resbala y se cae
+no hay audio de reventada.
+Creo que el audio de reventada debe ir en el endContact.
+
+Se me ocurre que haya un misil o algo que se mueva horizontal en la pantalla de lado a lado y que el pajaro tenga
+que hacer explotar soltando un huevo o algo lindo al hacer touch.
+Creo que eso es mejor que el obstaculo.
+
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 
