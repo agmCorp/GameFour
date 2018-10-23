@@ -56,7 +56,8 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean zoom(float initialDistance, float distance) {
-        return false;
+        gameWorld.getJumper().powerJump(); // todo
+        return true;
     }
 
     @Override
@@ -84,6 +85,9 @@ public class GameController implements GestureDetector.GestureListener, InputPro
         switch (keycode) {
             case Input.Keys.SPACE:
                 performJump();
+                break;
+            case Input.Keys.P:
+                gameWorld.getJumper().powerJump(); // todo
                 break;
         }
         return true;

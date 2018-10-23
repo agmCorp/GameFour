@@ -177,6 +177,26 @@ public class Jumper extends AbstractDynamicObject {
         AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getHit());
     }
 
+    public void powerJump() { // todo
+        // Particle effect
+        magic.setPosition(body.getPosition().x, body.getPosition().y);
+        magic.start();
+
+        // Jump teleport
+        Vector2 platformPos = gameWorld.getPlatforms().getPlatform(1).getBodyPosition();
+        body.setGravityScale(1);
+        body.setTransform(platformPos.x, platformPos.y + 1, body.getAngle());
+        body.setAwake(true);
+
+        // State variables
+        currentState = State.JUMPING;
+        stateTime = 0;
+        activateJumper = true;
+
+        // Audio effect
+        AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getJump());
+    }
+
     public void jump(float impulse) {
         // Particle effect
         magic.setPosition(body.getPosition().x, body.getPosition().y);
