@@ -34,16 +34,18 @@ public class WorldContactListener implements ContactListener {
                     if (fixA.isSensor()) {
                         resolveContact(((Jumper) fixA.getUserData()), ((Platform) fixB.getUserData()));
                     } else {
-                        if (!((Platform) fixB.getUserData()).isTouched()) {
-                            ((Jumper) fixA.getUserData()).onHit();
+                        Jumper jumper = ((Jumper) fixA.getUserData());
+                        if (!jumper.isIdle()) {
+                            jumper.onHit();
                         }
                     }
                 } else {
                     if (fixB.isSensor()) {
                         resolveContact(((Jumper) fixB.getUserData()), ((Platform) fixA.getUserData()));
                     } else {
-                        if (!((Platform) fixA.getUserData()).isTouched()) {
-                            ((Jumper) fixB.getUserData()).onHit();
+                        Jumper jumper = ((Jumper) fixB.getUserData());
+                        if (!jumper.isIdle()) {
+                            jumper.onHit();
                         }
                     }
                 }
@@ -55,9 +57,8 @@ public class WorldContactListener implements ContactListener {
     }
 
     private void resolveContact(Jumper jumper, Platform platform) {
-        if (!platform.isTouched()) {
+        if (jumper.getCurrentPlatform() != platform) {
             jumper.onSuccessfulJump(platform);
-            platform.onTouched();
         } else {
             jumper.onLanding();
         }

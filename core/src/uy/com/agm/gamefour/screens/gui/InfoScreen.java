@@ -16,7 +16,6 @@ import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.GameSettings;
 import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
-import uy.com.agm.gamefour.screens.ScreenManager;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
 
@@ -82,12 +81,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
                 new TextureRegionDrawable(assetGUI.getHomePressed()));
 
         reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
-        home.addListener(ListenerHelper.runnableListener(
-                new Runnable() {
-                    public void run () {
-                        homeButton();
-                    }
-                }));
+        home.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_DOWN));
 
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
@@ -95,11 +89,6 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         table.add(reload).width(WIDTH_BUTTON);
         table.add(home).width(WIDTH_BUTTON);
         return table;
-    }
-
-    private void homeButton(){
-        GameSettings.getInstance().save();
-        ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_DOWN);
     }
 
     @Override
@@ -124,12 +113,20 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     }
 
     public void showGameOver() {
-        setScores(((PlayScreen) game.getCurrentScreen()).getHud().getScore(), 123); // todo
+        GameSettings prefs = GameSettings.getInstance();
+        int currentScore = ((PlayScreen) game.getCurrentScreen()).getHud().getScore();
+        int bestScore = prefs.getHighScore();
+        if (currentScore > bestScore) {
+            bestScore = currentScore;
+            prefs.setHighScore(bestScore);
+            prefs.save();
+        }
+        showScores(currentScore, bestScore);
         setTransitionDown();
         mainTable.setVisible(true);
     }
 
-    private void setScores(int score, int highScore) {
+    private void showScores(int score, int highScore) {
         scoreLabel.setText(i18NGameThreeBundle.format("infoScreen.score", score));
         highScoreLabel.setText(i18NGameThreeBundle.format("infoScreen.highScore", highScore));
     }

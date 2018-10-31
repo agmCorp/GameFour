@@ -73,10 +73,7 @@ public class Platforms {
         // todo ORQUESTA TODAS LAS VARIACIONES
         if (level == 3 || level == 4) {
             for (Platform platform : platforms) {
-                // They could be two platforms
-                if (platform.isTouched()) {
-                    platform.startMovement();
-                }
+                platform.startMovement();
             }
         }
 

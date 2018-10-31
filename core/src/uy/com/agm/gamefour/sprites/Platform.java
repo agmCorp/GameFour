@@ -32,7 +32,6 @@ public class Platform extends AbstractDynamicObject {
     private Animation platformAnimation;
     private float stateTime;
     private Body body;
-    private boolean touched;
     private enum State {
         STATIC, UP, DOWN
     }
@@ -53,7 +52,6 @@ public class Platform extends AbstractDynamicObject {
         // Box2d
         definePlatform();
 
-        touched = false;
         currentState = State.STATIC;
     }
 
@@ -88,7 +86,6 @@ public class Platform extends AbstractDynamicObject {
     public void reposition(float x, float y) {
         body.setTransform(x + getWidth() / 2, y + getHeight() / 2, body.getAngle());
         setPosition(x, y);
-        touched = false;
         currentState = State.STATIC;
     }
 
@@ -157,13 +154,5 @@ public class Platform extends AbstractDynamicObject {
     @Override
     public void render(SpriteBatch spriteBatch) {
         draw(spriteBatch);
-    }
-
-    public boolean isTouched() {
-        return touched;
-    }
-
-    public void onTouched() {
-        this.touched = true;
     }
 }

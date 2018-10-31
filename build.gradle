@@ -29,7 +29,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '1.0'
+    version = "build-" + getDate() + "-$project.versionMajor.$project.versionMinor.$project.versionPatch"
     ext {
         appName = "GameFour"
         gdxVersion = '1.9.8'

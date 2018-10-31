@@ -3,8 +3,8 @@ android {
         ignoreAssetsPattern '!raw'
     }
 
-    buildToolsVersion "28.0.2"
-    compileSdkVersion 27
+    buildToolsVersion "27.0.2"
+    compileSdkVersion 26
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -24,7 +24,7 @@ android {
     defaultConfig {
         applicationId "uy.com.agm.gamefour"
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 26
         versionCode project.versionMajor * 100 + project.versionMinor * 10 + project.versionPatch
         versionName "gameFour-build-" + getDate() + "-$project.versionMajor.$project.versionMinor.$project.versionPatch"
     }

@@ -1,5 +1,7 @@
 package uy.com.agm.gamefour.game;
 
+import com.admob.DummyAdsController;
+import com.admob.IAdsController;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,6 +28,11 @@ public class GameFour extends DirectedGame {
     private SpriteBatch gameBatch;
     private ShapeRenderer gameShapeRenderer;
     private Box2DDebugRenderer box2DDebugRenderer;
+    private IAdsController adsController;
+
+    public GameFour(IAdsController adsController){
+        this.adsController = adsController != null ? adsController : new DummyAdsController();
+    }
 
     @Override
     public void create() {
@@ -79,6 +86,10 @@ public class GameFour extends DirectedGame {
 
     public Box2DDebugRenderer getBox2DDebugRenderer() {
         return box2DDebugRenderer;
+    }
+
+    public IAdsController getAdsController() {
+        return adsController;
     }
 
     @Override

@@ -285,6 +285,10 @@ public class Jumper extends AbstractDynamicObject {
         currentState = State.DISPOSE;
     }
 
+    public Platform getCurrentPlatform() {
+        return currentPlatform;
+    }
+
     @Override
     public void render(SpriteBatch spriteBatch) {
         // Draw Particles (behind jumper)

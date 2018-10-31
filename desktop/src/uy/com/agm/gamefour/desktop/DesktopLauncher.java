@@ -13,6 +13,6 @@ public class DesktopLauncher {
         config.title = GameFour.TITLE;
         config.width = GameFour.APPLICATION_WIDTH;
         config.height = GameFour.APPLICATION_HEIGHT;
-        new LwjglApplication(new GameFour(), config);
+        new LwjglApplication(new GameFour(null), config);
 	}
 }

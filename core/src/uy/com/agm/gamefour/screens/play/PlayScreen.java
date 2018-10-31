@@ -1,5 +1,7 @@
 package uy.com.agm.gamefour.screens.play;
 
+import com.admob.IAdsController;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
 import uy.com.agm.gamefour.game.GameController;
@@ -35,6 +37,7 @@ public class PlayScreen extends PlayAbstractScreen {
         GameWorld gameWorld = worldController.getGameWorld();
         worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
         endGame = false;
+        showBannerAd();
     }
 
     @Override
@@ -62,6 +65,8 @@ public class PlayScreen extends PlayAbstractScreen {
 
     private void gameResults(float deltaTime) {
         if (worldController.isGameOver() && !endGame) {
+            showInterstitialAd();
+
             worldController.getGameWorld().getGameCamera().shake(SHAKE_DURATION);
             endGame = true;
             infoScreen.showGameOver();
@@ -106,5 +111,30 @@ public class PlayScreen extends PlayAbstractScreen {
 
     public InfoScreen getInfoScreen() {
         return infoScreen;
+    }
+
+    public void showBannerAd() {
+        IAdsController adsController = game.getAdsController();
+        if (adsController.isWifiConnected()) {
+            adsController.showBannerAd();
+        } else {
+            Gdx.app.debug(TAG, "**** Not connected to the internet");
+        }
+    }
+
+    public void showInterstitialAd() {
+        IAdsController adsController = game.getAdsController();
+        if (adsController.isWifiConnected()) {
+            adsController.showInterstitialAd(new Runnable() {
+                @Override
+                public void run() {
+                   // if (!isPlayScreenStateRunning()) { // el juego esta en pausa?
+                   //     dimScreen.setGameStateRunning();// todo aca no se, depende cuando haga la pantalla de pausa
+                   // }
+                }
+            });
+        } else {
+            Gdx.app.debug(TAG, "**** Not connected to the internet");
+        }
     }
 }

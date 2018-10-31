@@ -63,6 +63,7 @@ public class GameWorld {
         GameSettings prefs = GameSettings.getInstance();
         int backgroundId = prefs.getBackgroundId();
         prefs.setBackgroundId((backgroundId % AssetBackgrounds.MAX_BACKGROUNDS) + 1);
+        prefs.save();
 
         switch (backgroundId) {
             case 1:
