@@ -34,6 +34,7 @@ public class Jumper extends AbstractDynamicObject {
     private static final float SENSOR_HY = 0.01f;
     private static final float IMPULSE_Y = 7.5f;
     private static final float SCALE_IMPULSE_X = 30.0f;
+    private static final float POWER_JUMP_OFFSET_Y = 1.0f;
 
     private enum State {
         IDLE, JUMPING, DEAD, DISPOSE
@@ -177,34 +178,32 @@ public class Jumper extends AbstractDynamicObject {
         AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getHit());
     }
 
-    public void powerJump() { // todo
-        // Particle effect
-        magic.setPosition(body.getPosition().x, body.getPosition().y);
-        magic.start();
+    public void onDead() {
+        currentState = State.DEAD;
+    }
+
+    public void powerJump() {
+        startJump();
 
         // Jump teleport
         Vector2 platformPos = gameWorld.getPlatforms().getPlatform(1).getBodyPosition();
         body.setGravityScale(1);
-        body.setTransform(platformPos.x, platformPos.y + 1, body.getAngle());
-        body.setAwake(true); // awake the body to enable physics calculations
-
-        // State variables
-        currentState = State.JUMPING;
-        stateTime = 0;
-        activateJumper = true;
-
-        // Audio effect
-        AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getJump());
+        body.setTransform(platformPos.x, platformPos.y + POWER_JUMP_OFFSET_Y, body.getAngle());
+        body.setAwake(true); // awakes the body to enable physics calculations
     }
 
     public void jump(float impulse) {
+        startJump();
+
+        // Perform jump
+        body.setGravityScale(1);
+        body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPULSE_X, IMPULSE_Y), body.getWorldCenter(), true);
+    }
+
+    private void startJump() {
         // Particle effect
         magic.setPosition(body.getPosition().x, body.getPosition().y);
         magic.start();
-
-        // Jump impulse
-        body.setGravityScale(1);
-        body.applyLinearImpulse(new Vector2(impulse / SCALE_IMPULSE_X, IMPULSE_Y), body.getWorldCenter(), true);
 
         // State variables
         currentState = State.JUMPING;
@@ -222,6 +221,10 @@ public class Jumper extends AbstractDynamicObject {
 
     public boolean isIdle() {
         return currentState == State.IDLE;
+    }
+
+    public boolean isDead() {
+        return currentState == State.DEAD || currentState == State.DISPOSE;
     }
 
     @Override

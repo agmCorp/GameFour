@@ -67,9 +67,11 @@ public class PlayScreen extends PlayAbstractScreen {
         if (worldController.isGameOver() && !endGame) {
             showInterstitialAd();
 
-            worldController.getGameWorld().getGameCamera().shake(SHAKE_DURATION);
-            endGame = true;
+            GameWorld gameWorld = worldController.getGameWorld();
+            gameWorld.getGameCamera().shake(SHAKE_DURATION);
+            gameWorld.getJumper().onDead();
             infoScreen.showGameOver();
+            endGame = true;
         }
     }
 

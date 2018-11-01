@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import uy.com.agm.gamefour.game.tools.Shaker;
 
 /**
- * Created by AGM on 9/23/2018.
+ * Created by AGMCORP on 9/23/2018.
  */
 
 public class GameCamera {

@@ -24,14 +24,14 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
- * Created by AGM on 10/14/2018.
+ * Created by AGMCORP on 10/14/2018.
  */
 
 public class InfoScreen extends GUIOverlayAbstractScreen {
     private static final String TAG = InfoScreen.class.getName();
 
     private static final float ANIMATION_DURATION = 1.0f;
-    private static final float WIDTH_BUTTON = 85.0f;
+    private static final float BUTTON_WIDTH = 85.0f;
 
     I18NBundle i18NGameThreeBundle;
     private Table mainTable;
@@ -86,8 +86,8 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
-        table.add(reload).width(WIDTH_BUTTON);
-        table.add(home).width(WIDTH_BUTTON);
+        table.add(reload).width(BUTTON_WIDTH);
+        table.add(home).width(BUTTON_WIDTH);
         return table;
     }
 

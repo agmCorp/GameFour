@@ -6,7 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import uy.com.agm.gamefour.game.GameSettings;
 
 /**
- * Created by AGM on 10/21/2018.
+ * Created by AGMCORP on 10/21/2018.
  */
 
 public class AudioManager {

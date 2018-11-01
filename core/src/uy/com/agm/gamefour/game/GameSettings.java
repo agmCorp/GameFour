@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 /**
- * Created by AGM on 10/15/2018.
+ * Created by AGMCORP on 10/15/2018.
  */
 
 public class GameSettings {

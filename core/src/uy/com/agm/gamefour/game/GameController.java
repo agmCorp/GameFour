@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import uy.com.agm.gamefour.screens.gui.Hud;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
+import uy.com.agm.gamefour.sprites.Jumper;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -56,8 +57,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean zoom(float initialDistance, float distance) {
-        gameWorld.getJumper().powerJump(); // todo
-        return true;
+        return false;
     }
 
     @Override
@@ -68,6 +68,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public void pinchStop() {
+        cheatMode();
     }
 
     @Override
@@ -87,7 +88,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
                 performJump();
                 break;
             case Input.Keys.P:
-                gameWorld.getJumper().powerJump(); // todo
+                cheatMode();
                 break;
         }
         return true;
@@ -139,6 +140,13 @@ public class GameController implements GestureDetector.GestureListener, InputPro
                 hud.stopSwing();
                 gameWorld.getJumper().jump(hud.getValue());
             }
+        }
+    }
+
+    private void cheatMode() {
+        Jumper jumper = gameWorld.getJumper();
+        if (DebugConstants.POWER_JUMP_ENABLED && !jumper.isDead()) {
+            jumper.powerJump();
         }
     }
 }

@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import uy.com.agm.gamefour.game.GameCamera;
 
 /**
- * Created by AGM on 9/23/2018.
+ * Created by AGMCORP on 9/23/2018.
  */
 
 // Parallax scrolling background (horizontal or vertical)

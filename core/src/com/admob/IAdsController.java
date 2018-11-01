@@ -1,7 +1,7 @@
 package com.admob;
 
 /**
- * Created by AGM on 10/31/2018.
+ * Created by AGMCORP on 10/31/2018.
  */
 
 public interface IAdsController {
