@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.game;
 
-import com.admob.DummyAdsController;
 import com.admob.IAdsController;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -31,7 +30,7 @@ public class GameFour extends DirectedGame {
     private IAdsController adsController;
 
     public GameFour(IAdsController adsController){
-        this.adsController = adsController != null ? adsController : new DummyAdsController();
+        this.adsController = adsController;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.client;
 
+import com.admob.DummyAdsController;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
@@ -96,6 +97,6 @@ public class HtmlLauncher extends GwtApplication {
 
     @Override
     public ApplicationListener createApplicationListener() {
-        return new GameFour();
+        return new GameFour(new DummyAdsController());
     }
 }

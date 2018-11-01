@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.desktop;
 
+import com.admob.DummyAdsController;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -13,6 +14,6 @@ public class DesktopLauncher {
         config.title = GameFour.TITLE;
         config.width = GameFour.APPLICATION_WIDTH;
         config.height = GameFour.APPLICATION_HEIGHT;
-        new LwjglApplication(new GameFour(null), config);
+        new LwjglApplication(new GameFour(new DummyAdsController()), config);
 	}
 }
