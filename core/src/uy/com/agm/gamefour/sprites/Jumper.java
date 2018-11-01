@@ -35,6 +35,7 @@ public class Jumper extends AbstractDynamicObject {
     private static final float IMPULSE_Y = 7.5f;
     private static final float SCALE_IMPULSE_X = 30.0f;
     private static final float POWER_JUMP_OFFSET_Y = 1.0f;
+    private static final int SUCCESSFUL_JUMP_SCORE = 1;
 
     private enum State {
         IDLE, JUMPING, DEAD, DISPOSE
@@ -157,7 +158,7 @@ public class Jumper extends AbstractDynamicObject {
 
         // Current platform, score and level
         currentPlatform = platform;
-        playScreen.getHud().addScore(gameWorld.getLevel());
+        playScreen.getHud().addScore(SUCCESSFUL_JUMP_SCORE);
         gameWorld.addLevel();
 
         onLanding();

@@ -23,7 +23,8 @@ public class Platform extends AbstractDynamicObject {
     private static final String TAG = Platform.class.getName();
 
     private static final float SCALE = 0.4f;
-    private static final float VELOCITY = 1.0f;
+    private static final float MAX_VELOCITY = 1.5f;
+    private static final float MIN_VELOCITY = 0.5f;
     private static final float UPPER_LIMIT = 7.0f;
     private static final float BOTTOM_LIMIT = 1.0f;
 
@@ -36,6 +37,7 @@ public class Platform extends AbstractDynamicObject {
         STATIC, UP, DOWN
     }
     private State currentState;
+    private float velocity;
 
     public Platform(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
@@ -53,6 +55,7 @@ public class Platform extends AbstractDynamicObject {
         definePlatform();
 
         currentState = State.STATIC;
+        velocity = 0.0f;
     }
 
     private void definePlatform() {
@@ -76,6 +79,7 @@ public class Platform extends AbstractDynamicObject {
     public void startMovement() {
         if (currentState == State.STATIC) {
             currentState = MathUtils.randomBoolean() ? State.UP : State.DOWN;
+            velocity = MathUtils.random(MIN_VELOCITY, MAX_VELOCITY);
         }
     }
 
@@ -121,7 +125,7 @@ public class Platform extends AbstractDynamicObject {
 
     private void stateMovingUp(float deltaTime) {
         // Set new velocity
-        body.setLinearVelocity(0, VELOCITY);
+        body.setLinearVelocity(0, velocity);
         updateSprite(deltaTime);
 
         if (getY() + getHeight() >= UPPER_LIMIT) {
@@ -131,7 +135,7 @@ public class Platform extends AbstractDynamicObject {
 
     private void stateMovingDown(float deltaTime) {
         // Set new velocity
-        body.setLinearVelocity(0, -VELOCITY);
+        body.setLinearVelocity(0, -velocity);
         updateSprite(deltaTime);
         if (getY() <= BOTTOM_LIMIT) {
             currentState = State.UP;

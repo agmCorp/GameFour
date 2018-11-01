@@ -10,23 +10,24 @@ import com.badlogic.gdx.Preferences;
 public class GameSettings {
     private static final String TAG = GameSettings.class.getName();
 
+    private static final int DEF_COUNT_AD = 3;
     private static final String SETTINGS = "powerJumpSettings";
     private static final String HIGH_SCORE = "highScore";
     private static final String BACKGROUND_ID = "backgroundId";
-    private static final String SOUND = "sound";
-    private static final String MUSIC = "music";
+    private static final String AUDIO = "audio";
 
     // Singleton: unique instance
     private static GameSettings instance;
 
+    private int countdownAd; // No need to persist it
     private Preferences prefs;
     private int highScore;
     private int backgroundId;
-    private boolean sound;
-    private boolean music;
+    private boolean audio;
 
     // Singleton: prevent instantiation from other classes
     private GameSettings() {
+        countdownAd = DEF_COUNT_AD;
         prefs = Gdx.app.getPreferences(SETTINGS);
     }
 
@@ -41,16 +42,26 @@ public class GameSettings {
     public void load() {
         highScore = prefs.getInteger(HIGH_SCORE, 0);
         backgroundId = prefs.getInteger(BACKGROUND_ID, 1);
-        sound = prefs.getBoolean(SOUND, true);
-        music = prefs.getBoolean(MUSIC, true);
+        audio = prefs.getBoolean(AUDIO, true);
     }
 
     public void save() {
         prefs.putInteger(HIGH_SCORE, highScore);
         prefs.putInteger(BACKGROUND_ID, backgroundId);
-        prefs.putBoolean(SOUND, sound);
-        prefs.putBoolean(MUSIC, music);
+        prefs.putBoolean(AUDIO, audio);
         prefs.flush();
+    }
+
+    public void decreaseCountdownAd() {
+        countdownAd = countdownAd > 0 ? countdownAd - 1 : 0;
+    }
+
+    public void resetCountdownAd() {
+        countdownAd = DEF_COUNT_AD;
+    }
+
+    public boolean isCountdownAdFinish() {
+        return countdownAd <= 0;
     }
 
     public int getHighScore() {
@@ -69,19 +80,11 @@ public class GameSettings {
         this.backgroundId = backgroundId;
     }
 
-    public boolean isSound() {
-        return sound;
+    public boolean isAudio() {
+        return audio;
     }
 
-    public void setSound(boolean sound) {
-        this.sound = sound;
-    }
-
-    public boolean isMusic() {
-        return music;
-    }
-
-    public void setMusic(boolean music) {
-        this.music = music;
+    public void setAudio(boolean audio) {
+        this.audio = audio;
     }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import uy.com.agm.gamefour.admob.IAdsController;
 import uy.com.agm.gamefour.game.GameController;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.game.GameSettings;
 import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.WorldController;
 import uy.com.agm.gamefour.game.WorldRenderer;
@@ -25,6 +26,7 @@ public class PlayScreen extends PlayAbstractScreen {
     private InfoScreen infoScreen;
     private WorldController worldController;
     private WorldRenderer worldRenderer;
+    private GameSettings prefs;
     private boolean endGame;
 
     public PlayScreen(GameFour game) {
@@ -36,6 +38,7 @@ public class PlayScreen extends PlayAbstractScreen {
         worldController = new WorldController(this);
         GameWorld gameWorld = worldController.getGameWorld();
         worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
+        prefs = GameSettings.getInstance();
         endGame = false;
         showBannerAd();
     }
@@ -65,8 +68,16 @@ public class PlayScreen extends PlayAbstractScreen {
 
     private void gameResults(float deltaTime) {
         if (worldController.isGameOver() && !endGame) {
-            showInterstitialAd();
+            // Advertisement
+            if (hud.isScoreAboveAverage()) {
+                prefs.decreaseCountdownAd();
+                if (prefs.isCountdownAdFinish()) {
+                    prefs.resetCountdownAd();
+                    showInterstitialAd();
+                }
+            }
 
+            // Game over
             GameWorld gameWorld = worldController.getGameWorld();
             gameWorld.getGameCamera().shake(SHAKE_DURATION);
             gameWorld.getJumper().onDead();

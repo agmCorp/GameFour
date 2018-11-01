@@ -138,7 +138,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
             Hud hud = playScreen.getHud();
             if (gameWorld.getJumper().isIdle() && hud.isSwinging()) {
                 hud.stopSwing();
-                gameWorld.getJumper().jump(hud.getValue());
+                gameWorld.getJumper().jump(hud.getPowerBarValue());
             }
         }
     }

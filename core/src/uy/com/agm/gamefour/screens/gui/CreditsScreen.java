@@ -1,8 +1,6 @@
 package uy.com.agm.gamefour.screens.gui;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -10,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenManager;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
@@ -58,7 +57,8 @@ public class CreditsScreen extends GUIAbstractScreen {
         Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
         labelStyleSmall.font = Assets.getInstance().getFonts().getDefaultSmall();
 
-        Label big = new Label("CREDITOS", labelStyleBig);
+        Label big = new Label(Assets.getInstance().getI18NGameFour().getI18NGameFourBundle().format("creditsScreen.title"), labelStyleBig);
+
         // Actions
         SequenceAction sequenceOne = sequence(fadeIn(1.0f), fadeOut(1.0f));
         SequenceAction sequenceTwo = sequence(moveBy(15.0f, -15.0f, 0.5f, Interpolation.smooth),
@@ -72,17 +72,6 @@ public class CreditsScreen extends GUIAbstractScreen {
         table.add(big).row();
         stage.addActor(table);
 
-        table.addListener(new InputListener() {
-                              @Override
-                              public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                                  ScreenManager.getInstance().showScreen(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.SLICE_UP_DOWN_10);
-                              }
-
-                              @Override
-                              public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                  return true;
-                              }
-                          }
-        );
+        table.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLICE_UP_DOWN_80));
     }
 }

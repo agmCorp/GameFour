@@ -13,6 +13,7 @@ import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.assets.sprites.AssetSprites;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.game.GameSettings;
 import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
@@ -40,6 +41,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private AssetGUI assetGUI;
     private AssetSprites assetSprites;
     private I18NBundle i18NGameThreeBundle;
+    private GameSettings prefs;
     private Image menuBackground;
     private Image littleCloud;
     private Image trail;
@@ -53,6 +55,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
         assetGUI = assets.getGUI();
         assetSprites = assets.getSprites();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
+        prefs = GameSettings.getInstance();
     }
 
     @Override
@@ -124,9 +127,10 @@ public class MainMenuScreen extends GUIAbstractScreen {
     }
 
     private Table getBottomTable() {
-        ImageButton audio = new ImageButton(new TextureRegionDrawable(assetGUI.getAudio()),
+        final ImageButton audio = new ImageButton(new TextureRegionDrawable(assetGUI.getAudio()),
                 new TextureRegionDrawable(assetGUI.getAudioPressed()),
                 new TextureRegionDrawable(assetGUI.getAudioChecked()));
+        audio.setChecked(!prefs.isAudio());
 
         ImageButton play = new ImageButton(new TextureRegionDrawable(assetGUI.getPlay()),
                 new TextureRegionDrawable(assetGUI.getPlayPressed()));
@@ -134,7 +138,16 @@ public class MainMenuScreen extends GUIAbstractScreen {
         ImageButton info = new ImageButton(new TextureRegionDrawable(assetGUI.getInfo()),
                 new TextureRegionDrawable(assetGUI.getInfoPressed()));
 
+        // Events
+        audio.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                prefs.setAudio(!audio.isChecked());
+                prefs.save();
+            }
+        }));
         play.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
+        info.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.CREDITS, ScreenTransitionEnum.SLICE_UP_DOWN_10));
 
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);

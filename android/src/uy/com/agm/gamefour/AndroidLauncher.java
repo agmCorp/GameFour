@@ -65,7 +65,6 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		bannerAd.setAdUnitId(BANNER_AD_UNIT_ID);
 		bannerAd.setAdSize(AdSize.SMART_BANNER);
 
-		loadBannerAd();
 		defineLayout();
 	}
 
@@ -184,9 +183,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 			@Override
 			public void run() {
 				bannerAd.setVisibility(View.VISIBLE);
-				AdRequest.Builder builder = new AdRequest.Builder();
-				AdRequest ad = builder.build();
-				bannerAd.loadAd(ad);
+				loadBannerAd();
 			}
 		});
 	}

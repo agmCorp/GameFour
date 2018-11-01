@@ -21,6 +21,7 @@ public class Hud extends GUIOverlayAbstractScreen {
     private static final float SWING_DELAY = 0.02f;
     private static final int POWER_BAR_WIDTH = 250;
     private static final int POWER_BAR_HEIGHT = 15;
+    private static int AVERAGE_SCORE = 6;
 
     private PowerBar powerBar;
     private boolean swing;
@@ -114,12 +115,16 @@ public class Hud extends GUIOverlayAbstractScreen {
     }
 
     public void addScore(int value) {
-        score = value;
+        score += value;
         scoreLabel.setText(String.valueOf(score));
     }
 
     public int getScore() {
         return score;
+    }
+
+    public boolean isScoreAboveAverage() {
+        return score > AVERAGE_SCORE;
     }
 
     @Override
@@ -140,7 +145,7 @@ public class Hud extends GUIOverlayAbstractScreen {
         return swing;
     }
 
-    public float getValue() {
+    public float getPowerBarValue() {
         return powerBar.getValue();
     }
 }

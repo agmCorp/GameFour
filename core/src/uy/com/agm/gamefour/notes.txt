@@ -9,34 +9,17 @@ HACER
 - hacer un skin
 - en las settings debo meter algo que permita usar low o high por el paralax (boton four state off, low, medium, high)
 - agregar mas fondos
-- agregar un obstaculo
-- agregar una estrellita para agarrar por puntos, es dificil si la estrellita debe seguir el movimiento de la plataforma.
+- agregar un obstaculo o algo en donde el pajaro suelte algo y lo mate. O una estrellita para agarrar por puntos no se.
+Sobre las plataformas no puedo poner nada porque es dificil seguirlas.
 - random texture plataformas
 - menus y todo eso
-- definir avisos
-- velocidades aleatorias de los misiles (rango).
+- definir avisos, hacer interstitial solo al perder si el score supera 7 alguna vez y cada 3 intentos.
+- random textures plataformas
 - musica y efectos
-*- programar los movimientos de las plataformas, arriba abajo.
-*- pensar alguna manera de que al apretar reload no se cargue el mismo background que ya tenia, usar una property?
-o arrancar desde 1 (valor de property) e incrementar con modulo.
-*- Debo ver cuando hacer save de las propiedades
-*- poner algun efecto de particulas cuando salte o nube.
-
-PARA HACER EL MENU: UN BACKGROUND GRANDE QUE LO UBICO CENTRADO EN EL STAGE (SOL Y FONDO)
-UNA IMAGEN CON EL TITULO Y EL PAJARO Y PLATAFORMAS
-Y TA, LUEGO LOS BOTONES.
-PUEDO HACER EL BICHO ANIMADO CAPAZ
-
-
-Se me ocurre que haya un misil o algo que se mueva horizontal en la pantalla de lado a lado y que el pajaro tenga
-que hacer explotar soltando un huevo o algo lindo al hacer touch.
-Creo que eso es mejor que el obstaculo.
-
-PONER UNA ZONA DE SALTO PERFECTO. SI EL PAJARO CAE JUSTO AHI (SU X EN MEDIO DE LA PLATAFORMA) SACO ALGUN CARTEL
-Y DOY PUNTOS EXTRA.
-
+- hacer que cada salto tenga score, que no dependa del nivel.
+- Poner una zona de salto perfecto. Si el pajaro cae justo ahi (su x en medio de la plataforma + delta) saco algun cartel y/o doy
+puntos extra.
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
-
 
 LECCIONES APRENDIDAS
 --------------------
