@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.client;
 
-import com.admob.DummyAdsController;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
@@ -9,6 +8,7 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 
+import uy.com.agm.gamefour.admob.DummyAdsController;
 import uy.com.agm.gamefour.game.GameFour;
 
 public class HtmlLauncher extends GwtApplication {

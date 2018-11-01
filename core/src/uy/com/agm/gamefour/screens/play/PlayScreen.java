@@ -1,9 +1,9 @@
 package uy.com.agm.gamefour.screens.play;
 
-import com.admob.IAdsController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
+import uy.com.agm.gamefour.admob.IAdsController;
 import uy.com.agm.gamefour.game.GameController;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.GameWorld;

@@ -1,9 +1,9 @@
 package uy.com.agm.gamefour.desktop;
 
-import com.admob.DummyAdsController;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
+import uy.com.agm.gamefour.admob.DummyAdsController;
 import uy.com.agm.gamefour.game.GameFour;
 
 public class DesktopLauncher {

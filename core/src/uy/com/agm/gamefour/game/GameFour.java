@@ -1,12 +1,12 @@
 package uy.com.agm.gamefour.game;
 
-import com.admob.IAdsController;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
+import uy.com.agm.gamefour.admob.IAdsController;
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenManager;

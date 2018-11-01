@@ -1,4 +1,4 @@
-package com.admob;
+package uy.com.agm.gamefour.admob;
 
 /**
  * Created by AGMCORP on 10/31/2018.
