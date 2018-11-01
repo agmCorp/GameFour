@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.screens.gui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -27,15 +28,17 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private static final String TAG = MainMenuScreen.class.getName();
 
     private static final float PAD = 30.0f;
-    private static final float BUTTON_WIDTH = 85.0f;
+    private static final int BUTTON_COLUMNS = 3;
+    private static final float BUTTON_SIZE = 85.0f;
     private static final float PLAY_BUTTON_SIZE = 155.0f;
     private static final float JUMPER_SCALE = 1.3f;
     private static final float ROCKET_BACKGROUND_SCALE = 0.2f;
     private static final float ROCKET_BG_OFFSET_X = 200.0f;
+    private static final float ROCKET_BG_OFFSET_Y = 50.0f;
     private static final float CLOUD_OFFSET_X = 40.0f;
     private static final float CLOUD_OFFSET_Y = 20.0f;
-    private static final float JUMPER_OFFSET_Y = 150.0f;
-    private static final float ROCKET_FG_OFFSET_Y = 110;
+    private static final float JUMPER_OFFSET_Y = 200.0f;
+    private static final float ROCKET_FG_OFFSET_Y = 60;
 
     private Assets assets;
     private AssetGUI assetGUI;
@@ -138,6 +141,9 @@ public class MainMenuScreen extends GUIAbstractScreen {
         ImageButton info = new ImageButton(new TextureRegionDrawable(assetGUI.getInfo()),
                 new TextureRegionDrawable(assetGUI.getInfoPressed()));
 
+        ImageButton exit = new ImageButton(new TextureRegionDrawable(assetGUI.getExit()),
+                new TextureRegionDrawable(assetGUI.getExitPressed()));
+
         // Events
         audio.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
@@ -148,14 +154,20 @@ public class MainMenuScreen extends GUIAbstractScreen {
         }));
         play.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
         info.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.CREDITS, ScreenTransitionEnum.SLICE_UP_DOWN_10));
+        exit.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                Gdx.app.exit();
+            }
+        }));
 
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.bottom();
-        table.add(audio).width(BUTTON_WIDTH);
+        table.add(audio).width(BUTTON_SIZE);
         table.add(play).size(PLAY_BUTTON_SIZE);
-        table.add(info).width(BUTTON_WIDTH);
-        table.padBottom(PAD);
+        table.add(info).width(BUTTON_SIZE).row();
+        table.add(exit).colspan(BUTTON_COLUMNS).size(BUTTON_SIZE);
         return table;
     }
 
@@ -172,7 +184,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
 
         // Place a distant rocket
         rocketBackground.setX((w - rocketBackground.getWidth()) / 2 - ROCKET_BG_OFFSET_X);
-        rocketBackground.setY((h - rocketBackground.getHeight()) / 2);
+        rocketBackground.setY((h - rocketBackground.getHeight()) / 2 + ROCKET_BG_OFFSET_Y);
 
         // Place a little cloud on the rocket
         littleCloud.setX(rocketBackground.getX() + CLOUD_OFFSET_X);

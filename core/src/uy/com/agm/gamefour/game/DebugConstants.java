@@ -12,7 +12,7 @@ public class DebugConstants {
     public static final boolean DEBUG_MODE = true && TURN_ON_DEBUG;
 
     // Debug lines around sprites and scene2d tables
-    public static final boolean DEBUG_LINES = false && TURN_ON_DEBUG;
+    public static final boolean DEBUG_LINES = true && TURN_ON_DEBUG;
 
     // Debug lines around box2d bodies
     public static final boolean DEBUG_BOX2D = false && TURN_ON_DEBUG;

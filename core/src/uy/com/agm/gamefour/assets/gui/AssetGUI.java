@@ -18,6 +18,8 @@ public class AssetGUI {
     private TextureRegion playPressed;
     private TextureRegion info;
     private TextureRegion infoPressed;
+    private TextureRegion exit;
+    private TextureRegion exitPressed;
     private TextureRegion reload;
     private TextureRegion reloadPressed;
     private TextureRegion home;
@@ -35,6 +37,8 @@ public class AssetGUI {
         playPressed = atlasGUI.findRegion("playPressed");
         info = atlasGUI.findRegion("info");
         infoPressed = atlasGUI.findRegion("infoPressed");
+        exit = atlasGUI.findRegion("exit");
+        exitPressed = atlasGUI.findRegion("exitPressed");
         reload = atlasGUI.findRegion("reload");
         reloadPressed = atlasGUI.findRegion("reloadPressed");
         home = atlasGUI.findRegion("home");
@@ -71,6 +75,14 @@ public class AssetGUI {
 
     public TextureRegion getInfoPressed() {
         return infoPressed;
+    }
+
+    public TextureRegion getExit() {
+        return exit;
+    }
+
+    public TextureRegion getExitPressed() {
+        return exitPressed;
     }
 
     public TextureRegion getReload() {
