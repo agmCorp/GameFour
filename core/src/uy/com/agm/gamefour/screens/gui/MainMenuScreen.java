@@ -63,6 +63,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
 
     public MainMenuScreen(GameFour game) {
         super(game);
+
         assets = Assets.getInstance();
         assetGUI = assets.getGUI();
         assetSprites = assets.getSprites();

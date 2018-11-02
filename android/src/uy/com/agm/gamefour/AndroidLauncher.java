@@ -19,6 +19,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import uy.com.agm.gamefour.admob.IAdsController;
+import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
 
 import static com.badlogic.gdx.Gdx.app;
@@ -28,9 +29,11 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 
 	// Constants
 	private static final String ADMOB_APP_ID = "ca-app-pub-3296591416050248~2841626548";
-	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3296591416050248/4067078303"; // TEST ca-app-pub-3940256099942544/6300978111
-	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3296591416050248/1636356084"; // TEST ca-app-pub-3940256099942544/1033173712
 	private static final String TEST_DEVICE = "09AD9BE37BC1E30FF7C8E88C672B3404";
+	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3296591416050248/4067078303";
+	private static final String BANNER_AD_UNIT_ID_TEST = "ca-app-pub-3940256099942544/6300978111";
+	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3296591416050248/1636356084";
+	private static final String INTERSTITIAL_AD_UNIT_ID_TEST = "ca-app-pub-3940256099942544/1033173712";
 
 	private AdView bannerAd;
 	private View gameView;
@@ -63,7 +66,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		bannerAd = new AdView(this);
 		bannerAd.setVisibility(View.INVISIBLE);
 		bannerAd.setBackgroundColor(Color.BLACK);
-		bannerAd.setAdUnitId(BANNER_AD_UNIT_ID);
+		bannerAd.setAdUnitId(DebugConstants.TEST_ADS ? BANNER_AD_UNIT_ID_TEST : BANNER_AD_UNIT_ID);
 		bannerAd.setAdSize(AdSize.SMART_BANNER);
 
 		defineLayout();
@@ -93,7 +96,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 
 	private void setupInterstitialAd() {
 		interstitialAd = new InterstitialAd(this);
-		interstitialAd.setAdUnitId(INTERSTITIAL_AD_UNIT_ID);
+		interstitialAd.setAdUnitId(DebugConstants.TEST_ADS ? INTERSTITIAL_AD_UNIT_ID_TEST : INTERSTITIAL_AD_UNIT_ID);
 		callbackOnAdClose = null;
 		setInterstitialAdListener();
 
@@ -180,23 +183,27 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 
 	@Override
 	public void showBannerAd() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				bannerAd.setVisibility(View.VISIBLE);
-				loadBannerAd();
-			}
-		});
+		if (bannerAd.getVisibility() != View.VISIBLE) {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					bannerAd.setVisibility(View.VISIBLE);
+					loadBannerAd();
+				}
+			});
+		}
 	}
 
 	@Override
 	public void hideBannerAd() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				bannerAd.setVisibility(View.INVISIBLE);
-			}
-		});
+		if (bannerAd.getVisibility() == View.VISIBLE) {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					bannerAd.setVisibility(View.INVISIBLE);
+				}
+			});
+		}
 	}
 
 	@Override

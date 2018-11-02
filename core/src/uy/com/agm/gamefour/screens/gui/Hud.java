@@ -3,8 +3,10 @@ package uy.com.agm.gamefour.screens.gui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import uy.com.agm.gamefour.assets.Assets;
+import uy.com.agm.gamefour.assets.fonts.AssetFonts;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.screens.gui.widget.PowerBar;
@@ -23,7 +25,8 @@ public class Hud extends GUIOverlayAbstractScreen {
     private static final int POWER_BAR_HEIGHT = 15;
     private static int AVERAGE_SCORE = 5;
 
-    private Table mainTable;
+    private I18NBundle i18NGameThreeBundle;
+    private AssetFonts assetFonts;
     private PowerBar powerBar;
     private boolean swing;
     private float swingTime;
@@ -31,10 +34,13 @@ public class Hud extends GUIOverlayAbstractScreen {
     private Label scoreLabel;
     private int fps;
     private Label fpsLabel;
+    private Table mainTable;
 
     public Hud(GameFour game) {
         super(game);
 
+        i18NGameThreeBundle = Assets.getInstance().getI18NGameFour().getI18NGameFourBundle();
+        assetFonts = Assets.getInstance().getFonts();
         powerBar = new PowerBar(POWER_BAR_WIDTH, POWER_BAR_HEIGHT);
         swing = false;
         swingTime = 0;
@@ -67,7 +73,7 @@ public class Hud extends GUIOverlayAbstractScreen {
 
     private Table getTopTable() {
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
-        labelStyleBig.font = Assets.getInstance().getFonts().getDefaultBig();
+        labelStyleBig.font = assetFonts.getDefaultBig();
         scoreLabel = new Label(String.valueOf(score), labelStyleBig);
 
         Table table = new Table();
@@ -80,8 +86,8 @@ public class Hud extends GUIOverlayAbstractScreen {
 
     private Table getFPSTable() {
         Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
-        labelStyleSmall.font = Assets.getInstance().getFonts().getDefaultSmall();
-        Label fpsTitle = new Label(Assets.getInstance().getI18NGameFour().getI18NGameFourBundle().format("hud.FPS"), labelStyleSmall);
+        labelStyleSmall.font = assetFonts.getDefaultSmall();
+        Label fpsTitle = new Label(i18NGameThreeBundle.format("hud.FPS"), labelStyleSmall);
         fpsLabel = new Label(String.valueOf(fps), labelStyleSmall);
 
         Table table = new Table();

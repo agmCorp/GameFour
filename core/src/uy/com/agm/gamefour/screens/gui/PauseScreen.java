@@ -52,6 +52,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
 
     public PauseScreen(GameFour game) {
         super(game);
+
         assets = Assets.getInstance();
         assetGUI = assets.getGUI();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
@@ -151,10 +152,6 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         }
     }
 
-    public boolean isPauseScreenVisible() {
-        return screenPauseBg.isVisible();
-    }
-
     private void placeButtons(float width, float height) {
         play.setX((width - play.getWidth()) / 2);
         play.setY((height - play.getHeight()) / 2 - BUTTONS_OFFSET_Y);
@@ -163,6 +160,36 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         home.setPosition(x, y);
         audio.setPosition(x, y);
         reload.setPosition(x, y);
+    }
+
+    public boolean isPauseScreenVisible() {
+        return screenPauseBg.isVisible();
+    }
+
+    private void setButtonsAnimation() {
+        // Disable events
+        play.setTouchable(Touchable.disabled);
+        home.setTouchable(Touchable.disabled);
+        audio.setTouchable(Touchable.disabled);
+        reload.setTouchable(Touchable.disabled);
+
+        // Set actions
+        play.clearActions();
+        home.clearActions();
+        audio.clearActions();
+
+        play.addAction(sequence(moveBy(0, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.smooth),
+                run(new Runnable() {
+                    public void run () {
+                        // Enable events
+                        play.setTouchable(Touchable.enabled);
+                        home.setTouchable(Touchable.enabled);
+                        audio.setTouchable(Touchable.enabled);
+                        reload.setTouchable(Touchable.enabled);
+                    }
+                })));
+        home.addAction(moveBy(BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION));
+        audio.addAction(moveBy(-BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.smooth));
     }
 
     @Override
@@ -212,31 +239,5 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
                 group.setTouchable(Touchable.enabled);
             }
         })));
-    }
-
-    private void setButtonsAnimation() {
-        // Disable events
-        play.setTouchable(Touchable.disabled);
-        home.setTouchable(Touchable.disabled);
-        audio.setTouchable(Touchable.disabled);
-        reload.setTouchable(Touchable.disabled);
-
-        // Set actions
-        play.clearActions();
-        home.clearActions();
-        audio.clearActions();
-
-        play.addAction(sequence(moveBy(0, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.smooth),
-                run(new Runnable() {
-                    public void run () {
-                        // Enable events
-                        play.setTouchable(Touchable.enabled);
-                        home.setTouchable(Touchable.enabled);
-                        audio.setTouchable(Touchable.enabled);
-                        reload.setTouchable(Touchable.enabled);
-                    }
-                })));
-        home.addAction(moveBy(BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION));
-        audio.addAction(moveBy(-BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.smooth));
     }
 }

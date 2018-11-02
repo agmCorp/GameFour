@@ -25,4 +25,7 @@ public class DebugConstants {
 
     // Enables cheat mode
     public static final boolean POWER_JUMP_ENABLED = true && TURN_ON_DEBUG;
+
+    // Test advertisements
+    public static final boolean TEST_ADS = false && TURN_ON_DEBUG;
 }

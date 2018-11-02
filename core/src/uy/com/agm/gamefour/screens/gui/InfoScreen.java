@@ -34,7 +34,9 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     private static final float ANIMATION_DURATION = 1.0f;
     private static final float BUTTON_WIDTH = 85.0f;
 
-    I18NBundle i18NGameThreeBundle;
+    private I18NBundle i18NGameThreeBundle;
+    private AssetFonts assetFonts;
+    private AssetGUI assetGUI;
     private Table mainTable;
     private ImageButton pause;
     private Label scoreLabel;
@@ -42,36 +44,15 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
 
     public InfoScreen(GameFour game) {
         super(game);
+
+        i18NGameThreeBundle = Assets.getInstance().getI18NGameFour().getI18NGameFourBundle();
+        assetFonts = Assets.getInstance().getFonts();
+        assetGUI = Assets.getInstance().getGUI();
     }
 
     @Override
     public void build() {
-        i18NGameThreeBundle = Assets.getInstance().getI18NGameFour().getI18NGameFourBundle();
-        AssetFonts assetFonts = Assets.getInstance().getFonts();
-        AssetGUI assetGUI = Assets.getInstance().getGUI();
-
-        Label.LabelStyle labelStyleBig = new Label.LabelStyle();
-        labelStyleBig.font = assetFonts.getDefaultBig();
-
-        Label.LabelStyle labelStyleNormal = new Label.LabelStyle();
-        labelStyleNormal.font = assetFonts.getDefaultNormal();
-
-        Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
-        labelStyleSmall.font = assetFonts.getDefaultSmall();
-
-        Label gameOverLabel = new Label(i18NGameThreeBundle.format("infoScreen.gameOver"), labelStyleBig);
-        scoreLabel = new Label("SCORE", labelStyleNormal);
-        highScoreLabel = new Label("HIGH_SCORE", labelStyleSmall);
-
-        mainTable = new Table();
-        mainTable.setDebug(DebugConstants.DEBUG_LINES);
-        mainTable.center();
-        mainTable.setFillParent(true);
-        mainTable.add(gameOverLabel).row();
-        mainTable.add(getButtonsTable()).row();
-        mainTable.add(scoreLabel).row();
-        mainTable.add(highScoreLabel);
-        mainTable.setVisible(false);
+        mainTable = getMainTable();
         stage.addActor(mainTable);
 
         // Pause button
@@ -85,6 +66,33 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
             }
         }));
         stage.addActor(pause);
+    }
+
+    private Table getMainTable() {
+        Label.LabelStyle labelStyleBig = new Label.LabelStyle();
+        labelStyleBig.font = assetFonts.getDefaultBig();
+
+        Label.LabelStyle labelStyleNormal = new Label.LabelStyle();
+        labelStyleNormal.font = assetFonts.getDefaultNormal();
+
+        Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
+        labelStyleSmall.font = assetFonts.getDefaultSmall();
+
+        Label gameOverLabel = new Label(i18NGameThreeBundle.format("infoScreen.gameOver"), labelStyleBig);
+        scoreLabel = new Label("SCORE", labelStyleNormal);
+        highScoreLabel = new Label("HIGH_SCORE", labelStyleSmall);
+
+        Table table = new Table();
+        table.setDebug(DebugConstants.DEBUG_LINES);
+        table.center();
+        table.setFillParent(true);
+        table.add(gameOverLabel).row();
+        table.add(getButtonsTable()).row();
+        table.add(scoreLabel).row();
+        table.add(highScoreLabel);
+        table.setVisible(false);
+
+        return table;
     }
 
     private Table getButtonsTable() {
