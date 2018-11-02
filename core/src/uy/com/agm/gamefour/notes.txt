@@ -12,11 +12,9 @@ HACER
 - agregar un obstaculo o algo en donde el pajaro suelte algo y lo mate. O una estrellita para agarrar por puntos no se.
 Sobre las plataformas no puedo poner nada porque es dificil seguirlas.
 - random texture plataformas
-- menus y todo eso
-- definir avisos, hacer interstitial solo al perder si el score supera 7 alguna vez y cada 3 intentos.
+- credit screen
 - random textures plataformas
 - musica y efectos
-- hacer que cada salto tenga score, que no dependa del nivel.
 - Poner una zona de salto perfecto. Si el pajaro cae justo ahi (su x en medio de la plataforma + delta) saco algun cartel y/o doy
 puntos extra.
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
