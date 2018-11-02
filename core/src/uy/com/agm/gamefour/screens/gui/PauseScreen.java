@@ -37,7 +37,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     private static final float BUTTONS_ANIM_DURATION = 1.0f;
     private static final float BUTTONS_MOVE_BY_AMOUNT = 110.0f;
     private static final float STAGE_ANIM_DURATION = 1.0f;
-    private static final float DIM_ALPHA = 0.7f;
+    private static final float DIM_ALPHA = 0.8f;
 
     private Assets assets;
     private AssetGUI assetGUI;
@@ -77,10 +77,10 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
 
         // Buttons
         defineButtons();
-        stage.addActor(play);
         stage.addActor(home);
         stage.addActor(audio);
         stage.addActor(reload);
+        stage.addActor(play);
 
         // Initially hidden
         setStageActorsVisible(false);
@@ -177,6 +177,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
 
     public void showPauseScreen() {
         if (!isPauseScreenVisible()) {
+            game.getCurrentScreen().pause();
             setStageActorsVisible(true);
             setStageAnimation();
         }
@@ -193,6 +194,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
                 public void run () {
                     setStageActorsVisible(false);
                     placeButtons(stage.getWidth(), stage.getHeight());
+                    game.getCurrentScreen().resume();
                 }
             })));
         }

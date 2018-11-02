@@ -87,6 +87,8 @@ public class MainMenuScreen extends GUIAbstractScreen {
 
     @Override
     public void show() {
+        hideBannerAd();
+
         // Background
         menuBackground = new Image(assetGUI.getMenuBackground());
         stage.addActor(menuBackground);
@@ -98,7 +100,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
         stage.addActor(gameTitle);
 
         // Distant rocket
-        rocketBackground = new AnimatedActor(assetGUI.getRocket().getRocketAnimation(), ROCKET_BACKGROUND_SCALE);
+        rocketBackground = new AnimatedActor(assetGUI.getRocket().getRocketAnimation(), true, ROCKET_BACKGROUND_SCALE);
         stage.addActor(rocketBackground);
 
         // Cloud
@@ -110,7 +112,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
         stage.addActor(trail);
 
         // Main character
-        jumper = new AnimatedActor(assetSprites.getJumper().getJumperJumpAnimation(), JUMPER_SCALE, Color.SALMON);
+        jumper = new AnimatedActor(assetSprites.getJumper().getJumperJumpAnimation(), true, JUMPER_SCALE, Color.SALMON);
         stage.addActor(jumper);
 
         // Near rocket

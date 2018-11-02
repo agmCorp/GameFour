@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 
+import uy.com.agm.gamefour.admob.IAdsController;
 import uy.com.agm.gamefour.game.GameFour;
 
 /**
@@ -15,9 +16,11 @@ public abstract class AbstractScreen implements Screen {
     private static final String TAG = AbstractScreen.class.getName();
 
     protected GameFour game;
+    IAdsController adsController;
 
     public AbstractScreen(GameFour game) {
         this.game = game;
+        adsController =  game.getAdsController();
 
         // Sets whether the BACK button on Android should be caught.
         // This will prevent the app from being paused. Will have no effect on the desktop/html.
@@ -28,6 +31,26 @@ public abstract class AbstractScreen implements Screen {
         // Clear the screen with black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
+    protected void showBannerAd() {
+        if (adsController.isWifiConnected()) {
+            adsController.showBannerAd();
+        } else {
+            Gdx.app.debug(TAG, "**** Not connected to the internet");
+        }
+    }
+
+    protected void hideBannerAd() {
+        adsController.hideBannerAd();
+    }
+
+    protected void showInterstitialAd() {
+        if (adsController.isWifiConnected()) {
+            adsController.showInterstitialAd(null); // We don't need to execute anything after ad
+        } else {
+            Gdx.app.debug(TAG, "**** Not connected to the internet");
+        }
     }
 
     /** Called by {@link uy.com.agm.gamefour.game.DirectedGame} when this screen becomes the current screen. */

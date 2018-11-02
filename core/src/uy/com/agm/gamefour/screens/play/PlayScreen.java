@@ -1,9 +1,7 @@
 package uy.com.agm.gamefour.screens.play;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
-import uy.com.agm.gamefour.admob.IAdsController;
 import uy.com.agm.gamefour.game.GameController;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.GameSettings;
@@ -43,7 +41,6 @@ public class PlayScreen extends PlayAbstractScreen {
         worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
         prefs = GameSettings.getInstance();
         endGame = false;
-        showBannerAd();
     }
 
     @Override
@@ -103,11 +100,13 @@ public class PlayScreen extends PlayAbstractScreen {
 
     @Override
     public void pause() {
+        hideBannerAd();
         super.pause();
     }
 
     @Override
     public void resume() {
+        showBannerAd();
         if (!pauseScreen.isPauseScreenVisible()) {
             super.resume();
         }
@@ -135,13 +134,11 @@ public class PlayScreen extends PlayAbstractScreen {
     }
 
     public void setGameStatePaused() {
-        super.pause();
         pauseScreen.showPauseScreen();
         infoScreen.disableEvents();
     }
 
     public void setGameStateRunning() {
-        super.resume();
         pauseScreen.hidePauseScreen();
     }
 
@@ -155,23 +152,5 @@ public class PlayScreen extends PlayAbstractScreen {
 
     public PauseScreen getPauseScreen() {
         return pauseScreen;
-    }
-
-    public void showBannerAd() {
-        IAdsController adsController = game.getAdsController();
-        if (adsController.isWifiConnected()) {
-            adsController.showBannerAd();
-        } else {
-            Gdx.app.debug(TAG, "**** Not connected to the internet");
-        }
-    }
-
-    public void showInterstitialAd() {
-        IAdsController adsController = game.getAdsController();
-        if (adsController.isWifiConnected()) {
-            adsController.showInterstitialAd(null); // We don't need to execute anything after ad
-        } else {
-            Gdx.app.debug(TAG, "**** Not connected to the internet");
-        }
     }
 }

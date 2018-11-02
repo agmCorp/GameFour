@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import uy.com.agm.gamefour.assets.Assets;
+import uy.com.agm.gamefour.assets.fonts.AssetFonts;
 import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
@@ -35,6 +36,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
 
     I18NBundle i18NGameThreeBundle;
     private Table mainTable;
+    private ImageButton pause;
     private Label scoreLabel;
     private Label highScoreLabel;
 
@@ -45,15 +47,17 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     @Override
     public void build() {
         i18NGameThreeBundle = Assets.getInstance().getI18NGameFour().getI18NGameFourBundle();
+        AssetFonts assetFonts = Assets.getInstance().getFonts();
+        AssetGUI assetGUI = Assets.getInstance().getGUI();
 
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
-        labelStyleBig.font = Assets.getInstance().getFonts().getDefaultBig();
+        labelStyleBig.font = assetFonts.getDefaultBig();
 
         Label.LabelStyle labelStyleNormal = new Label.LabelStyle();
-        labelStyleNormal.font = Assets.getInstance().getFonts().getDefaultNormal();
+        labelStyleNormal.font = assetFonts.getDefaultNormal();
 
         Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
-        labelStyleSmall.font = Assets.getInstance().getFonts().getDefaultSmall();
+        labelStyleSmall.font = assetFonts.getDefaultSmall();
 
         Label gameOverLabel = new Label(i18NGameThreeBundle.format("infoScreen.gameOver"), labelStyleBig);
         scoreLabel = new Label("SCORE", labelStyleNormal);
@@ -70,20 +74,17 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         mainTable.setVisible(false);
         stage.addActor(mainTable);
 
-
-        // // TODO: 11/2/2018
-        ImageButton pauseButton = new ImageButton(new TextureRegionDrawable(Assets.getInstance().getGUI().getHome()),
-                new TextureRegionDrawable(Assets.getInstance().getGUI().getHomePressed()));
-        pauseButton.setY(500);
-        pauseButton.addListener(ListenerHelper.runnableListener(new Runnable() {
+        // Pause button
+        pause = new ImageButton(new TextureRegionDrawable(assetGUI.getPause()),
+                new TextureRegionDrawable(assetGUI.getPausePressed()));
+        pause.setPosition(0, stage.getHeight() - pause.getHeight());
+        pause.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
                 ((PlayScreen) game.getCurrentScreen()).setGameStatePaused();
             }
         }));
-
-        stage.addActor(pauseButton);
-
+        stage.addActor(pause);
     }
 
     private Table getButtonsTable() {
@@ -150,8 +151,9 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
             prefs.save();
         }
         showScores(currentScore, bestScore);
-        setStageAnimation();
         mainTable.setVisible(true);
+        pause.setVisible(false);
+        setStageAnimation();
     }
 
     private void showScores(int score, int highScore) {
