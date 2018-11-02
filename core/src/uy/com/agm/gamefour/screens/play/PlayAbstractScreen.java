@@ -38,7 +38,7 @@ public abstract class PlayAbstractScreen extends AbstractScreen {
 
     @Override
     public void resume() {
-        playScreenState = PlayScreenState.RUNNING;
+      playScreenState = PlayScreenState.RUNNING;
     }
 
     @Override

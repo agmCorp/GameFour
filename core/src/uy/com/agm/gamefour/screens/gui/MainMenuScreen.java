@@ -201,16 +201,17 @@ public class MainMenuScreen extends GUIAbstractScreen {
         audio.setPosition(x, y);
         exit.setPosition(x, y);
 
+        // Buttons Animations
+        setButtonsAnimation();
+    }
+
+    private void setButtonsAnimation() {
         // Disable events
         play.setTouchable(Touchable.disabled);
         info.setTouchable(Touchable.disabled);
         audio.setTouchable(Touchable.disabled);
         exit.setTouchable(Touchable.disabled);
 
-        setButtonsAnimation();
-    }
-
-    private void setButtonsAnimation() {
         // Set actions
         play.clearActions();
         info.clearActions();

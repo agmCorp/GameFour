@@ -69,6 +69,21 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         mainTable.add(highScoreLabel);
         mainTable.setVisible(false);
         stage.addActor(mainTable);
+
+
+        // // TODO: 11/2/2018
+        ImageButton pauseButton = new ImageButton(new TextureRegionDrawable(Assets.getInstance().getGUI().getHome()),
+                new TextureRegionDrawable(Assets.getInstance().getGUI().getHomePressed()));
+        pauseButton.setY(500);
+        pauseButton.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                ((PlayScreen) game.getCurrentScreen()).setGameStatePaused();
+            }
+        }));
+
+        stage.addActor(pauseButton);
+
     }
 
     private Table getButtonsTable() {
@@ -93,6 +108,10 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
 
     @Override
     public void update(float deltaTime) {
+        Group group = stage.getRoot();
+        if (!group.isTouchable()) {
+            group.setTouchable(Touchable.enabled);
+        }
         stage.act();
     }
 
@@ -101,11 +120,20 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         stage.draw();
     }
 
+    public void disableEvents() {
+        Group group = stage.getRoot();
+        if (group.isTouchable()) {
+            group.setTouchable(Touchable.disabled);
+        }
+    }
+
     private void setStageAnimation() {
+        float h = stage.getHeight();
         final Group group = stage.getRoot();
-        group.setY(GameFour.APPLICATION_HEIGHT);
+        group.setY(h);
         group.setTouchable(Touchable.disabled);
-        group.addAction(sequence(moveBy(0, -GameFour.APPLICATION_HEIGHT, ANIMATION_DURATION, Interpolation.bounceOut), run(new Runnable() {
+        group.clearActions();
+        group.addAction(sequence(moveBy(0, -h, ANIMATION_DURATION, Interpolation.bounceOut), run(new Runnable() {
             public void run () {
                 group.setTouchable(Touchable.enabled);
             }

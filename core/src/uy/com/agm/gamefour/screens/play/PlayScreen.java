@@ -88,8 +88,7 @@ public class PlayScreen extends PlayAbstractScreen {
             GameWorld gameWorld = worldController.getGameWorld();
             gameWorld.getGameCamera().shake(SHAKE_DURATION);
             gameWorld.getJumper().onDead();
-//            infoScreen.showGameOver(); // todo
-            pauseScreen.showPauseScreen();
+            infoScreen.showGameOver();
             endGame = true;
         }
     }
@@ -105,7 +104,13 @@ public class PlayScreen extends PlayAbstractScreen {
     @Override
     public void pause() {
         super.pause();
-        // TODO INVOCAR A PANTALLA LINDA DE PAUSA
+    }
+
+    @Override
+    public void resume() {
+        if (!pauseScreen.isPauseScreenVisible()) {
+            super.resume();
+        }
     }
 
     @Override
@@ -127,6 +132,17 @@ public class PlayScreen extends PlayAbstractScreen {
         infoScreen.applyViewport();
         pauseScreen.applyViewport();
         worldController.getGameWorld().getGameCamera().applyViewport();
+    }
+
+    public void setGameStatePaused() {
+        super.pause();
+        pauseScreen.showPauseScreen();
+        infoScreen.disableEvents();
+    }
+
+    public void setGameStateRunning() {
+        super.resume();
+        pauseScreen.hidePauseScreen();
     }
 
     public Hud getHud() {
@@ -153,14 +169,7 @@ public class PlayScreen extends PlayAbstractScreen {
     public void showInterstitialAd() {
         IAdsController adsController = game.getAdsController();
         if (adsController.isWifiConnected()) {
-            adsController.showInterstitialAd(new Runnable() {
-                @Override
-                public void run() {
-                   // if (!isPlayScreenStateRunning()) { // el juego esta en pausa?
-                   //     dimScreen.setGameStateRunning();// todo aca no se, depende cuando haga la pantalla de pausa
-                   // }
-                }
-            });
+            adsController.showInterstitialAd(null); // We don't need to execute anything after ad
         } else {
             Gdx.app.debug(TAG, "**** Not connected to the internet");
         }

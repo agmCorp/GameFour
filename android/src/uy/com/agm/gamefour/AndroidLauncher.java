@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.ads.AdListener;
@@ -22,14 +21,25 @@ import com.google.android.gms.ads.MobileAds;
 import uy.com.agm.gamefour.admob.IAdsController;
 import uy.com.agm.gamefour.game.GameFour;
 
+import static com.badlogic.gdx.Gdx.app;
+
 public class AndroidLauncher extends AndroidApplication implements IAdsController {
 	private static final String TAG = AndroidLauncher.class.getName();
 
 	// Constants
-	private static final String ADMOB_APP_ID = "ca-app-pub-5237141515221673~1933699557";
-	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-5237141515221673/5954078886"; // TEST ca-app-pub-3940256099942544/6300978111
-	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-5237141515221673/6512907117"; // TEST ca-app-pub-3940256099942544/1033173712
+	// todo valores reales de powerJump@gmail.com
+//	private static final String ADMOB_APP_ID = "ca-app-pub-5237141515221673~1933699557";
+//	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-5237141515221673/5954078886"; // TEST ca-app-pub-3940256099942544/6300978111
+//	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-5237141515221673/6512907117"; // TEST ca-app-pub-3940256099942544/1033173712
+//	private static final String TEST_DEVICE = "09AD9BE37BC1E30FF7C8E88C672B3404";
+
+
+	// valores de wipethemout!
+	private static final String ADMOB_APP_ID = "ca-app-pub-3296591416050248~7409810295";
+	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";
+	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3296591416050248/6643523530";
 	private static final String TEST_DEVICE = "09AD9BE37BC1E30FF7C8E88C672B3404";
+
 
 	private AdView bannerAd;
 	private View gameView;
@@ -104,27 +114,27 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		interstitialAd.setAdListener(new AdListener() {
 			@Override
 			public void onAdLoaded() {
-				Gdx.app.debug(TAG, "**** Ad finishes loading");
+				app.debug(TAG, "**** Ad finishes loading");
 			}
 
 			@Override
 			public void onAdFailedToLoad(int errorCode) {
-				Gdx.app.debug(TAG, "**** Ad request fails with errorCode: " + errorCode);
+				app.debug(TAG, "**** Ad request fails with errorCode: " + errorCode);
 			}
 
 			@Override
 			public void onAdOpened() {
-				Gdx.app.debug(TAG, "**** Ad is displayed");
+				app.debug(TAG, "**** Ad is displayed");
 			}
 
 			@Override
 			public void onAdLeftApplication() {
-				Gdx.app.debug(TAG, "**** User has left the app");
+				app.debug(TAG, "**** User has left the app");
 			}
 
 			@Override
 			public void onAdClosed() {
-				Gdx.app.debug(TAG, "**** Ad is closed");
+				app.debug(TAG, "**** Ad is closed");
 
 				// All of the com.badlogic.gdx.ApplicationListener methods are called on the same thread.
 				// This thread is the rendering thread on which OpenGL calls can be made.
@@ -140,7 +150,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 				if (callbackOnAdClose != null) {
 					// Therefore, instead of running callbackOnAdClose in the UI thread (callbackOnAdClose.run), we run it in
 					// the badlogic rendering thread.
-					Gdx.app.postRunnable(callbackOnAdClose);
+					app.postRunnable(callbackOnAdClose);
 				}
 
 				// Load the next interstitial
@@ -171,7 +181,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 				if (interstitialAd.isLoaded()) {
 					interstitialAd.show();
 				} else {
-					Gdx.app.debug(TAG, "**** The interstitial wasn't loaded yet.");
+					app.debug(TAG, "**** The interstitial wasn't loaded yet.");
 				}
 			}
 		});

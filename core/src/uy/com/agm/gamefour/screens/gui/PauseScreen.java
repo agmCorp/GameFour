@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.screens.gui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,6 +19,7 @@ import uy.com.agm.gamefour.game.GameSettings;
 import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
+import uy.com.agm.gamefour.screens.play.PlayScreen;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
@@ -49,7 +49,6 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     private ImageButton home;
     private ImageButton audio;
     private ImageButton reload;
-    private boolean isPauseScreenVisible;
 
     public PauseScreen(GameFour game) {
         super(game);
@@ -57,13 +56,12 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         assetGUI = assets.getGUI();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
         prefs = GameSettings.getInstance();
-        isPauseScreenVisible = false;
     }
 
     @Override
     public void build() {
         // Background
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT, Pixmap.Format.RGBA8888);
         pixmap.setColor(0, 0, 0, DIM_ALPHA);
         pixmap.fill();
         TextureRegion dim = new TextureRegion(new Texture(pixmap));
@@ -85,7 +83,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         stage.addActor(reload);
 
         // Initially hidden
-        hidePauseScreen();
+        setStageActorsVisible(false);
     }
 
     private void defineButtons() {
@@ -107,7 +105,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         play.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
-                hidePauseScreen();
+                ((PlayScreen) game.getCurrentScreen()).setGameStateRunning();
             }
         }));
         home.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_DOWN));
@@ -121,24 +119,13 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
     }
 
-    private void hidePauseScreen() {
-        screenPauseBg.setVisible(false);
-        pauseLabel.setVisible(false);
-        play.setVisible(false);
-        home.setVisible(false);
-        audio.setVisible(false);
-        reload.setVisible(false);
-        isPauseScreenVisible = false;
-    }
-
-    public void showPauseScreen() {
-        setStageAnimation();
-        screenPauseBg.setVisible(true);
-        pauseLabel.setVisible(true);
-        play.setVisible(true);
-        home.setVisible(true);
-        audio.setVisible(true);
-        reload.setVisible(true);
+    private void setStageActorsVisible(boolean visible) {
+        screenPauseBg.setVisible(visible);
+        pauseLabel.setVisible(visible);
+        play.setVisible(visible);
+        home.setVisible(visible);
+        audio.setVisible(visible);
+        reload.setVisible(visible);
     }
 
     @Override
@@ -148,7 +135,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         float w = stage.getWidth(); // Same as stage.getViewport().getWorldWidth()
         float h = stage.getHeight();
 
-        // Background
+        // Resize background
         screenPauseBg.setSize(w, h);
 
         // Place the title
@@ -156,27 +143,26 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         pauseLabel.setY((h - pauseLabel.getHeight()) / 2 + TITLE_OFFSET_Y);
 
         // Place buttons
-        play.setX((w - play.getWidth()) / 2);
-        play.setY((h - play.getHeight()) / 2 - BUTTONS_OFFSET_Y);
+        placeButtons(w, h);
+
+        if (isPauseScreenVisible()) {
+            // Buttons Animations
+            setButtonsAnimation();
+        }
+    }
+
+    public boolean isPauseScreenVisible() {
+        return screenPauseBg.isVisible();
+    }
+
+    private void placeButtons(float width, float height) {
+        play.setX((width - play.getWidth()) / 2);
+        play.setY((height - play.getHeight()) / 2 - BUTTONS_OFFSET_Y);
         float x = play.getX() + play.getWidth() / 2 - audio.getWidth() / 2;
         float y = play.getY() + play.getHeight() / 2 - audio.getHeight() / 2;
         home.setPosition(x, y);
         audio.setPosition(x, y);
         reload.setPosition(x, y);
-
-        // Disable events
-        play.setTouchable(Touchable.disabled);
-        home.setTouchable(Touchable.disabled);
-        audio.setTouchable(Touchable.disabled);
-        reload.setTouchable(Touchable.disabled);
-
-        if (isPauseScreenVisible()) {
-            setButtonsAnimation();
-        }
-    }
-
-    private boolean isPauseScreenVisible() {
-        return isPauseScreenVisible;
     }
 
     @Override
@@ -189,11 +175,36 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         stage.draw();
     }
 
+    public void showPauseScreen() {
+        if (!isPauseScreenVisible()) {
+            setStageActorsVisible(true);
+            setStageAnimation();
+        }
+    }
+
+    public void hidePauseScreen() {
+        if (isPauseScreenVisible()) {
+            float h = stage.getHeight();
+            final Group group = stage.getRoot();
+            group.setY(0);
+            group.setTouchable(Touchable.disabled);
+            group.clearActions();
+            group.addAction(sequence(moveBy(0, h, STAGE_ANIM_DURATION, Interpolation.bounceOut), run(new Runnable() {
+                public void run () {
+                    setStageActorsVisible(false);
+                    placeButtons(stage.getWidth(), stage.getHeight());
+                }
+            })));
+        }
+    }
+
     private void setStageAnimation() {
+        float h = stage.getHeight();
         final Group group = stage.getRoot();
-        group.setY(GameFour.APPLICATION_HEIGHT);
+        group.setY(h);
         group.setTouchable(Touchable.disabled);
-        group.addAction(sequence(moveBy(0, -GameFour.APPLICATION_HEIGHT, STAGE_ANIM_DURATION, Interpolation.bounceOut), run(new Runnable() {
+        group.clearActions();
+        group.addAction(sequence(moveBy(0, -h, STAGE_ANIM_DURATION, Interpolation.bounceOut), run(new Runnable() {
             public void run () {
                 setButtonsAnimation();
                 group.setTouchable(Touchable.enabled);
@@ -202,6 +213,12 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     }
 
     private void setButtonsAnimation() {
+        // Disable events
+        play.setTouchable(Touchable.disabled);
+        home.setTouchable(Touchable.disabled);
+        audio.setTouchable(Touchable.disabled);
+        reload.setTouchable(Touchable.disabled);
+
         // Set actions
         play.clearActions();
         home.clearActions();
@@ -215,8 +232,6 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
                         home.setTouchable(Touchable.enabled);
                         audio.setTouchable(Touchable.enabled);
                         reload.setTouchable(Touchable.enabled);
-
-                        isPauseScreenVisible = true;
                     }
                 })));
         home.addAction(moveBy(BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION));
