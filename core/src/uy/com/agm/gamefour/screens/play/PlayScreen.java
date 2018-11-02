@@ -106,8 +106,8 @@ public class PlayScreen extends PlayAbstractScreen {
 
     @Override
     public void resume() {
-        showBannerAd();
         if (!pauseScreen.isPauseScreenVisible()) {
+            showBannerAd();
             super.resume();
         }
     }
