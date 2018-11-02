@@ -99,14 +99,20 @@ public class Hud extends GUIOverlayAbstractScreen {
 
     @Override
     public void update(float deltaTime) {
-        if (swing) {
+        if (swing || !powerBar.isEmpty()) {
             swingTime += deltaTime;
             if (swingTime > SWING_DELAY) {
                 swingTime = 0;
-                if (powerBar.isFull()) {
-                    powerBar.reset();
+                if (swing) {
+                    if (powerBar.isFull()) {
+                        powerBar.reset();
+                    } else {
+                        powerBar.increase();
+                    }
                 } else {
-                    powerBar.increase();
+                    if (!powerBar.isEmpty()) {
+                        powerBar.decrease();
+                    }
                 }
             }
         }

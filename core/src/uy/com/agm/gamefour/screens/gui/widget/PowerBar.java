@@ -15,17 +15,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class PowerBar extends ProgressBar {
     private static final String TAG = PowerBar.class.getName();
 
-    private static final float MIN = 0.0f;
+    private static final float MIN = 10.0f;
     private static final float MAX = 100.0f;
     private static final float STEP = 4.0f;
 
     public PowerBar(int width, int height) {
-        super(MIN, MAX, STEP, false, new ProgressBarStyle());
+        super(0, MAX, STEP, false, new ProgressBarStyle());
 
         ProgressBar.ProgressBarStyle progressBarStyle = getStyle();
         progressBarStyle.background = getColoredDrawable(width, height, Color.RED);
         progressBarStyle.knob = getColoredDrawable(0, height, Color.GREEN);
         progressBarStyle.knobBefore = getColoredDrawable(width, height, Color.YELLOW);
+
+        reset();
     }
 
     private Drawable getColoredDrawable(int width, int height, Color color) {
