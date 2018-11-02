@@ -3,6 +3,7 @@ package uy.com.agm.gamefour.screens.gui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -20,6 +21,8 @@ import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
 import uy.com.agm.gamefour.screens.gui.widget.AnimatedActor;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Created by AGMCORP on 17/9/2018.
@@ -38,7 +41,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private static final float JUMPER_OFFSET_Y = 200.0f;
     private static final float ROCKET_FG_OFFSET_Y = 40.0f;
     private static final float BUTTONS_OFFSET_Y = 350.0f;
-    private static final float BUTTONS_ANIM_DURATION = 2.0f;
+    private static final float BUTTONS_ANIM_DURATION = 1.0f;
     private static final float BUTTONS_MOVE_BY_AMOUNT = 110.0f;
 
     private Assets assets;
@@ -123,21 +126,23 @@ public class MainMenuScreen extends GUIAbstractScreen {
     }
 
     private void defineButtons() {
-        audio = new ImageButton(new TextureRegionDrawable(assetGUI.getAudio()),
-                new TextureRegionDrawable(assetGUI.getAudioPressed()),
-                new TextureRegionDrawable(assetGUI.getAudioChecked()));
-        audio.setChecked(!prefs.isAudio());
-
         play = new ImageButton(new TextureRegionDrawable(assetGUI.getPlay()),
                 new TextureRegionDrawable(assetGUI.getPlayPressed()));
 
         info = new ImageButton(new TextureRegionDrawable(assetGUI.getInfo()),
                 new TextureRegionDrawable(assetGUI.getInfoPressed()));
 
+        audio = new ImageButton(new TextureRegionDrawable(assetGUI.getAudio()),
+                new TextureRegionDrawable(assetGUI.getAudioPressed()),
+                new TextureRegionDrawable(assetGUI.getAudioChecked()));
+        audio.setChecked(!prefs.isAudio());
+
         exit = new ImageButton(new TextureRegionDrawable(assetGUI.getExit()),
                 new TextureRegionDrawable(assetGUI.getExitPressed()));
 
         // Events
+        play.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
+        info.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.CREDITS, ScreenTransitionEnum.SLICE_UP_DOWN_10));
         audio.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
@@ -145,8 +150,6 @@ public class MainMenuScreen extends GUIAbstractScreen {
                 prefs.save();
             }
         }));
-        play.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
-        info.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.CREDITS, ScreenTransitionEnum.SLICE_UP_DOWN_10));
         exit.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
@@ -194,16 +197,36 @@ public class MainMenuScreen extends GUIAbstractScreen {
         play.setY((h - play.getHeight()) / 2 - BUTTONS_OFFSET_Y);
         float x = play.getX() + play.getWidth() / 2 - audio.getWidth() / 2;
         float y = play.getY() + play.getHeight() / 2 - audio.getHeight() / 2;
-        audio.setPosition(x, y);
         info.setPosition(x, y);
+        audio.setPosition(x, y);
         exit.setPosition(x, y);
 
+        // Disable events
+        play.setTouchable(Touchable.disabled);
+        info.setTouchable(Touchable.disabled);
+        audio.setTouchable(Touchable.disabled);
+        exit.setTouchable(Touchable.disabled);
+
+        setButtonsAnimation();
+    }
+
+    private void setButtonsAnimation() {
         // Set actions
-        audio.clearActions();
-        audio.addAction(moveBy(-BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.smooth));
         play.clearActions();
-        play.addAction(moveBy(0, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.smooth));
         info.clearActions();
-        info.addAction(moveBy(BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.smooth));
+        audio.clearActions();
+
+        play.addAction(sequence(moveBy(0, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.smooth),
+                run(new Runnable() {
+                    public void run () {
+                        // Enable events
+                        play.setTouchable(Touchable.enabled);
+                        info.setTouchable(Touchable.enabled);
+                        audio.setTouchable(Touchable.enabled);
+                        exit.setTouchable(Touchable.enabled);
+                    }
+                })));
+        info.addAction(moveBy(BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION));
+        audio.addAction(moveBy(-BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.smooth));
     }
 }

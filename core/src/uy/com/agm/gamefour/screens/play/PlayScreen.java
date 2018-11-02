@@ -12,6 +12,7 @@ import uy.com.agm.gamefour.game.WorldController;
 import uy.com.agm.gamefour.game.WorldRenderer;
 import uy.com.agm.gamefour.screens.gui.Hud;
 import uy.com.agm.gamefour.screens.gui.InfoScreen;
+import uy.com.agm.gamefour.screens.gui.PauseScreen;
 
 /**
  * Created by AGMCORP on 21/9/2018.
@@ -24,6 +25,7 @@ public class PlayScreen extends PlayAbstractScreen {
 
     private Hud hud;
     private InfoScreen infoScreen;
+    private PauseScreen pauseScreen;
     private WorldController worldController;
     private WorldRenderer worldRenderer;
     private GameSettings prefs;
@@ -34,6 +36,7 @@ public class PlayScreen extends PlayAbstractScreen {
 
         hud = new Hud(game);
         infoScreen = new InfoScreen(game);
+        pauseScreen = new PauseScreen(game);
 
         worldController = new WorldController(this);
         GameWorld gameWorld = worldController.getGameWorld();
@@ -47,18 +50,22 @@ public class PlayScreen extends PlayAbstractScreen {
     public void show() {
         hud.build();
         infoScreen.build();
+        pauseScreen.build();
     }
 
     @Override
     public void render(float deltaTime) {
+        pauseScreen.update(deltaTime);
         if (isPlayScreenStateRunning()) {
             hud.update(deltaTime);
             infoScreen.update(deltaTime);
             worldController.update(deltaTime);
         }
+
         worldRenderer.render();
         hud.render();
         infoScreen.render();
+        pauseScreen.render();
 
         // Analyze game results
         if (playScreenState == PlayScreenState.RUNNING) {
@@ -81,7 +88,8 @@ public class PlayScreen extends PlayAbstractScreen {
             GameWorld gameWorld = worldController.getGameWorld();
             gameWorld.getGameCamera().shake(SHAKE_DURATION);
             gameWorld.getJumper().onDead();
-            infoScreen.showGameOver();
+//            infoScreen.showGameOver(); // todo
+            pauseScreen.showPauseScreen();
             endGame = true;
         }
     }
@@ -90,6 +98,7 @@ public class PlayScreen extends PlayAbstractScreen {
     public void resize(int width, int height) {
         hud.resize(width, height);
         infoScreen.resize(width, height);
+        pauseScreen.resize(width, height);
         worldController.getGameWorld().getGameCamera().resize(width, height);
     }
 
@@ -103,6 +112,7 @@ public class PlayScreen extends PlayAbstractScreen {
     public void hide() {
         hud.dispose();
         infoScreen.dispose();
+        pauseScreen.dispose();
         worldController.dispose();
     }
 
@@ -115,6 +125,7 @@ public class PlayScreen extends PlayAbstractScreen {
     public void applyViewport() {
         hud.applyViewport();
         infoScreen.applyViewport();
+        pauseScreen.applyViewport();
         worldController.getGameWorld().getGameCamera().applyViewport();
     }
 
@@ -124,6 +135,10 @@ public class PlayScreen extends PlayAbstractScreen {
 
     public InfoScreen getInfoScreen() {
         return infoScreen;
+    }
+
+    public PauseScreen getPauseScreen() {
+        return pauseScreen;
     }
 
     public void showBannerAd() {

@@ -101,7 +101,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         stage.draw();
     }
 
-    private void setTransitionDown() {
+    private void setStageAnimation() {
         final Group group = stage.getRoot();
         group.setY(GameFour.APPLICATION_HEIGHT);
         group.setTouchable(Touchable.disabled);
@@ -122,7 +122,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
             prefs.save();
         }
         showScores(currentScore, bestScore);
-        setTransitionDown();
+        setStageAnimation();
         mainTable.setVisible(true);
     }
 

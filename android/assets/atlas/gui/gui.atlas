@@ -115,112 +115,112 @@ rocket
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 46
+  index: 2
 rocket
   rotate: false
   xy: 584, 1841
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 41
+  index: 50
 rocket
   rotate: false
   xy: 2, 747
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 30
+  index: 46
 rocket
   rotate: false
   xy: 584, 1649
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 31
+  index: 30
 rocket
   rotate: false
   xy: 1066, 1841
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 32
+  index: 31
 rocket
   rotate: false
   xy: 2, 555
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 33
+  index: 32
 rocket
   rotate: false
   xy: 584, 1457
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 34
+  index: 33
 rocket
   rotate: false
   xy: 1066, 1649
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 35
+  index: 34
 rocket
   rotate: false
   xy: 1548, 1841
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 36
+  index: 35
 rocket
   rotate: false
   xy: 2, 363
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 37
+  index: 36
 rocket
   rotate: false
   xy: 584, 1265
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 38
+  index: 37
 rocket
   rotate: false
   xy: 1066, 1457
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 39
+  index: 38
 rocket
   rotate: false
   xy: 1548, 1649
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 49
+  index: 39
 rocket
   rotate: false
   xy: 2, 171
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 48
+  index: 49
 rocket
   rotate: false
   xy: 1066, 1265
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 7
+  index: 48
 rocket
   rotate: false
   xy: 1548, 1457
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 1
+  index: 23
 rocket
   rotate: false
   xy: 1548, 1265
@@ -234,7 +234,7 @@ rocket
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 47
+  index: 41
 rocket
   rotate: false
   xy: 1066, 1073
@@ -248,14 +248,14 @@ rocket
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 45
+  index: 1
 rocket
   rotate: false
   xy: 484, 881
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 2
+  index: 15
 rocket
   rotate: false
   xy: 484, 689
@@ -283,7 +283,7 @@ rocket
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 3
+  index: 7
 rocket
   rotate: false
   xy: 1448, 881
@@ -311,7 +311,7 @@ rocket
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 50
+  index: 3
 rocket
   rotate: false
   xy: 966, 305
@@ -373,7 +373,7 @@ rocket
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 15
+  index: 45
 rocket
   rotate: false
   xy: 2, 578
@@ -436,7 +436,7 @@ rocket
   size: 480, 190
   orig: 480, 190
   offset: 0, 0
-  index: 23
+  index: 47
 rocket
   rotate: false
   xy: 2, 2
