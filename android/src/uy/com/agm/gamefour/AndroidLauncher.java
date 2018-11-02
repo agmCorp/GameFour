@@ -27,19 +27,10 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	private static final String TAG = AndroidLauncher.class.getName();
 
 	// Constants
-	// todo valores reales de powerJump@gmail.com
-//	private static final String ADMOB_APP_ID = "ca-app-pub-5237141515221673~1933699557";
-//	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-5237141515221673/5954078886"; // TEST ca-app-pub-3940256099942544/6300978111
-//	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-5237141515221673/6512907117"; // TEST ca-app-pub-3940256099942544/1033173712
-//	private static final String TEST_DEVICE = "09AD9BE37BC1E30FF7C8E88C672B3404";
-
-
-	// valores de wipethemout!
-	private static final String ADMOB_APP_ID = "ca-app-pub-3296591416050248~7409810295";
-	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";
-	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3296591416050248/6643523530";
+	private static final String ADMOB_APP_ID = "ca-app-pub-3296591416050248~2841626548";
+	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3296591416050248/4067078303"; // TEST ca-app-pub-3940256099942544/6300978111
+	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3296591416050248/1636356084"; // TEST ca-app-pub-3940256099942544/1033173712
 	private static final String TEST_DEVICE = "09AD9BE37BC1E30FF7C8E88C672B3404";
-
 
 	private AdView bannerAd;
 	private View gameView;
