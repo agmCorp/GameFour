@@ -112,11 +112,11 @@ public class MainMenuScreen extends GUIAbstractScreen {
         stage.addActor(trail);
 
         // Main character
-        jumper = new AnimatedActor(assetSprites.getJumper().getJumperJumpAnimation(), true, JUMPER_SCALE, Color.SALMON);
+        jumper = new AnimatedActor(assetSprites.getJumper().getJumperJumpAnimation(), false, JUMPER_SCALE, Color.SALMON);
         stage.addActor(jumper);
 
         // Near rocket
-        rocketForeground = new AnimatedActor(assetGUI.getRocket().getRocketAnimation());
+        rocketForeground = new AnimatedActor(assetGUI.getRocket().getRocketAnimation(), true);
         stage.addActor(rocketForeground);
 
         // Buttons
