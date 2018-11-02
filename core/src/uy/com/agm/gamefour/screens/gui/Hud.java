@@ -21,7 +21,7 @@ public class Hud extends GUIOverlayAbstractScreen {
     private static final float SWING_DELAY = 0.02f;
     private static final int POWER_BAR_WIDTH = 250;
     private static final int POWER_BAR_HEIGHT = 15;
-    private static int AVERAGE_SCORE = 6 * 0; // TODO
+    private static int AVERAGE_SCORE = 5;
 
     private Table mainTable;
     private PowerBar powerBar;
