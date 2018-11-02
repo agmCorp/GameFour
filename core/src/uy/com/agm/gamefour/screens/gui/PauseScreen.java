@@ -83,7 +83,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         stage.addActor(play);
 
         // Initially hidden
-        setStageActorsVisible(false);
+        setVisible(false);
     }
 
     private void defineButtons() {
@@ -119,7 +119,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
     }
 
-    private void setStageActorsVisible(boolean visible) {
+    private void setVisible(boolean visible) {
         screenPauseBg.setVisible(visible);
         pauseLabel.setVisible(visible);
         play.setVisible(visible);
@@ -178,7 +178,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     public void showPauseScreen() {
         if (!isPauseScreenVisible()) {
             game.getCurrentScreen().pause();
-            setStageActorsVisible(true);
+            setVisible(true);
             setStageAnimation();
         }
     }
@@ -192,7 +192,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
             group.clearActions();
             group.addAction(sequence(moveBy(0, h, STAGE_ANIM_DURATION, Interpolation.bounceOut), run(new Runnable() {
                 public void run () {
-                    setStageActorsVisible(false);
+                    setVisible(false);
                     placeButtons(stage.getWidth(), stage.getHeight());
                     game.getCurrentScreen().resume();
                 }

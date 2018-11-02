@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -15,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class PowerBar extends ProgressBar {
     private static final String TAG = PowerBar.class.getName();
 
-    private static final float MIN = 10.0f;
+    private static final float MIN = 15.0f;
     private static final float MAX = 100.0f;
     private static final float STEP = 4.0f;
 
@@ -26,7 +27,7 @@ public class PowerBar extends ProgressBar {
         progressBarStyle.background = getColoredDrawable(width, height, Color.RED);
         progressBarStyle.knob = getColoredDrawable(0, height, Color.GREEN);
         progressBarStyle.knobBefore = getColoredDrawable(width, height, Color.YELLOW);
-
+        setVisualInterpolation(Interpolation.smooth);
         reset();
     }
 

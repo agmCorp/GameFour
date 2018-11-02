@@ -23,6 +23,7 @@ public class Hud extends GUIOverlayAbstractScreen {
     private static final int POWER_BAR_HEIGHT = 15;
     private static int AVERAGE_SCORE = 6 * 0; // TODO
 
+    private Table mainTable;
     private PowerBar powerBar;
     private boolean swing;
     private float swingTime;
@@ -43,13 +44,13 @@ public class Hud extends GUIOverlayAbstractScreen {
 
     @Override
     public void build() {
-        Table table = new Table();
-        table.setDebug(DebugConstants.DEBUG_LINES);
-        table.center();
-        table.setFillParent(true);
-        table.add(getTopTable()).height(GameFour.APPLICATION_HEIGHT / 2).row();
-        table.add(getBottomTable()).height(GameFour.APPLICATION_HEIGHT / 2);
-        stage.addActor(table);
+        mainTable = new Table();
+        mainTable.setDebug(DebugConstants.DEBUG_LINES);
+        mainTable.center();
+        mainTable.setFillParent(true);
+        mainTable.add(getTopTable()).height(GameFour.APPLICATION_HEIGHT / 2).row();
+        mainTable.add(getBottomTable()).height(GameFour.APPLICATION_HEIGHT / 2);
+        stage.addActor(mainTable);
     }
 
     private Table getBottomTable() {
@@ -153,5 +154,9 @@ public class Hud extends GUIOverlayAbstractScreen {
 
     public float getPowerBarValue() {
         return powerBar.getValue();
+    }
+
+    public void setVisible(boolean visible) {
+        mainTable.setVisible(visible);
     }
 }
