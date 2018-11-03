@@ -50,7 +50,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private AssetSprites assetSprites;
     private I18NBundle i18NGameThreeBundle;
     private GameSettings prefs;
-    private Image menuBackground;
+    private Image menuBg;
     private Label gameTitle;
     private Image littleCloud;
     private Image trail;
@@ -95,8 +95,8 @@ public class MainMenuScreen extends GUIAbstractScreen {
         hideBannerAd();
 
         // Background
-        menuBackground = new Image(assetGUI.getMenuBackground());
-        stage.addActor(menuBackground);
+        menuBg = new Image(assetGUI.getMenuBg());
+        stage.addActor(menuBg);
 
         // Title
         Label.LabelStyle labelStyleGameTitle = new Label.LabelStyle();
@@ -173,9 +173,9 @@ public class MainMenuScreen extends GUIAbstractScreen {
         float w = stage.getWidth(); // Same as stage.getViewport().getWorldWidth()
         float h = stage.getHeight();
 
-        // Place the menuBackground in the middle of the screen
-        menuBackground.setX((w - menuBackground.getWidth()) / 2);
-        menuBackground.setY((h - menuBackground.getHeight()) / 2);
+        // Place the menu background in the middle of the screen
+        menuBg.setX((w - menuBg.getWidth()) / 2);
+        menuBg.setY((h - menuBg.getHeight()) / 2);
 
         // Place the title
         gameTitle.setPosition((w - gameTitle.getWidth()) / 2, TITLE_OFFSET_Y);

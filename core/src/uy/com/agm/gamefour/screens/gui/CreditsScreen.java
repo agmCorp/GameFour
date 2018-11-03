@@ -2,6 +2,7 @@ package uy.com.agm.gamefour.screens.gui;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.fonts.AssetFonts;
+import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.screens.ListenerHelper;
@@ -38,13 +40,17 @@ public class CreditsScreen extends GUIAbstractScreen {
     private static final float TITLE_MOVE_BY_AMOUNT = 15.0f;
 
     private Assets assets;
+    private AssetGUI assetGUI;
     private AssetFonts assetFonts;
     private I18NBundle i18NGameThreeBundle;
+    private Label title;
+    private Image creditsBg;
 
     public CreditsScreen(GameFour game) {
         super(game);
 
         assets = Assets.getInstance();
+        assetGUI = assets.getGUI();
         assetFonts = assets.getFonts();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
 
@@ -69,23 +75,23 @@ public class CreditsScreen extends GUIAbstractScreen {
 
     @Override
     public void show() {
+        // Background
+        creditsBg = new Image(assetGUI.getCreditsBg());
+        stage.addActor(creditsBg);
+
+        // Title
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
         labelStyleBig.font = assetFonts.getBig();
+        title = new Label(i18NGameThreeBundle.format("creditsScreen.title"), labelStyleBig);
 
+        // Message
         Label.LabelStyle labelStyleCredits = new Label.LabelStyle();
         labelStyleCredits.font = assetFonts.getCredits();
-
-        Label title = new Label(i18NGameThreeBundle.format("creditsScreen.title"), labelStyleBig);
         TypingLabelWorkaround msgLabel = new TypingLabelWorkaround(i18NGameThreeBundle.format("creditsScreen.msg"), labelStyleCredits);
         msgLabel.setAlignment(Align.center);
         msgLabel.setWrap(true);
 
-        // Actions
-        SequenceAction sequenceOne = sequence(fadeIn(TITLE_ANIM_FADE_DURATION), fadeOut(TITLE_ANIM_FADE_DURATION));
-        SequenceAction sequenceTwo = sequence(moveBy(TITLE_MOVE_BY_AMOUNT, -TITLE_MOVE_BY_AMOUNT, TITLE_ANIM_MOVE_DURATION, Interpolation.smooth),
-                moveBy(-TITLE_MOVE_BY_AMOUNT, TITLE_MOVE_BY_AMOUNT, TITLE_ANIM_MOVE_DURATION, Interpolation.smooth));
-        title.addAction(parallel(forever(sequenceOne), forever(sequenceTwo)));
-
+        // Main table
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
@@ -94,11 +100,30 @@ public class CreditsScreen extends GUIAbstractScreen {
         table.add(msgLabel).width(stage.getWidth()).fill();
         stage.addActor(table);
 
-        table.addListener(ListenerHelper.runnableListener(new Runnable() {
+        // Events
+        stage.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
                 goBack();
             }
         }));
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+
+        float w = stage.getWidth(); // Same as stage.getViewport().getWorldWidth()
+        float h = stage.getHeight();
+
+        // Place the menu background in the middle of the screen
+        creditsBg.setX((w - creditsBg.getWidth()) / 2);
+        creditsBg.setY((h - creditsBg.getHeight()) / 2);
+
+        // Title animation
+        SequenceAction sequenceOne = sequence(fadeIn(TITLE_ANIM_FADE_DURATION), fadeOut(TITLE_ANIM_FADE_DURATION));
+        SequenceAction sequenceTwo = sequence(moveBy(TITLE_MOVE_BY_AMOUNT, -TITLE_MOVE_BY_AMOUNT, TITLE_ANIM_MOVE_DURATION, Interpolation.smooth),
+                moveBy(-TITLE_MOVE_BY_AMOUNT, TITLE_MOVE_BY_AMOUNT, TITLE_ANIM_MOVE_DURATION, Interpolation.smooth));
+        title.addAction(parallel(forever(sequenceOne), forever(sequenceTwo)));
     }
 }

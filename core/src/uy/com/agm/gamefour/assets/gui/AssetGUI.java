@@ -26,9 +26,10 @@ public class AssetGUI {
     private TextureRegion homePressed;
     private TextureRegion pause;
     private TextureRegion pausePressed;
-    private TextureRegion menuBackground;
+    private TextureRegion menuBg;
     private TextureRegion littleCloud;
     private TextureRegion trail;
+    private TextureRegion creditsBg;
     private AssetRocket rocket;
 
     public AssetGUI(TextureAtlas atlasGUI) {
@@ -47,9 +48,10 @@ public class AssetGUI {
         homePressed = atlasGUI.findRegion("homePressed");
         pause = atlasGUI.findRegion("pause");
         pausePressed = atlasGUI.findRegion("pausePressed");
-        menuBackground = atlasGUI.findRegion("menuBackground");
+        menuBg = atlasGUI.findRegion("menuBg");
         littleCloud = atlasGUI.findRegion("littleCloud");
         trail = atlasGUI.findRegion("trail");
+        creditsBg = atlasGUI.findRegion("creditsBg");
         rocket = new AssetRocket(atlasGUI);
     }
 
@@ -113,8 +115,8 @@ public class AssetGUI {
         return pausePressed;
     }
 
-    public TextureRegion getMenuBackground() {
-        return menuBackground;
+    public TextureRegion getMenuBg() {
+        return menuBg;
     }
 
     public TextureRegion getLittleCloud() {
@@ -123,6 +125,10 @@ public class AssetGUI {
 
     public TextureRegion getTrail() {
         return trail;
+    }
+
+    public TextureRegion getCreditsBg() {
+        return creditsBg;
     }
 
     public AssetRocket getRocket() {
