@@ -6,6 +6,12 @@ supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 HACER
 PARA LIBERAR ME ESTA QUEDANDO:
 - movimiento de las plataformas
+- segun el level (multiplos de algo por ejemplo), creo un pajaro en el x de la plataforma 4 y el y random.
+El pajaro avanza hacia la izquierda y cuando llega al borde de la camara se dispose.
+El jumper con un tounch en state jump tira un huevo con velocidad vertical (y luego cae).
+Si mata al pajaro (explota), da muchos puntos.
+En gameWorld asi como existe platforms que controlan las plataformas, puedo hacer un enemycontroller que controla
+al enemigo segun el nivel.
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.

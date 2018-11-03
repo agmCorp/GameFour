@@ -13,8 +13,8 @@ import uy.com.agm.gamefour.screens.play.PlayScreen;
  * Created by AGMCORP on 26/9/2018.
  */
 
-public class Platforms {
-    private static final String TAG = Platforms.class.getName();
+public class PlatformsController {
+    private static final String TAG = PlatformsController.class.getName();
 
     private static int MAX_PLATFORMS = 4;
     private static float MIN_PLATFORM_SPACING = 0.3f;
@@ -25,7 +25,7 @@ public class Platforms {
     private GameWorld gameWorld;
     private Array<Platform> platforms;
 
-    public Platforms(PlayScreen playScreen, GameWorld gameWorld) {
+    public PlatformsController(PlayScreen playScreen, GameWorld gameWorld) {
         this.playScreen = playScreen;
         this.gameWorld = gameWorld;
         platforms = new Array<Platform>();

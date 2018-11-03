@@ -20,7 +20,7 @@ import uy.com.agm.gamefour.assets.backgrounds.AssetWaterfall;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
 import uy.com.agm.gamefour.sprites.Jumper;
 import uy.com.agm.gamefour.sprites.ParallaxSB;
-import uy.com.agm.gamefour.sprites.Platforms;
+import uy.com.agm.gamefour.sprites.PlatformsController;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -37,7 +37,7 @@ public class GameWorld {
     private GameCamera gameCamera;
     private boolean moveCamera;
     private ParallaxSB parallaxSB;
-    private Platforms platforms;
+    private PlatformsController platformsController;
     private Jumper jumper;
 
     public GameWorld(PlayScreen playScreen, World box2DWorld, int level) {
@@ -93,10 +93,10 @@ public class GameWorld {
 
     private void createSprites() {
         // Platforms
-        platforms = new Platforms(playScreen, this);
+        platformsController = new PlatformsController(playScreen, this);
 
         // Jumper
-        jumper = new Jumper(playScreen, this, platforms.getPlatform(0).getBodyPosition().x -
+        jumper = new Jumper(playScreen, this, platformsController.getPlatform(0).getBodyPosition().x -
                 Assets.getInstance().getSprites().getJumper().getWidth() / 2,
                 gameCamera.position().y + gameCamera.getWorldHeight() / 2);
     }
@@ -105,7 +105,7 @@ public class GameWorld {
         parallaxSB.update(deltaTime);
         jumper.update(deltaTime);
         centerCamera(deltaTime);
-        platforms.update(level, deltaTime);
+        platformsController.update(level, deltaTime);
 
         // Always at the end
         // Update the game camera with correct coordinates after changes
@@ -194,13 +194,13 @@ public class GameWorld {
         // This order is important.
         // This determines if a sprite has to be drawn in front or behind another sprite.
         parallaxSB.render(batch);
-        platforms.render(batch);
+        platformsController.render(batch);
         jumper.render(batch);
     }
 
     public void renderSpriteDebug(ShapeRenderer shapeRenderer) {
         parallaxSB.renderDebug(shapeRenderer);
-        platforms.renderDebug(shapeRenderer);
+        platformsController.renderDebug(shapeRenderer);
         jumper.renderDebug(shapeRenderer);
     }
 
@@ -212,8 +212,8 @@ public class GameWorld {
         return gameCamera;
     }
 
-    public Platforms getPlatforms() {
-        return platforms;
+    public PlatformsController getPlatformsController() {
+        return platformsController;
     }
 
     public Jumper getJumper() {

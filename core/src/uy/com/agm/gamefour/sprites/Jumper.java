@@ -202,7 +202,7 @@ public class Jumper extends AbstractDynamicObject {
         startJump();
 
         // Jump teleport
-        Vector2 platformPos = gameWorld.getPlatforms().getPlatform(1).getBodyPosition();
+        Vector2 platformPos = gameWorld.getPlatformsController().getPlatform(1).getBodyPosition();
         body.setGravityScale(1);
         body.setTransform(platformPos.x, platformPos.y + POWER_JUMP_OFFSET_Y, body.getAngle());
         body.setAwake(true); // awakes the body to enable physics calculations
