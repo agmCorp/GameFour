@@ -28,10 +28,10 @@ public class Platform extends AbstractDynamicObject {
     private static final float MAX_VELOCITY = 1.5f;
     private static final float MIN_VELOCITY = 0.5f;
     private static final float UPPER_LIMIT = 7.0f;
-    private static final float BOTTOM_LIMIT = 1.0f;
+    private static final float BOTTOM_LIMIT = 2.5f;
 
     private GameWorld gameWorld;
-    private Array<IAssetPlatform> assetsPlataform;
+    private Array<IAssetPlatform> assetsPlatform;
     private TextureRegion platformStand;
     private Animation platformAnimation;
     private float stateTime;
@@ -46,14 +46,14 @@ public class Platform extends AbstractDynamicObject {
         this.gameWorld = gameWorld;
 
         // Platforms
-        assetsPlataform = new Array<IAssetPlatform>();
+        assetsPlatform = new Array<IAssetPlatform>();
         AssetSprites assetSprites = Assets.getInstance().getSprites();
-        assetsPlataform.add(assetSprites.getPlatformA());
-        assetsPlataform.add(assetSprites.getPlatformB());
-        assetsPlataform.add(assetSprites.getPlatformC());
-        assetsPlataform.add(assetSprites.getPlatformD());
-        assetsPlataform.add(assetSprites.getPlatformE());
-        assetsPlataform.add(assetSprites.getPlatformF());
+        assetsPlatform.add(assetSprites.getPlatformA());
+        assetsPlatform.add(assetSprites.getPlatformB());
+        assetsPlatform.add(assetSprites.getPlatformC());
+        assetsPlatform.add(assetSprites.getPlatformD());
+        assetsPlatform.add(assetSprites.getPlatformE());
+        assetsPlatform.add(assetSprites.getPlatformF());
 
         // Random animation
         setNewAnimation(x, y);
@@ -66,7 +66,7 @@ public class Platform extends AbstractDynamicObject {
     }
 
     private void setNewAnimation(float x, float y) {
-        IAssetPlatform assetPlatform = assetsPlataform.get(MathUtils.random(0, assetsPlataform.size - 1));
+        IAssetPlatform assetPlatform = assetsPlatform.get(MathUtils.random(0, assetsPlatform.size - 1));
         platformStand = assetPlatform.getPlatformStand();
         platformAnimation = assetPlatform.getPlatformAnimation();
 
