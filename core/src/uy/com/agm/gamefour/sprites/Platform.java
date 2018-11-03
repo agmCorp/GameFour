@@ -24,11 +24,7 @@ import uy.com.agm.gamefour.game.tools.WorldContactListener;
 public class Platform extends AbstractDynamicObject {
     private static final String TAG = Platform.class.getName();
 
-    private static final float SCALE = 0.4f;
-    private static final float MAX_VELOCITY = 1.5f;
-    private static final float MIN_VELOCITY = 0.5f;
-    private static final float UPPER_LIMIT = 7.0f;
-    private static final float BOTTOM_LIMIT = 2.5f;
+    private static final float BODY_SCALE = 0.4f;
 
     private GameWorld gameWorld;
     private Array<IAssetPlatform> assetsPlatform;
@@ -45,7 +41,7 @@ public class Platform extends AbstractDynamicObject {
     public Platform(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
 
-        // Platforms
+        // Assets
         assetsPlatform = new Array<IAssetPlatform>();
         AssetSprites assetSprites = Assets.getInstance().getSprites();
         assetsPlatform.add(assetSprites.getPlatformA());
@@ -97,7 +93,7 @@ public class Platform extends AbstractDynamicObject {
     public void startMovement() {
         if (currentState == State.STATIC) {
             currentState = MathUtils.randomBoolean() ? State.UP : State.DOWN;
-            velocity = MathUtils.random(MIN_VELOCITY, MAX_VELOCITY);
+            velocity = MathUtils.random(PlatformController.MIN_VELOCITY, PlatformController.MAX_VELOCITY);
         }
     }
 
@@ -113,11 +109,11 @@ public class Platform extends AbstractDynamicObject {
     }
 
     public float getBodyWidth() {
-        return getWidth() * SCALE; // The width of the body is arbitrarily smaller than the width of the image
+        return getWidth() * BODY_SCALE; // The width of the body is arbitrarily smaller than the width of the image
     }
 
     public float getBodyHeight() {
-        return getHeight() * SCALE; // The height of the body is arbitrarily smaller than the height of the image
+        return getHeight() * BODY_SCALE; // The height of the body is arbitrarily smaller than the height of the image
     }
 
     @Override
@@ -147,7 +143,7 @@ public class Platform extends AbstractDynamicObject {
         body.setLinearVelocity(0, velocity);
         updateSprite(deltaTime);
 
-        if (getY() + getHeight() >= UPPER_LIMIT) {
+        if (getY() + getHeight() >= PlatformController.MAX_OFFSET_Y) {
             currentState = State.DOWN;
         }
     }
@@ -156,7 +152,8 @@ public class Platform extends AbstractDynamicObject {
         // Set new velocity
         body.setLinearVelocity(0, -velocity);
         updateSprite(deltaTime);
-        if (getY() <= BOTTOM_LIMIT) {
+
+        if (getY() <= PlatformController.MIN_OFFSET_Y) {
             currentState = State.UP;
         }
     }

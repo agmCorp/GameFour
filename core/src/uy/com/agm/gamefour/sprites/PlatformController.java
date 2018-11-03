@@ -17,9 +17,12 @@ public class PlatformController {
     private static final String TAG = PlatformController.class.getName();
 
     private static int MAX_PLATFORMS = 4;
-    private static float MIN_PLATFORM_SPACING = 0.3f;
-    private static float MAX_PLATFORM_SPACING = 2.0f;
-    private static float OFFSET_Y = 2.5f;
+    private static float MIN_OFFSET_X = 0.3f;
+    private static float MAX_OFFSET_X = 2.0f;
+    public static float MIN_OFFSET_Y = 2.5f;
+    public static float MAX_OFFSET_Y = 6.5f;
+    public static final float MAX_VELOCITY = 1.5f;
+    public static final float MIN_VELOCITY = 0.5f;
 
     private PlayScreen playScreen;
     private GameWorld gameWorld;
@@ -36,18 +39,17 @@ public class PlatformController {
         for (int i = 0; i < MAX_PLATFORMS; i++) {
             platform = new Platform(gameWorld, x, y);
             platforms.add(platform);
-            x = platform.getX() + platform.getWidth() + getRandomSpacing();
+            x = platform.getX() + platform.getWidth() + getRandomX();
             y = getRandomY();
         }
     }
 
-    private float getRandomSpacing() {
-        return MathUtils.random(MIN_PLATFORM_SPACING, MAX_PLATFORM_SPACING);
+    private float getRandomX() {
+        return MathUtils.random(MIN_OFFSET_X, MAX_OFFSET_X);
     }
 
     private float getRandomY() {
-        GameCamera gameCamera = gameWorld.getGameCamera();
-        return MathUtils.random(OFFSET_Y, gameCamera.position().y + gameCamera.getWorldHeight() / 2 - OFFSET_Y);
+        return MathUtils.random(MIN_OFFSET_Y, MAX_OFFSET_Y);
     }
 
     public Platform getPlatform(int index) {
@@ -66,7 +68,7 @@ public class PlatformController {
         if (gameCamera.position().x - gameCamera.getWorldWidth() / 2 > pFirst.getX() + pFirst.getWidth()) {
             pHead = platforms.removeIndex(0);
             pTail = platforms.size > 0 ? platforms.get(platforms.size - 1) : pHead;
-            pHead.reposition(pTail.getX() + pTail.getWidth() + getRandomSpacing(), getRandomY());
+            pHead.reposition(pTail.getX() + pTail.getWidth() + getRandomX(), getRandomY());
             platforms.add(pHead);
         }
 

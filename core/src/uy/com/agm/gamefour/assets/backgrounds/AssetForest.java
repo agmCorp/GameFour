@@ -3,6 +3,8 @@ package uy.com.agm.gamefour.assets.backgrounds;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import uy.com.agm.gamefour.sprites.ParallaxSB;
+
 
 /**
  * Created by AGMCORP on 30/9/2018.
@@ -10,6 +12,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetForest {
     private static final String TAG = AssetForest.class.getName();
+
+    private static final float LAYER1_VEL = -5.0f;
+    private static final float LAYER2_VEL = -2.0f;
+    private static final float LAYER3_VEL = -1.0f;
+    private static final float LAYER4_VEL = -0.6f;
+    private static final float LAYER5_VEL = -0.3f;
+    private static final float LAYER6_VEL = -0.1f;
 
     private TextureRegion layer1;
     private TextureRegion layer2;
@@ -49,5 +58,14 @@ public class AssetForest {
 
     public TextureRegion getLayer6() {
         return layer6;
+    }
+
+    public void build(ParallaxSB parallaxSB) {
+        parallaxSB.addDynamicLayer(layer6, 2, true, LAYER6_VEL);
+        parallaxSB.addDynamicLayer(layer5, 2, true, LAYER5_VEL);
+        parallaxSB.addDynamicLayer(layer4, 2, true, LAYER4_VEL);
+        parallaxSB.addDynamicLayer(layer3, 2, true, LAYER3_VEL);
+        parallaxSB.addDynamicLayer(layer2, 2, true, LAYER2_VEL);
+        parallaxSB.addDynamicLayer(layer1, 2, true, LAYER1_VEL);
     }
 }

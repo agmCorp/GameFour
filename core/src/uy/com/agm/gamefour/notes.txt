@@ -18,7 +18,6 @@ DESEABLE PARA LIBERAR
 - agregar mas fondos
 
 OTROS
-- el armado del paralax deberia ir en cada asset que sabe como constuir el fondo, no se, pero no en gameworld creo.
 - hacer un skin
 - en las settings debo meter algo que permita usar low o high por el paralax (boton four state off, low, medium, high)
 - agregar un obstaculo o algo en donde el pajaro suelte algo y lo mate. O una estrellita para agarrar por puntos no se.

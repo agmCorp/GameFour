@@ -3,6 +3,8 @@ package uy.com.agm.gamefour.assets.backgrounds;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import uy.com.agm.gamefour.sprites.ParallaxSB;
+
 
 /**
  * Created by AGMCORP on 30/9/2018.
@@ -10,6 +12,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetWaterfall {
     private static final String TAG = AssetWaterfall.class.getName();
+
+    private static final float LAYER1_VEL = -4.0f;
+    private static final float LAYER2_VEL = -2.0f;
+    private static final float LAYER3_VEL = -1.3f;
+    private static final float LAYER4_VEL = -0.5f;
 
     private TextureRegion layer1;
     private TextureRegion layer2;
@@ -43,5 +50,14 @@ public class AssetWaterfall {
 
     public TextureRegion getLayer5() {
         return layer5;
+    }
+
+    public void build(ParallaxSB parallaxSB) {
+        parallaxSB.addFarawayLayer(layer5); // background
+
+        parallaxSB.addDynamicLayer(layer4, 2, true, LAYER4_VEL);
+        parallaxSB.addDynamicLayer(layer3, 2, true, LAYER3_VEL);
+        parallaxSB.addDynamicLayer(layer2, 2, true, LAYER2_VEL);
+        parallaxSB.addDynamicLayer(layer1, 2, true, LAYER1_VEL);
     }
 }

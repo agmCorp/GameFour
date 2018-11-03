@@ -3,6 +3,8 @@ package uy.com.agm.gamefour.assets.backgrounds;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import uy.com.agm.gamefour.sprites.ParallaxSB;
+
 
 /**
  * Created by AGMCORP on 30/9/2018.
@@ -10,6 +12,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetDesert {
     private static final String TAG = AssetDesert.class.getName();
+
+    private static final float LAYER1_VEL = -5.0f;
+    private static final float LAYER2_VEL = -2.0f;
+    private static final float LAYER3_VEL = -1.0f;
+    private static final float LAYER4_VEL = -0.5f;
+    private static final float LAYER5_VEL = -0.1f;
+    private static final float LAYER6_VEL = -1.0f;
+    private static final float LAYER7_VEL = -0.5f;
 
     private TextureRegion layer1;
     private TextureRegion layer2;
@@ -74,4 +84,19 @@ public class AssetDesert {
     public TextureRegion getLayer10() {
         return layer10;
     }
+    
+    public void build(ParallaxSB parallaxSB) {
+        parallaxSB.addFarawayLayer(layer10); // background
+        parallaxSB.addFarawayLayer(layer9);  // sun
+        parallaxSB.addFarawayLayer(layer8);  // stars
+
+        parallaxSB.addDynamicLayer(layer7, 2, true, LAYER7_VEL); // clouds 1
+        parallaxSB.addDynamicLayer(layer6, 2, true, LAYER6_VEL); // clouds 2
+        parallaxSB.addDynamicLayer(layer5, 2, true, LAYER5_VEL); // distant mountains
+        parallaxSB.addDynamicLayer(layer4, 2, true, LAYER4_VEL);
+        parallaxSB.addDynamicLayer(layer3, 2, true, LAYER3_VEL);
+        parallaxSB.addDynamicLayer(layer2, 2, true, LAYER2_VEL);
+        parallaxSB.addDynamicLayer(layer1, 2, true, LAYER1_VEL);
+    }
 }
+

@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import uy.com.agm.gamefour.screens.gui.Hud;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
-import uy.com.agm.gamefour.sprites.Jumper;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -144,9 +143,11 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     }
 
     private void cheatMode() {
-        Jumper jumper = gameWorld.getJumper();
-        if (DebugConstants.POWER_JUMP_ENABLED && !jumper.isDead()) {
-            jumper.powerJump();
+        if (playScreen.isPlayScreenStateRunning()) {
+            if (DebugConstants.POWER_JUMP_ENABLED) {
+                playScreen.getHud().stopSwing();
+                gameWorld.getJumper().powerJump();
+            }
         }
     }
 }
