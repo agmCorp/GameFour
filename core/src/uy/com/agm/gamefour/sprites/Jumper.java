@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -29,13 +30,15 @@ import uy.com.agm.gamefour.tools.AudioManager;
 public class Jumper extends AbstractDynamicObject {
     private static final String TAG = Jumper.class.getName();
 
-    public static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
+    private static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
     private static final float SENSOR_HX = 0.1f;
     private static final float SENSOR_HY = 0.01f;
     private static final float IMPULSE_Y = 7.5f;
     private static final float SCALE_IMPULSE_X = 30.0f;
     private static final float POWER_JUMP_OFFSET_Y = 1.0f;
     private static final int SUCCESSFUL_JUMP_SCORE = 1;
+    private static final float MIN_SPEAK_TIME = 2.5f;
+    private static final float MAX_SPEAK_TIME = 6.0f;
 
     private enum State {
         IDLE, JUMPING, DEAD, DISPOSE
@@ -51,6 +54,8 @@ public class Jumper extends AbstractDynamicObject {
     private boolean stopJumper;
     private boolean activateJumper;
     private Platform currentPlatform;
+    private float speakTime;
+    private float timeToSpeak;
     private ParticleEffect magic;
     private ParticleEffect fireworks;
 
@@ -77,6 +82,10 @@ public class Jumper extends AbstractDynamicObject {
         activateJumper = true;
         currentPlatform = null;
 
+        // Voice
+        speakTime = 0;
+        timeToSpeak = getTimeToSpeak();
+
         // Particles effect
         float gameCameraX = gameWorld.getGameCamera().position().x;
         float gameCameraY = gameWorld.getGameCamera().position().y;
@@ -90,6 +99,10 @@ public class Jumper extends AbstractDynamicObject {
         fireworks = new ParticleEffect();
         fireworks.load(Gdx.files.internal("effects/firework_large.p"), Gdx.files.internal("effects"));
         fireworks.setPosition(gameCameraX, gameCameraY);
+    }
+
+    private float getTimeToSpeak() {
+        return MathUtils.random(MIN_SPEAK_TIME, MAX_SPEAK_TIME);
     }
 
     private void defineJumper() {
@@ -180,6 +193,8 @@ public class Jumper extends AbstractDynamicObject {
     }
 
     public void onDead() {
+        // Audio effect
+        AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getBloodSplash());
         currentState = State.DEAD;
     }
 
@@ -268,6 +283,15 @@ public class Jumper extends AbstractDynamicObject {
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRegion((TextureRegion) jumperIdleAnimation.getKeyFrame(stateTime, true));
         stateTime += deltaTime;
+
+        speakTime += deltaTime;
+        if (speakTime > timeToSpeak) {
+            speakTime = 0;
+            timeToSpeak = getTimeToSpeak();
+
+            // Audio effect
+            AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getVoice());
+        }
     }
 
     private void stateJumping(float deltaTime) {

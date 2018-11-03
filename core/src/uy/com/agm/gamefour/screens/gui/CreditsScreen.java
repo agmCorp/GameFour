@@ -4,14 +4,19 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import uy.com.agm.gamefour.assets.Assets;
+import uy.com.agm.gamefour.assets.fonts.AssetFonts;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenManager;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
+import uy.com.agm.gamefour.screens.gui.widget.TypingLabelWorkaround;
+import uy.com.agm.gamefour.tools.AudioManager;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
@@ -27,8 +32,24 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 public class CreditsScreen extends GUIAbstractScreen {
     private static final String TAG = CreditsScreen.class.getName();
 
+    private static final float PAD = 50.0f;
+    private static final float TITLE_ANIM_FADE_DURATION = 1.0f;
+    private static final float TITLE_ANIM_MOVE_DURATION = 0.5f;
+    private static final float TITLE_MOVE_BY_AMOUNT = 15.0f;
+
+    private Assets assets;
+    private AssetFonts assetFonts;
+    private I18NBundle i18NGameThreeBundle;
+
     public CreditsScreen(GameFour game) {
         super(game);
+
+        assets = Assets.getInstance();
+        assetFonts = assets.getFonts();
+        i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
+
+        // Play credits music
+        AudioManager.getInstance().playMusic(assets.getMusic().getSongCredits());
     }
 
     @Override
@@ -49,29 +70,35 @@ public class CreditsScreen extends GUIAbstractScreen {
     @Override
     public void show() {
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
-        labelStyleBig.font = Assets.getInstance().getFonts().getDefaultBig();
+        labelStyleBig.font = assetFonts.getBig();
 
-        Label.LabelStyle labelStyleNormal = new Label.LabelStyle();
-        labelStyleNormal.font = Assets.getInstance().getFonts().getDefaultNormal();
+        Label.LabelStyle labelStyleCredits = new Label.LabelStyle();
+        labelStyleCredits.font = assetFonts.getCredits();
 
-        Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
-        labelStyleSmall.font = Assets.getInstance().getFonts().getDefaultSmall();
-
-        Label big = new Label(Assets.getInstance().getI18NGameFour().getI18NGameFourBundle().format("creditsScreen.title"), labelStyleBig);
+        Label title = new Label(i18NGameThreeBundle.format("creditsScreen.title"), labelStyleBig);
+        TypingLabelWorkaround msgLabel = new TypingLabelWorkaround(i18NGameThreeBundle.format("creditsScreen.msg"), labelStyleCredits);
+        msgLabel.setAlignment(Align.center);
+        msgLabel.setWrap(true);
 
         // Actions
-        SequenceAction sequenceOne = sequence(fadeIn(1.0f), fadeOut(1.0f));
-        SequenceAction sequenceTwo = sequence(moveBy(15.0f, -15.0f, 0.5f, Interpolation.smooth),
-                moveBy(-15.0f, 15.0f, 0.5f, Interpolation.smooth));
-        big.addAction(parallel(forever(sequenceOne), forever(sequenceTwo)));
+        SequenceAction sequenceOne = sequence(fadeIn(TITLE_ANIM_FADE_DURATION), fadeOut(TITLE_ANIM_FADE_DURATION));
+        SequenceAction sequenceTwo = sequence(moveBy(TITLE_MOVE_BY_AMOUNT, -TITLE_MOVE_BY_AMOUNT, TITLE_ANIM_MOVE_DURATION, Interpolation.smooth),
+                moveBy(-TITLE_MOVE_BY_AMOUNT, TITLE_MOVE_BY_AMOUNT, TITLE_ANIM_MOVE_DURATION, Interpolation.smooth));
+        title.addAction(parallel(forever(sequenceOne), forever(sequenceTwo)));
 
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
         table.setFillParent(true);
-        table.add(big).row();
+        table.add(title).padBottom(PAD).row();
+        table.add(msgLabel).width(stage.getWidth()).fill();
         stage.addActor(table);
 
-        table.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLICE_UP_DOWN_80));
+        table.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                goBack();
+            }
+        }));
     }
 }

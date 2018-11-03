@@ -19,6 +19,7 @@ import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
 import uy.com.agm.gamefour.screens.gui.widget.AnimatedActor;
+import uy.com.agm.gamefour.tools.AudioManager;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
@@ -69,6 +70,9 @@ public class MainMenuScreen extends GUIAbstractScreen {
         assetSprites = assets.getSprites();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
         prefs = GameSettings.getInstance();
+
+        // Play menu music
+        AudioManager.getInstance().playMusic(Assets.getInstance().getMusic().getSongMainMenu());
     }
 
     @Override
@@ -96,7 +100,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
 
         // Title
         Label.LabelStyle labelStyleGameTitle = new Label.LabelStyle();
-        labelStyleGameTitle.font = assets.getFonts().getDefaultGameTitle();
+        labelStyleGameTitle.font = assets.getFonts().getGameTitle();
         gameTitle = new Label(i18NGameThreeBundle.format("mainMenuScreen.gameTitle"), labelStyleGameTitle);
         stage.addActor(gameTitle);
 
@@ -151,6 +155,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
             public void run() {
                 prefs.setAudio(!audio.isChecked());
                 prefs.save();
+                AudioManager.getInstance().onSettingsUpdated();
             }
         }));
         exit.addListener(ListenerHelper.runnableListener(new Runnable() {

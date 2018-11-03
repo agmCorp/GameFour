@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.screens.gui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,6 +21,7 @@ import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
+import uy.com.agm.gamefour.tools.AudioManager;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
@@ -62,7 +64,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     @Override
     public void build() {
         // Background
-        Pixmap pixmap = new Pixmap(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT, Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.RGBA8888);
         pixmap.setColor(0, 0, 0, DIM_ALPHA);
         pixmap.fill();
         TextureRegion dim = new TextureRegion(new Texture(pixmap));
@@ -72,7 +74,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
 
         // Title
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
-        labelStyleBig.font = assets.getFonts().getDefaultBig();
+        labelStyleBig.font = assets.getFonts().getBig();
         pauseLabel = new Label(i18NGameThreeBundle.format("pauseScreen.title"), labelStyleBig);
         stage.addActor(pauseLabel);
 
@@ -115,6 +117,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
             public void run() {
                 prefs.setAudio(!audio.isChecked());
                 prefs.save();
+                AudioManager.getInstance().onSettingsUpdated();
             }
         }));
         reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
@@ -204,7 +207,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
 
     public void showPauseScreen() {
         if (!isPauseScreenVisible()) {
-            game.getCurrentScreen().pause();
+            ((PlayScreen) game.getCurrentScreen()).doPause();
             setVisible(true);
             setStageAnimation();
         }

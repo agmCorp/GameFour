@@ -1,12 +1,14 @@
 package uy.com.agm.gamefour.screens.gui;
 
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import uy.com.agm.gamefour.assets.Assets;
@@ -19,6 +21,7 @@ import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
+import uy.com.agm.gamefour.tools.AudioManager;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
@@ -33,21 +36,30 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
 
     private static final float ANIMATION_DURATION = 1.0f;
     private static final float BUTTON_WIDTH = 85.0f;
+    private static final int MAX_TITLE_KEYS = 13;
 
+    private Assets assets;
     private I18NBundle i18NGameThreeBundle;
     private AssetFonts assetFonts;
     private AssetGUI assetGUI;
+    private Array<String> titleKeys;
     private Table mainTable;
     private ImageButton pause;
+    private Label gameOverLabel;
     private Label scoreLabel;
     private Label highScoreLabel;
 
     public InfoScreen(GameFour game) {
         super(game);
 
-        i18NGameThreeBundle = Assets.getInstance().getI18NGameFour().getI18NGameFourBundle();
-        assetFonts = Assets.getInstance().getFonts();
-        assetGUI = Assets.getInstance().getGUI();
+        assets = Assets.getInstance();
+        i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
+        assetFonts = assets.getFonts();
+        assetGUI = assets.getGUI();
+        titleKeys = new Array<String>();
+        for(int i = 0; i < MAX_TITLE_KEYS; i++) {
+            titleKeys.add(i18NGameThreeBundle.format("infoScreen.title" + i));
+        }
     }
 
     @Override
@@ -70,15 +82,15 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
 
     private Table getMainTable() {
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
-        labelStyleBig.font = assetFonts.getDefaultBig();
+        labelStyleBig.font = assetFonts.getBig();
 
         Label.LabelStyle labelStyleNormal = new Label.LabelStyle();
-        labelStyleNormal.font = assetFonts.getDefaultNormal();
+        labelStyleNormal.font = assetFonts.getNormal();
 
         Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
-        labelStyleSmall.font = assetFonts.getDefaultSmall();
+        labelStyleSmall.font = assetFonts.getSmall();
 
-        Label gameOverLabel = new Label(i18NGameThreeBundle.format("infoScreen.gameOver"), labelStyleBig);
+        gameOverLabel = new Label("GAME OVER", labelStyleBig);
         scoreLabel = new Label("SCORE", labelStyleNormal);
         highScoreLabel = new Label("HIGH_SCORE", labelStyleSmall);
 
@@ -151,21 +163,27 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
 
     public void showGameOver() {
         GameSettings prefs = GameSettings.getInstance();
-        int currentScore = ((PlayScreen) game.getCurrentScreen()).getHud().getScore();
+        Hud hud = ((PlayScreen) game.getCurrentScreen()).getHud();
+        int currentScore = hud.getScore();
         int bestScore = prefs.getHighScore();
         if (currentScore > bestScore) {
             bestScore = currentScore;
             prefs.setHighScore(bestScore);
             prefs.save();
+
+            // Audio effect
+            AudioManager.getInstance().playSound(assets.getSounds().getNewAchievement());
         }
-        showScores(currentScore, bestScore);
+
+        if (hud.isScoreAboveAverage()) {
+            gameOverLabel.setText(titleKeys.get(MathUtils.random(0, titleKeys.size - 1)));
+        } else {
+            gameOverLabel.setText(i18NGameThreeBundle.format("infoScreen.titleDefault", currentScore));
+        }
+        scoreLabel.setText(i18NGameThreeBundle.format("infoScreen.score", currentScore));
+        highScoreLabel.setText(i18NGameThreeBundle.format("infoScreen.highScore", bestScore));
         mainTable.setVisible(true);
         pause.setVisible(false);
         setStageAnimation();
-    }
-
-    private void showScores(int score, int highScore) {
-        scoreLabel.setText(i18NGameThreeBundle.format("infoScreen.score", score));
-        highScoreLabel.setText(i18NGameThreeBundle.format("infoScreen.highScore", highScore));
     }
 }

@@ -18,6 +18,7 @@ public class ListenerHelper {
                 new InputListener() {
                     @Override
                     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        // Audio effect
                         AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getClick());
                         ScreenManager.getInstance().showScreen(screenEnum, screenTransitionEnum, params);
                     }
@@ -34,6 +35,7 @@ public class ListenerHelper {
                 new InputListener() {
                     @Override
                     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        // Audio effect
                         AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getClick());
                         runnable.run();
                     }

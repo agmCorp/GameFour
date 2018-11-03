@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.rafaskoberg.gdx.typinglabel.TypingConfig;
 
 import uy.com.agm.gamefour.admob.IAdsController;
 import uy.com.agm.gamefour.assets.Assets;
@@ -45,6 +46,9 @@ public class GameFour extends DirectedGame {
 
         // Load preferences and settings
         GameSettings.getInstance().load();
+
+        // Set TypingConfig new line character interval multiplier
+        TypingConfig.INTERVAL_MULTIPLIERS_BY_CHAR.put('\n', 0);
 
         // Constructs a new guiBatch
         guiBatch = new SpriteBatch();

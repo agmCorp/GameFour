@@ -23,7 +23,7 @@ public class Hud extends GUIOverlayAbstractScreen {
     private static final float SWING_DELAY = 0.02f;
     private static final int POWER_BAR_WIDTH = 250;
     private static final int POWER_BAR_HEIGHT = 15;
-    private static int AVERAGE_SCORE = 5;
+    private static int AVERAGE_SCORE = 4;
 
     private I18NBundle i18NGameThreeBundle;
     private AssetFonts assetFonts;
@@ -54,8 +54,8 @@ public class Hud extends GUIOverlayAbstractScreen {
         mainTable.setDebug(DebugConstants.DEBUG_LINES);
         mainTable.center();
         mainTable.setFillParent(true);
-        mainTable.add(getTopTable()).height(GameFour.APPLICATION_HEIGHT / 2).row();
-        mainTable.add(getBottomTable()).height(GameFour.APPLICATION_HEIGHT / 2);
+        mainTable.add(getTopTable()).height(stage.getHeight() / 2).row();
+        mainTable.add(getBottomTable()).height(stage.getHeight() / 2);
         stage.addActor(mainTable);
     }
 
@@ -73,7 +73,7 @@ public class Hud extends GUIOverlayAbstractScreen {
 
     private Table getTopTable() {
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
-        labelStyleBig.font = assetFonts.getDefaultBig();
+        labelStyleBig.font = assetFonts.getBig();
         scoreLabel = new Label(String.valueOf(score), labelStyleBig);
 
         Table table = new Table();
@@ -86,7 +86,7 @@ public class Hud extends GUIOverlayAbstractScreen {
 
     private Table getFPSTable() {
         Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
-        labelStyleSmall.font = assetFonts.getDefaultSmall();
+        labelStyleSmall.font = assetFonts.getSmall();
         Label fpsTitle = new Label(i18NGameThreeBundle.format("hud.FPS"), labelStyleSmall);
         fpsLabel = new Label(String.valueOf(fps), labelStyleSmall);
 

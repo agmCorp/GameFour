@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.screens.AbstractScreen;
+import uy.com.agm.gamefour.tools.AudioManager;
 
 /**
  * Created by AGMCORP on 17/9/2018.
@@ -89,11 +90,13 @@ public abstract class GUIAbstractScreen extends AbstractScreen {
 
     @Override
     public void pause() {
+        AudioManager.getInstance().pauseMusic();
         guiScreenState = GUIScreenState.PAUSED;
     }
 
     @Override
     public void resume() {
+        AudioManager.getInstance().resumeMusic();
         guiScreenState = GUIScreenState.RUNNING;
     }
 

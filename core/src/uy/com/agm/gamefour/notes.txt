@@ -4,19 +4,24 @@
 supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 
 HACER
+PARA LIBERAR ME ESTA QUEDANDO:
+- credit screen
+- random textures plataformas
+
+DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
+- agregar mas fondos
+
+OTROS
 - el armado del paralax deberia ir en cada asset que sabe como constuir el fondo, no se, pero no en gameworld creo.
 - hacer un skin
 - en las settings debo meter algo que permita usar low o high por el paralax (boton four state off, low, medium, high)
-- agregar mas fondos
 - agregar un obstaculo o algo en donde el pajaro suelte algo y lo mate. O una estrellita para agarrar por puntos no se.
 Sobre las plataformas no puedo poner nada porque es dificil seguirlas.
-- random texture plataformas
-- credit screen
-- random textures plataformas
-- musica y efectos
 - Poner una zona de salto perfecto. Si el pajaro cae justo ahi (su x en medio de la plataforma + delta) saco algun cartel y/o doy
 puntos extra.
+- a veces queda una distancia muy larga entre los cohetes (sobre el eje y). Me parece que es porque se estaban moviendo y luego el movimiento
+se detiene al cambiar de nivel.
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 LECCIONES APRENDIDAS

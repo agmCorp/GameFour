@@ -2,6 +2,7 @@ package uy.com.agm.gamefour.screens.play;
 
 import com.badlogic.gdx.InputProcessor;
 
+import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.GameController;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.GameSettings;
@@ -11,6 +12,7 @@ import uy.com.agm.gamefour.game.WorldRenderer;
 import uy.com.agm.gamefour.screens.gui.Hud;
 import uy.com.agm.gamefour.screens.gui.InfoScreen;
 import uy.com.agm.gamefour.screens.gui.PauseScreen;
+import uy.com.agm.gamefour.tools.AudioManager;
 
 /**
  * Created by AGMCORP on 21/9/2018.
@@ -41,6 +43,9 @@ public class PlayScreen extends PlayAbstractScreen {
         worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
         prefs = GameSettings.getInstance();
         endGame = false;
+
+        // Play level music
+        AudioManager.getInstance().playMusic(Assets.getInstance().getMusic().getSongGame());
     }
 
     @Override
@@ -101,12 +106,27 @@ public class PlayScreen extends PlayAbstractScreen {
 
     @Override
     public void pause() {
+        AudioManager.getInstance().pauseMusic();
+        doPause();
+    }
+
+    public void doPause() {
         hideBannerAd();
         super.pause();
     }
 
+    public void setGameStatePaused() {
+        pauseScreen.showPauseScreen();
+        infoScreen.disableEvents();
+    }
+
+    public void setGameStateRunning() {
+        pauseScreen.hidePauseScreen();
+    }
+
     @Override
     public void resume() {
+        AudioManager.getInstance().resumeMusic();
         if (!pauseScreen.isPauseScreenVisible()) {
             showBannerAd();
             super.resume();
@@ -132,15 +152,6 @@ public class PlayScreen extends PlayAbstractScreen {
         infoScreen.applyViewport();
         pauseScreen.applyViewport();
         worldController.getGameWorld().getGameCamera().applyViewport();
-    }
-
-    public void setGameStatePaused() {
-        pauseScreen.showPauseScreen();
-        infoScreen.disableEvents();
-    }
-
-    public void setGameStateRunning() {
-        pauseScreen.hidePauseScreen();
     }
 
     public Hud getHud() {

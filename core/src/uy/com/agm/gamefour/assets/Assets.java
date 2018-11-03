@@ -27,14 +27,22 @@ public class Assets implements Disposable, AssetErrorListener {
     private static final String TAG = Assets.class.getName();
 
     // Sound FXs
-    public static final String FX_FILE_JUMP = "audio/sounds/jump.ogg";
+    public static final String FX_FILE_JUMP_A = "audio/sounds/jumpA.ogg";
+    public static final String FX_FILE_JUMP_B = "audio/sounds/jumpB.ogg";
+    public static final String FX_FILE_JUMP_C = "audio/sounds/jumpC.ogg";
+    public static final String FX_FILE_JUMP_D = "audio/sounds/jumpD.ogg";
+    public static final String FX_FILE_JUMP_E = "audio/sounds/jumpE.ogg";
     public static final String FX_FILE_HIT = "audio/sounds/hit.ogg";
     public static final String FX_FILE_BODY_IMPACT = "audio/sounds/bodyImpact.ogg";
     public static final String FX_FILE_CLICK = "audio/sounds/click.ogg";
+    public static final String FX_FILE_NEW_ACHIEVEMENT = "audio/sounds/newAchievement.ogg";
+    public static final String FX_FILE_BLOOD_SPLASH = "audio/sounds/bloodSplash.ogg";
+    public static final String FX_FILE_VOICE = "audio/sounds/voice.ogg";
 
     // Music
-    public static final String MUSIC_FILE_MAIN_MENU = "audio/music/mainMenu.ogg";
-    public static final String MUSIC_FILE_GAME = "audio/music/game.ogg";
+    public static final String MUSIC_FILE_MAIN_MENU = "audio/music/songMainMenu.ogg";
+    public static final String MUSIC_FILE_CREDITS = "audio/music/songCredits.ogg";
+    public static final String MUSIC_FILE_GAME = "audio/music/songGame.ogg";
 
     // Texture atlas
     private static final String TEXTURE_ATLAS_BACKGROUNDS = "atlas/backgrounds/backgrounds.atlas";
@@ -123,14 +131,22 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
     private void loadSounds() {
-        assetManager.load(FX_FILE_JUMP, Sound.class);
+        assetManager.load(FX_FILE_JUMP_A, Sound.class);
+        assetManager.load(FX_FILE_JUMP_B, Sound.class);
+        assetManager.load(FX_FILE_JUMP_C, Sound.class);
+        assetManager.load(FX_FILE_JUMP_D, Sound.class);
+        assetManager.load(FX_FILE_JUMP_E, Sound.class);
         assetManager.load(FX_FILE_HIT, Sound.class);
         assetManager.load(FX_FILE_BODY_IMPACT, Sound.class);
         assetManager.load(FX_FILE_CLICK, Sound.class);
+        assetManager.load(FX_FILE_NEW_ACHIEVEMENT, Sound.class);
+        assetManager.load(FX_FILE_BLOOD_SPLASH, Sound.class);
+        assetManager.load(FX_FILE_VOICE, Sound.class);
     }
 
     private void loadMusic() {
         assetManager.load(MUSIC_FILE_MAIN_MENU, Music.class);
+        assetManager.load(MUSIC_FILE_CREDITS, Music.class);
         assetManager.load(MUSIC_FILE_GAME, Music.class);
     }
 

@@ -81,4 +81,15 @@ public class AudioManager {
             playingMusic.pause();
         }
     }
+
+    public void onSettingsUpdated() {
+        if (playingMusic != null) {
+            if (GameSettings.getInstance().isAudio()) {
+                playingMusic.stop();
+                playingMusic.play();
+            } else {
+                playingMusic.pause();
+            }
+        }
+    }
 }
