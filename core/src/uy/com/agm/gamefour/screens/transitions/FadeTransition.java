@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Interpolation;
  * Created by AGMCORP on 17/9/2018.
  */
 
-public class FadeTransition implements ScreenTransition {
+public class FadeTransition implements IScreenTransition {
     private static final String TAG = FadeTransition.class.getName();
 
     private static final FadeTransition instance = new FadeTransition();

@@ -11,7 +11,7 @@ import uy.com.agm.gamefour.game.GameCamera;
  * Created by AGMCORP on 11/1/2018.
  */
 
-public class AssetRocket {
+public class AssetRocket implements IAssetGUI {
     private static final String TAG = AssetRocket.class.getName();
 
     private static final float SCALE = 1.0f;
@@ -38,10 +38,12 @@ public class AssetRocket {
         return rocketAnimation;
     }
 
+    @Override
     public float getWidth() {
         return ( rocketStand.getRegionWidth() / GameCamera.PPM ) * SCALE;
     }
 
+    @Override
     public float getHeight() {
         return ( rocketStand.getRegionHeight() / GameCamera.PPM ) * SCALE;
     }

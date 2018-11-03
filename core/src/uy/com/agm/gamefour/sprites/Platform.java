@@ -9,9 +9,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
 
 import uy.com.agm.gamefour.assets.Assets;
-import uy.com.agm.gamefour.assets.sprites.AssetPlatformA;
+import uy.com.agm.gamefour.assets.sprites.AssetSprites;
+import uy.com.agm.gamefour.assets.sprites.IAssetPlatform;
 import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
 
@@ -29,6 +31,7 @@ public class Platform extends AbstractDynamicObject {
     private static final float BOTTOM_LIMIT = 1.0f;
 
     private GameWorld gameWorld;
+    private Array<IAssetPlatform> assetsPlataform;
     private TextureRegion platformStand;
     private Animation platformAnimation;
     private float stateTime;
@@ -42,20 +45,35 @@ public class Platform extends AbstractDynamicObject {
     public Platform(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
 
-        AssetPlatformA assetPlatformA = Assets.getInstance().getSprites().getPlatformA();
-        platformStand = assetPlatformA.getPlatformAStand();
-        platformAnimation = assetPlatformA.getPlatformAAnimation();
+        // Platforms
+        assetsPlataform = new Array<IAssetPlatform>();
+        AssetSprites assetSprites = Assets.getInstance().getSprites();
+        assetsPlataform.add(assetSprites.getPlatformA());
+        assetsPlataform.add(assetSprites.getPlatformB());
+        assetsPlataform.add(assetSprites.getPlatformC());
+        assetsPlataform.add(assetSprites.getPlatformD());
+        assetsPlataform.add(assetSprites.getPlatformE());
+        assetsPlataform.add(assetSprites.getPlatformF());
 
-        // Sets initial values for location, width and height and initial frame as platformStand.
-        setBounds(x, y, assetPlatformA.getWidth(), assetPlatformA.getHeight());
-        setRegion(platformStand);
-        stateTime = 0;
+        // Random animation
+        setNewAnimation(x, y);
 
         // Box2d
         definePlatform();
 
         currentState = State.STATIC;
         velocity = 0.0f;
+    }
+
+    private void setNewAnimation(float x, float y) {
+        IAssetPlatform assetPlatform = assetsPlataform.get(MathUtils.random(0, assetsPlataform.size - 1));
+        platformStand = assetPlatform.getPlatformStand();
+        platformAnimation = assetPlatform.getPlatformAnimation();
+
+        // Sets initial values for location, width and height and initial frame as platformStand.
+        setBounds(x, y, assetPlatform.getWidth(), assetPlatform.getHeight());
+        setRegion(platformStand);
+        stateTime = 0;
     }
 
     private void definePlatform() {
@@ -90,6 +108,7 @@ public class Platform extends AbstractDynamicObject {
     public void reposition(float x, float y) {
         body.setTransform(x + getWidth() / 2, y + getHeight() / 2, body.getAngle());
         setPosition(x, y);
+        setNewAnimation(x, y);
         currentState = State.STATIC;
     }
 

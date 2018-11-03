@@ -12,10 +12,20 @@ public class AssetSprites {
 
     private AssetJumper jumper;
     private AssetPlatformA platformA;
+    private AssetPlatformB platformB;
+    private AssetPlatformC platformC;
+    private AssetPlatformD platformD;
+    private AssetPlatformE platformE;
+    private AssetPlatformF platformF;
 
     public AssetSprites(TextureAtlas atlasSprites) {
         jumper = new AssetJumper(atlasSprites);
         platformA = new AssetPlatformA(atlasSprites);
+        platformB = new AssetPlatformB(atlasSprites);
+        platformC = new AssetPlatformC(atlasSprites);
+        platformD = new AssetPlatformD(atlasSprites);
+        platformE = new AssetPlatformE(atlasSprites);
+        platformF = new AssetPlatformF(atlasSprites);
     }
 
     public AssetJumper getJumper() {
@@ -24,5 +34,25 @@ public class AssetSprites {
 
     public AssetPlatformA getPlatformA() {
         return platformA;
+    }
+
+    public AssetPlatformB getPlatformB() {
+        return platformB;
+    }
+
+    public AssetPlatformC getPlatformC() {
+        return platformC;
+    }
+
+    public AssetPlatformD getPlatformD() {
+        return platformD;
+    }
+
+    public AssetPlatformE getPlatformE() {
+        return platformE;
+    }
+
+    public AssetPlatformF getPlatformF() {
+        return platformF;
     }
 }

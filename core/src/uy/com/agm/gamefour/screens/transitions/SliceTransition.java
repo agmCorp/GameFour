@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
  * Created by AGMCORP on 17/9/2018.
  */
 
-public class SliceTransition implements ScreenTransition {
+public class SliceTransition implements IScreenTransition {
     private static final String TAG = SliceTransition.class.getName();
 
     // Constants

@@ -12,7 +12,7 @@ import uy.com.agm.gamefour.game.GameCamera;
  * Created by AGMCORP on 18/9/2018.
  */
 
-public class AssetJumper {
+public class AssetJumper implements IAssetSprite {
     private static final String TAG = AssetJumper.class.getName();
 
     private static final float SCALE = 0.7f;

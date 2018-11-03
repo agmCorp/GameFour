@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
 import uy.com.agm.gamefour.screens.AbstractScreen;
-import uy.com.agm.gamefour.screens.transitions.ScreenTransition;
+import uy.com.agm.gamefour.screens.transitions.IScreenTransition;
 
 /**
  * Created by AGMCORP on 17/9/2018.
@@ -24,13 +24,13 @@ public abstract class DirectedGame implements ApplicationListener {
     private FrameBuffer nextFbo;
     private SpriteBatch batch;
     private float transitionTime;
-    private ScreenTransition screenTransition;
+    private IScreenTransition screenTransition;
 
     public void setScreen(AbstractScreen screen) {
         setScreen(screen, null);
     }
 
-    public void setScreen(AbstractScreen screen, ScreenTransition screenTransition) {
+    public void setScreen(AbstractScreen screen, IScreenTransition screenTransition) {
         int width = Gdx.graphics.getWidth();
         int height = Gdx.graphics.getHeight();
         if (!init) {

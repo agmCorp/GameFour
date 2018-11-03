@@ -6,8 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /**
  * Created by AGMCORP on 17/9/2018.
  */
-public interface ScreenTransition {
-    public float getDuration();
-
-    public abstract void render(SpriteBatch batch, Texture currScreen, Texture nextScreen, float alpha);
+public interface IScreenTransition {
+    float getDuration();
+    void render(SpriteBatch batch, Texture currScreen, Texture nextScreen, float alpha);
 }

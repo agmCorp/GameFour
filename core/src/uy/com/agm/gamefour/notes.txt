@@ -5,7 +5,6 @@ supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 
 HACER
 PARA LIBERAR ME ESTA QUEDANDO:
-- random textures plataformas
 - movimiento de las plataformas
 
 DESEABLE PARA LIBERAR

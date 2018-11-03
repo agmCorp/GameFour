@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Interpolation;
  * Created by AGMCORP on 17/9/2018.
  */
 
-public class ColorFadeTransition implements ScreenTransition {
+public class ColorFadeTransition implements IScreenTransition {
     private static final String TAG = ColorFadeTransition.class.getName();
 
     private static final ColorFadeTransition instance = new ColorFadeTransition();

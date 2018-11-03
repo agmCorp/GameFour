@@ -12,43 +12,42 @@ import uy.com.agm.gamefour.game.GameCamera;
  * Created by AGMCORP on 18/9/2018.
  */
 
-public class AssetPlatformA implements IAssetPlatform {
-    private static final String TAG = AssetPlatformA.class.getName();
+public class AssetPlatformE implements IAssetPlatform {
+    private static final String TAG = AssetPlatformE.class.getName();
 
     private static final float SCALE = 1.0f;
 
-    private TextureRegion platformAStand;
-    private Animation platformAAnimation;
+    private TextureRegion platformEStand;
+    private Animation platformEAnimation;
 
-    public AssetPlatformA(TextureAtlas atlas) {
+    public AssetPlatformE(TextureAtlas atlas) {
         Array<TextureAtlas.AtlasRegion> regions;
 
-        platformAStand = atlas.findRegion("platformA", 1);
+        platformEStand = atlas.findRegion("platformE", 1);
 
         // Animation
-        regions = atlas.findRegions("platformA");
-        platformAAnimation = new Animation(0.3f / 3.0f, regions, Animation.PlayMode.LOOP);
+        regions = atlas.findRegions("platformE");
+        platformEAnimation = new Animation(1.0f / 10.0f, regions, Animation.PlayMode.LOOP);
         regions.clear();
     }
 
     @Override
     public TextureRegion getPlatformStand() {
-        return platformAStand;
+        return platformEStand;
     }
 
     @Override
     public Animation getPlatformAnimation() {
-        return platformAAnimation;
+        return platformEAnimation;
     }
 
     @Override
     public float getWidth() {
-        return ( platformAStand.getRegionWidth() / GameCamera.PPM ) * SCALE;
+        return ( platformEStand.getRegionWidth() / GameCamera.PPM ) * SCALE;
     }
 
     @Override
     public float getHeight() {
-        return ( platformAStand.getRegionHeight() / GameCamera.PPM ) * SCALE;
+        return ( platformEStand.getRegionHeight() / GameCamera.PPM ) * SCALE;
     }
-
 }
