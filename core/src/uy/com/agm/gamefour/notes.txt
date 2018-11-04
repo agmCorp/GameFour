@@ -75,7 +75,18 @@ Eso me trajo los fuentes dentro de External libraries (ahora figura typing-label
 
 Ahora me está pasando lo que dice el issue de TypingLabel.
 https://github.com/rafaskb/typing-label/issues/1
-
+************
 Agregué en GameFour/build.gradle esto provisorio:
        // AGM
        compile 'com.github.tommyettinger:regexodus:0.1.10'
+
+       Creo que la solución sería bajarme los fuentes de TypingLabel, meterlo dentro de mi proyecto
+        (GameFour/src) y editar la clase Parser.
+
+       Debería quitar las siguientes referencias de GameFour/build.gradle:
+               typingLabelVersion = '1.0.4'
+               ....
+               compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
+               compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion:sources"
+
+       Luego incluir los fuentes y jar del parser así como hice lo de TypingLabel inicialmente.
