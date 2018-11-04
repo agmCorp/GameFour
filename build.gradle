@@ -107,6 +107,10 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
+        compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion:sources"
+        // AGM
+        compile 'com.github.tommyettinger:regexodus:0.1.10'
+
         // To use external jars just place them in a directory called GameThree/libs
         compile fileTree(dir: '../libs', include: ['*.jar'])
     }
