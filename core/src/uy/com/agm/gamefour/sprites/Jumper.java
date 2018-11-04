@@ -40,6 +40,7 @@ public class Jumper extends AbstractDynamicObject {
     private static final int SUCCESSFUL_JUMP_SCORE = 2;
     private static final float MIN_SPEAK_TIME = 2.5f;
     private static final float MAX_SPEAK_TIME = 6.0f;
+    private static final int MAX_BULLETS = 1;
 
     private enum State {
         IDLE, JUMPING, DEAD, DISPOSE
@@ -59,6 +60,7 @@ public class Jumper extends AbstractDynamicObject {
     private float timeToSpeak;
     private ParticleEffect magic;
     private ParticleEffect fireworks;
+    private int bullets;
 
     public Jumper(PlayScreen playScreen, GameWorld gameWorld, float x, float y) {
         this.playScreen = playScreen;
@@ -101,6 +103,9 @@ public class Jumper extends AbstractDynamicObject {
         fireworks = new ParticleEffect();
         fireworks.load(Gdx.files.internal("effects/firework_large.p"), Gdx.files.internal("effects"));
         fireworks.setPosition(gameCameraX, gameCameraY);
+
+        // We only have one shot!
+        bullets = MAX_BULLETS;
     }
 
     private float getTimeToSpeak() {
@@ -175,6 +180,9 @@ public class Jumper extends AbstractDynamicObject {
         playScreen.getHud().addScore(SUCCESSFUL_JUMP_SCORE);
         playScreen.levelCompleted();
 
+        // Reset bullets
+        bullets = MAX_BULLETS;
+
         onLanding();
     }
 
@@ -231,6 +239,13 @@ public class Jumper extends AbstractDynamicObject {
         AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getJump());
     }
 
+    public void shoot() {
+        if (bullets > 0) {
+            gameWorld.createGameObject(new Bullet(gameWorld, body.getPosition().x, body.getPosition().y)); // todo
+            bullets--;
+        }
+    }
+
     @Override
     public Vector2 getBodyPosition() {
         return body.getPosition();
@@ -238,6 +253,10 @@ public class Jumper extends AbstractDynamicObject {
 
     public boolean isIdle() {
         return currentState == State.IDLE;
+    }
+
+    public boolean isJumping() {
+        return currentState == State.JUMPING;
     }
 
     public boolean isDead() {
@@ -326,5 +345,10 @@ public class Jumper extends AbstractDynamicObject {
 
         // Draw Jumper
         draw(spriteBatch);
+    }
+
+    @Override
+    public boolean isDisposable() {
+        return currentState == State.DISPOSE;
     }
 }

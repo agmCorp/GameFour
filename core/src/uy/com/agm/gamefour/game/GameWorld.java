@@ -15,12 +15,13 @@ import java.util.Iterator;
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.backgrounds.AssetBackgrounds;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
+import uy.com.agm.gamefour.sprites.AbstractGameObject;
+import uy.com.agm.gamefour.sprites.Bullet;
 import uy.com.agm.gamefour.sprites.Enemy;
 import uy.com.agm.gamefour.sprites.Jumper;
 import uy.com.agm.gamefour.sprites.ParallaxSB;
 import uy.com.agm.gamefour.sprites.Platform;
 import uy.com.agm.gamefour.sprites.PlatformController;
-import uy.com.agm.gamefour.sprites.Weapon;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -40,6 +41,8 @@ public class GameWorld {
     private PlatformController platformController;
     private Jumper jumper;
     private Array<Enemy> enemies;
+    private Array<Bullet> bullets;
+    private Array<AbstractGameObject> gameObjectsToCreate;
 
     public GameWorld(PlayScreen playScreen, World box2DWorld, int level) {
         this.playScreen = playScreen;
@@ -50,6 +53,9 @@ public class GameWorld {
 
         createSprites();
         createBackground();
+
+        // Queue
+        gameObjectsToCreate = new Array<AbstractGameObject>();
     }
 
     private void createBackground() {
@@ -104,6 +110,26 @@ public class GameWorld {
 
         // Enemies
         enemies = new Array<Enemy>();
+
+        // Eggs
+        bullets = new Array<Bullet>();
+    }
+
+    public void handleGameObjectsToCreate() {
+        while (gameObjectsToCreate.size > 0) {
+            AbstractGameObject gameObject = gameObjectsToCreate.pop();
+
+            if (gameObject instanceof Bullet) {
+                bullets.add((Bullet) gameObject);
+            }
+            if (gameObject instanceof Enemy) {
+                enemies.add((Enemy) gameObject);
+            }
+        }
+    }
+
+    public void createGameObject(AbstractGameObject gameObject) {
+        gameObjectsToCreate.add(gameObject);
     }
 
     public void update(float deltaTime) {
@@ -112,6 +138,7 @@ public class GameWorld {
         centerCamera(deltaTime);
         platformController.update(deltaTime);
         updateEnemies(deltaTime);
+        updateBullets(deltaTime);
 
         // Always at the end
         // Update the game camera with correct coordinates after changes
@@ -130,6 +157,18 @@ public class GameWorld {
         }
     }
 
+    private void updateBullets(float deltaTime) {
+        Bullet bullet;
+        Iterator<Bullet> iterator = bullets.iterator();
+        while(iterator.hasNext()) {
+            bullet = iterator.next();
+            bullet.update(deltaTime);
+            if(bullet.isDisposable()){
+                iterator.remove();
+            }
+        }
+    }
+
     private void centerCamera(float deltaTime) {
         if (moveCamera) {
             gameCamera.position().x = gameCamera.position().x + CAMERA_VELOCITY * deltaTime;
@@ -143,6 +182,7 @@ public class GameWorld {
         parallaxSB.render(batch);
         platformController.render(batch);
         renderEnemies(batch);
+        renderBullets(batch);
         jumper.render(batch);
     }
 
@@ -152,16 +192,29 @@ public class GameWorld {
         }
     }
 
+    private void renderBullets(SpriteBatch batch) {
+        for (Bullet bullet : bullets) {
+            bullet.render(batch);
+        }
+    }
+
     public void renderSpriteDebug(ShapeRenderer shapeRenderer) {
         parallaxSB.renderDebug(shapeRenderer);
         platformController.renderDebug(shapeRenderer);
-        jumper.renderDebug(shapeRenderer);
         renderDebugEnemies(shapeRenderer);
+        renderDebugBullets(shapeRenderer);
+        jumper.renderDebug(shapeRenderer);
     }
 
     private void renderDebugEnemies(ShapeRenderer shapeRenderer) {
         for (Enemy enemy : enemies) {
             enemy.renderDebug(shapeRenderer);
+        }
+    }
+
+    private void renderDebugBullets(ShapeRenderer shapeRenderer) {
+        for (Bullet bullet : bullets) {
+            bullet.renderDebug(shapeRenderer);
         }
     }
 
@@ -185,6 +238,10 @@ public class GameWorld {
         return enemies;
     }
 
+    public Array<Bullet> getBullets() {
+        return bullets;
+    }
+
     public void addLevel() {
         level++;
         moveCamera = true;
@@ -195,12 +252,6 @@ public class GameWorld {
 
     }
 
-
-public void laConchaDeTuMadre() { // todo
-    for(Enemy enemy : enemies) {
-        enemy.onHit(new Weapon());
-    }
-}
     private void newLevel() {
         Array<Platform> platforms = platformController.getPlatforms();
 
@@ -222,7 +273,7 @@ public void laConchaDeTuMadre() { // todo
             // There must be at least two platforms to have a valid game.
             Platform secondLastPlatform = platforms.get(platforms.size - 2);
             Platform lastPlatform = platforms.get(platforms.size - 1);
-            enemies.add(new Enemy(playScreen, this, secondLastPlatform, lastPlatform));
+            createGameObject(new Enemy(playScreen, this, secondLastPlatform, lastPlatform));
         }
     }
 

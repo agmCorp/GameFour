@@ -16,4 +16,5 @@ public abstract class AbstractGameObject extends Sprite {
 
     public abstract void update(float deltaTime);
     public abstract void render(SpriteBatch spriteBatch);
+    public abstract boolean isDisposable();
 }

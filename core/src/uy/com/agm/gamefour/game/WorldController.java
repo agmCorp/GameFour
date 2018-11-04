@@ -58,6 +58,9 @@ public class WorldController implements Disposable {
         // Handle user input first
         handleInput(deltaTime);
 
+        // Handle creation of game objects first
+        gameWorld.handleGameObjectsToCreate();
+
         // Step in the physics simulation
         doPhysicsStep(deltaTime);
 

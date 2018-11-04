@@ -231,6 +231,11 @@ public class ParallaxSB {
         public void render(SpriteBatch spriteBatch) {
             draw(spriteBatch);
         }
+
+        @Override
+        public boolean isDisposable() {
+            return false;
+        }
     }
 
     private class FarBackground extends AbstractGameObject {
@@ -254,6 +259,11 @@ public class ParallaxSB {
         @Override
         public void render(SpriteBatch spriteBatch) {
             draw(spriteBatch);
+        }
+
+        @Override
+        public boolean isDisposable() {
+            return false;
         }
 
         private float getCenterX() {

@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,11 +19,12 @@ import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
 
 /**
- * Created by AGMCORP on 26/9/2018.
+ * Created by AGM on 11/3/2018.
  */
 
-public class Platform extends AbstractDynamicObject {
-    private static final String TAG = Platform.class.getName();
+// TODO, HACERLA TODA Y PENSARLA, EXISTE AHORA PARA QUE COMPILE
+public class Bullet extends AbstractDynamicObject {
+    private static final String TAG = Bullet.class.getName();
 
     private static final float BODY_SCALE = 0.4f;
 
@@ -38,7 +40,7 @@ public class Platform extends AbstractDynamicObject {
     private State currentState;
     private float velocity;
 
-    public Platform(GameWorld gameWorld, float x, float y) {
+    public Bullet(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
 
         // Assets
@@ -88,24 +90,6 @@ public class Platform extends AbstractDynamicObject {
         fixtureDef.filter.maskBits = WorldContactListener.JUMPER_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
         fixtureDef.shape = polygonShape;
         body.createFixture(fixtureDef).setUserData(this);
-    }
-
-    public void startMovement() {
-        if (currentState == State.STATIC) {
-            currentState = MathUtils.randomBoolean() ? State.UP : State.DOWN;
-            velocity = MathUtils.random(PlatformController.MIN_VELOCITY, PlatformController.MAX_VELOCITY);
-        }
-    }
-
-    public void stopMovement() {
-        currentState = State.STATIC;
-    }
-
-    public void reposition(float x, float y) {
-        setNewAnimation(x, y);
-        body.setTransform(x + getWidth() / 2, y + getHeight() / 2, body.getAngle());
-        setPosition(x, y);
-        currentState = State.STATIC;
     }
 
     public float getBodyWidth() {
@@ -173,6 +157,7 @@ public class Platform extends AbstractDynamicObject {
 
     @Override
     public void render(SpriteBatch spriteBatch) {
+        Gdx.app.debug(TAG, "DIBUJO LA BALA************");
         draw(spriteBatch);
     }
 
@@ -180,4 +165,35 @@ public class Platform extends AbstractDynamicObject {
     public boolean isDisposable() {
         return false;
     }
+
+    public void onTarget() {
+
+    }
+
+
+/*
+    public void onTarget() {
+
+    }
+
+    @Override
+    public Vector2 getBodyPosition() {
+        return null;
+    }
+
+    @Override
+    public void update(float deltaTime) {
+
+    }
+
+    @Override
+    public void render(SpriteBatch spriteBatch) {
+
+    }
+
+    @Override
+    public boolean isDisposable() {
+        return false;
+    }
+    */
 }

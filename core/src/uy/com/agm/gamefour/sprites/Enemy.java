@@ -119,9 +119,9 @@ public class Enemy extends AbstractDynamicObject {
         body.setActive(false);
     }
 
-    public void onHit(Weapon weapon) {
+    public void onHit(Bullet bullet) {
         playScreen.getHud().addScore(SCORE);
-        weapon.onTarget();
+        bullet.onTarget();
 
         /*
          * We must remove its body to avoid collisions.
@@ -133,6 +133,7 @@ public class Enemy extends AbstractDynamicObject {
         currentState = State.KNOCK_BACK;
     }
 
+    @Override
     public boolean isDisposable() {
         return currentState == State.DISPOSE;
     }

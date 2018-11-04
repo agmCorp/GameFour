@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import uy.com.agm.gamefour.screens.gui.Hud;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
+import uy.com.agm.gamefour.sprites.Jumper;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -17,10 +18,14 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     private GameWorld gameWorld;
     private PlayScreen playScreen;
+    private Jumper jumper;
+    private Hud hud;
 
     public GameController(GameWorld gameWorld, PlayScreen playScreen) {
         this.gameWorld = gameWorld;
         this.playScreen = playScreen;
+        jumper = gameWorld.getJumper();
+        hud = playScreen.getHud();
     }
 
     @Override
@@ -31,6 +36,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
+        shoot();
         return false;
     }
 
@@ -41,8 +47,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        gameWorld.laConchaDeTuMadre(); // todo
-        return true; // poner false aca
+        return false;
     }
 
     @Override
@@ -85,13 +90,14 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     public boolean keyUp(int keycode) {
         switch (keycode) {
             case Input.Keys.SPACE:
-                performJump();
+                if (jumper.isJumping()) {
+                    shoot();
+                } else {
+                    performJump();
+                }
                 break;
             case Input.Keys.P:
                 cheatMode();
-                break;
-            case Input.Keys.E: // TODO
-                gameWorld.laConchaDeTuMadre();
                 break;
         }
         return true;
@@ -130,18 +136,17 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     private void startJump() {
         if (playScreen.isPlayScreenStateRunning()) {
-            if (gameWorld.getJumper().isIdle()) {
-                playScreen.getHud().startSwing();
+            if (jumper.isIdle()) {
+                hud.startSwing();
             }
         }
     }
 
     private void performJump() {
         if (playScreen.isPlayScreenStateRunning()) {
-            Hud hud = playScreen.getHud();
-            if (gameWorld.getJumper().isIdle() && hud.isSwinging()) {
+            if (jumper.isIdle() && hud.isSwinging()) {
                 hud.stopSwing();
-                gameWorld.getJumper().jump(hud.getPowerBarValue());
+                jumper.jump(hud.getPowerBarValue());
             }
         }
     }
@@ -149,8 +154,16 @@ public class GameController implements GestureDetector.GestureListener, InputPro
     private void cheatMode() {
         if (playScreen.isPlayScreenStateRunning()) {
             if (DebugConstants.POWER_JUMP_ENABLED) {
-                playScreen.getHud().stopSwing();
-                gameWorld.getJumper().powerJump();
+                hud.stopSwing();
+                jumper.powerJump();
+            }
+        }
+    }
+
+    private void shoot() {
+        if (playScreen.isPlayScreenStateRunning()) {
+            if (jumper.isJumping()) {
+                jumper.shoot();
             }
         }
     }
