@@ -27,29 +27,24 @@ public class Enemy extends AbstractDynamicObject {
     private static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
 
     private enum State {
-        INACTIVE, ALIVE, KNOCK_BACK, EXPLODING, SPLAT, DEAD
+        INACTIVE, ALIVE, KNOCK_BACK, EXPLODING, SPLAT, DEAD, DISPOSE
     }
     private PlayScreen playScreen;
     private GameWorld gameWorld;
-    private AssetEnemy assetEnemy;
     private TextureRegion enemyStand;
     private Animation enemyAnimation;
-    protected State currentState;
     private float stateTime;
     private Body body;
+    protected State currentState;
 
-    public Enemy(PlayScreen playScreen, GameWorld gameWorld) {
+    public Enemy(PlayScreen playScreen, GameWorld gameWorld, float x, float y) {
         this.playScreen = playScreen;
         this.gameWorld = gameWorld;
 
-        assetEnemy = Assets.getInstance().getSprites().getEnemy();
+        AssetEnemy assetEnemy = Assets.getInstance().getSprites().getEnemy();
         enemyStand = assetEnemy.getEnemyStand();
         enemyAnimation = assetEnemy.getEnemyAnimation();
 
-        currentState = State.INACTIVE;
-    }
-
-    public void show(float x, float y) {
         // Sets initial values for location, width and height and initial frame as enemyStand.
         setBounds(x, y, assetEnemy.getWidth(), assetEnemy.getHeight());
         setRegion(enemyStand);
@@ -58,8 +53,7 @@ public class Enemy extends AbstractDynamicObject {
         // Box2d
         defineEnemy();
 
-        // Enemy is alive
-        currentState = State.ALIVE;
+        currentState = State.INACTIVE;
     }
 
     private void defineEnemy() {
@@ -85,7 +79,7 @@ public class Enemy extends AbstractDynamicObject {
         Gdx.app.debug(TAG, "CREO AL ENEMIGO***********************"); // TODO
     }
 
-    public void onHit(Weapon weapon) { // todo es lamado por worldcontactlistener cuando lo revientan
+    public void onHit(Weapon weapon) { // todo es lamado por worldcontactlistener cuando lo revientan, el puntaje lo puedo poner aca o en otro estado, ver gamethree
         weapon.onTarget();
 
         /*
@@ -98,6 +92,10 @@ public class Enemy extends AbstractDynamicObject {
         currentState = State.KNOCK_BACK;
     }
 
+    public boolean isDisposable() {
+        return currentState == State.DISPOSE;
+    }
+
     @Override
     public Vector2 getBodyPosition() {
         return body.getPosition();
@@ -108,6 +106,7 @@ public class Enemy extends AbstractDynamicObject {
         // Life cycle: INACTIVE->ALIVE->KNOCK_BACK->EXPLODING->SPLAT->DEAD->DISPOSE
         switch (currentState) {
             case INACTIVE:
+                stateInactive(deltaTime);
                 break;
             case ALIVE:
                 stateAlive(deltaTime);
@@ -124,20 +123,17 @@ public class Enemy extends AbstractDynamicObject {
             case DEAD:
                 stateDead(deltaTime);
                 break;
+            case DISPOSE:
+                break;
             default:
                 break;
         }
     }
 
     private void checkBoundaries() {
-        // When this enemy is on camera, it activates (it moves and can collide).
         // When this enemy is outside the camera, it dies.
-        if (isOnCamera()) {
-            body.setActive(true);
-        } else {
-            if (body.isActive()) { // Was on camera
-                currentState = State.DEAD;
-            }
+        if (!isOnCamera()) {
+            currentState = State.DEAD;
         }
     }
 
@@ -148,6 +144,13 @@ public class Enemy extends AbstractDynamicObject {
         float rightEdge = gameCameraPosX + gameCamera.getWorldWidth() / 2;
 
         return leftEdge <= getX() + getWidth() && getX() <= rightEdge;
+    }
+
+    private void stateInactive(float deltaTime) {
+        if (isOnCamera()) {
+            body.setActive(true);
+            currentState = State.ALIVE;
+        }
     }
 
     private void stateAlive(float deltaTime) {
@@ -161,20 +164,23 @@ public class Enemy extends AbstractDynamicObject {
 
     private void stateKnockBack(float deltaTime) {
         // todo
+        checkBoundaries();
     }
 
     private void stateExploding(float deltaTime) {
         // todo aca poner filtro nothing!!!
+        checkBoundaries();
     }
 
     private void stateSplat(float deltaTime) {
         // todo
+        checkBoundaries();
     }
 
     private void stateDead(float deltaTime) {
         // Destroy box2D body
         gameWorld.destroyBody(body);
-        currentState = State.INACTIVE;
+        currentState = State.DISPOSE;
     }
 
     private boolean isDrawable() {

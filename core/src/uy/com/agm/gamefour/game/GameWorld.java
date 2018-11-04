@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+
+import java.util.Iterator;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.backgrounds.AssetBackgrounds;
@@ -37,7 +39,7 @@ public class GameWorld {
     private ParallaxSB parallaxSB;
     private PlatformController platformController;
     private Jumper jumper;
-    private Enemy enemy;
+    private Array<Enemy> enemies;
 
     public GameWorld(PlayScreen playScreen, World box2DWorld, int level) {
         this.playScreen = playScreen;
@@ -100,8 +102,8 @@ public class GameWorld {
                 Assets.getInstance().getSprites().getJumper().getWidth() / 2,
                 gameCamera.position().y + gameCamera.getWorldHeight() / 2);
 
-        // Enemy
-        enemy = new Enemy(playScreen, this);
+        // Enemies
+        enemies = new Array<Enemy>();
     }
 
     public void update(float deltaTime) {
@@ -109,11 +111,23 @@ public class GameWorld {
         jumper.update(deltaTime);
         centerCamera(deltaTime);
         platformController.update(deltaTime);
-        enemy.update(deltaTime);
+        updateEnemies(deltaTime);
 
         // Always at the end
         // Update the game camera with correct coordinates after changes
         gameCamera.update(deltaTime);
+    }
+
+    private void updateEnemies(float deltaTime) {
+        Enemy enemy;
+        Iterator<Enemy> iterator = enemies.iterator();
+        while(iterator.hasNext()) {
+            enemy = iterator.next();
+            enemy.update(deltaTime);
+            if(enemy.isDisposable()){
+                iterator.remove();
+            }
+        }
     }
 
     private void centerCamera(float deltaTime) {
@@ -128,15 +142,27 @@ public class GameWorld {
         // This determines if a sprite has to be drawn in front or behind another sprite.
         parallaxSB.render(batch);
         platformController.render(batch);
+        renderEnemies(batch);
         jumper.render(batch);
-        enemy.render(batch);
+    }
+
+    private void renderEnemies(SpriteBatch batch) {
+        for (Enemy enemy : enemies) {
+            enemy.draw(batch);
+        }
     }
 
     public void renderSpriteDebug(ShapeRenderer shapeRenderer) {
         parallaxSB.renderDebug(shapeRenderer);
         platformController.renderDebug(shapeRenderer);
         jumper.renderDebug(shapeRenderer);
-        enemy.renderDebug(shapeRenderer);
+        renderDebugEnemies(shapeRenderer);
+    }
+
+    private void renderDebugEnemies(ShapeRenderer shapeRenderer) {
+        for (Enemy enemy : enemies) {
+            enemy.renderDebug(shapeRenderer);
+        }
     }
 
     public void renderBox2DDebug(Box2DDebugRenderer box2DDebugRenderer) {
@@ -155,26 +181,29 @@ public class GameWorld {
         return jumper;
     }
 
-    public Enemy getEnemy() {
-        return enemy;
+    public Array<Enemy> getEnemies() {
+        return enemies;
     }
 
     public void addLevel() {
         level++;
         moveCamera = true;
-        buildNewLevel();
-        Gdx.app.debug(TAG, "PASE DE LEVEL, ESTOY EN EL LEVEL *************" + level); // todo
+        newLevel();
+
+        // todo
+        Gdx.app.debug(TAG, "ESTOY EN NIVEL: " + level);
+
     }
 
-    private void buildNewLevel() {
+    private void newLevel() {
         Array<Platform> platforms = platformController.getPlatforms();
 
         // todo ORQUESTA TODAS LAS VARIACIONES
-        if (level == 3) {
-            for (Platform platform : platforms) {
-                platform.startMovement();
-            }
-        }
+//        if (level > 0) {
+//            for (Platform platform : platforms) {
+//                platform.startMovement();
+//            }
+//        }
 
 //        if (level == 5) {
 //            for (Platform platform :platforms) {
@@ -182,11 +211,21 @@ public class GameWorld {
 //            }
 //        }
 
-        if (level == 5) {
-            Vector2 lastPlatformPos = platforms.get(platforms.size - 1).getBodyPosition();
-            float x = lastPlatformPos.x;
-            float y = lastPlatformPos.y + 1; // todo
-            enemy.show(x, y);
+        if (level > 0) {
+            float laconchadetumadreWidth = Assets.getInstance().getSprites().getEnemy().getWidth();
+            float laconchadetumadreHeight = Assets.getInstance().getSprites().getEnemy().getHeight(); // todo
+            Platform secondLastPlatform = platforms.get(platforms.size - 2);
+            Platform lastPlatform = platforms.get(platforms.size - 1);
+
+
+            float x1 = secondLastPlatform.getX() + secondLastPlatform.getWidth();
+            float x2 = lastPlatform.getX() - laconchadetumadreWidth;
+            float x = x1 < x2 ? MathUtils.random(x1, x2) : MathUtils.random(x2, x1);
+
+            float secondLastY = secondLastPlatform.getBodyPosition().y - secondLastPlatform.getHeight() / 2;
+            float lastY = lastPlatform.getBodyPosition().y - lastPlatform.getHeight() / 2;
+            float y = Math.max(secondLastY, lastY) - laconchadetumadreHeight - MathUtils.random(0, 2f);
+            enemies.add(new Enemy(playScreen, this, x, y));
         }
     }
 

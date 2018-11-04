@@ -102,9 +102,9 @@ public class Platform extends AbstractDynamicObject {
     }
 
     public void reposition(float x, float y) {
+        setNewAnimation(x, y);
         body.setTransform(x + getWidth() / 2, y + getHeight() / 2, body.getAngle());
         setPosition(x, y);
-        setNewAnimation(x, y);
         currentState = State.STATIC;
     }
 
