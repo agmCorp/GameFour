@@ -7,6 +7,7 @@ HACER
 - clase bullet con sonido.
 - TypingLabel html
 - Hacer un keystore para este juego
+- Poner por defecto un highscore razonable y ver lo de averagePlayer
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
