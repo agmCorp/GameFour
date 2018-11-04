@@ -66,7 +66,7 @@ public class Platform extends AbstractDynamicObject {
         platformStand = assetPlatform.getPlatformStand();
         platformAnimation = assetPlatform.getPlatformAnimation();
 
-        // Sets initial values for location, width and height and initial frame as platformStand.
+        // Sets initial values for position, width and height and initial frame as platformStand.
         setBounds(x, y, assetPlatform.getWidth(), assetPlatform.getHeight());
         setRegion(platformStand);
         stateTime = 0;

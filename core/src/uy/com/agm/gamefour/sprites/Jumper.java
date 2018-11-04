@@ -69,7 +69,7 @@ public class Jumper extends AbstractDynamicObject {
         jumperIdleAnimation = assetJumper.getJumperIdleAnimation();
         jumperJumpAnimation = assetJumper.getJumperJumpAnimation();
 
-        // Sets initial values for location, width and height and initial frame as jumperStand.
+        // Sets initial values for position, width and height and initial frame as jumperStand.
         setBounds(x, y, assetJumper.getWidth(), assetJumper.getHeight());
         setRegion(jumperStand);
         stateTime = 0;

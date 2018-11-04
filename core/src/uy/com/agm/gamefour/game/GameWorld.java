@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -198,34 +197,24 @@ public class GameWorld {
     private void newLevel() {
         Array<Platform> platforms = platformController.getPlatforms();
 
-        // todo ORQUESTA TODAS LAS VARIACIONES
+//        // todo ORQUESTA TODAS LAS VARIACIONES
 //        if (level > 0) {
 //            for (Platform platform : platforms) {
 //                platform.startMovement();
 //            }
 //        }
-
+//
 //        if (level == 5) {
 //            for (Platform platform :platforms) {
 //                platform.stopMovement();
 //            }
 //        }
 
-        if (level > 0) {
-            float laconchadetumadreWidth = Assets.getInstance().getSprites().getEnemy().getWidth();
-            float laconchadetumadreHeight = Assets.getInstance().getSprites().getEnemy().getHeight(); // todo
+        if (level == 3) {
+            // There must be at least two platforms to have a valid game.
             Platform secondLastPlatform = platforms.get(platforms.size - 2);
             Platform lastPlatform = platforms.get(platforms.size - 1);
-
-
-            float x1 = secondLastPlatform.getX() + secondLastPlatform.getWidth();
-            float x2 = lastPlatform.getX() - laconchadetumadreWidth;
-            float x = x1 < x2 ? MathUtils.random(x1, x2) : MathUtils.random(x2, x1);
-
-            float secondLastY = secondLastPlatform.getBodyPosition().y - secondLastPlatform.getHeight() / 2;
-            float lastY = lastPlatform.getBodyPosition().y - lastPlatform.getHeight() / 2;
-            float y = Math.max(secondLastY, lastY) - laconchadetumadreHeight - MathUtils.random(0, 2f);
-            enemies.add(new Enemy(playScreen, this, x, y));
+            enemies.add(new Enemy(playScreen, this, secondLastPlatform, lastPlatform));
         }
     }
 

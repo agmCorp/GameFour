@@ -1,9 +1,9 @@
 package uy.com.agm.gamefour.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -37,7 +37,7 @@ public class Enemy extends AbstractDynamicObject {
     private Body body;
     protected State currentState;
 
-    public Enemy(PlayScreen playScreen, GameWorld gameWorld, float x, float y) {
+    public Enemy(PlayScreen playScreen, GameWorld gameWorld, Platform secondLastPlatform, Platform lastPlatform) {
         this.playScreen = playScreen;
         this.gameWorld = gameWorld;
 
@@ -45,7 +45,13 @@ public class Enemy extends AbstractDynamicObject {
         enemyStand = assetEnemy.getEnemyStand();
         enemyAnimation = assetEnemy.getEnemyAnimation();
 
-        // Sets initial values for location, width and height and initial frame as enemyStand.
+        // Calculates position
+        float x1 = secondLastPlatform.getX() + secondLastPlatform.getWidth();
+        float x2 = lastPlatform.getX() - assetEnemy.getWidth();
+        float x = x1 < x2 ? MathUtils.random(x1, x2) : MathUtils.random(x2, x1);
+        float y = Math.max(secondLastPlatform.getY(), lastPlatform.getY()) - assetEnemy.getHeight() - MathUtils.random(0, 2f);
+
+        // Sets initial values for position, width and height and initial frame as enemyStand.
         setBounds(x, y, assetEnemy.getWidth(), assetEnemy.getHeight());
         setRegion(enemyStand);
         stateTime = 0;
@@ -75,8 +81,6 @@ public class Enemy extends AbstractDynamicObject {
 
         // By default this enemy doesn't interact in our world
         body.setActive(false);
-
-        Gdx.app.debug(TAG, "CREO AL ENEMIGO***********************"); // TODO
     }
 
     public void onHit(Weapon weapon) { // todo es lamado por worldcontactlistener cuando lo revientan, el puntaje lo puedo poner aca o en otro estado, ver gamethree

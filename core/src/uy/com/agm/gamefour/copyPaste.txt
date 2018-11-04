@@ -1,2 +1,20 @@
 private static final float IMPULSE_Y = 7.0f;//9.0f;
 private static final float SCALE_IMPULSE_X = 27.0f;//37.0f;
+-----------------------------------------------------------------
+Los enemigos se crean en la zona que existe entre la cuarta y quinta plataforma, debajo de la más alta.
+Si quisiera crear un enemigo en cada nuevo nivel (es decir, en level = 1, luego level = 2, luego level = 3, etc), podría
+pasar lo siguiente:
+Cuando salto muy rápido entre plataformas, si llego a la plataforma 3 sin que la 1 se haya reposicionado, se crean dos
+enemigos en la misma zona (a veces superpuestos un poco).
+Este problema se observa mejor cuando comienza el juego y toco la primer plataforma (level = 1). Allí se crea un enemigo
+entre la cuarta y quinta plataforma. Cuando salto y hago contacto con la segunda plataforma (level = 2), se crea otro enemigo
+pero como aún no se hizo reposition de la plataforma 1, este se crea en la misma zona lugar del anterior.
+Esto pasaría si yo creara enemigos en cada nuevo nivel, lo cual no voy a hacer porque el juego los crea cada tanto para no
+aburrir.
+El único que sabe que ganó el nivel es el Jumper dentro de onSuccessfulJump.
+El Jumper avisa a PlayScreen que pasó de nivel para que PlayScreen en gameResults tome acciones (como debe ser, pues allí se
+debe controlar "nuevo nivel", "game over", etc.).
+Es allí que yo debería esperar a que haya un reposition de plataforma para hacer gameWorld.addLevel().
+El único que sabe cuando una plataforma se reposicionó es PlatformController y no quisiera agregar un aviso a PlayScreen desde
+allí dentro (es decir, setear un booleano de playscreen "isLevelComplete2") para sincronizar gameResults.
+-----------------------------------------------------------------
