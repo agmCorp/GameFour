@@ -6,7 +6,7 @@ package uy.com.agm.gamefour.game;
 
 public class DebugConstants {
     // Master variable: turns debug mode on or off
-    public static final boolean TURN_ON_DEBUG = true;
+    public static final boolean TURN_ON_DEBUG = false;
 
     // Sets the log level to debug
     public static final boolean DEBUG_MODE = true && TURN_ON_DEBUG;
@@ -21,11 +21,11 @@ public class DebugConstants {
     public static final boolean HIDE_BACKGROUND = true && TURN_ON_DEBUG;
 
     // Shows/hides FPS counter
-    public static final boolean SHOW_FPS = false && TURN_ON_DEBUG;
+    public static final boolean SHOW_FPS = true && TURN_ON_DEBUG;
 
     // Enables cheat mode
     public static final boolean POWER_JUMP_ENABLED = true && TURN_ON_DEBUG;
 
     // Test advertisements
-    public static final boolean TEST_ADS = false && TURN_ON_DEBUG;
+    public static final boolean TEST_ADS = true && TURN_ON_DEBUG;
 }

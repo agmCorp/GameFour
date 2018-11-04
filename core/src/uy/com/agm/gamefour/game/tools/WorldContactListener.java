@@ -6,6 +6,8 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import uy.com.agm.gamefour.sprites.Bullet;
+import uy.com.agm.gamefour.sprites.Enemy;
 import uy.com.agm.gamefour.sprites.Jumper;
 import uy.com.agm.gamefour.sprites.Platform;
 
@@ -21,7 +23,7 @@ public class WorldContactListener implements ContactListener {
     public static final short PLATFORM_BIT = 1;
     public static final short JUMPER_BIT = 2;
     public static final short ENEMY_BIT = 4;
-    public static final short WEAPON_BIT = 8;
+    public static final short BULLET_BIT = 8;
 
     @Override
     public void beginContact(Contact contact) {
@@ -49,6 +51,13 @@ public class WorldContactListener implements ContactListener {
                             jumper.onHit();
                         }
                     }
+                }
+                break;
+            case BULLET_BIT | ENEMY_BIT:
+                if (fixA.getFilterData().categoryBits == ENEMY_BIT) {
+                    ((Enemy) fixA.getUserData()).onHit((Bullet) fixB.getUserData());
+                } else {
+                    ((Enemy) fixB.getUserData()).onHit((Bullet) fixA.getUserData());
                 }
                 break;
         }

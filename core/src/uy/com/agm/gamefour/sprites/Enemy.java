@@ -111,7 +111,7 @@ public class Enemy extends AbstractDynamicObject {
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(CIRCLE_SHAPE_RADIUS_METERS);
         fixtureDef.filter.categoryBits = WorldContactListener.ENEMY_BIT; // Depicts what this fixture is
-        fixtureDef.filter.maskBits = WorldContactListener.WEAPON_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
+        fixtureDef.filter.maskBits = WorldContactListener.BULLET_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
         fixtureDef.shape = circleShape;
         body.createFixture(fixtureDef).setUserData(this);
 

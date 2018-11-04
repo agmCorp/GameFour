@@ -255,7 +255,7 @@ public class GameWorld {
     private void newLevel() {
         Array<Platform> platforms = platformController.getPlatforms();
 
-//        // todo ORQUESTA TODAS LAS VARIACIONES
+//        // todo ORQUESTA TODAS LAS CONCHUDAS VARIACIONES
 //        if (level > 0) {
 //            for (Platform platform : platforms) {
 //                platform.startMovement();

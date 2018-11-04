@@ -1,17 +1,10 @@
-- Tengo android 2.3.3 y libgdx ahora soporta android 3.1.2. Puedo tener ambos ides?
+- Tengo android 2.3.3 y libgdx ahora soporta android 3.1.2. Puedo tener ambos IDES?
 - Debo usar una skin
 - me queda la duda de si implemento el dispose en alguna pantalla y hago super.dispose..a cual hide llama? al de la clase derivada o la madre?
 supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 
 HACER
-PARA LIBERAR ME ESTA QUEDANDO:
-- movimiento de las plataformas
-- segun el level (multiplos de algo por ejemplo), creo un pajaro en el x de la plataforma 4 y el y random.
-El pajaro avanza hacia la izquierda y cuando llega al borde de la camara se dispose.
-El jumper con un tounch en state jump tira un huevo con velocidad vertical (y luego cae).
-Si mata al pajaro (explota), da muchos puntos.
-En gameWorld asi como existe platforms que controlan las plataformas, puedo hacer un enemycontroller que controla
-al enemigo segun el nivel.
+- clase bullet con sonido.
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
@@ -20,8 +13,6 @@ DESEABLE PARA LIBERAR
 OTROS
 - hacer un skin
 - en las settings debo meter algo que permita usar low o high por el paralax (boton four state off, low, medium, high)
-- agregar un obstaculo o algo en donde el pajaro suelte algo y lo mate. O una estrellita para agarrar por puntos no se.
-Sobre las plataformas no puedo poner nada porque es dificil seguirlas.
 - Poner una zona de salto perfecto. Si el pajaro cae justo ahi (su x en medio de la plataforma + delta) saco algun cartel y/o doy
 puntos extra.
 - a veces queda una distancia muy larga entre los cohetes (sobre el eje y). Me parece que es porque se estaban moviendo y luego el movimiento

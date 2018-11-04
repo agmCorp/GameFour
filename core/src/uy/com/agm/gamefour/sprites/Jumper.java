@@ -241,7 +241,7 @@ public class Jumper extends AbstractDynamicObject {
 
     public void shoot() {
         if (bullets > 0) {
-            gameWorld.createGameObject(new Bullet(gameWorld, body.getPosition().x, body.getPosition().y)); // todo
+            gameWorld.createGameObject(new Bullet(gameWorld, body.getPosition().x, body.getPosition().y));
             bullets--;
         }
     }
