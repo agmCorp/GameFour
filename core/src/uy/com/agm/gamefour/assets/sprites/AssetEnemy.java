@@ -15,7 +15,7 @@ import uy.com.agm.gamefour.game.GameCamera;
 public class AssetEnemy implements IAssetSprite {
     private static final String TAG = AssetEnemy.class.getName();
 
-    private static final float SCALE = 0.7f;
+    private static final float SCALE = 0.5f;
 
     private TextureRegion enemyStand;
     private TextureRegion enemySplat;
@@ -24,12 +24,12 @@ public class AssetEnemy implements IAssetSprite {
     public AssetEnemy(TextureAtlas atlas) {
         Array<TextureAtlas.AtlasRegion> regions;
 
-        enemyStand = atlas.findRegion("jumperIdle", 1);
-        enemySplat = atlas.findRegion("platformA", 1);
+        enemyStand = atlas.findRegion("enemy", 1);
+        enemySplat = atlas.findRegion("enemySplat");
 
         // Animation
-        regions = atlas.findRegions("jumperJump"); // todo cambiar todas la imagenes
-        enemyAnimation = new Animation(0.5f / 24.0f, regions, Animation.PlayMode.LOOP); // todo
+        regions = atlas.findRegions("enemy");
+        enemyAnimation = new Animation(0.5f / 15.0f, regions, Animation.PlayMode.LOOP);
         regions.clear();
     }
 

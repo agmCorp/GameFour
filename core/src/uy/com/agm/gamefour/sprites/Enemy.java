@@ -30,12 +30,12 @@ import uy.com.agm.gamefour.tools.AudioManager;
 public class Enemy extends AbstractDynamicObject {
     private static final String TAG = Enemy.class.getName();
 
-    private static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
+    private static final float CIRCLE_SHAPE_RADIUS_METERS = 20.0f / GameCamera.PPM;
     private static final float MIN_OFFSET_Y = 0.0f;
     private static final float MAX_OFFSET_Y = 2.0f;
-    private static final float KNOCK_BACK_SECONDS = 0.5f;
-    private static final float KNOCK_BACK_FORCE_X = 1000.0f;
-    private static final float KNOCK_BACK_FORCE_Y = 1000.0f;
+    private static final float KNOCK_BACK_SECONDS = 0.2f;
+    private static final float KNOCK_BACK_FORCE_X = 2000.0f;
+    private static final float KNOCK_BACK_FORCE_Y = 2000.0f;
     private static final Color KNOCK_BACK_COLOR = Color.BLACK;
     private static final Color DEFAULT_COLOR = Color.WHITE;
     private static final int SCORE = 1;
