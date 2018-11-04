@@ -218,7 +218,7 @@ public void laConchaDeTuMadre() { // todo
 //        }
 
         //if (level == 3 || level == 9) {
-        if (level > 1) {
+        if (level > 0) {
             // There must be at least two platforms to have a valid game.
             Platform secondLastPlatform = platforms.get(platforms.size - 2);
             Platform lastPlatform = platforms.get(platforms.size - 1);
