@@ -18,7 +18,7 @@ public class DebugConstants {
     public static final boolean DEBUG_BOX2D = true && TURN_ON_DEBUG;
 
     // Shows/hides background image
-    public static final boolean HIDE_BACKGROUND = false && TURN_ON_DEBUG;
+    public static final boolean HIDE_BACKGROUND = true && TURN_ON_DEBUG;
 
     // Shows/hides FPS counter
     public static final boolean SHOW_FPS = false && TURN_ON_DEBUG;

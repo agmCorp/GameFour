@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -100,7 +101,7 @@ public class Enemy extends AbstractDynamicObject {
     private void defineEnemy() {
         // Creates main body
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(getX() + getWidth() / 2, getY() + getHeight() / 2); // In box2D the origin is at the center of the body
+        bodyDef.position.set(getX() + enemyWidth / 2, getY() + enemyHeight / 2); // In box2D the origin is at the center of the body
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         body = gameWorld.createBody(bodyDef);
         body.setFixedRotation(true);
@@ -180,8 +181,9 @@ public class Enemy extends AbstractDynamicObject {
     private boolean isOnCamera() {
         GameCamera gameCamera = gameWorld.getGameCamera();
         float gameCameraPosX = gameCamera.position().x;
-        float leftEdge = gameCameraPosX - gameCamera.getWorldWidth() / 2;
-        float rightEdge = gameCameraPosX + gameCamera.getWorldWidth() / 2;
+        float worldWidth = gameCamera.getWorldWidth();
+        float leftEdge = gameCameraPosX - worldWidth / 2;
+        float rightEdge = gameCameraPosX + worldWidth / 2;
 
         return leftEdge <= getX() + getWidth() && getX() <= rightEdge;
     }
@@ -209,6 +211,7 @@ public class Enemy extends AbstractDynamicObject {
         if (!knockBackStarted) {
             initKnockBack();
         }
+        holdEnemy();
         updateSpritePosition(deltaTime);
         knockBackTime += deltaTime;
         if (knockBackTime > KNOCK_BACK_SECONDS) {
@@ -216,7 +219,31 @@ public class Enemy extends AbstractDynamicObject {
             currentState = State.EXPLODING;
             stateTime = 0;
         }
-        checkBoundaries();
+    }
+
+    private void holdEnemy() {
+        // We don't let this Enemy go beyond the screen
+        GameCamera gameCamera = gameWorld.getGameCamera();
+        Vector3 gameCameraPos = gameCamera.position();
+        float gameCameraPosX = gameCameraPos.x;
+        float gameCameraPosY = gameCameraPos.y;
+        float worldWidth = gameCamera.getWorldWidth();
+        float worldHeight = gameCamera.getWorldHeight();
+        float camLeftEdge = gameCameraPosX - worldWidth / 2;
+        float camRightEdge = gameCameraPosX + worldWidth / 2;
+        float camUpperEdge = gameCameraPosY + worldHeight / 2;
+        float camBottomEdge = gameCameraPosY - worldHeight / 2;
+        float enemyLeftEdge = getX();
+        float enemyRightEdge = getX() + enemyWidth;
+        float enemyUpperEdge = getY() + enemyHeight;
+        float enemyBottomEdge = getY();
+
+        if (camUpperEdge <= enemyUpperEdge ||
+                enemyLeftEdge <= camLeftEdge ||
+                camRightEdge <= enemyRightEdge ||
+                enemyBottomEdge <= camBottomEdge) {
+            body.setLinearVelocity(0.0f, 0.0f); // Stop
+        }
     }
 
     private void initKnockBack() {
@@ -252,8 +279,6 @@ public class Enemy extends AbstractDynamicObject {
             setRegion((TextureRegion) explosionAnimation.getKeyFrame(stateTime, true));
             stateTime += deltaTime;
         }
-
-        checkBoundaries();
     }
 
     private void stateSplat(float deltaTime) {
@@ -262,7 +287,6 @@ public class Enemy extends AbstractDynamicObject {
                 getY() + getHeight() / 2 - enemyHeight / 2,
                 enemyWidth, enemyHeight);
         setRegion(enemySplat);
-
         checkBoundaries();
     }
 
