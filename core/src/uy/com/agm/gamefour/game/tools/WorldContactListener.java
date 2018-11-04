@@ -20,7 +20,8 @@ public class WorldContactListener implements ContactListener {
     public static final short NOTHING_BIT = 0;
     public static final short PLATFORM_BIT = 1;
     public static final short JUMPER_BIT = 2;
-    public static final short OBSTACLE_BIT = 4;
+    public static final short ENEMY_BIT = 4;
+    public static final short WEAPON_BIT = 8;
 
     @Override
     public void beginContact(Contact contact) {
@@ -49,9 +50,6 @@ public class WorldContactListener implements ContactListener {
                         }
                     }
                 }
-                break;
-
-            case OBSTACLE_BIT | JUMPER_BIT:
                 break;
         }
     }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -87,8 +88,9 @@ public class Jumper extends AbstractDynamicObject {
         timeToSpeak = getTimeToSpeak();
 
         // Particles effect
-        float gameCameraX = gameWorld.getGameCamera().position().x;
-        float gameCameraY = gameWorld.getGameCamera().position().y;
+        Vector3 gameCameraPos = gameWorld.getGameCamera().position();
+        float gameCameraX = gameCameraPos.x;
+        float gameCameraY = gameCameraPos.y;
 
         // Particle magic
         magic = new ParticleEffect();
@@ -108,7 +110,7 @@ public class Jumper extends AbstractDynamicObject {
     private void defineJumper() {
         // Creates main body
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(getX() + getWidth() / 2, getY() + getHeight() / 2); // In b2box the origin is at the center of the body
+        bodyDef.position.set(getX() + getWidth() / 2, getY() + getHeight() / 2); // In box2D the origin is at the center of the body
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         body = gameWorld.createBody(bodyDef);
         body.setFixedRotation(true);
@@ -135,8 +137,7 @@ public class Jumper extends AbstractDynamicObject {
     private void setFilters() {
         Filter filterJumper = new Filter();
         filterJumper.categoryBits = WorldContactListener.JUMPER_BIT; // Depicts what this fixture is
-        filterJumper.maskBits = WorldContactListener.PLATFORM_BIT |
-                WorldContactListener.OBSTACLE_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
+        filterJumper.maskBits = WorldContactListener.PLATFORM_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
 
         Filter filterSensor = new Filter();
         filterSensor.categoryBits = WorldContactListener.JUMPER_BIT; // Depicts what this fixture is
@@ -172,7 +173,7 @@ public class Jumper extends AbstractDynamicObject {
         // Current platform, score and level
         currentPlatform = platform;
         playScreen.getHud().addScore(SUCCESSFUL_JUMP_SCORE);
-        gameWorld.addLevel();
+        playScreen.levelCompleted();
 
         onLanding();
     }
@@ -202,7 +203,7 @@ public class Jumper extends AbstractDynamicObject {
         startJump();
 
         // Jump teleport
-        Vector2 platformPos = gameWorld.getPlatformController().getPlatform(1).getBodyPosition();
+        Vector2 platformPos = gameWorld.getPlatformController().getPlatforms().get(1).getBodyPosition();
         body.setGravityScale(1);
         body.setTransform(platformPos.x, platformPos.y + POWER_JUMP_OFFSET_Y, body.getAngle());
         body.setAwake(true); // awakes the body to enable physics calculations

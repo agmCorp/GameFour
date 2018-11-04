@@ -75,7 +75,7 @@ public class Platform extends AbstractDynamicObject {
     private void definePlatform() {
         // Creates main body
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(getX() + getWidth() / 2, getY() + getHeight() / 2); // In b2box the origin is at the center of the body
+        bodyDef.position.set(getX() + getWidth() / 2, getY() + getHeight() / 2); // In box2D the origin is at the center of the body
         bodyDef.type = BodyDef.BodyType.KinematicBody;
         body = gameWorld.createBody(bodyDef);
         body.setFixedRotation(true);

@@ -52,11 +52,11 @@ public class PlatformController {
         return MathUtils.random(MIN_OFFSET_Y, MAX_OFFSET_Y);
     }
 
-    public Platform getPlatform(int index) {
-        return platforms.get(index);
+    public Array<Platform> getPlatforms() {
+        return platforms;
     }
 
-    public void update(int level, float deltaTime) {
+    public void update(float deltaTime) {
         for (Platform platform : platforms) {
             platform.update(deltaTime);
         }
@@ -70,25 +70,6 @@ public class PlatformController {
             pTail = platforms.size > 0 ? platforms.get(platforms.size - 1) : pHead;
             pHead.reposition(pTail.getX() + pTail.getWidth() + getRandomX(), getRandomY());
             platforms.add(pHead);
-        }
-
-        // todo ORQUESTA TODAS LAS VARIACIONES
-        if (level == 3 || level == 4) {
-            for (Platform platform : platforms) {
-                platform.startMovement();
-            }
-        }
-
-        if (level == 5) {
-            for (Platform platform : platforms) {
-                platform.stopMovement();
-            }
-        }
-
-        if (level == 7) {
-            for (Platform platform : platforms) {
-                platform.startMovement();
-            }
         }
     }
 

@@ -11,6 +11,7 @@ public class AssetSprites {
     private static final String TAG = AssetSprites.class.getName();
 
     private AssetJumper jumper;
+    private AssetEnemy enemy;
     private AssetPlatformA platformA;
     private AssetPlatformB platformB;
     private AssetPlatformC platformC;
@@ -20,6 +21,7 @@ public class AssetSprites {
 
     public AssetSprites(TextureAtlas atlasSprites) {
         jumper = new AssetJumper(atlasSprites);
+        enemy = new AssetEnemy(atlasSprites);
         platformA = new AssetPlatformA(atlasSprites);
         platformB = new AssetPlatformB(atlasSprites);
         platformC = new AssetPlatformC(atlasSprites);
@@ -30,6 +32,10 @@ public class AssetSprites {
 
     public AssetJumper getJumper() {
         return jumper;
+    }
+
+    public AssetEnemy getEnemy() {
+        return enemy;
     }
 
     public AssetPlatformA getPlatformA() {

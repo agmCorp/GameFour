@@ -43,12 +43,12 @@ public class AssetPlatformC implements IAssetPlatform {
 
     @Override
     public float getWidth() {
-        return ( platformCStand.getRegionWidth() / GameCamera.PPM ) * SCALE;
+        return (platformCStand.getRegionWidth() / GameCamera.PPM) * SCALE;
     }
 
     @Override
     public float getHeight() {
-        return ( platformCStand.getRegionHeight() / GameCamera.PPM ) * SCALE;
+        return (platformCStand.getRegionHeight() / GameCamera.PPM) * SCALE;
     }
 
 }

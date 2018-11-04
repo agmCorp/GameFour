@@ -27,8 +27,10 @@ public class PlayScreen extends PlayAbstractScreen {
     private InfoScreen infoScreen;
     private PauseScreen pauseScreen;
     private WorldController worldController;
+    private GameWorld gameWorld;
     private WorldRenderer worldRenderer;
     private GameSettings prefs;
+    private boolean levelCompleted;
     private boolean endGame;
 
     public PlayScreen(GameFour game) {
@@ -39,9 +41,10 @@ public class PlayScreen extends PlayAbstractScreen {
         pauseScreen = new PauseScreen(game);
 
         worldController = new WorldController(this);
-        GameWorld gameWorld = worldController.getGameWorld();
+        gameWorld = worldController.getGameWorld();
         worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
         prefs = GameSettings.getInstance();
+        levelCompleted = false;
         endGame = false;
 
         // Play level music
@@ -57,6 +60,7 @@ public class PlayScreen extends PlayAbstractScreen {
 
     @Override
     public void render(float deltaTime) {
+        // Update logic
         pauseScreen.update(deltaTime);
         if (isPlayScreenStateRunning()) {
             hud.update(deltaTime);
@@ -64,6 +68,7 @@ public class PlayScreen extends PlayAbstractScreen {
             worldController.update(deltaTime);
         }
 
+        // Render logic
         worldRenderer.render();
         hud.render();
         infoScreen.render();
@@ -71,28 +76,40 @@ public class PlayScreen extends PlayAbstractScreen {
 
         // Analyze game results
         if (playScreenState == PlayScreenState.RUNNING) {
-            gameResults(deltaTime);
+            gameResults();
         }
     }
 
-    private void gameResults(float deltaTime) {
-        if (worldController.isGameOver() && !endGame) {
-            // Advertisement
-            if (hud.isScoreAboveAverage()) {
-                prefs.decreaseCountdownAd();
-                if (prefs.isCountdownAdFinish()) {
-                    prefs.resetCountdownAd();
-                    showInterstitialAd();
-                }
+    private void gameResults() {
+        if (!endGame) {
+            // We evaluate mutual exclusion conditions.
+            // A boolean value is used to avoid nested if/else sentences.
+            boolean finish = false;
+
+            finish = !finish && levelCompleted;
+            if (finish) {
+                gameWorld.addLevel();
+                levelCompleted = false;
             }
 
-            // Game over
-            GameWorld gameWorld = worldController.getGameWorld();
-            gameWorld.getGameCamera().shake(SHAKE_DURATION);
-            gameWorld.getJumper().onDead();
-            infoScreen.showGameOver();
-            hud.setVisible(false);
-            endGame = true;
+            finish = !finish && worldController.isGameOver();
+            if (finish) {
+                // Advertisement
+                if (hud.isScoreAboveAverage()) {
+                    prefs.decreaseCountdownAd();
+                    if (prefs.isCountdownAdFinish()) {
+                        prefs.resetCountdownAd();
+                        showInterstitialAd();
+                    }
+                }
+
+                // Game over
+                gameWorld.getGameCamera().shake(SHAKE_DURATION);
+                gameWorld.getJumper().onDead();
+                infoScreen.showGameOver();
+                hud.setVisible(false);
+                endGame = true;
+            }
         }
     }
 
@@ -101,7 +118,7 @@ public class PlayScreen extends PlayAbstractScreen {
         hud.resize(width, height);
         infoScreen.resize(width, height);
         pauseScreen.resize(width, height);
-        worldController.getGameWorld().getGameCamera().resize(width, height);
+        gameWorld.getGameCamera().resize(width, height);
     }
 
     @Override
@@ -143,7 +160,7 @@ public class PlayScreen extends PlayAbstractScreen {
 
     @Override
     public InputProcessor getInputProcessor() {
-        return worldController.getInputProcessor(new GameController(worldController.getGameWorld(), this));
+        return worldController.getInputProcessor(new GameController(gameWorld, this));
     }
 
     @Override
@@ -151,7 +168,7 @@ public class PlayScreen extends PlayAbstractScreen {
         hud.applyViewport();
         infoScreen.applyViewport();
         pauseScreen.applyViewport();
-        worldController.getGameWorld().getGameCamera().applyViewport();
+        gameWorld.getGameCamera().applyViewport();
     }
 
     public Hud getHud() {
@@ -164,5 +181,9 @@ public class PlayScreen extends PlayAbstractScreen {
 
     public PauseScreen getPauseScreen() {
         return pauseScreen;
+    }
+
+    public void levelCompleted() {
+        levelCompleted = true;
     }
 }

@@ -43,11 +43,11 @@ public class AssetPlatformE implements IAssetPlatform {
 
     @Override
     public float getWidth() {
-        return ( platformEStand.getRegionWidth() / GameCamera.PPM ) * SCALE;
+        return (platformEStand.getRegionWidth() / GameCamera.PPM) * SCALE;
     }
 
     @Override
     public float getHeight() {
-        return ( platformEStand.getRegionHeight() / GameCamera.PPM ) * SCALE;
+        return (platformEStand.getRegionHeight() / GameCamera.PPM) * SCALE;
     }
 }
