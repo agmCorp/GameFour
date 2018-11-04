@@ -6,6 +6,7 @@ supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 HACER
 - clase bullet con sonido.
 - TypingLabel html
+- Hacer un keystore para este juego
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
