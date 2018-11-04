@@ -89,6 +89,9 @@ public class GameController implements GestureDetector.GestureListener, InputPro
             case Input.Keys.P:
                 cheatMode();
                 break;
+            case Input.Keys.E: // TODO
+                gameWorld.laConchaDeTuMadre();
+                break;
         }
         return true;
     }

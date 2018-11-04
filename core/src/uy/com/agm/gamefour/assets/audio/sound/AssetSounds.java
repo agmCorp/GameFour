@@ -17,6 +17,7 @@ public class AssetSounds {
     private Array<Sound> jump;
     private Sound hit;
     private Sound bodyImpact;
+    private Sound pum;
     private Sound click;
     private Sound newAchievement;
     private Sound bloodSplash;
@@ -31,6 +32,7 @@ public class AssetSounds {
         jump.add(am.get(Assets.FX_FILE_JUMP_E, Sound.class));
         hit = am.get(Assets.FX_FILE_HIT, Sound.class);
         bodyImpact = am.get(Assets.FX_FILE_BODY_IMPACT, Sound.class);
+        pum = am.get(Assets.FX_FILE_PUM, Sound.class);
         click = am.get(Assets.FX_FILE_CLICK, Sound.class);
         newAchievement = am.get(Assets.FX_FILE_NEW_ACHIEVEMENT, Sound.class);
         bloodSplash = am.get(Assets.FX_FILE_BLOOD_SPLASH, Sound.class);
@@ -47,6 +49,10 @@ public class AssetSounds {
 
     public Sound getBodyImpact() {
         return bodyImpact;
+    }
+
+    public Sound getPum() {
+        return pum;
     }
 
     public Sound getClick() {

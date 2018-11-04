@@ -20,6 +20,7 @@ import uy.com.agm.gamefour.sprites.Jumper;
 import uy.com.agm.gamefour.sprites.ParallaxSB;
 import uy.com.agm.gamefour.sprites.Platform;
 import uy.com.agm.gamefour.sprites.PlatformController;
+import uy.com.agm.gamefour.sprites.Weapon;
 
 /**
  * Created by AGMCORP on 19/9/2018.
@@ -147,7 +148,7 @@ public class GameWorld {
 
     private void renderEnemies(SpriteBatch batch) {
         for (Enemy enemy : enemies) {
-            enemy.draw(batch);
+            enemy.render(batch);
         }
     }
 
@@ -194,6 +195,12 @@ public class GameWorld {
 
     }
 
+
+public void laConchaDeTuMadre() { // todo
+    for(Enemy enemy : enemies) {
+        enemy.onHit(new Weapon());
+    }
+}
     private void newLevel() {
         Array<Platform> platforms = platformController.getPlatforms();
 
@@ -210,7 +217,8 @@ public class GameWorld {
 //            }
 //        }
 
-        if (level == 3) {
+        //if (level == 3 || level == 9) {
+        if (level > 1) {
             // There must be at least two platforms to have a valid game.
             Platform secondLastPlatform = platforms.get(platforms.size - 2);
             Platform lastPlatform = platforms.get(platforms.size - 1);

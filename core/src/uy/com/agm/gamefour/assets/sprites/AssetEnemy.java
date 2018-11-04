@@ -18,21 +18,27 @@ public class AssetEnemy implements IAssetSprite {
     private static final float SCALE = 0.7f;
 
     private TextureRegion enemyStand;
+    private TextureRegion enemySplat;
     private Animation enemyAnimation;
 
     public AssetEnemy(TextureAtlas atlas) {
         Array<TextureAtlas.AtlasRegion> regions;
 
         enemyStand = atlas.findRegion("jumperIdle", 1);
+        enemySplat = atlas.findRegion("platformA", 1);
 
         // Animation
-        regions = atlas.findRegions("jumperJump"); // todo
+        regions = atlas.findRegions("jumperJump"); // todo cambiar todas la imagenes
         enemyAnimation = new Animation(0.5f / 24.0f, regions, Animation.PlayMode.LOOP); // todo
         regions.clear();
     }
 
     public TextureRegion getEnemyStand() {
         return enemyStand;
+    }
+
+    public TextureRegion getEnemySplat() {
+        return enemySplat;
     }
 
     public Animation getEnemyAnimation() {

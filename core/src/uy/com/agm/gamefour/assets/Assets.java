@@ -34,6 +34,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public static final String FX_FILE_JUMP_E = "audio/sounds/jumpE.ogg";
     public static final String FX_FILE_HIT = "audio/sounds/hit.ogg";
     public static final String FX_FILE_BODY_IMPACT = "audio/sounds/bodyImpact.ogg";
+    public static final String FX_FILE_PUM = "audio/sounds/pum.ogg";
     public static final String FX_FILE_CLICK = "audio/sounds/click.ogg";
     public static final String FX_FILE_NEW_ACHIEVEMENT = "audio/sounds/newAchievement.ogg";
     public static final String FX_FILE_BLOOD_SPLASH = "audio/sounds/bloodSplash.ogg";
@@ -138,6 +139,7 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.load(FX_FILE_JUMP_E, Sound.class);
         assetManager.load(FX_FILE_HIT, Sound.class);
         assetManager.load(FX_FILE_BODY_IMPACT, Sound.class);
+        assetManager.load(FX_FILE_PUM, Sound.class);
         assetManager.load(FX_FILE_CLICK, Sound.class);
         assetManager.load(FX_FILE_NEW_ACHIEVEMENT, Sound.class);
         assetManager.load(FX_FILE_BLOOD_SPLASH, Sound.class);

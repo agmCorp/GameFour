@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.sprites;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,14 +9,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.sprites.AssetEnemy;
+import uy.com.agm.gamefour.assets.sprites.AssetExplosion;
+import uy.com.agm.gamefour.assets.sprites.AssetSprites;
 import uy.com.agm.gamefour.game.GameCamera;
 import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
+import uy.com.agm.gamefour.tools.AudioManager;
 
 /**
  * Created by AGM on 11/3/2018.
@@ -25,6 +31,14 @@ public class Enemy extends AbstractDynamicObject {
     private static final String TAG = Enemy.class.getName();
 
     private static final float CIRCLE_SHAPE_RADIUS_METERS = 30.0f / GameCamera.PPM;
+    private static final float MIN_OFFSET_Y = 0.0f;
+    private static final float MAX_OFFSET_Y = 2.0f;
+    private static final float KNOCK_BACK_SECONDS = 0.5f;
+    private static final float KNOCK_BACK_FORCE_X = 1000.0f;
+    private static final float KNOCK_BACK_FORCE_Y = 1000.0f;
+    private static final Color KNOCK_BACK_COLOR = Color.BLACK;
+    private static final Color DEFAULT_COLOR = Color.WHITE;
+    private static final int SCORE = 1;
 
     private enum State {
         INACTIVE, ALIVE, KNOCK_BACK, EXPLODING, SPLAT, DEAD, DISPOSE
@@ -32,27 +46,46 @@ public class Enemy extends AbstractDynamicObject {
     private PlayScreen playScreen;
     private GameWorld gameWorld;
     private TextureRegion enemyStand;
+    private TextureRegion enemySplat;
     private Animation enemyAnimation;
+    private Animation explosionAnimation;
+    private float enemyWidth;
+    private float enemyHeight;
+    private float explosionWidth;
+    private float explosionHeight;
     private float stateTime;
     private Body body;
     protected State currentState;
+    private boolean knockBackStarted;
+    private float knockBackTime;
 
     public Enemy(PlayScreen playScreen, GameWorld gameWorld, Platform secondLastPlatform, Platform lastPlatform) {
         this.playScreen = playScreen;
         this.gameWorld = gameWorld;
 
-        AssetEnemy assetEnemy = Assets.getInstance().getSprites().getEnemy();
+        // Animations
+        AssetSprites assetSprites = Assets.getInstance().getSprites();
+        AssetEnemy assetEnemy = assetSprites.getEnemy();
+        AssetExplosion assetExplosion = assetSprites.getExplosion();
+
         enemyStand = assetEnemy.getEnemyStand();
+        enemySplat = assetEnemy.getEnemySplat();
         enemyAnimation = assetEnemy.getEnemyAnimation();
+        explosionAnimation = assetExplosion.getExplosionAnimation();
+
+        enemyWidth = assetEnemy.getWidth();
+        enemyHeight = assetEnemy.getHeight();
+        explosionWidth = assetExplosion.getWidth();
+        explosionHeight = assetExplosion.getHeight();
 
         // Calculates position
         float x1 = secondLastPlatform.getX() + secondLastPlatform.getWidth();
-        float x2 = lastPlatform.getX() - assetEnemy.getWidth();
+        float x2 = lastPlatform.getX() - enemyWidth;
         float x = x1 < x2 ? MathUtils.random(x1, x2) : MathUtils.random(x2, x1);
-        float y = Math.max(secondLastPlatform.getY(), lastPlatform.getY()) - assetEnemy.getHeight() - MathUtils.random(0, 2f);
+        float y = Math.max(secondLastPlatform.getY(), lastPlatform.getY()) - enemyHeight - MathUtils.random(MIN_OFFSET_Y, MAX_OFFSET_Y);
 
         // Sets initial values for position, width and height and initial frame as enemyStand.
-        setBounds(x, y, assetEnemy.getWidth(), assetEnemy.getHeight());
+        setBounds(x, y, enemyWidth, enemyHeight);
         setRegion(enemyStand);
         stateTime = 0;
 
@@ -60,6 +93,8 @@ public class Enemy extends AbstractDynamicObject {
         defineEnemy();
 
         currentState = State.INACTIVE;
+        knockBackStarted = false;
+        knockBackTime = 0;
     }
 
     private void defineEnemy() {
@@ -83,7 +118,8 @@ public class Enemy extends AbstractDynamicObject {
         body.setActive(false);
     }
 
-    public void onHit(Weapon weapon) { // todo es lamado por worldcontactlistener cuando lo revientan, el puntaje lo puedo poner aca o en otro estado, ver gamethree
+    public void onHit(Weapon weapon) {
+        playScreen.getHud().addScore(SCORE);
         weapon.onTarget();
 
         /*
@@ -158,26 +194,75 @@ public class Enemy extends AbstractDynamicObject {
     }
 
     private void stateAlive(float deltaTime) {
+        updateSpritePosition(deltaTime);
+        checkBoundaries();
+    }
+
+    private void updateSpritePosition(float deltaTime) {
         // Update this Sprite to correspond with the position of the Box2D body.
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRegion((TextureRegion) enemyAnimation.getKeyFrame(stateTime, true));
         stateTime += deltaTime;
-
-        checkBoundaries();
     }
 
     private void stateKnockBack(float deltaTime) {
-        // todo
+        if (!knockBackStarted) {
+            initKnockBack();
+        }
+        updateSpritePosition(deltaTime);
+        knockBackTime += deltaTime;
+        if (knockBackTime > KNOCK_BACK_SECONDS) {
+            body.setLinearVelocity(0.0f, 0.0f);
+            currentState = State.EXPLODING;
+            stateTime = 0;
+        }
         checkBoundaries();
     }
 
+    private void initKnockBack() {
+        // Knock back effect
+        body.applyForce(MathUtils.randomSign() * KNOCK_BACK_FORCE_X,
+                MathUtils.randomSign() * KNOCK_BACK_FORCE_Y,
+                body.getPosition().x, body.getPosition().y, true);
+
+        // Enemy can't collide with anything
+        Filter filter = new Filter();
+        filter.maskBits = WorldContactListener.NOTHING_BIT;
+
+        // We set the previous filter in every fixture
+        for (Fixture fixture : body.getFixtureList()) {
+            fixture.setFilterData(filter);
+        }
+        knockBackStarted = true;
+    }
+
     private void stateExploding(float deltaTime) {
-        // todo aca poner filtro nothing!!!
+        if (explosionAnimation.isAnimationFinished(stateTime)) {
+            currentState = State.SPLAT;
+        } else {
+            if (stateTime == 0) { // Explosion starts
+                // Audio effect
+                AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getPum());
+
+                // Determines the size of the explosion on the screen
+                setBounds(getX() + getWidth() / 2 - explosionWidth / 2,
+                        getY() + getHeight() / 2 - explosionHeight / 2,
+                        explosionWidth, explosionHeight);
+            }
+            setRegion((TextureRegion) explosionAnimation.getKeyFrame(stateTime, true));
+            stateTime += deltaTime;
+        }
+
         checkBoundaries();
     }
 
     private void stateSplat(float deltaTime) {
-        // todo
+        // Determines the size of the splat on the screen
+        setBounds(getX() + getWidth() / 2 - enemyWidth / 2,
+                getY() + getHeight() / 2 - enemyHeight / 2,
+                enemyWidth, enemyHeight);
+        setRegion(enemySplat);
+
         checkBoundaries();
     }
 
@@ -197,8 +282,17 @@ public class Enemy extends AbstractDynamicObject {
     @Override
     public void render(SpriteBatch spriteBatch) {
         if (isDrawable()) {
+            // Set the tint
+            if (currentState == State.KNOCK_BACK) {
+                setColor(KNOCK_BACK_COLOR);
+            } else {
+                if (currentState == State.EXPLODING) {
+                    setColor(DEFAULT_COLOR);
+                }
+            }
+
             // Draw Enemy
-            draw(spriteBatch);
+            super.draw(spriteBatch);
         }
     }
 }

@@ -40,11 +40,11 @@ public class AssetRocket implements IAssetGUI {
 
     @Override
     public float getWidth() {
-        return ( rocketStand.getRegionWidth() / GameCamera.PPM ) * SCALE;
+        return (rocketStand.getRegionWidth() / GameCamera.PPM) * SCALE;
     }
 
     @Override
     public float getHeight() {
-        return ( rocketStand.getRegionHeight() / GameCamera.PPM ) * SCALE;
+        return (rocketStand.getRegionHeight() / GameCamera.PPM) * SCALE;
     }
 }

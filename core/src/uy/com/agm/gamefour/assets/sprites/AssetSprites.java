@@ -12,6 +12,7 @@ public class AssetSprites {
 
     private AssetJumper jumper;
     private AssetEnemy enemy;
+    private AssetExplosion explosion;
     private AssetPlatformA platformA;
     private AssetPlatformB platformB;
     private AssetPlatformC platformC;
@@ -22,6 +23,7 @@ public class AssetSprites {
     public AssetSprites(TextureAtlas atlasSprites) {
         jumper = new AssetJumper(atlasSprites);
         enemy = new AssetEnemy(atlasSprites);
+        explosion = new AssetExplosion(atlasSprites);
         platformA = new AssetPlatformA(atlasSprites);
         platformB = new AssetPlatformB(atlasSprites);
         platformC = new AssetPlatformC(atlasSprites);
@@ -36,6 +38,10 @@ public class AssetSprites {
 
     public AssetEnemy getEnemy() {
         return enemy;
+    }
+
+    public AssetExplosion getExplosion() {
+        return explosion;
     }
 
     public AssetPlatformA getPlatformA() {
