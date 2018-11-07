@@ -161,3 +161,24 @@ En html/src/GdxDefinition.gwt.xml agregué:
 Con esto, lo que hago es referenciar al archivo regexodus.gwt.xml que está dentro de los sources bajados (que quedaron dentro de External Libraries/regexodus-0.1.10-sources).
 Ese archivo tiene el mapeo a los .java necesarios para que GWT genere javascript a partir de ellos.
 Luego de todo esto, ya estaría en condiciones de usar TypingLabel en html.
+
+5) Para hacer un "Pull request" ver este video:
+https://www.youtube.com/watch?v=dSl_qnWO104
+
+Básicamente es hacer un fork del proyecto en cuestión y luego esta secuencia de comandos:
+
+mkdir carpeta
+cd carpeta
+git clone URL COPIADA LUEGO DEL FORK PRESIONANDO EL BOTÓN "CLONE OR DOWNLOAD"
+cd elProyecto
+- luego edito los fuentes con notepad o algún ide
+git status 
+- veo lo que toqué en rojo
+git add .
+git status
+- veo que lo que toqué haya quedado en verde
+git commit -m "Algún comentario"
+git push origin  master 
+- se sube a mi fork en github y puedo verlo allí
+Luego en hitHub uso el botón New pull request, selecciono las branches a comparar (la del dueño del proyecto y la mia) y le doy comparar.
+Relleno el formulario con algún comentario y listo.
