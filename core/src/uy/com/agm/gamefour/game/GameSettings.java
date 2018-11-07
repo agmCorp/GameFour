@@ -13,7 +13,9 @@ public class GameSettings {
     private static final int DEF_COUNT_AD = 3;
     private static final String SETTINGS = "powerJumpSettings";
     private static final String HIGH_SCORE = "highScore";
+    private static final int DEFAULT_HIGH_SCORE = 4;
     private static final String BACKGROUND_ID = "backgroundId";
+    private static final int INITIAL_BACKGROUND_ID = 1;
     private static final String AUDIO = "audio";
 
     // Singleton: unique instance
@@ -40,8 +42,8 @@ public class GameSettings {
     }
 
     public void load() {
-        highScore = prefs.getInteger(HIGH_SCORE, 0);
-        backgroundId = prefs.getInteger(BACKGROUND_ID, 1);
+        highScore = prefs.getInteger(HIGH_SCORE, DEFAULT_HIGH_SCORE);
+        backgroundId = prefs.getInteger(BACKGROUND_ID, INITIAL_BACKGROUND_ID);
         audio = prefs.getBoolean(AUDIO, true);
     }
 

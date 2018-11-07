@@ -5,9 +5,10 @@ supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 
 HACER
 - clase bullet con sonido.
-- TypingLabel html
 - Hacer un keystore para este juego
 - Poner por defecto un highscore razonable y ver lo de averagePlayer
+- Estudiar la memoria consumida
+
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
@@ -20,6 +21,7 @@ OTROS
 puntos extra.
 - a veces queda una distancia muy larga entre los cohetes (sobre el eje y). Me parece que es porque se estaban moviendo y luego el movimiento
 se detiene al cambiar de nivel.
+- Revisar que pasa después que choca peque no veo que dispare. Capaz es peque cae rápido
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 LECCIONES APRENDIDAS
@@ -54,41 +56,108 @@ levantar el apache y el tomcat del xampp y ejecutar http://localhost/Alvaro/jueg
 
 3) Para usar el editor de partículas mejor ejecutar el editor desde Android Studio ya que lo ejecuta desde la versión de libgdx que tengo.
 Para ello seguir este link https://www.gamefromscratch.com/post/2014/11/03/LibGDX-Tutorial-Part-15-Particles-Part-One-2D-Particles.aspx.
-Lo importante es que arriba del todo diga "Pixel per meter 100" (mi PPM) y "zoom level = 1" asi puedo ver en tamaño real el efecto.
+Con respecto al efecto (archivo .p), lo importante es que arriba del todo al abrirlo diga "Pixel per meter 100" (mi PPM) y "zoom level = 1"
+asi puedo ver en tamaño real el efecto.
 Todas las dimensiones deben ir en metros (ej: spawn width, X size, etc.), lo mismo con las velocidades.
 Estas propiedades son por cada emiter, si hay más de un emiter debo seleccionarlo para editar sus propiedades.
 
-4) Para incluir TypingLabel en gwt hice lo siguiente:
-En GdxDefinition.gwt.xml agregué:
+4) Para incluir TypingLabel y poder usarla en html hice lo siguiente:
+En html/src/GdxDefinition.gwt.xml agregué:
 <inherits name='TypingLabel' />
-<extend-configuration-property name="gdx.reflect.include" value="com.rafaskoberg.gdx.typinglabel.TypingLabel" />
 
 Luego dentro de GameFour/core/src cree un archivo llamado TypingLabel.gwt.xml cuyo contenido es el siguiente:
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit trunk//EN" "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd">
 <module>
-<source path="com/rafaskoberg/gdx/typinglabel" />
+<source path="com/rafaskoberg/gdx/typinglabel" /> <--- RUTA EN DONDE ESTÁN LOS FUENTES PARA QUE GWT GENERE JAVASCRIPT A PARTIR DE ELLOS.
 </module>
 
-Eso indica en donde están los fuentes de la librería.
-Para bajarme los fuentes tuve que editar GameFour/build.gradle y en la sección project(":core") agregué:
-compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion:sources".
-Eso me trajo los fuentes dentro de External libraries (ahora figura typing-label-1.04 como antes y typing-label-1.04-sources).
+Me bajé los fuentes desde este link:
+https://github.com/rafaskb/typing-label
+Es necesario bajar los fuentes porque los voy a tener que modificar para hacerlos compatibles con GWT.
 
-Ahora me está pasando lo que dice el issue de TypingLabel.
-https://github.com/rafaskb/typing-label/issues/1
-************
-Agregué en GameFour/build.gradle esto provisorio:
-       // AGM
-       compile 'com.github.tommyettinger:regexodus:0.1.10'
+Copié los fuentes dentro de GameFour/core/src.
+Líneas 35 y 36 de TypingLabel antes:
+private final ObjectMap<String, String> variables = new ObjectMap<>();
+protected final Array<TokenEntry> tokenEntries = new Array<>();
+Línes 35 y 36 de TypingLabel después:
+private final ObjectMap<String, String> variables = new ObjectMap<String, String>();
+protected final Array<TokenEntry> tokenEntries = new Array<TokenEntry>();
 
-       Creo que la solución sería bajarme los fuentes de TypingLabel, meterlo dentro de mi proyecto
-        (GameFour/src) y editar la clase Parser.
+Ver reflection en libgdx: https://github.com/libgdx/libgdx/wiki/Reflection
+Línea 448 de TypingLabel antes:
+antes decía if (effectClass.isAssignableFrom(effect.getClass())) {
+Línea 448 de TypingLabel después:
+ahora dice if (ClassReflection.isAssignableFrom(effectClass.getClass(), effect.getClass())) {
 
-       Debería quitar las siguientes referencias de GameFour/build.gradle:
-               typingLabelVersion = '1.0.4'
-               ....
-               compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
-               compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion:sources"
+Estos fuentes SOLO SE VAN A USAR para GWT.
+Para android y desktop voy a usar el jar bajado por maven/gradle.
+Para bajarme el jar editar GameFour/build.gradle:
+   ext {
+       appName = "GameFour"
+       gdxVersion = '1.9.8'
+       roboVMVersion = '2.3.1'
+       box2DLightsVersion = '1.4'
+       ashleyVersion = '1.7.0'
+       aiVersion = '1.8.0'
+       admobVersion = '15.0.1'
+       ---> typingLabelVersion = '1.0.4'
+   }
 
-       Luego incluir los fuentes y jar del parser así como hice lo de TypingLabel inicialmente.
+project(":core") {
+   apply plugin: "java"
+
+   dependencies {
+       compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+       compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+       ---> compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
+
+       // To use external jars just place them in a directory called GameThree/libs
+       compile fileTree(dir: '../libs', include: ['*.jar'])
+   }
+}
+
+Eso me trajo el jar dentro de External libraries (ahora figura typing-label-1.04).
+Con esto, TypingLabel funciona en desktop y android pero todavía no en html.
+
+TypingLabel usa java.util.regex package que no está soportada por GWT, por lo tanto al generar html (gradlew html:dist) da error en la clase Parser.
+Ver incidente ttps://github.com/rafaskb/typing-label/issues/1
+La solución es usar la librería RegExodus.
+Esta librería la bajo (al igual que su fuente) y es soportada por GWT.
+Dentro del jar tiene un package regexodus.emu.java.util.regex con clases que emulan java.util.regex (de jse) y además ya contiene el archivo regexodus.gwt.xml por lo que usarla es muy transparente.
+
+Para usarla entonces hago lo siguiente:
+Dentro de GameFour/build.gradle
+   ext {
+       appName = "GameFour"
+       gdxVersion = '1.9.8'
+       roboVMVersion = '2.3.1'
+       box2DLightsVersion = '1.4'
+       ashleyVersion = '1.7.0'
+       aiVersion = '1.8.0'
+       admobVersion = '15.0.1'
+       typingLabelVersion = '1.0.4'
+       ---> regexodusVersion = '0.1.10'
+   }
+
+project(":core") {
+   apply plugin: "java"
+
+   dependencies {
+       compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+       compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+       compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
+       ---> compile "com.github.tommyettinger:regexodus:$regexodusVersion"
+       ---> compile "com.github.tommyettinger:regexodus:$regexodusVersion:sources"
+
+       // To use external jars just place them in a directory called GameThree/libs
+       compile fileTree(dir: '../libs', include: ['*.jar'])
+   }
+}
+
+En html/src/GdxDefinition.gwt.xml agregué:
+<inherits name='regexodus' />
+
+Con esto, lo que hago es referenciar al archivo regexodus.gwt.xml que está dentro de los sources bajados (que quedaron dentro de External Libraries/regexodus-0.1.10-sources).
+Ese archivo tiene el mapeo a los .java necesarios para que GWT genere javascript a partir de ellos.
+Luego de todo esto, ya estaría en condiciones de usar TypingLabel en html.
