@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -37,6 +38,7 @@ public class GameWorld {
     private int level;
     private GameCamera gameCamera;
     private boolean moveCamera;
+    private boolean pauseCamera;
     private ParallaxSB parallaxSB;
     private PlatformController platformController;
     private Jumper jumper;
@@ -50,6 +52,7 @@ public class GameWorld {
         this.level = level;
         gameCamera = new GameCamera();
         moveCamera = false;
+        pauseCamera = false;
 
         createSprites();
         createBackground();
@@ -103,13 +106,20 @@ public class GameWorld {
         // Platforms
         platformController = new PlatformController(playScreen, this);
 
+        Array<Platform> platforms = platformController.getPlatforms();
+        Platform p0 = platforms.get(0);
+        Platform p1 = platforms.get(1);
+        Platform p2 = platforms.get(2);
+
         // Jumper
-        jumper = new Jumper(playScreen, this, platformController.getPlatforms().get(0).getBodyPosition().x -
+        jumper = new Jumper(playScreen, this, p0.getBodyPosition().x -
                 Assets.getInstance().getSprites().getJumper().getWidth() / 2,
                 gameCamera.position().y + gameCamera.getWorldHeight() / 2);
 
         // Enemies
         enemies = new Array<Enemy>();
+        Enemy sampleEnemy = new Enemy(playScreen, this, p1, p2);
+        enemies.add(sampleEnemy);
 
         // Eggs
         bullets = new Array<Bullet>();
@@ -170,7 +180,7 @@ public class GameWorld {
     }
 
     private void centerCamera(float deltaTime) {
-        if (moveCamera) {
+        if (moveCamera && !pauseCamera) {
             gameCamera.position().x = gameCamera.position().x + CAMERA_VELOCITY * deltaTime;
             moveCamera = gameCamera.position().x - gameCamera.getWorldWidth() / 2 <= jumper.getBodyPosition().x - jumper.getWidth() / 2;
         }
@@ -256,24 +266,23 @@ public class GameWorld {
         Array<Platform> platforms = platformController.getPlatforms();
 
 //        // todo ORQUESTA TODAS LAS CONCHUDAS VARIACIONES
-//        if (level > 0) {
-//            for (Platform platform : platforms) {
-//                platform.startMovement();
-//            }
-//        }
-//
-//        if (level == 5) {
-//            for (Platform platform :platforms) {
-//                platform.stopMovement();
-//            }
-//        }
+        if (level == 5 || level == 6 || level == 7) {
+            jumper.getCurrentPlatform().startMovement();
+        }
 
-        //if (level == 3 || level == 9) {
-        if (level > 0) {
-            // There must be at least two platforms to have a valid game.
-            Platform secondLastPlatform = platforms.get(platforms.size - 2);
-            Platform lastPlatform = platforms.get(platforms.size - 1);
-            createGameObject(new Enemy(playScreen, this, secondLastPlatform, lastPlatform));
+        if (level >= 8) {
+            for (Platform platform : platforms) {
+                platform.startMovement();
+            }
+        }
+
+        if (level > 2) {
+            if (MathUtils.random() <= 0.3f) { // todo 30 de probabilidad
+                // There must be at least two platforms to have a valid game.
+                Platform secondLastPlatform = platforms.get(platforms.size - 2);
+                Platform lastPlatform = platforms.get(platforms.size - 1);
+                createGameObject(new Enemy(playScreen, this, secondLastPlatform, lastPlatform));
+            }
         }
     }
 
@@ -289,6 +298,14 @@ public class GameWorld {
         if (!box2DWorld.isLocked()) {
             box2DWorld.destroyBody(body);
         }
+    }
+
+    public void pauseCamera() {
+        pauseCamera = true;
+    }
+
+    public void resumeCamera() {
+        pauseCamera = false;
     }
 }
 

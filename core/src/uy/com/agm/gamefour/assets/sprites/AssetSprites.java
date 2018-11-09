@@ -12,6 +12,7 @@ public class AssetSprites {
 
     private AssetJumper jumper;
     private AssetEnemy enemy;
+    private AssetEgg egg;
     private AssetExplosion explosion;
     private AssetPlatformA platformA;
     private AssetPlatformB platformB;
@@ -23,6 +24,7 @@ public class AssetSprites {
     public AssetSprites(TextureAtlas atlasSprites) {
         jumper = new AssetJumper(atlasSprites);
         enemy = new AssetEnemy(atlasSprites);
+        egg = new AssetEgg(atlasSprites);
         explosion = new AssetExplosion(atlasSprites);
         platformA = new AssetPlatformA(atlasSprites);
         platformB = new AssetPlatformB(atlasSprites);
@@ -38,6 +40,10 @@ public class AssetSprites {
 
     public AssetEnemy getEnemy() {
         return enemy;
+    }
+
+    public AssetEgg getEgg() {
+        return egg;
     }
 
     public AssetExplosion getExplosion() {

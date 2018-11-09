@@ -35,14 +35,14 @@ public class Enemy extends AbstractDynamicObject {
     private static final float MIN_OFFSET_Y = 0.0f;
     private static final float MAX_OFFSET_Y = 2.0f;
     private static final float KNOCK_BACK_SECONDS = 0.2f;
-    private static final float KNOCK_BACK_FORCE_X = 2000.0f;
-    private static final float KNOCK_BACK_FORCE_Y = 2000.0f;
+    private static final float KNOCK_BACK_FORCE_X = 1000.0f;
+    private static final float KNOCK_BACK_FORCE_Y = 1000.0f;
     private static final Color KNOCK_BACK_COLOR = Color.BLACK;
     private static final Color DEFAULT_COLOR = Color.WHITE;
     private static final int SCORE = 1;
 
     private enum State {
-        INACTIVE, ALIVE, KNOCK_BACK, EXPLODING, SPLAT, DEAD, DISPOSE
+        INACTIVE, ALIVE, IMPACT, KNOCK_BACK, EXPLOSION, SPLAT, DEAD, DISPOSE
     }
     private PlayScreen playScreen;
     private GameWorld gameWorld;
@@ -57,7 +57,6 @@ public class Enemy extends AbstractDynamicObject {
     private float stateTime;
     private Body body;
     protected State currentState;
-    private boolean knockBackStarted;
     private float knockBackTime;
 
     public Enemy(PlayScreen playScreen, GameWorld gameWorld, Platform secondLastPlatform, Platform lastPlatform) {
@@ -94,7 +93,6 @@ public class Enemy extends AbstractDynamicObject {
         defineEnemy();
 
         currentState = State.INACTIVE;
-        knockBackStarted = false;
         knockBackTime = 0;
     }
 
@@ -121,7 +119,7 @@ public class Enemy extends AbstractDynamicObject {
 
     public void onHit(Bullet bullet) {
         playScreen.getHud().addScore(SCORE);
-        bullet.onTarget();
+        bullet.onTarget(this);
 
         /*
          * We must remove its body to avoid collisions.
@@ -130,7 +128,7 @@ public class Enemy extends AbstractDynamicObject {
          * No body can be removed when the simulation is occurring, we must wait for the next update cycle.
          * Therefore, we use a flag (state) in order to point out this behavior and remove it later.
          */
-        currentState = State.KNOCK_BACK;
+        currentState = State.IMPACT;
     }
 
     @Override
@@ -145,7 +143,7 @@ public class Enemy extends AbstractDynamicObject {
 
     @Override
     public void update(float deltaTime) {
-        // Life cycle: INACTIVE->ALIVE->KNOCK_BACK->EXPLODING->SPLAT->DEAD->DISPOSE
+        // Life cycle: INACTIVE->ALIVE->IMPACT->KNOCK_BACK->EXPLOSION->SPLAT->DEAD->DISPOSE
         switch (currentState) {
             case INACTIVE:
                 stateInactive(deltaTime);
@@ -153,11 +151,14 @@ public class Enemy extends AbstractDynamicObject {
             case ALIVE:
                 stateAlive(deltaTime);
                 break;
+            case IMPACT:
+                stateImpact(deltaTime);
+                break;
             case KNOCK_BACK:
                 stateKnockBack(deltaTime);
                 break;
-            case EXPLODING:
-                stateExploding(deltaTime);
+            case EXPLOSION:
+                stateExplosion(deltaTime);
                 break;
             case SPLAT:
                 stateSplat(deltaTime);
@@ -208,16 +209,30 @@ public class Enemy extends AbstractDynamicObject {
         stateTime += deltaTime;
     }
 
-    private void stateKnockBack(float deltaTime) {
-        if (!knockBackStarted) {
-            initKnockBack();
+    private void stateImpact(float deltaTime) {
+        // Knock back effect
+        body.applyForce(KNOCK_BACK_FORCE_X, MathUtils.randomSign() * KNOCK_BACK_FORCE_Y,
+                body.getPosition().x, body.getPosition().y, true);
+
+        // Enemy can't collide with anything
+        Filter filter = new Filter();
+        filter.maskBits = WorldContactListener.NOTHING_BIT;
+
+        // We set the previous filter in every fixture
+        for (Fixture fixture : body.getFixtureList()) {
+            fixture.setFilterData(filter);
         }
+        updateSpritePosition(deltaTime);
+        currentState = State.KNOCK_BACK;
+    }
+
+    private void stateKnockBack(float deltaTime) {
         holdEnemy();
         updateSpritePosition(deltaTime);
         knockBackTime += deltaTime;
         if (knockBackTime > KNOCK_BACK_SECONDS) {
             body.setLinearVelocity(0.0f, 0.0f);
-            currentState = State.EXPLODING;
+            currentState = State.EXPLOSION;
             stateTime = 0;
         }
     }
@@ -247,24 +262,7 @@ public class Enemy extends AbstractDynamicObject {
         }
     }
 
-    private void initKnockBack() {
-        // Knock back effect
-        body.applyForce(MathUtils.randomSign() * KNOCK_BACK_FORCE_X,
-                MathUtils.randomSign() * KNOCK_BACK_FORCE_Y,
-                body.getPosition().x, body.getPosition().y, true);
-
-        // Enemy can't collide with anything
-        Filter filter = new Filter();
-        filter.maskBits = WorldContactListener.NOTHING_BIT;
-
-        // We set the previous filter in every fixture
-        for (Fixture fixture : body.getFixtureList()) {
-            fixture.setFilterData(filter);
-        }
-        knockBackStarted = true;
-    }
-
-    private void stateExploding(float deltaTime) {
+    private void stateExplosion(float deltaTime) {
         if (explosionAnimation.isAnimationFinished(stateTime)) {
             currentState = State.SPLAT;
         } else {
@@ -300,7 +298,7 @@ public class Enemy extends AbstractDynamicObject {
     private boolean isDrawable() {
         return currentState == State.ALIVE |
                 currentState == State.KNOCK_BACK |
-                currentState == State.EXPLODING |
+                currentState == State.EXPLOSION |
                 currentState == State.SPLAT;
     }
 
@@ -311,7 +309,7 @@ public class Enemy extends AbstractDynamicObject {
             if (currentState == State.KNOCK_BACK) {
                 setColor(KNOCK_BACK_COLOR);
             } else {
-                if (currentState == State.EXPLODING) {
+                if (currentState == State.EXPLOSION) {
                     setColor(DEFAULT_COLOR);
                 }
             }

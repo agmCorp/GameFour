@@ -26,15 +26,15 @@ public class Platform extends AbstractDynamicObject {
 
     private static final float BODY_SCALE = 0.4f;
 
+    private enum State {
+        STATIC, UP, DOWN
+    }
     private GameWorld gameWorld;
     private Array<IAssetPlatform> assetsPlatform;
     private TextureRegion platformStand;
     private Animation platformAnimation;
     private float stateTime;
     private Body body;
-    private enum State {
-        STATIC, UP, DOWN
-    }
     private State currentState;
     private float velocity;
 

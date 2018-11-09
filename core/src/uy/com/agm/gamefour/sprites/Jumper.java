@@ -43,7 +43,7 @@ public class Jumper extends AbstractDynamicObject {
     private static final int MAX_BULLETS = 1;
 
     private enum State {
-        IDLE, JUMPING, DEAD, DISPOSE
+        IDLE, JUMP, DEAD, DISPOSE
     }
     private PlayScreen playScreen;
     private GameWorld gameWorld;
@@ -80,7 +80,7 @@ public class Jumper extends AbstractDynamicObject {
         defineJumper();
 
         // Initial state
-        currentState = State.JUMPING;
+        currentState = State.JUMP;
         stopJumper = false;
         activateJumper = true;
         currentPlatform = null;
@@ -231,7 +231,7 @@ public class Jumper extends AbstractDynamicObject {
         magic.start();
 
         // State variables
-        currentState = State.JUMPING;
+        currentState = State.JUMP;
         stateTime = 0;
         activateJumper = true;
 
@@ -256,7 +256,7 @@ public class Jumper extends AbstractDynamicObject {
     }
 
     public boolean isJumping() {
-        return currentState == State.JUMPING;
+        return currentState == State.JUMP;
     }
 
     public boolean isDead() {
@@ -269,12 +269,13 @@ public class Jumper extends AbstractDynamicObject {
         magic.update(deltaTime);
         fireworks.update(deltaTime);
 
+        // Life cycle: IDLE->JUMP->DEAD->DISPOSE
         switch (currentState) {
             case IDLE:
                 stateIdle(deltaTime);
                 break;
-            case JUMPING:
-                stateJumping(deltaTime);
+            case JUMP:
+                stateJump(deltaTime);
                 break;
             case DEAD:
                 stateDead(deltaTime);
@@ -314,7 +315,7 @@ public class Jumper extends AbstractDynamicObject {
         }
     }
 
-    private void stateJumping(float deltaTime) {
+    private void stateJump(float deltaTime) {
         // Enables Jumper
         if (activateJumper) {
             setFilters();

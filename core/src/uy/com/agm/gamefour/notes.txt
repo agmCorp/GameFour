@@ -6,9 +6,10 @@ supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 HACER
 - clase bullet con sonido.
 - Hacer un keystore para este juego
-- Poner por defecto un highscore razonable y ver lo de averagePlayer
+- intentar que el bicho no se vaya tanto de la pantalla por arriba.
+El salto en altura debe ser como el espacio entre plataformas 3.7 creo.
 - Estudiar la memoria consumida
-
+- agrander botones pantalla gameover
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.

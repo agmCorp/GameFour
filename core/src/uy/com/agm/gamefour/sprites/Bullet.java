@@ -1,20 +1,16 @@
 package uy.com.agm.gamefour.sprites;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.utils.Array;
 
 import uy.com.agm.gamefour.assets.Assets;
-import uy.com.agm.gamefour.assets.sprites.AssetSprites;
-import uy.com.agm.gamefour.assets.sprites.IAssetPlatform;
+import uy.com.agm.gamefour.assets.sprites.AssetEgg;
+import uy.com.agm.gamefour.game.GameCamera;
 import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
 
@@ -22,82 +18,71 @@ import uy.com.agm.gamefour.game.tools.WorldContactListener;
  * Created by AGM on 11/3/2018.
  */
 
-// TODO, HACERLA TODA Y PENSARLA, EXISTE AHORA PARA QUE COMPILE
+    /*
+    * tener audio
+    * tener muzzleflash
+    * destruirse al irse de pantalla por abajo.
+    * */
 public class Bullet extends AbstractDynamicObject {
     private static final String TAG = Bullet.class.getName();
 
-    private static final float BODY_SCALE = 0.4f;
+    private static final float CIRCLE_SHAPE_RADIUS_METERS = 20.0f / GameCamera.PPM;
+    public static final float VELOCITY = 4.0f;
+    public static final float GRAVITY_SCALE = 1.5f;
 
-    private GameWorld gameWorld;
-    private Array<IAssetPlatform> assetsPlatform;
-    private TextureRegion platformStand;
-    private Animation platformAnimation;
-    private float stateTime;
-    private Body body;
     private enum State {
-        STATIC, UP, DOWN
+        SHOOT, IMPACT, FINISH, DISPOSE
     }
+    private GameWorld gameWorld;
+    private TextureRegion eggStand;
+    private Body body;
     private State currentState;
-    private float velocity;
 
     public Bullet(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
 
-        // Assets
-        assetsPlatform = new Array<IAssetPlatform>();
-        AssetSprites assetSprites = Assets.getInstance().getSprites();
-        assetsPlatform.add(assetSprites.getPlatformA());
-        assetsPlatform.add(assetSprites.getPlatformB());
-        assetsPlatform.add(assetSprites.getPlatformC());
-        assetsPlatform.add(assetSprites.getPlatformD());
-        assetsPlatform.add(assetSprites.getPlatformE());
-        assetsPlatform.add(assetSprites.getPlatformF());
-
-        // Random animation
-        setNewAnimation(x, y);
+        // Random texture
+        setNewTexture(x, y);
 
         // Box2d
-        definePlatform();
+        defineEgg();
 
-        currentState = State.STATIC;
-        velocity = 0.0f;
+        body.setLinearVelocity(0, VELOCITY);
+        currentState = State.SHOOT;
+
+        // Stop the camera until this shot ends
+        gameWorld.pauseCamera();
     }
 
-    private void setNewAnimation(float x, float y) {
-        IAssetPlatform assetPlatform = assetsPlatform.get(MathUtils.random(0, assetsPlatform.size - 1));
-        platformStand = assetPlatform.getPlatformStand();
-        platformAnimation = assetPlatform.getPlatformAnimation();
+    private void setNewTexture(float x, float y) {
+        AssetEgg assetEgg = Assets.getInstance().getSprites().getEgg();
+        eggStand = assetEgg.getRandomEgg();
 
         // Sets initial values for position, width and height and initial frame as platformStand.
-        setBounds(x, y, assetPlatform.getWidth(), assetPlatform.getHeight());
-        setRegion(platformStand);
-        stateTime = 0;
+        setBounds(x, y, assetEgg.getWidth(), assetEgg.getHeight());
+        setRegion(eggStand);
     }
 
-    private void definePlatform() {
+    private void defineEgg() {
         // Creates main body
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(getX() + getWidth() / 2, getY() + getHeight() / 2); // In box2D the origin is at the center of the body
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         body = gameWorld.createBody(bodyDef);
         body.setFixedRotation(true);
-        body.setGravityScale(0); // No gravity
+        body.setGravityScale(GRAVITY_SCALE); // More gravity
 
         FixtureDef fixtureDef = new FixtureDef();
-        PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(getBodyWidth() / 2, getBodyHeight() / 2);
-        fixtureDef.filter.categoryBits = WorldContactListener.PLATFORM_BIT; // Depicts what this fixture is
-        fixtureDef.filter.maskBits = WorldContactListener.JUMPER_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
-        fixtureDef.shape = polygonShape;
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(CIRCLE_SHAPE_RADIUS_METERS);
+        fixtureDef.filter.categoryBits = WorldContactListener.BULLET_BIT; // Depicts what this fixture is
+        fixtureDef.filter.maskBits = WorldContactListener.ENEMY_BIT; // Depicts what this Fixture can collide with (see WorldContactListener)
+        fixtureDef.shape = circleShape;
         body.createFixture(fixtureDef).setUserData(this);
     }
 
-    public float getBodyWidth() {
-        return getWidth() * BODY_SCALE; // The width of the body is arbitrarily smaller than the width of the image
-    }
-
-    public float getBodyHeight() {
-        return getHeight() * BODY_SCALE; // The height of the body is arbitrarily smaller than the height of the image
+    public void onTarget(AbstractDynamicObject target) {
+        currentState = State.IMPACT;
     }
 
     @Override
@@ -107,93 +92,67 @@ public class Bullet extends AbstractDynamicObject {
 
     @Override
     public void update(float deltaTime) {
+        // Life cycle: SHOOT->IMPACT->KNOCK_BACK->DISPOSE
         switch (currentState) {
-            case UP:
-                stateMovingUp(deltaTime);
+            case SHOOT:
+                stateShoot(deltaTime);
                 break;
-            case DOWN:
-                stateMovingDown(deltaTime);
+            case IMPACT:
+                stateImpact(deltaTime);
                 break;
-            case STATIC:
-                stateStatic(deltaTime);
+            case FINISH:
+                stateFinish(deltaTime);
+                break;
+            case DISPOSE:
                 break;
             default:
                 break;
         }
     }
 
-    private void stateMovingUp(float deltaTime) {
-        // Set new velocity
-        body.setLinearVelocity(0, velocity);
-        updateSprite(deltaTime);
+    private void stateShoot(float deltaTime) {
+        updateSpritePosition(deltaTime);
+        checkBoundaries();
+    }
 
-        if (getY() + getHeight() >= PlatformController.MAX_OFFSET_Y) {
-            currentState = State.DOWN;
+    private void stateImpact(float deltaTime) {
+        // Knock back effect
+        body.setLinearVelocity(0, VELOCITY);
+        updateSpritePosition(deltaTime);
+        currentState = State.SHOOT;
+    }
+
+    private void checkBoundaries() {
+        // When this enemy is outside the camera, it dies.
+        if (!isOnCamera()) {
+            // Resume the camera movement
+            gameWorld.resumeCamera();
+            currentState = State.FINISH;
         }
     }
 
-    private void stateMovingDown(float deltaTime) {
-        // Set new velocity
-        body.setLinearVelocity(0, -velocity);
-        updateSprite(deltaTime);
-
-        if (getY() <= PlatformController.MIN_OFFSET_Y) {
-            currentState = State.UP;
-        }
+    private boolean isOnCamera() {
+        return getY() + getHeight() > 0;
     }
 
-    private void stateStatic(float deltaTime) {
-        // Set new velocity
-        body.setLinearVelocity(0, 0);
-        updateSprite(deltaTime);
+    private void stateFinish(float deltaTime) {
+        // Destroy box2D body
+        gameWorld.destroyBody(body);
+        currentState = State.DISPOSE;
     }
 
-    private void updateSprite(float deltaTime) {
-        // Update this Sprite to correspond with the position of the Box2D body
+    private void updateSpritePosition(float deltaTime) {
+        // Update this Sprite to correspond with the position of the Box2D body.
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        setRegion((TextureRegion) platformAnimation.getKeyFrame(stateTime, true));
-        stateTime += deltaTime;
     }
 
     @Override
     public void render(SpriteBatch spriteBatch) {
-        Gdx.app.debug(TAG, "DIBUJO LA BALA************");
         draw(spriteBatch);
     }
 
     @Override
     public boolean isDisposable() {
-        return false;
+        return currentState == State.DISPOSE;
     }
-
-    public void onTarget() {
-
-    }
-
-
-/*
-    public void onTarget() {
-
-    }
-
-    @Override
-    public Vector2 getBodyPosition() {
-        return null;
-    }
-
-    @Override
-    public void update(float deltaTime) {
-
-    }
-
-    @Override
-    public void render(SpriteBatch spriteBatch) {
-
-    }
-
-    @Override
-    public boolean isDisposable() {
-        return false;
-    }
-    */
 }
