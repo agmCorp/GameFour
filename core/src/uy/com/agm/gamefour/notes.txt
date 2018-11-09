@@ -10,6 +10,7 @@ HACER
 El salto en altura debe ser como el espacio entre plataformas 3.7 creo.
 - Estudiar la memoria consumida
 - agrander botones pantalla gameover
+- hacer un help o algo
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
