@@ -11,6 +11,7 @@ El salto en altura debe ser como el espacio entre plataformas 3.7 creo.
 - Estudiar la memoria consumida
 - agrander botones pantalla gameover
 - hacer un help o algo
+- capaz me conviene hacer que la pantalla tiemble mas fuerte cuando muere y que tambien tiemble cuando el verde explota.
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
