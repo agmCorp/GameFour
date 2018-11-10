@@ -38,8 +38,8 @@ public class Jumper extends AbstractDynamicObject {
     private static final float SCALE_IMPULSE_X = 30.0f;
     private static final float POWER_JUMP_OFFSET_Y = 1.0f;
     private static final int SUCCESSFUL_JUMP_SCORE = 2;
-    private static final float MIN_SPEAK_TIME = 2.5f;
-    private static final float MAX_SPEAK_TIME = 6.0f;
+    private static final float MIN_SPEAK_TIME = 6.0f;
+    private static final float MAX_SPEAK_TIME = 9.0f;
     private static final int MAX_BULLETS = 1;
 
     private enum State {

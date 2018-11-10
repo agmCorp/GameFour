@@ -8,8 +8,8 @@ AssetMiSprite para poder consultar su ancho y alto. Mejor hacerlo como antes, co
 HACER
 - Hacer un keystore para este juego
 - Estudiar la memoria consumida
-- el salto esta muy sensible no me gusta
 - hacer un help o algo (hold and release to jump. Tap on the screen to get this little nosy bird out)
+- pr a Typinglabel
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
@@ -19,7 +19,7 @@ OTROS
 - hacer un skin
 - Poner una zona de salto perfecto. Si el pajaro cae justo ahi (su x en medio de la plataforma + delta) saco algun cartel y/o doy
 puntos extra.
-- Revisar que pasa después que choca peque no veo que dispare. Capaz es peque cae rápido
+- Revisar que pasa después que choca porque no veo que dispare. Capaz es porque cae rápido
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 LECCIONES APRENDIDAS
