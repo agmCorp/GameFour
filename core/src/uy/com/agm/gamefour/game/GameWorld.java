@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -32,6 +31,7 @@ public class GameWorld {
     private static final String TAG = GameWorld.class.getName();
 
     private static final float CAMERA_VELOCITY = 4.0f;
+    private static final float ENEMY_PROBABILITY = 0.3f; // 30%
 
     private PlayScreen playScreen;
     private World box2DWorld;
@@ -61,47 +61,6 @@ public class GameWorld {
         gameObjectsToCreate = new Array<AbstractGameObject>();
     }
 
-    private void createBackground() {
-        parallaxSB = new ParallaxSB(gameCamera);
-
-        if (!DebugConstants.HIDE_BACKGROUND) {
-            loadBackground();
-        }
-    }
-
-    private void loadBackground() {
-        AssetBackgrounds assetBackgrounds = Assets.getInstance().getBackgrounds();
-        GameSettings prefs = GameSettings.getInstance();
-        int backgroundId = prefs.getBackgroundId();
-        prefs.setBackgroundId((backgroundId % AssetBackgrounds.MAX_BACKGROUNDS) + 1);
-        prefs.save();
-
-        switch (backgroundId) {
-            case 1:
-                assetBackgrounds.getDesert().build(parallaxSB);
-                jumper.setColor(Color.SKY);
-                break;
-            case 2:
-                assetBackgrounds.getForest().build(parallaxSB);
-                jumper.setColor(Color.SALMON);
-                break;
-            case 3:
-                assetBackgrounds.getBeach().build(parallaxSB);
-                jumper.setColor(Color.CHARTREUSE);
-                break;
-            case 4:
-                assetBackgrounds.getWaterfall().build(parallaxSB);
-                jumper.setColor(Color.VIOLET);
-                break;
-            case 5:
-                assetBackgrounds.getHills().build(parallaxSB);
-                jumper.setColor(Color.GOLD);
-                break;
-            default:
-                break;
-        }
-    }
-
     private void createSprites() {
         // Platforms
         platformController = new PlatformController(playScreen, this);
@@ -123,6 +82,50 @@ public class GameWorld {
 
         // Eggs
         bullets = new Array<Bullet>();
+    }
+
+    private void createBackground() {
+        parallaxSB = new ParallaxSB(gameCamera);
+
+        if (!DebugConstants.HIDE_BACKGROUND) {
+            loadBackground();
+        }
+    }
+
+    private void loadBackground() {
+        AssetBackgrounds assetBackgrounds = Assets.getInstance().getBackgrounds();
+        GameSettings prefs = GameSettings.getInstance();
+        int backgroundId = prefs.getBackgroundId();
+        prefs.setBackgroundId((backgroundId % AssetBackgrounds.MAX_BACKGROUNDS) + 1);
+        prefs.save();
+        switch (backgroundId) {
+            case 1:
+                assetBackgrounds.getDesert().build(parallaxSB);
+                jumper.setColor(Color.SKY);
+                break;
+            case 2:
+                assetBackgrounds.getForest().build(parallaxSB);
+                jumper.setColor(Color.SALMON);
+                break;
+            case 3:
+                assetBackgrounds.getBeach().build(parallaxSB);
+                jumper.setColor(Color.CHARTREUSE);
+                break;
+            case 4:
+                assetBackgrounds.getWaterfall().build(parallaxSB);
+                jumper.setColor(Color.VIOLET);
+                break;
+            case 5:
+                assetBackgrounds.getHills().build(parallaxSB);
+                jumper.setColor(Color.GOLD);
+                break;
+            case 6:
+                assetBackgrounds.getCastle().build(parallaxSB);
+                jumper.setColor(Color.WHITE);
+                break;
+            default:
+                break;
+        }
     }
 
     public void handleGameObjectsToCreate() {
@@ -256,28 +259,26 @@ public class GameWorld {
         level++;
         moveCamera = true;
         newLevel();
-
-        // todo
-        Gdx.app.debug(TAG, "ESTOY EN NIVEL: " + level);
-
     }
 
     private void newLevel() {
         Array<Platform> platforms = platformController.getPlatforms();
 
-//        // todo ORQUESTA TODAS LAS CONCHUDAS VARIACIONES
+        // Current platform starts to move in levels 6, 7 and 8.
         if (level == 5 || level == 6 || level == 7) {
             jumper.getCurrentPlatform().startMovement();
         }
 
+        // Platforms start to move in levels above 8.
         if (level >= 8) {
             for (Platform platform : platforms) {
                 platform.startMovement();
             }
         }
 
+        // Enemies turn up in levels above 2 with ENEMY_PROBABILITY chance (except for the sample enemy in level 1)
         if (level > 2) {
-            if (MathUtils.random() <= 0.3f) { // todo 30 de probabilidad
+            if (MathUtils.random() <= ENEMY_PROBABILITY) {
                 // There must be at least two platforms to have a valid game.
                 Platform secondLastPlatform = platforms.get(platforms.size - 2);
                 Platform lastPlatform = platforms.get(platforms.size - 1);

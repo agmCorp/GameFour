@@ -14,7 +14,7 @@ public class Shaker {
 
     private static final int SAMPLE_DURATION_SECONDS = 10; // Make it longer if you want more variation
     private static final int FREQUENCY_HZ = 35;
-    private static final float DEFAULT_AMPLITUDE_METERS = 0.3f;
+    private static final float DEFAULT_AMPLITUDE_METERS = 0.5f;
     private static final boolean FALL_OFF = true; // If the shake should decay as it expires
 
     private Camera camera;
@@ -69,16 +69,16 @@ public class Shaker {
         }
     }
 
-    public void shake(float duration) {
-        // We ignore the request if it is actually shaking
-        if (!isShaking) {
+    public void shake(float duration, boolean interrupt) {
+        // We ignore the request if it is actually shaking and interrupt is false
+        if (!isShaking || interrupt) {
             performShake(DEFAULT_AMPLITUDE_METERS, duration, camera.position.x, camera.position.y);
         }
     }
 
-    public void shake(float amplitude, float duration) {
-        // We ignore the request if it is actually shaking
-        if (!isShaking) {
+    public void shake(float amplitude, float duration, boolean interrupt) {
+        // We ignore the request if it is actually shaking and interrupt is false
+        if (!isShaking || interrupt) {
             performShake(amplitude, duration, camera.position.x, camera.position.y);
         }
     }

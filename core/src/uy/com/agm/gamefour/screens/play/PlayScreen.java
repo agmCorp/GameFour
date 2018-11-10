@@ -21,7 +21,7 @@ import uy.com.agm.gamefour.tools.AudioManager;
 public class PlayScreen extends PlayAbstractScreen {
     private static final String TAG = PlayScreen.class.getName();
 
-    private static float SHAKE_DURATION = 2.0f;
+    private static final float SHAKE_DURATION = 2.0f;
 
     private Hud hud;
     private InfoScreen infoScreen;
@@ -104,7 +104,7 @@ public class PlayScreen extends PlayAbstractScreen {
                 }
 
                 // Game over
-                gameWorld.getGameCamera().shake(SHAKE_DURATION);
+                gameWorld.getGameCamera().shake(SHAKE_DURATION, true);
                 gameWorld.getJumper().onDead();
                 infoScreen.showGameOver();
                 hud.setVisible(false);

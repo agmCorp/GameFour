@@ -16,11 +16,11 @@ import uy.com.agm.gamefour.screens.play.PlayScreen;
 public class PlatformController {
     private static final String TAG = PlatformController.class.getName();
 
-    private static int MAX_PLATFORMS = 5;
-    public static float MIN_OFFSET_X = 0.3f;
-    public static float MAX_OFFSET_X = 2.0f;
-    public static float MIN_OFFSET_Y = 2.5f;
-    public static float MAX_OFFSET_Y = 6.2f;
+    private static final int MAX_PLATFORMS = 5;
+    public static final float MIN_OFFSET_X = 0.3f;
+    public static final float MAX_OFFSET_X = 2.0f;
+    public static final float MIN_OFFSET_Y = 2.5f;
+    public static final float MAX_OFFSET_Y = 5.2f;
     public static final float MAX_VELOCITY = 1.5f;
     public static final float MIN_VELOCITY = 0.5f;
 

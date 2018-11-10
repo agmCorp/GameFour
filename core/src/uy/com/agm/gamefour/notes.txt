@@ -6,14 +6,9 @@ supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 AssetMiSprite para poder consultar su ancho y alto. Mejor hacerlo como antes, con constantes públicas.
 
 HACER
-- clase bullet con sonido.
 - Hacer un keystore para este juego
-- intentar que el bicho no se vaya tanto de la pantalla por arriba.
-El salto en altura debe ser como el espacio entre plataformas 3.7 creo.
 - Estudiar la memoria consumida
-- agrander botones pantalla gameover
 - hacer un help o algo (hold and release to jump. Tap on the screen to get this little nosy bird out)
-- capaz me conviene hacer que la pantalla tiemble mas fuerte cuando muere y que tambien tiemble cuando el verde explota.
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
@@ -23,8 +18,6 @@ OTROS
 - hacer un skin
 - Poner una zona de salto perfecto. Si el pajaro cae justo ahi (su x en medio de la plataforma + delta) saco algun cartel y/o doy
 puntos extra.
-- a veces queda una distancia muy larga entre los cohetes (sobre el eje y). Me parece que es porque se estaban moviendo y luego el movimiento
-se detiene al cambiar de nivel.
 - Revisar que pasa después que choca peque no veo que dispare. Capaz es peque cae rápido
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 

@@ -23,7 +23,7 @@ public class Hud extends GUIOverlayAbstractScreen {
     private static final float SWING_DELAY = 0.02f;
     private static final int POWER_BAR_WIDTH = 250;
     private static final int POWER_BAR_HEIGHT = 15;
-    private static int AVERAGE_SCORE = 4;
+    private static final int AVERAGE_SCORE = 4;
 
     private I18NBundle i18NGameThreeBundle;
     private AssetFonts assetFonts;

@@ -75,11 +75,11 @@ public class GameCamera {
         gameViewPort.apply();
     }
 
-    public void shake(float duration) {
-        shaker.shake(duration);
+    public void shake(float duration, boolean interrupt) {
+        shaker.shake(duration, interrupt);
     }
 
-    public void shake(float amplitude, float duration) {
-        shaker.shake(amplitude, duration);
+    public void shake(float amplitude, float duration, boolean interrupt) {
+        shaker.shake(amplitude, duration, interrupt);
     }
 }

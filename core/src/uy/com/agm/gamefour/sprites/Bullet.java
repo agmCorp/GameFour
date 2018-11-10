@@ -170,7 +170,7 @@ public class Bullet extends AbstractDynamicObject {
     }
 
     private void checkBoundaries() {
-        // When this enemy is outside the camera, it dies.
+        // When this bullet is outside the camera, it finishes.
         if (!isOnCamera()) {
             // Resume the camera movement
             gameWorld.resumeCamera();

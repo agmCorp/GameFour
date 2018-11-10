@@ -22,8 +22,12 @@ public class AssetGUI {
     private TextureRegion exitPressed;
     private TextureRegion reload;
     private TextureRegion reloadPressed;
+    private TextureRegion bigReload;
+    private TextureRegion bigReloadPressed;
     private TextureRegion home;
     private TextureRegion homePressed;
+    private TextureRegion bigHome;
+    private TextureRegion bigHomePressed;
     private TextureRegion pause;
     private TextureRegion pausePressed;
     private TextureRegion menuBg;
@@ -44,8 +48,12 @@ public class AssetGUI {
         exitPressed = atlasGUI.findRegion("exitPressed");
         reload = atlasGUI.findRegion("reload");
         reloadPressed = atlasGUI.findRegion("reloadPressed");
+        bigReload = atlasGUI.findRegion("bigReload");
+        bigReloadPressed = atlasGUI.findRegion("bigReloadPressed");
         home = atlasGUI.findRegion("home");
         homePressed = atlasGUI.findRegion("homePressed");
+        bigHome = atlasGUI.findRegion("bigHome");
+        bigHomePressed = atlasGUI.findRegion("bigHomePressed");
         pause = atlasGUI.findRegion("pause");
         pausePressed = atlasGUI.findRegion("pausePressed");
         menuBg = atlasGUI.findRegion("menuBg");
@@ -99,12 +107,28 @@ public class AssetGUI {
         return reloadPressed;
     }
 
+    public TextureRegion getBigReload() {
+        return bigReload;
+    }
+
+    public TextureRegion getBigReloadPressed() {
+        return bigReloadPressed;
+    }
+
     public TextureRegion getHome() {
         return home;
     }
 
     public TextureRegion getHomePressed() {
         return homePressed;
+    }
+
+    public TextureRegion getBigHome() {
+        return bigHome;
+    }
+
+    public TextureRegion getBigHomePressed() {
+        return bigHomePressed;
     }
 
     public TextureRegion getPause() {

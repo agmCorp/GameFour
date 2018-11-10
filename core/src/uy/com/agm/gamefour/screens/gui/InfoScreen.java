@@ -35,7 +35,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     private static final String TAG = InfoScreen.class.getName();
 
     private static final float ANIMATION_DURATION = 1.0f;
-    private static final float BUTTON_WIDTH = 85.0f;
+    private static final float BUTTON_WIDTH = 180.0f;
     private static final int MAX_TITLE_KEYS = 13;
 
     private Assets assets;
@@ -110,11 +110,11 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     private Table getButtonsTable() {
         AssetGUI assetGUI = Assets.getInstance().getGUI();
 
-        ImageButton reload = new ImageButton(new TextureRegionDrawable(assetGUI.getReload()),
-                new TextureRegionDrawable(assetGUI.getReloadPressed()));
+        ImageButton reload = new ImageButton(new TextureRegionDrawable(assetGUI.getBigReload()),
+                new TextureRegionDrawable(assetGUI.getBigReloadPressed()));
 
-        ImageButton home = new ImageButton(new TextureRegionDrawable(assetGUI.getHome()),
-                new TextureRegionDrawable(assetGUI.getHomePressed()));
+        ImageButton home = new ImageButton(new TextureRegionDrawable(assetGUI.getBigHome()),
+                new TextureRegionDrawable(assetGUI.getBigHomePressed()));
 
         reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
         home.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_DOWN));

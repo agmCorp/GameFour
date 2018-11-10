@@ -39,6 +39,8 @@ public class Enemy extends AbstractDynamicObject {
     private static final float KNOCK_BACK_FORCE_Y = 1000.0f;
     private static final Color KNOCK_BACK_COLOR = Color.BLACK;
     private static final Color DEFAULT_COLOR = Color.WHITE;
+    private static final float SHAKE_AMPLITUDE = 0.3f;
+    private static final float SHAKE_DURATION = 0.5f;
     private static final int SCORE = 1;
 
     private enum State {
@@ -120,6 +122,7 @@ public class Enemy extends AbstractDynamicObject {
     public void onHit(Bullet bullet) {
         playScreen.getHud().addScore(SCORE);
         bullet.onTarget(this);
+        gameWorld.getGameCamera().shake(SHAKE_AMPLITUDE, SHAKE_DURATION, false);
 
         /*
          * We must remove its body to avoid collisions.

@@ -18,6 +18,8 @@ import uy.com.agm.gamefour.sprites.Jumper;
 public class WorldController implements Disposable {
     private static final String TAG = WorldController.class.getName();
 
+    private static final float GAME_OVER_OFFSET = 0.5f;
+
     // Reference to the play screen
     private PlayScreen playScreen;
 
@@ -113,7 +115,7 @@ public class WorldController implements Disposable {
         Jumper jumper = gameWorld.getJumper();
         GameCamera gameCamera = gameWorld.getGameCamera();
 
-        return (jumper.getBodyPosition().y + jumper.getHeight() / 2 < gameCamera.position().y - gameCamera.getWorldHeight() / 2);
+        return (jumper.getBodyPosition().y + jumper.getHeight() / 2 + GAME_OVER_OFFSET < gameCamera.position().y - gameCamera.getWorldHeight() / 2);
     }
 
     @Override
