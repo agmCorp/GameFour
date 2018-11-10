@@ -8,6 +8,7 @@ AssetMiSprite para poder consultar su ancho y alto. Mejor hacerlo como antes, co
 HACER
 - Hacer un keystore para este juego
 - Estudiar la memoria consumida
+- el salto esta muy sensible no me gusta
 - hacer un help o algo (hold and release to jump. Tap on the screen to get this little nosy bird out)
 
 DESEABLE PARA LIBERAR
