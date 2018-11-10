@@ -35,7 +35,7 @@ public class Jumper extends AbstractDynamicObject {
     private static final float SENSOR_HX = 0.1f;
     private static final float SENSOR_HY = 0.01f;
     private static final float IMPULSE_Y = 7.5f;
-    private static final float SCALE_IMPULSE_X = 25.0f;
+    private static final float SCALE_IMPULSE_X = 30.0f;
     private static final float POWER_JUMP_OFFSET_Y = 1.0f;
     private static final int SUCCESSFUL_JUMP_SCORE = 2;
     private static final float MIN_SPEAK_TIME = 2.5f;
