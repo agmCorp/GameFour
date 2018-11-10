@@ -10,19 +10,17 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.sprites.AssetEgg;
+import uy.com.agm.gamefour.assets.sprites.AssetMuzzleFlash;
+import uy.com.agm.gamefour.assets.sprites.AssetSprites;
 import uy.com.agm.gamefour.game.GameCamera;
 import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
+import uy.com.agm.gamefour.tools.AudioManager;
 
 /**
  * Created by AGM on 11/3/2018.
  */
 
-    /*
-    * tener audio
-    * tener muzzleflash
-    * destruirse al irse de pantalla por abajo.
-    * */
 public class Bullet extends AbstractDynamicObject {
     private static final String TAG = Bullet.class.getName();
 
@@ -31,36 +29,53 @@ public class Bullet extends AbstractDynamicObject {
     public static final float GRAVITY_SCALE = 1.5f;
 
     private enum State {
-        SHOOT, IMPACT, FINISH, DISPOSE
+        MUZZLE_FLASH, SHOOT, IMPACT, KNOCK_BACK, FINISH, DISPOSE
     }
     private GameWorld gameWorld;
     private TextureRegion eggStand;
+    private float eggWidth;
+    private float eggHeight;
+    private TextureRegion muzzleFlashShoot;
+    private TextureRegion muzzleFlashImpact;
+    private float muzzleFlashWidth;
+    private float muzzleFlashHeight;
     private Body body;
     private State currentState;
 
+    // Coordinates x and y describe its center.
     public Bullet(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
 
         // Random texture
-        setNewTexture(x, y);
+        AssetSprites assetSprites = Assets.getInstance().getSprites();
+        AssetEgg assetEgg = assetSprites.getEgg();
+        eggStand = assetEgg.getRandomEgg();
+        eggWidth = assetEgg.getWidth();
+        eggHeight = assetEgg.getHeight();
+
+        // Muzzle flash
+        AssetMuzzleFlash assetMuzzleFlash = assetSprites.getMuzzleFlash();
+        muzzleFlashShoot = assetMuzzleFlash.getMuzzleFlashShoot();
+        muzzleFlashImpact = assetMuzzleFlash.getMuzzleFlashImpact();
+        muzzleFlashWidth = assetMuzzleFlash.getWidth();
+        muzzleFlashHeight = assetMuzzleFlash.getHeight();
+
+        // Sets initial values for position, width and height and initial frame as muzzleFlashShoot.
+        setBounds(x - muzzleFlashWidth / 2, y - muzzleFlashHeight / 2,
+                muzzleFlashWidth, muzzleFlashHeight);
+        setRegion(muzzleFlashShoot);
 
         // Box2d
         defineEgg();
 
-        body.setLinearVelocity(0, VELOCITY);
-        currentState = State.SHOOT;
+        // Initial state
+        currentState = State.MUZZLE_FLASH;
 
         // Stop the camera until this shot ends
         gameWorld.pauseCamera();
-    }
 
-    private void setNewTexture(float x, float y) {
-        AssetEgg assetEgg = Assets.getInstance().getSprites().getEgg();
-        eggStand = assetEgg.getRandomEgg();
-
-        // Sets initial values for position, width and height and initial frame as platformStand.
-        setBounds(x, y, assetEgg.getWidth(), assetEgg.getHeight());
-        setRegion(eggStand);
+        // Audio effect
+        AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getThrowEgg());
     }
 
     private void defineEgg() {
@@ -92,13 +107,19 @@ public class Bullet extends AbstractDynamicObject {
 
     @Override
     public void update(float deltaTime) {
-        // Life cycle: SHOOT->IMPACT->KNOCK_BACK->DISPOSE
+        // Life cycle: MUZZLE_FLASH->SHOOT->IMPACT->KNOCK_BACK->FINISH->DISPOSE
         switch (currentState) {
+            case MUZZLE_FLASH:
+                stateMuzzleFlash(deltaTime);
+                break;
             case SHOOT:
                 stateShoot(deltaTime);
                 break;
             case IMPACT:
                 stateImpact(deltaTime);
+                break;
+            case KNOCK_BACK:
+                stateKnockBack(deltaTime);
                 break;
             case FINISH:
                 stateFinish(deltaTime);
@@ -110,14 +131,40 @@ public class Bullet extends AbstractDynamicObject {
         }
     }
 
+    private void stateMuzzleFlash(float deltaTime) {
+        body.setLinearVelocity(0, VELOCITY);
+        updateSpritePosition(deltaTime);
+        currentState = State.SHOOT;
+    }
+
     private void stateShoot(float deltaTime) {
+        setBounds(getX() + getWidth() / 2 - eggWidth / 2,
+                getY() + getHeight() / 2 - eggHeight / 2,
+                eggWidth, eggHeight);
+        setRegion(eggStand);
         updateSpritePosition(deltaTime);
         checkBoundaries();
     }
 
     private void stateImpact(float deltaTime) {
+        // Muzzle flash
+        setBounds(getX() + getWidth() / 2 - muzzleFlashWidth / 2,
+                getY() + getHeight() / 2 - muzzleFlashHeight / 2,
+                muzzleFlashWidth, muzzleFlashHeight);
+        setRegion(muzzleFlashImpact); // Only one last frame
+        updateSpritePosition(deltaTime);
+        currentState = State.KNOCK_BACK;
+    }
+
+    private void stateKnockBack(float deltaTime) {
         // Knock back effect
         body.setLinearVelocity(0, VELOCITY);
+
+        // Egg texture
+        setBounds(getX() + getWidth() / 2 - eggWidth / 2,
+                getY() + getHeight() / 2 - eggHeight / 2,
+                eggWidth, eggHeight);
+        setRegion(eggStand);
         updateSpritePosition(deltaTime);
         currentState = State.SHOOT;
     }

@@ -14,7 +14,7 @@ public class Shaker {
 
     private static final int SAMPLE_DURATION_SECONDS = 10; // Make it longer if you want more variation
     private static final int FREQUENCY_HZ = 35;
-    private static final float DEFAULT_AMPLITUDE_METERS = 0.2f;
+    private static final float DEFAULT_AMPLITUDE_METERS = 0.3f;
     private static final boolean FALL_OFF = true; // If the shake should decay as it expires
 
     private Camera camera;

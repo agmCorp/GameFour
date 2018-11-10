@@ -153,7 +153,7 @@ public class GameController implements GestureDetector.GestureListener, InputPro
 
     private void cheatMode() {
         if (playScreen.isPlayScreenStateRunning()) {
-            if (DebugConstants.POWER_JUMP_ENABLED) {
+            if (DebugConstants.POWER_JUMP_ENABLED && !jumper.isDead()) {
                 hud.stopSwing();
                 jumper.powerJump();
             }

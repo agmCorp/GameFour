@@ -20,6 +20,7 @@ public class AssetSprites {
     private AssetPlatformD platformD;
     private AssetPlatformE platformE;
     private AssetPlatformF platformF;
+    private AssetMuzzleFlash muzzleFlash;
 
     public AssetSprites(TextureAtlas atlasSprites) {
         jumper = new AssetJumper(atlasSprites);
@@ -32,6 +33,7 @@ public class AssetSprites {
         platformD = new AssetPlatformD(atlasSprites);
         platformE = new AssetPlatformE(atlasSprites);
         platformF = new AssetPlatformF(atlasSprites);
+        muzzleFlash = new AssetMuzzleFlash(atlasSprites);
     }
 
     public AssetJumper getJumper() {
@@ -72,5 +74,9 @@ public class AssetSprites {
 
     public AssetPlatformF getPlatformF() {
         return platformF;
+    }
+
+    public AssetMuzzleFlash getMuzzleFlash() {
+        return muzzleFlash;
     }
 }

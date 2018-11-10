@@ -22,6 +22,7 @@ public class AssetSounds {
     private Sound newAchievement;
     private Sound bloodSplash;
     private Sound voice;
+    private Sound throwEgg;
 
     public AssetSounds(AssetManager am) {
         jump = new Array<Sound>();
@@ -30,6 +31,12 @@ public class AssetSounds {
         jump.add(am.get(Assets.FX_FILE_JUMP_C, Sound.class));
         jump.add(am.get(Assets.FX_FILE_JUMP_D, Sound.class));
         jump.add(am.get(Assets.FX_FILE_JUMP_E, Sound.class));
+        jump.add(am.get(Assets.FX_FILE_JUMP_F, Sound.class));
+        jump.add(am.get(Assets.FX_FILE_JUMP_G, Sound.class));
+        jump.add(am.get(Assets.FX_FILE_JUMP_H, Sound.class));
+        jump.add(am.get(Assets.FX_FILE_JUMP_I, Sound.class));
+        jump.add(am.get(Assets.FX_FILE_JUMP_J, Sound.class));
+        jump.add(am.get(Assets.FX_FILE_JUMP_K, Sound.class));
         hit = am.get(Assets.FX_FILE_HIT, Sound.class);
         bodyImpact = am.get(Assets.FX_FILE_BODY_IMPACT, Sound.class);
         pum = am.get(Assets.FX_FILE_PUM, Sound.class);
@@ -37,6 +44,7 @@ public class AssetSounds {
         newAchievement = am.get(Assets.FX_FILE_NEW_ACHIEVEMENT, Sound.class);
         bloodSplash = am.get(Assets.FX_FILE_BLOOD_SPLASH, Sound.class);
         voice = am.get(Assets.FX_FILE_VOICE, Sound.class);
+        throwEgg = am.get(Assets.FX_FILE_THROW, Sound.class);
     }
 
     public Sound getJump() {
@@ -69,5 +77,9 @@ public class AssetSounds {
 
     public Sound getVoice() {
         return voice;
+    }
+
+    public Sound getThrowEgg() {
+        return throwEgg;
     }
 }

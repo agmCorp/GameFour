@@ -32,6 +32,12 @@ public class Assets implements Disposable, AssetErrorListener {
     public static final String FX_FILE_JUMP_C = "audio/sounds/jumpC.ogg";
     public static final String FX_FILE_JUMP_D = "audio/sounds/jumpD.ogg";
     public static final String FX_FILE_JUMP_E = "audio/sounds/jumpE.ogg";
+    public static final String FX_FILE_JUMP_F = "audio/sounds/jumpF.ogg";
+    public static final String FX_FILE_JUMP_G = "audio/sounds/jumpG.ogg";
+    public static final String FX_FILE_JUMP_H = "audio/sounds/jumpH.ogg";
+    public static final String FX_FILE_JUMP_I = "audio/sounds/jumpI.ogg";
+    public static final String FX_FILE_JUMP_J = "audio/sounds/jumpJ.ogg";
+    public static final String FX_FILE_JUMP_K = "audio/sounds/jumpK.ogg";
     public static final String FX_FILE_HIT = "audio/sounds/hit.ogg";
     public static final String FX_FILE_BODY_IMPACT = "audio/sounds/bodyImpact.ogg";
     public static final String FX_FILE_PUM = "audio/sounds/pum.ogg";
@@ -39,6 +45,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public static final String FX_FILE_NEW_ACHIEVEMENT = "audio/sounds/newAchievement.ogg";
     public static final String FX_FILE_BLOOD_SPLASH = "audio/sounds/bloodSplash.ogg";
     public static final String FX_FILE_VOICE = "audio/sounds/voice.ogg";
+    public static final String FX_FILE_THROW = "audio/sounds/throw.ogg";
 
     // Music
     public static final String MUSIC_FILE_MAIN_MENU = "audio/music/songMainMenu.ogg";
@@ -137,6 +144,12 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.load(FX_FILE_JUMP_C, Sound.class);
         assetManager.load(FX_FILE_JUMP_D, Sound.class);
         assetManager.load(FX_FILE_JUMP_E, Sound.class);
+        assetManager.load(FX_FILE_JUMP_F, Sound.class);
+        assetManager.load(FX_FILE_JUMP_G, Sound.class);
+        assetManager.load(FX_FILE_JUMP_H, Sound.class);
+        assetManager.load(FX_FILE_JUMP_I, Sound.class);
+        assetManager.load(FX_FILE_JUMP_J, Sound.class);
+        assetManager.load(FX_FILE_JUMP_K, Sound.class);
         assetManager.load(FX_FILE_HIT, Sound.class);
         assetManager.load(FX_FILE_BODY_IMPACT, Sound.class);
         assetManager.load(FX_FILE_PUM, Sound.class);
@@ -144,6 +157,7 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.load(FX_FILE_NEW_ACHIEVEMENT, Sound.class);
         assetManager.load(FX_FILE_BLOOD_SPLASH, Sound.class);
         assetManager.load(FX_FILE_VOICE, Sound.class);
+        assetManager.load(FX_FILE_THROW, Sound.class);
     }
 
     private void loadMusic() {

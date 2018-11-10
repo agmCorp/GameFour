@@ -38,6 +38,7 @@ public class Platform extends AbstractDynamicObject {
     private State currentState;
     private float velocity;
 
+    // Coordinates x and y describe its bottom left corner.
     public Platform(GameWorld gameWorld, float x, float y) {
         this.gameWorld = gameWorld;
 
@@ -52,7 +53,7 @@ public class Platform extends AbstractDynamicObject {
         assetsPlatform.add(assetSprites.getPlatformF());
 
         // Random animation
-        setNewAnimation(x, y);
+        setRandomAnimation(x, y);
 
         // Box2d
         definePlatform();
@@ -61,7 +62,7 @@ public class Platform extends AbstractDynamicObject {
         velocity = 0.0f;
     }
 
-    private void setNewAnimation(float x, float y) {
+    private void setRandomAnimation(float x, float y) {
         IAssetPlatform assetPlatform = assetsPlatform.get(MathUtils.random(0, assetsPlatform.size - 1));
         platformStand = assetPlatform.getPlatformStand();
         platformAnimation = assetPlatform.getPlatformAnimation();
@@ -102,7 +103,7 @@ public class Platform extends AbstractDynamicObject {
     }
 
     public void reposition(float x, float y) {
-        setNewAnimation(x, y);
+        setRandomAnimation(x, y);
         body.setTransform(x + getWidth() / 2, y + getHeight() / 2, body.getAngle());
         setPosition(x, y);
         currentState = State.STATIC;

@@ -62,6 +62,7 @@ public class Jumper extends AbstractDynamicObject {
     private ParticleEffect fireworks;
     private int bullets;
 
+    // Coordinates x and y describe its bottom left corner.
     public Jumper(PlayScreen playScreen, GameWorld gameWorld, float x, float y) {
         this.playScreen = playScreen;
         this.gameWorld = gameWorld;
