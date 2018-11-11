@@ -4,10 +4,13 @@
 supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 - para la proxima, no poner metodos getWidth() y getHeight() dentro de la clase AssetMiSprite porque me obliga a tener una instancia de
 AssetMiSprite para poder consultar su ancho y alto. Mejor hacerlo como antes, con constantes públicas.
+- para la proxima usar el ultimo android y el ultimo libgdx.
 
 HACER
 - hacer un help o algo (hold and release to jump. Tap on the screen to get this little nosy bird out)
 - pull request (pr) a Typinglabel
+- investigar por que en mobile browsers el audio se corta.
+- agregar la palabra "Excelsior!"
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
