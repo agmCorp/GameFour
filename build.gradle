@@ -38,7 +38,6 @@ allprojects {
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
         admobVersion = '15.0.1'
-        typingLabelVersion = '1.0.4'
         regexodusVersion = '0.1.10'
     }
 
@@ -107,7 +106,6 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
         compile "com.github.tommyettinger:regexodus:$regexodusVersion"
         compile "com.github.tommyettinger:regexodus:$regexodusVersion:sources"
 

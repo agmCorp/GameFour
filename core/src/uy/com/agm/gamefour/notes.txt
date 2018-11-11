@@ -6,10 +6,8 @@ supongo la derivada porque arranca a ejecutar desde abajo, pero tengo la duda.
 AssetMiSprite para poder consultar su ancho y alto. Mejor hacerlo como antes, con constantes públicas.
 
 HACER
-- Hacer un keystore para este juego
-- Estudiar la memoria consumida
 - hacer un help o algo (hold and release to jump. Tap on the screen to get this little nosy bird out)
-- pr a Typinglabel
+- pull request (pr) a Typinglabel
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
@@ -19,7 +17,6 @@ OTROS
 - hacer un skin
 - Poner una zona de salto perfecto. Si el pajaro cae justo ahi (su x en medio de la plataforma + delta) saco algun cartel y/o doy
 puntos extra.
-- Revisar que pasa después que choca porque no veo que dispare. Capaz es porque cae rápido
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 LECCIONES APRENDIDAS
@@ -88,41 +85,25 @@ antes decía if (effectClass.isAssignableFrom(effect.getClass())) {
 Línea 448 de TypingLabel después:
 ahora dice if (ClassReflection.isAssignableFrom(effectClass.getClass(), effect.getClass())) {
 
-Estos fuentes SOLO SE VAN A USAR para GWT.
-Para android y desktop voy a usar el jar bajado por maven/gradle.
-Para bajarme el jar editar GameFour/build.gradle:
-   ext {
-       appName = "GameFour"
-       gdxVersion = '1.9.8'
-       roboVMVersion = '2.3.1'
-       box2DLightsVersion = '1.4'
-       ashleyVersion = '1.7.0'
-       aiVersion = '1.8.0'
-       admobVersion = '15.0.1'
-       ---> typingLabelVersion = '1.0.4'
-   }
+Estos fuentes ahora se van a usar para TODOS LOS MODULOS: android, desktop y html.
+No hay forma de usar esos fuentes solo para html y para android/desktop usar la versión oficial porque luego al generar la versión firmada (release)
+obtengo un error de inclusión doble de clases:
 
-project(":core") {
-   apply plugin: "java"
+Warning:Exception while processing task java.io.IOException: Can't write
+[C:\Alvaro\Develop\Android\20180915\AndroidStudioProjects\GameFour\android\build\intermediates\transforms\proguard\release\jars\3\1f\main.jar]
+(Can't read [C:\Alvaro\Develop\Android\20180915\AndroidStudioProjects\GameFour\core\build\libs\core-build-20181110182601-1.0.0.jar(;;;;;;**.class)]
+(Duplicate zip entry [com/a/a/a/a/a.class == core-build-20181110182601-1.0.0.jar:com/rafaskoberg/gdx/typinglabel/effects/Effect.class]))
+Error:Execution failed for task ':android:transformClassesAndResourcesWithProguardForRelease'.
+> Job failed, see logs for details
 
-   dependencies {
-       compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-       compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-       ---> compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
-
-       // To use external jars just place them in a directory called GameThree/libs
-       compile fileTree(dir: '../libs', include: ['*.jar'])
-   }
-}
-
-Eso me trajo el jar dentro de External libraries (ahora figura typing-label-1.04).
-Con esto, TypingLabel funciona en desktop y android pero todavía no en html.
+Con esto, TypingLabel funciona en desktop y android pero todavía no terminamos para html.
 
 TypingLabel usa java.util.regex package que no está soportada por GWT, por lo tanto al generar html (gradlew html:dist) da error en la clase Parser.
 Ver incidente ttps://github.com/rafaskb/typing-label/issues/1
 La solución es usar la librería RegExodus.
 Esta librería la bajo (al igual que su fuente) y es soportada por GWT.
-Dentro del jar tiene un package regexodus.emu.java.util.regex con clases que emulan java.util.regex (de jse) y además ya contiene el archivo regexodus.gwt.xml por lo que usarla es muy transparente.
+Dentro del jar tiene un package regexodus.emu.java.util.regex con clases que emulan java.util.regex (de jse) y además ya contiene el
+archivo regexodus.gwt.xml por lo que usarla es muy transparente.
 
 Para usarla entonces hago lo siguiente:
 Dentro de GameFour/build.gradle
@@ -134,7 +115,6 @@ Dentro de GameFour/build.gradle
        ashleyVersion = '1.7.0'
        aiVersion = '1.8.0'
        admobVersion = '15.0.1'
-       typingLabelVersion = '1.0.4'
        ---> regexodusVersion = '0.1.10'
    }
 
@@ -144,7 +124,6 @@ project(":core") {
    dependencies {
        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-       compile "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
        ---> compile "com.github.tommyettinger:regexodus:$regexodusVersion"
        ---> compile "com.github.tommyettinger:regexodus:$regexodusVersion:sources"
 

@@ -38,8 +38,8 @@ public class Jumper extends AbstractDynamicObject {
     private static final float SCALE_IMPULSE_X = 30.0f;
     private static final float POWER_JUMP_OFFSET_Y = 1.0f;
     private static final int SUCCESSFUL_JUMP_SCORE = 2;
-    private static final float MIN_SPEAK_TIME = 6.0f;
-    private static final float MAX_SPEAK_TIME = 9.0f;
+    private static final float MIN_SPEAK_TIME = 7.0f;
+    private static final float MAX_SPEAK_TIME = 10.0f;
     private static final int MAX_BULLETS = 1;
 
     private enum State {
@@ -87,8 +87,7 @@ public class Jumper extends AbstractDynamicObject {
         currentPlatform = null;
 
         // Voice
-        speakTime = 0;
-        timeToSpeak = getTimeToSpeak();
+        initVoice();
 
         // Particles effect
         Vector3 gameCameraPos = gameWorld.getGameCamera().position();
@@ -109,8 +108,9 @@ public class Jumper extends AbstractDynamicObject {
         bullets = MAX_BULLETS;
     }
 
-    private float getTimeToSpeak() {
-        return MathUtils.random(MIN_SPEAK_TIME, MAX_SPEAK_TIME);
+    private void initVoice() {
+        speakTime = 0;
+        timeToSpeak = MathUtils.random(MIN_SPEAK_TIME, MAX_SPEAK_TIME);
     }
 
     private void defineJumper() {
@@ -192,6 +192,7 @@ public class Jumper extends AbstractDynamicObject {
         currentState = State.IDLE;
         stateTime = 0;
         stopJumper = true;
+        initVoice();
 
         // Audio effect
         AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getBodyImpact());
@@ -308,8 +309,7 @@ public class Jumper extends AbstractDynamicObject {
 
         speakTime += deltaTime;
         if (speakTime > timeToSpeak) {
-            speakTime = 0;
-            timeToSpeak = getTimeToSpeak();
+            initVoice();
 
             // Audio effect
             AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getVoice());
