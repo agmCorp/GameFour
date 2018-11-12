@@ -10,7 +10,7 @@ HACER
 - investigar por que en mobile browsers el audio se corta.
 - agregar la palabra "Excelsior!"
 - arreglar el botón verde
-- poner low/medium/hard en gamethree
+- poner difficulty: low o  easy/medium/hard en gamethree
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
