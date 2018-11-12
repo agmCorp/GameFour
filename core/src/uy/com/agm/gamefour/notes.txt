@@ -11,6 +11,7 @@ HACER
 - pull request (pr) a Typinglabel
 - investigar por que en mobile browsers el audio se corta.
 - agregar la palabra "Excelsior!"
+- arreglar el botón verde
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
