@@ -8,7 +8,7 @@ HACER
 - hacer un help o algo (hold and release to jump. Tap on the screen to get this little nosy bird out)
 - pull request (pr) a Typinglabel
 - investigar por que en mobile browsers el audio se corta.
-- agregar la palabra "Excelsior!"
+- agregar la palabra "Excelsior!", "Terrific"
 - arreglar el botón verde
 
 DESEABLE PARA LIBERAR
