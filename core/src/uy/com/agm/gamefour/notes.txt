@@ -10,6 +10,7 @@ HACER
 - investigar por que en mobile browsers el audio se corta.
 - agregar la palabra "Excelsior!", "Terrific"
 - arreglar el botón verde
+- hacer un help dinamico con un helpscreen y un helpgameworld
 
 DESEABLE PARA LIBERAR
 - a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
