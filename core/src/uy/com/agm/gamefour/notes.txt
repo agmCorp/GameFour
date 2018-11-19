@@ -6,7 +6,7 @@ HACER
 - pull request (pr) a Typinglabel
 - investigar por que en mobile browsers el audio se corta.
 - agregar la palabra "Excelsior!", "Terrific"
-- arreglar el botón verde
+- arreglar los botones verdes
 - hacer un help dinamico con un helpscreen y un helpgameworld
 
 DESEABLE PARA LIBERAR
