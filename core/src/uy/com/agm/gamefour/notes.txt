@@ -3,6 +3,10 @@
 AssetMiSprite para poder consultar su ancho y alto. Mejor hacerlo como antes, con constantes públicas.
 HACER
 - hacer un help o algo (hold and release to jump. Tap on the screen to get this little nosy bird out)
+Se me ocurre extender la clase GameWorld, redefiniendo aquellos métodos que crea necesarios.
+Luego hacer una helpScreen similar a PlayScreen pero bien sencilla (con hud -score y barrita-) y con infoscreenhelp que sería una manito.
+Creo que con eso basta. Tal vez tenga que definir un nuevo platformcontroller o extenderla también usandola en el gameworld extendido.
+
 - pull request (pr) a Typinglabel
 - investigar por que en mobile browsers el audio se corta.
 - agregar la palabra "Excelsior!", "Terrific"
