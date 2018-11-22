@@ -36,7 +36,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
 
     private static final float ANIMATION_DURATION = 1.0f;
     private static final float BUTTON_WIDTH = 180.0f;
-    private static final int MAX_TITLE_KEYS = 13;
+    private static final int MAX_TITLE_KEYS = 15;
 
     private Assets assets;
     private I18NBundle i18NGameThreeBundle;

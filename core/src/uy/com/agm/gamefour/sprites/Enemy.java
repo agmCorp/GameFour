@@ -41,6 +41,8 @@ public class Enemy extends AbstractDynamicObject {
     private static final Color DEFAULT_COLOR = Color.WHITE;
     private static final float SHAKE_AMPLITUDE = 0.3f;
     private static final float SHAKE_DURATION = 0.5f;
+    private static final float FADING_SECONDS = 1.0f;
+    private static final float SPLAT_VELOCITY_Y = 2.0f;
     private static final int SCORE = 1;
 
     private enum State {
@@ -60,6 +62,8 @@ public class Enemy extends AbstractDynamicObject {
     private Body body;
     protected State currentState;
     private float knockBackTime;
+    private boolean initStateSplat;
+    private float stateFadingTime;
 
     public Enemy(PlayScreen playScreen, GameWorld gameWorld, Platform secondLastPlatform, Platform lastPlatform) {
         this.playScreen = playScreen;
@@ -96,6 +100,8 @@ public class Enemy extends AbstractDynamicObject {
 
         currentState = State.INACTIVE;
         knockBackTime = 0;
+        initStateSplat = true;
+        stateFadingTime = 0;
     }
 
     private void defineEnemy() {
@@ -176,13 +182,6 @@ public class Enemy extends AbstractDynamicObject {
         }
     }
 
-    private void checkBoundaries() {
-        // When this enemy is outside the camera, it dies.
-        if (!isOnCamera()) {
-            currentState = State.DEAD;
-        }
-    }
-
     private boolean isOnCamera() {
         GameCamera gameCamera = gameWorld.getGameCamera();
         float gameCameraPosX = gameCamera.position().x;
@@ -202,7 +201,11 @@ public class Enemy extends AbstractDynamicObject {
 
     private void stateAlive(float deltaTime) {
         updateSpritePosition(deltaTime);
-        checkBoundaries();
+
+        // When this enemy is outside the camera, it dies.
+        if (!isOnCamera()) {
+            currentState = State.DEAD;
+        }
     }
 
     private void updateSpritePosition(float deltaTime) {
@@ -284,12 +287,32 @@ public class Enemy extends AbstractDynamicObject {
     }
 
     private void stateSplat(float deltaTime) {
-        // Determines the size of the splat on the screen
-        setBounds(getX() + getWidth() / 2 - enemyWidth / 2,
-                getY() + getHeight() / 2 - enemyHeight / 2,
-                enemyWidth, enemyHeight);
+        if (initStateSplat) {
+            // Determines the size of the splat on the screen
+            setBounds(getX() + getWidth() / 2 - enemyWidth / 2,
+                    getY() + getHeight() / 2 - enemyHeight / 2,
+                    enemyWidth, enemyHeight);
+
+            // Sets vertical velocity
+            body.setLinearVelocity(0.0f, SPLAT_VELOCITY_Y);
+            initStateSplat = false;
+        }
+
+        // Update this Sprite to correspond with the position of the Box2D body.
+        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRegion(enemySplat);
-        checkBoundaries();
+
+        // 0 invisible, 1 visible
+        stateFadingTime += deltaTime;
+        float alpha = 1 - stateFadingTime / FADING_SECONDS;
+        if (alpha >= 0) {
+            setAlpha(alpha);
+        }
+
+        // When the splat is outside the camera or it's invisible, this enemy dies.
+        if (!isOnCamera() || stateFadingTime > FADING_SECONDS) {
+            currentState = State.DEAD;
+        }
     }
 
     private void stateDead(float deltaTime) {
