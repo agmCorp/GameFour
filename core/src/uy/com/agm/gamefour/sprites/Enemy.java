@@ -256,8 +256,8 @@ public class Enemy extends AbstractDynamicObject {
         float camUpperEdge = gameCameraPosY + worldHeight / 2;
         float camBottomEdge = gameCameraPosY - worldHeight / 2;
         float enemyLeftEdge = getX();
-        float enemyRightEdge = getX() + enemyWidth;
-        float enemyUpperEdge = getY() + enemyHeight;
+        float enemyRightEdge = getX() + explosionWidth;
+        float enemyUpperEdge = getY() + explosionHeight;
         float enemyBottomEdge = getY();
 
         if (camUpperEdge <= enemyUpperEdge ||
