@@ -267,7 +267,6 @@ public class Enemy extends AbstractDynamicObject {
                 camRightEdge <= enemyRightEdge ||
                 enemyBottomEdge <= camBottomEdge) {
             body.setLinearVelocity(0.0f, 0.0f); // Stop
-            playScreen.setGameStatePaused(); // TODO
         }
     }
 

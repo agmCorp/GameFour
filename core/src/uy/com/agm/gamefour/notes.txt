@@ -14,6 +14,11 @@
     yo antes de setear el esado explosion, deberia setear los boudns con el nuevo tamaño y el sprite explosion. POrque al cambiar estado
     en el draw ya se cambia el color y me está dibujando el pajaro verde (antes de explotar) luego del knockback negro.
 
+    lo mismo cuando termina de explotar y pasa a splat. Ahi ya me puedo sacar los booleanos de arriba init.
+
+    el algoritmo general seria en lugar de setear el cambio de estado, invocar a un metodo que se llame initExposion() que hace setbounds y setea estado.
+    La cosa que hice todo todo de la misma manera y no quiero programar todo de vuelta. Tal vez conviene dejar esta idea para un tercer juego.
+
 
 
 
