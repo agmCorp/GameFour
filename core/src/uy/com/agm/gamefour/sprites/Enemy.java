@@ -216,6 +216,8 @@ public class Enemy extends AbstractDynamicObject {
     }
 
     private void stateImpact(float deltaTime) {
+        updateSpritePosition(deltaTime);
+
         // Knock back effect
         body.applyForce(KNOCK_BACK_FORCE_X, MathUtils.randomSign() * KNOCK_BACK_FORCE_Y,
                 body.getPosition().x, body.getPosition().y, true);
@@ -228,13 +230,13 @@ public class Enemy extends AbstractDynamicObject {
         for (Fixture fixture : body.getFixtureList()) {
             fixture.setFilterData(filter);
         }
-        updateSpritePosition(deltaTime);
         currentState = State.KNOCK_BACK;
     }
 
     private void stateKnockBack(float deltaTime) {
-        holdEnemy();
         updateSpritePosition(deltaTime);
+        holdEnemy();
+
         knockBackTime += deltaTime;
         if (knockBackTime > KNOCK_BACK_SECONDS) {
             body.setLinearVelocity(0.0f, 0.0f);
@@ -255,16 +257,17 @@ public class Enemy extends AbstractDynamicObject {
         float camRightEdge = gameCameraPosX + worldWidth / 2;
         float camUpperEdge = gameCameraPosY + worldHeight / 2;
         float camBottomEdge = gameCameraPosY - worldHeight / 2;
-        float enemyLeftEdge = getX();
-        float enemyRightEdge = getX() + explosionWidth;
-        float enemyUpperEdge = getY() + explosionHeight;
-        float enemyBottomEdge = getY();
+        float enemyLeftEdge = getX() + getWidth() / 2 - explosionWidth / 2;
+        float enemyRightEdge = enemyLeftEdge + explosionWidth;
+        float enemyBottomEdge = getY() + getHeight() / 2 - explosionHeight / 2;
+        float enemyUpperEdge = enemyBottomEdge + explosionHeight;
 
         if (camUpperEdge <= enemyUpperEdge ||
                 enemyLeftEdge <= camLeftEdge ||
                 camRightEdge <= enemyRightEdge ||
                 enemyBottomEdge <= camBottomEdge) {
             body.setLinearVelocity(0.0f, 0.0f); // Stop
+            playScreen.setGameStatePaused(); // TODO
         }
     }
 
@@ -281,6 +284,8 @@ public class Enemy extends AbstractDynamicObject {
                         getY() + getHeight() / 2 - explosionHeight / 2,
                         explosionWidth, explosionHeight);
             }
+            // Update this Sprite to correspond with the position of the Box2D body.
+            setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
             setRegion((TextureRegion) explosionAnimation.getKeyFrame(stateTime, true));
             stateTime += deltaTime;
         }

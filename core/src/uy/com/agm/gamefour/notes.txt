@@ -1,3 +1,23 @@
+    private void stateKnockBack(float deltaTime) {
+        updateSpritePosition(deltaTime);
+        holdEnemy();
+
+        knockBackTime += deltaTime;
+        if (knockBackTime > KNOCK_BACK_SECONDS) {
+            body.setLinearVelocity(0.0f, 0.0f);
+            currentState = State.EXPLOSION;
+            stateTime = 0;
+        }
+    }
+
+
+    yo antes de setear el esado explosion, deberia setear los boudns con el nuevo tamaño y el sprite explosion. POrque al cambiar estado
+    en el draw ya se cambia el color y me está dibujando el pajaro verde (antes de explotar) luego del knockback negro.
+
+
+
+
+
 - Debo usar una skin
 - para la proxima, no poner metodos getWidth() y getHeight() dentro de la clase AssetMiSprite porque me obliga a tener una instancia de
 AssetMiSprite para poder consultar su ancho y alto. Mejor hacerlo como antes, con constantes públicas.
