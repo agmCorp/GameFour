@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,7 +8,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -30,8 +28,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.LeaderboardsClient;
-import com.google.android.gms.games.Player;
-import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,22 +43,28 @@ import static com.badlogic.gdx.Gdx.app;
 public class AndroidLauncher extends AndroidApplication implements IAdsController, IPlayServices {
 	private static final String TAG = AndroidLauncher.class.getName();
 
-	// request codes we use when invoking an external activity
+	// Request codes we use when invoking an external activity
 	private static final int RC_UNUSED = 5001;
 	private static final int RC_SIGN_IN = 9001;
+
+	// URL on PlayStore
+	private static final String URL_PLAY_STORE = "https://play.google.com/store/apps/details?id=uy.com.agm.gamefour";
 
 	// AdMob
 	private AdView bannerAd;
 	private View gameView;
 	private InterstitialAd interstitialAd;
-	private Runnable callbackOnAdClose;
 
-	// Client used to sign in with Google APIs
+	// AdMob callback
+	private Runnable callbackOnAdClosed;
+
+	// Google play game services
 	private GoogleSignInClient googleSignInClient;
-
-	// Client variables
 	private LeaderboardsClient leaderboardsClient;
-	private PlayersClient playersClient;
+
+	// GPGS Callbacks
+	private Runnable callbackOnConnected;
+	private Runnable callbackOnDisconnected;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -81,16 +83,32 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		gameView = initializeForView(new GameFour(this, this), config);
 
 		// Advertisements
-		MobileAds.initialize(this, getString(R.string.admob_app_id));
-		setupBannerAd();
-		setupInterstitialAd();
+		adMobSetup();
 
+		// Google play game services
+		gpgsSetup();
+	}
+
+	private void adMobSetup() {
+		MobileAds.initialize(this, getString(R.string.admob_app_id));
+		bannerAdSetup();
+		interstitialAdSetup();
+	}
+
+	private void gpgsSetup() {
 		// Create the client used to sign in to Google services.
 		googleSignInClient = GoogleSignIn.getClient(this,
 				new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN).build());
+
+		// Client variable
+		leaderboardsClient = null;
+
+		// GPGS Callbacks
+		callbackOnConnected = null;
+		callbackOnDisconnected = null;
 	}
 
-	private void setupBannerAd() {
+	private void bannerAdSetup() {
 		bannerAd = new AdView(this);
 		bannerAd.setVisibility(View.INVISIBLE);
 		bannerAd.setBackgroundColor(Color.BLACK);
@@ -122,10 +140,10 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		setContentView(layout);
 	}
 
-	private void setupInterstitialAd() {
+	private void interstitialAdSetup() {
 		interstitialAd = new InterstitialAd(this);
 		interstitialAd.setAdUnitId(DebugConstants.TEST_ADS ? getString(R.string.admob_interstitial_unit_id_test) : getString(R.string.admob_interstitial_unit_id));
-		callbackOnAdClose = null;
+		callbackOnAdClosed = null;
 		setInterstitialAdListener();
 
 		// Load the first interstitial
@@ -136,27 +154,27 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		interstitialAd.setAdListener(new AdListener() {
 			@Override
 			public void onAdLoaded() {
-				app.debug(TAG, "**** Ad finishes loading");
+				Gdx.app.debug(TAG, "**** Ad finishes loading");
 			}
 
 			@Override
 			public void onAdFailedToLoad(int errorCode) {
-				app.debug(TAG, "**** Ad request fails with errorCode: " + errorCode);
+				Gdx.app.debug(TAG, "**** Ad request fails with errorCode: " + errorCode);
 			}
 
 			@Override
 			public void onAdOpened() {
-				app.debug(TAG, "**** Ad is displayed");
+				Gdx.app.debug(TAG, "**** Ad is displayed");
 			}
 
 			@Override
 			public void onAdLeftApplication() {
-				app.debug(TAG, "**** User has left the app");
+				Gdx.app.debug(TAG, "**** User has left the app");
 			}
 
 			@Override
 			public void onAdClosed() {
-				app.debug(TAG, "**** Ad is closed");
+				Gdx.app.debug(TAG, "**** Ad is closed");
 
 				// All of the com.badlogic.gdx.ApplicationListener methods are called on the same thread.
 				// This thread is the rendering thread on which OpenGL calls can be made.
@@ -169,10 +187,10 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 				// To pass data from another thread to the rendering thread we must use Application.postRunnable().
 				// This will run the code in the Runnable in the rendering thread in the next frame, before
 				// ApplicationListener.render() is called.
-				if (callbackOnAdClose != null) {
-					// Therefore, instead of running callbackOnAdClose in the UI thread (callbackOnAdClose.run), we run it in
+				if (callbackOnAdClosed != null) {
+					// Therefore, instead of running callbackOnAdClosed in the UI thread (callbackOnAdClosed.run), we run it in
 					// the badlogic rendering thread.
-					app.postRunnable(callbackOnAdClose);
+					app.postRunnable(callbackOnAdClosed);
 				}
 
 				// Load the next interstitial
@@ -189,9 +207,9 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	}
 
 	@Override
-	public void showInterstitialAd(Runnable callbackOnAdClose) {
+	public void showInterstitialAd(Runnable callbackOnAdClosed) {
 		// Code that is executed when the ad is closed.
-		this.callbackOnAdClose = callbackOnAdClose;
+		this.callbackOnAdClosed = callbackOnAdClosed;
 
 		// This method (showInterstitialAd) is called from the rendering thread (com.badlogic.gdx.ApplicationListener.render() thread)
 		// However, the method show() must be called on the main UI thread.
@@ -203,7 +221,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 				if (interstitialAd.isLoaded()) {
 					interstitialAd.show();
 				} else {
-					app.debug(TAG, "**** The interstitial wasn't loaded yet.");
+					Gdx.app.debug(TAG, "**** The interstitial wasn't loaded yet.");
 				}
 			}
 		});
@@ -211,26 +229,34 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 
 	@Override
 	public void showBannerAd() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				showBannerAdImp();
+			}
+		});
+	}
+
+	private void showBannerAdImp() {
 		if (bannerAd.getVisibility() != View.VISIBLE) {
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					bannerAd.setVisibility(View.VISIBLE);
-					loadBannerAd();
-				}
-			});
+			bannerAd.setVisibility(View.VISIBLE);
+			loadBannerAd();
 		}
 	}
 
 	@Override
 	public void hideBannerAd() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				hideBannerAdImp();
+			}
+		});
+	}
+
+	private void hideBannerAdImp() {
 		if (bannerAd.getVisibility() == View.VISIBLE) {
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					bannerAd.setVisibility(View.INVISIBLE);
-				}
-			});
+			bannerAd.setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -255,8 +281,12 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	}
 
 	@Override
-	public void signIn() {
-        runOnUiThread(new Runnable() {
+	public void signIn(Runnable callbackOnConnected, Runnable callbackOnDisconnected) {
+		// Code that is executed on connection success or on connection failure
+		this.callbackOnConnected = callbackOnConnected;
+		this.callbackOnDisconnected = callbackOnDisconnected;
+
+		runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 startSignInIntent();
@@ -265,17 +295,10 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	}
 
 	private void startSignInIntent() {
-		startActivityForResult(googleSignInClient.getSignInIntent(), RC_SIGN_IN);
+		if (!isSignedIn()) {
+			startActivityForResult(googleSignInClient.getSignInIntent(), RC_SIGN_IN);
+		}
 	}
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Since the state of the signed in user can change when the activity is not active
-        // it is recommended to try and sign in silently from when the app resumes.
-        signInSilently();
-    }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -293,28 +316,21 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 					message = getString(R.string.signin_other_error);
 				}
 
+				Gdx.app.debug(TAG, "**** onActivityResult(): failure " + message);
 				onDisconnected();
-
-				new AlertDialog.Builder(this)
-						.setMessage(message)
-						.setNeutralButton(android.R.string.ok, null)
-						.show();
 			}
 		}
 	}
 
 	private void signInSilently() {
-		Log.d(TAG, "signInSilently()");
-
 		googleSignInClient.silentSignIn().addOnCompleteListener(this,
 				new OnCompleteListener<GoogleSignInAccount>() {
 					@Override
 					public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
 						if (task.isSuccessful()) {
-							Log.d(TAG, "signInSilently(): success");
 							onConnected(task.getResult());
 						} else {
-							Log.d(TAG, "signInSilently(): failure", task.getException());
+							Gdx.app.debug(TAG, "**** signInSilently(): failure " + task.getException());
 							onDisconnected();
 						}
 					}
@@ -322,67 +338,53 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	}
 
 	private void onConnected(GoogleSignInAccount googleSignInAccount) {
-		Gdx.app.debug(TAG, "******* ME CONECTE " + googleSignInAccount.getEmail());
-
 		leaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
-		playersClient = Games.getPlayersClient(this, googleSignInAccount);
 
-		// Set the greeting appropriately on main menu
-		playersClient.getCurrentPlayer()
-				.addOnCompleteListener(new OnCompleteListener<Player>() {
-					@Override
-					public void onComplete(@NonNull Task<Player> task) {
-						String displayName;
-						if (task.isSuccessful()) {
-							displayName = task.getResult().getDisplayName();
-						} else {
-							Exception e = task.getException();
-							handleException(e, getString(R.string.players_exception));
-							displayName = "???";
-						}
-						Gdx.app.debug(TAG, "******* Hello, " + displayName);
-					}
-				});
+		if (callbackOnConnected != null) {
+			// Instead of running callbackOnConnected in the UI thread (callbackOnConnected.run), we run it in
+			// the badlogic rendering thread.
+			app.postRunnable(callbackOnConnected);
+		}
 	}
 
 	private void onDisconnected() {
-		Gdx.app.debug(TAG, "******* ME CONECTE DESCONECTE");
-
 		leaderboardsClient = null;
-		playersClient = null;
+
+		if (callbackOnDisconnected != null) {
+			// Instead of running callbackOnDisconnected in the UI thread (callbackOnDisconnected.run), we run it in
+			// the badlogic rendering thread.
+			app.postRunnable(callbackOnDisconnected);
+		}
 	}
 
 	@Override
 	public boolean isSignedIn() {
+		// TODO
 		Gdx.app.debug(TAG, "****** ESTA LOGUEADO? " + (GoogleSignIn.getLastSignedInAccount(this) != null)); // esto siempre me devuelve true
 		return GoogleSignIn.getLastSignedInAccount(this) != null;
 	}
 
 	@Override
 	public void signOut() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                signOutImp();
-            }
-        });
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				signOutImp();
+			}
+		});
 	}
 
 	private void signOutImp() {
-        if (!isSignedIn()) {
-            Gdx.app.debug(TAG, "**** signOut() called, but was not signed in!");
-        } else {
-            googleSignInClient.signOut().addOnCompleteListener(this,
-                    new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            boolean successful = task.isSuccessful();
-                            Gdx.app.debug(TAG, "**** signOut(): " + (successful ? "success" : "failed"));
-
-                            onDisconnected();
-                        }
-                    });
-        }
+		if (isSignedIn()) {
+			googleSignInClient.signOut().addOnCompleteListener(this,
+					new OnCompleteListener<Void>() {
+						@Override
+						public void onComplete(@NonNull Task<Void> task) {
+							boolean successful = task.isSuccessful();
+							onDisconnected();
+						}
+					});
+		}
     }
 
 	@Override
@@ -390,10 +392,13 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String str = "https://play.google.com/store/apps/details?id=uy.com.agm.gamefour"; // TODO
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
+                rateGameImp();
             }
         });
+	}
+
+	private void rateGameImp() {
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URL_PLAY_STORE)));
 	}
 
 	@Override
@@ -401,15 +406,15 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // update leaderboards
-                updateLeaderboards(highScore);
+				submitScoreImp(highScore);
             }
         });
 	}
 
-    private void updateLeaderboards(int highScore) {
-		Gdx.app.debug(TAG, "********* MANDO " + highScore);
-        leaderboardsClient.submitScore(getString(R.string.gpgs_leaderboard), highScore);
+	private void submitScoreImp(int highScore) {
+		if (isSignedIn()) {
+			leaderboardsClient.submitScore(getString(R.string.gpgs_leaderboard), highScore);
+		}
 	}
 
 	@Override
@@ -423,19 +428,21 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	}
 
 	private void showLeaderboardsImp() {
-        leaderboardsClient.getAllLeaderboardsIntent()
-                .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, RC_UNUSED);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        handleException(e, getString(R.string.leaderboards_exception));
-                    }
-                });
+		if (isSignedIn()) {
+			leaderboardsClient.getAllLeaderboardsIntent()
+					.addOnSuccessListener(new OnSuccessListener<Intent>() {
+						@Override
+						public void onSuccess(Intent intent) {
+							startActivityForResult(intent, RC_UNUSED);
+						}
+					})
+					.addOnFailureListener(new OnFailureListener() {
+						@Override
+						public void onFailure(@NonNull Exception e) {
+							handleException(e, getString(R.string.leaderboards_exception));
+						}
+					});
+		}
     }
 
 	private void handleException(Exception e, String details) {
@@ -448,9 +455,15 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 
 		String message = getString(R.string.status_exception_error, details, status, e);
 
-		new AlertDialog.Builder(this)
-				.setMessage(message)
-				.setNeutralButton(android.R.string.ok, null)
-				.show();
+		Gdx.app.debug(TAG, "**** handleException(): " + message);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// Since the state of the signed in user can change when the activity is not active
+		// it is recommended to try and sign in silently from when the app resumes.
+		signInSilently();
 	}
 }

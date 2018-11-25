@@ -5,7 +5,7 @@ package uy.com.agm.gamefour.playservices;
  */
 public class DummyPlayServices implements IPlayServices {
     @Override
-    public void signIn() {
+    public void signIn(Runnable callbackOnConnected, Runnable callbackOnDisconnected) {
         // Nothing to do here
     }
 

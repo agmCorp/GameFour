@@ -6,8 +6,7 @@ Save this file as res/values/games-ids.xml in your project.
 <resources>
     <!-- app_name -->
     <string name="app_name">Power jump</string>
-    <string name="players_exception">There was an issue communicating with players.</string>
     <string name="leaderboards_exception">There was an issue communicating with leaderboards.</string>
     <string name="status_exception_error">%1$s (status %2$d). %3$s.</string>
-    <string name="signin_other_error">There was an issue with sign in.  Please try again later.</string>
+    <string name="signin_other_error">There was an issue with sign in.</string>
 </resources>

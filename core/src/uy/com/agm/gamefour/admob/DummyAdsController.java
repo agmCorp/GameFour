@@ -7,7 +7,7 @@ package uy.com.agm.gamefour.admob;
 public class DummyAdsController implements IAdsController {
 
     @Override
-    public void showInterstitialAd(Runnable callbackOnAdClose) {
+    public void showInterstitialAd(Runnable callbackOnAdClosed) {
         // Nothing to do here
     }
 

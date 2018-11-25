@@ -17,8 +17,8 @@ public abstract class AbstractScreen implements Screen {
     private static final String TAG = AbstractScreen.class.getName();
 
     protected GameFour game;
-    IAdsController adsController;
-    IPlayServices playServices;
+    protected IAdsController adsController;
+    protected IPlayServices playServices;
 
     public AbstractScreen(GameFour game) {
         this.game = game;
@@ -50,37 +50,10 @@ public abstract class AbstractScreen implements Screen {
 
     protected void showInterstitialAd() {
         if (adsController.isWifiConnected()) {
-            adsController.showInterstitialAd(null); // We don't need to execute anything after ad
+            adsController.showInterstitialAd(null); // We don't need to execute anything after ad closes
         } else {
             Gdx.app.debug(TAG, "**** Not connected to the internet");
         }
-    }
-
-    // todo
-    protected void signIn() {
-        if (playServices.isWifiConnected() && !playServices.isSignedIn()) {
-            playServices.signIn();
-        }
-    }
-
-    protected void showLeaderboards() {
-        playServices.submitScore(99);
-        if (playServices.isSignedIn()) {
-            Gdx.app.debug(TAG, "INVOCO A SHOW()");
-            playServices.showLeaderboards();
-        } else {
-            Gdx.app.debug(TAG, "NO INVOCO A SHOW()");
-        }
-    }
-
-    public void submitScore(int highscore) {
-        if (playServices.isSignedIn()) {
-            playServices.submitScore(highscore);
-        }
-    }
-
-    protected void rateGame() {
-        playServices.rateGame();
     }
 
     /** Called by {@link uy.com.agm.gamefour.game.DirectedGame} when this screen becomes the current screen. */

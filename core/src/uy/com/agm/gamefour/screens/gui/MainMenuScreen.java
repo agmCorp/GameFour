@@ -1,5 +1,6 @@
 package uy.com.agm.gamefour.screens.gui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -60,6 +61,11 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private ImageButton info;
     private ImageButton audio;
     private ImageButton exit;
+
+    // TODO BOTONES PROVISORIOS
+    private ImageButton signIn;
+    private ImageButton showLeaderboards;
+    private ImageButton rateGame;
 
     public MainMenuScreen(GameFour game) {
         super(game);
@@ -129,6 +135,57 @@ public class MainMenuScreen extends GUIAbstractScreen {
         stage.addActor(info);
         stage.addActor(exit);
         stage.addActor(play);
+
+        // todo
+        BASURA();
+    }
+
+    private void BASURA() {
+        // TODO ----------------- DEFINO BOTONES PROVISORIOS
+        ImageButton.ImageButtonStyle styleSignIn = new ImageButton.ImageButtonStyle();
+        styleSignIn.imageDisabled = new TextureRegionDrawable(assetGUI.getInfoPressed());
+        styleSignIn.imageUp = new TextureRegionDrawable(assetGUI.getInfo());
+        styleSignIn.imageDown = new TextureRegionDrawable(assetGUI.getInfoPressed());
+
+        ImageButton.ImageButtonStyle styleShowLeaderboards = new ImageButton.ImageButtonStyle();
+        styleShowLeaderboards.imageDisabled = new TextureRegionDrawable(assetGUI.getReloadPressed());
+        styleShowLeaderboards.imageUp = new TextureRegionDrawable(assetGUI.getReload());
+        styleShowLeaderboards.imageDown = new TextureRegionDrawable(assetGUI.getReloadPressed());
+
+        signIn = new ImageButton(styleSignIn);
+        showLeaderboards = new ImageButton(styleShowLeaderboards);
+        rateGame = new ImageButton(new TextureRegionDrawable(assetGUI.getInfo()),
+                new TextureRegionDrawable(assetGUI.getInfoPressed()));
+
+        showLeaderboards.setTouchable(Touchable.disabled);
+        showLeaderboards.setDisabled(true);
+
+        signIn.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                signIn();
+            }
+        }));
+        showLeaderboards.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                showLeaderboards();
+            }
+        }));
+        rateGame.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                rateGame();
+            }
+        }));
+        stage.addActor(signIn);
+        stage.addActor(showLeaderboards);
+        stage.addActor(rateGame);
+
+        signIn.setPosition(0, 0);
+        showLeaderboards.setPosition(100, 0);
+        rateGame.setPosition(200, 0);
+        // TODO ----------------- FIN DEFINO BOTONES PROVISORIOS
     }
 
     private void defineButtons() {
@@ -148,29 +205,20 @@ public class MainMenuScreen extends GUIAbstractScreen {
 
         // Events
         play.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
-        // todo info.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.CREDITS, ScreenTransitionEnum.SLICE_UP_DOWN_10));
-        info.addListener(ListenerHelper.runnableListener(new Runnable() {
-            @Override
-            public void run() {
-                // todo
-                rateGame();
-            }
-        }));
+        info.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.CREDITS, ScreenTransitionEnum.SLICE_UP_DOWN_10));
         audio.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
-                // todo
-//                prefs.setAudio(!audio.isChecked());
-//                prefs.save();
-//                AudioManager.getInstance().onSettingsUpdated();
-                signIn();
+                prefs.setAudio(!audio.isChecked());
+                prefs.save();
+                AudioManager.getInstance().onSettingsUpdated();
             }
         }));
         exit.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
-                // todo Gdx.app.exit();
-                showLeaderboards();
+                signOut();
+                Gdx.app.exit();
             }
         }));
     }
@@ -246,5 +294,40 @@ public class MainMenuScreen extends GUIAbstractScreen {
                 })));
         info.addAction(moveBy(BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
         audio.addAction(moveBy(-BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
+    }
+
+    // todo
+    private void signIn() {
+        if (playServices.isWifiConnected() && !playServices.isSignedIn()) {
+            playServices.signIn(new Runnable() {
+                @Override
+                public void run() {
+                    signIn.setTouchable(Touchable.disabled);
+                    signIn.setDisabled(true);
+                    showLeaderboards.setTouchable(Touchable.enabled);
+                    showLeaderboards.setDisabled(false);
+                }
+            }, new Runnable() {
+                @Override
+                public void run() {
+                    signIn.setTouchable(Touchable.enabled);
+                    signIn.setDisabled(false);
+                    showLeaderboards.setTouchable(Touchable.disabled);
+                    showLeaderboards.setDisabled(true);
+                }
+            });
+        }
+    }
+
+    private void showLeaderboards() {
+        playServices.showLeaderboards();
+    }
+
+    private void rateGame() {
+        playServices.rateGame();
+    }
+
+    private void signOut() {
+        playServices.signOut();
     }
 }

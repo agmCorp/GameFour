@@ -5,7 +5,7 @@ package uy.com.agm.gamefour.admob;
  */
 
 public interface IAdsController {
-    void showInterstitialAd(Runnable callbackOnAdClose);
+    void showInterstitialAd(Runnable callbackOnAdClosed);
     void showBannerAd();
     void hideBannerAd();
     boolean isWifiConnected();

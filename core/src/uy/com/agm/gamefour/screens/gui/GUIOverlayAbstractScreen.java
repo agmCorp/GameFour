@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.playservices.IPlayServices;
 
 /**
  * Created by AGMCORP on 17/9/2018.
@@ -17,12 +18,14 @@ public abstract class GUIOverlayAbstractScreen implements Disposable {
     private static final String TAG = GUIOverlayAbstractScreen.class.getName();
 
     protected GameFour game;
+    protected IPlayServices playServices;
     protected OrthographicCamera guiOverlayCamera;
     protected Viewport guiOverlayViewport;
     protected Stage stage;
 
     public GUIOverlayAbstractScreen(GameFour game) {
         this.game = game;
+        this.playServices = game.getPlayServices();
         guiOverlayCamera = new OrthographicCamera();
         guiOverlayViewport = new ExtendViewport(GameFour.APPLICATION_WIDTH, GameFour.APPLICATION_HEIGHT, guiOverlayCamera);
 
