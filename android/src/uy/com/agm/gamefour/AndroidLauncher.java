@@ -51,16 +51,18 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	private static final int RC_UNUSED = 5001;
 	private static final int RC_SIGN_IN = 9001;
 
+	// AdMob
 	private AdView bannerAd;
 	private View gameView;
 	private InterstitialAd interstitialAd;
 	private Runnable callbackOnAdClose;
+
 	// Client used to sign in with Google APIs
-	private GoogleSignInClient mGoogleSignInClient;
+	private GoogleSignInClient googleSignInClient;
 
 	// Client variables
-	private LeaderboardsClient mLeaderboardsClient;
-	private PlayersClient mPlayersClient;
+	private LeaderboardsClient leaderboardsClient;
+	private PlayersClient playersClient;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -84,7 +86,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		setupInterstitialAd();
 
 		// Create the client used to sign in to Google services.
-		mGoogleSignInClient = GoogleSignIn.getClient(this,
+		googleSignInClient = GoogleSignIn.getClient(this,
 				new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN).build());
 	}
 
@@ -263,7 +265,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	}
 
 	private void startSignInIntent() {
-		startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
+		startActivityForResult(googleSignInClient.getSignInIntent(), RC_SIGN_IN);
 	}
 
     @Override
@@ -304,7 +306,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	private void signInSilently() {
 		Log.d(TAG, "signInSilently()");
 
-		mGoogleSignInClient.silentSignIn().addOnCompleteListener(this,
+		googleSignInClient.silentSignIn().addOnCompleteListener(this,
 				new OnCompleteListener<GoogleSignInAccount>() {
 					@Override
 					public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
@@ -322,11 +324,11 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	private void onConnected(GoogleSignInAccount googleSignInAccount) {
 		Gdx.app.debug(TAG, "******* ME CONECTE " + googleSignInAccount.getEmail());
 
-		mLeaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
-		mPlayersClient = Games.getPlayersClient(this, googleSignInAccount);
+		leaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
+		playersClient = Games.getPlayersClient(this, googleSignInAccount);
 
 		// Set the greeting appropriately on main menu
-		mPlayersClient.getCurrentPlayer()
+		playersClient.getCurrentPlayer()
 				.addOnCompleteListener(new OnCompleteListener<Player>() {
 					@Override
 					public void onComplete(@NonNull Task<Player> task) {
@@ -346,8 +348,8 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	private void onDisconnected() {
 		Gdx.app.debug(TAG, "******* ME CONECTE DESCONECTE");
 
-		mLeaderboardsClient = null;
-		mPlayersClient = null;
+		leaderboardsClient = null;
+		playersClient = null;
 	}
 
 	@Override
@@ -370,7 +372,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
         if (!isSignedIn()) {
             Gdx.app.debug(TAG, "**** signOut() called, but was not signed in!");
         } else {
-            mGoogleSignInClient.signOut().addOnCompleteListener(this,
+            googleSignInClient.signOut().addOnCompleteListener(this,
                     new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -407,7 +409,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 
     private void updateLeaderboards(int highScore) {
 		Gdx.app.debug(TAG, "********* MANDO " + highScore);
-        mLeaderboardsClient.submitScore(getString(R.string.gpgs_leaderboard), highScore);
+        leaderboardsClient.submitScore(getString(R.string.gpgs_leaderboard), highScore);
 	}
 
 	@Override
@@ -421,7 +423,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	}
 
 	private void showLeaderboardsImp() {
-        mLeaderboardsClient.getAllLeaderboardsIntent()
+        leaderboardsClient.getAllLeaderboardsIntent()
                 .addOnSuccessListener(new OnSuccessListener<Intent>() {
                     @Override
                     public void onSuccess(Intent intent) {
