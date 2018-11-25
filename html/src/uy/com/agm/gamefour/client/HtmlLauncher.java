@@ -10,6 +10,7 @@ import com.google.gwt.user.client.Window;
 
 import uy.com.agm.gamefour.admob.DummyAdsController;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.playservices.DummyPlayServices;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -97,6 +98,6 @@ public class HtmlLauncher extends GwtApplication {
 
     @Override
     public ApplicationListener createApplicationListener() {
-        return new GameFour(new DummyAdsController());
+        return new GameFour(new DummyAdsController(), new DummyPlayServices());
     }
 }

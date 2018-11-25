@@ -1,6 +1,5 @@
 package uy.com.agm.gamefour.screens.gui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -149,19 +148,29 @@ public class MainMenuScreen extends GUIAbstractScreen {
 
         // Events
         play.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
-        info.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.CREDITS, ScreenTransitionEnum.SLICE_UP_DOWN_10));
+        // todo info.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.CREDITS, ScreenTransitionEnum.SLICE_UP_DOWN_10));
+        info.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                // todo
+                rateGame();
+            }
+        }));
         audio.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
-                prefs.setAudio(!audio.isChecked());
-                prefs.save();
-                AudioManager.getInstance().onSettingsUpdated();
+                // todo
+//                prefs.setAudio(!audio.isChecked());
+//                prefs.save();
+//                AudioManager.getInstance().onSettingsUpdated();
+                signIn();
             }
         }));
         exit.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
-                Gdx.app.exit();
+                // todo Gdx.app.exit();
+                showLeaderboards();
             }
         }));
     }

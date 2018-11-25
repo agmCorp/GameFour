@@ -9,6 +9,7 @@ import com.rafaskoberg.gdx.typinglabel.TypingConfig;
 
 import uy.com.agm.gamefour.admob.IAdsController;
 import uy.com.agm.gamefour.assets.Assets;
+import uy.com.agm.gamefour.playservices.IPlayServices;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenManager;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
@@ -29,9 +30,11 @@ public class GameFour extends DirectedGame {
     private ShapeRenderer gameShapeRenderer;
     private Box2DDebugRenderer box2DDebugRenderer;
     private IAdsController adsController;
+    private IPlayServices playServices;
 
-    public GameFour(IAdsController adsController){
+    public GameFour(IAdsController adsController, IPlayServices playServices){
         this.adsController = adsController;
+        this.playServices = playServices;
     }
 
     @Override
@@ -93,6 +96,10 @@ public class GameFour extends DirectedGame {
 
     public IAdsController getAdsController() {
         return adsController;
+    }
+
+    public IPlayServices getPlayServices() {
+        return playServices;
     }
 
     @Override

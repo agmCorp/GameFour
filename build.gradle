@@ -1,4 +1,4 @@
-// We must increase these values before publishing the apk in the PlayStore
+    // We must increase these values before publishing the apk in the PlayStore
 project.ext {
     versionMajor = 1
     versionMinor = 0
@@ -37,8 +37,9 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
-        admobVersion = '15.0.1'
         regexodusVersion = '0.1.10'
+        admobVersion = '16.0.0'
+        playServicesVersion = '16.0.0'
     }
 
     repositories {
@@ -82,6 +83,8 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
         compile "com.google.android.gms:play-services-ads:$admobVersion"
+        compile "com.google.android.gms:play-services-games:$playServicesVersion"
+        compile "com.google.android.gms:play-services-auth:$playServicesVersion"
     }
 }
 

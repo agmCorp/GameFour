@@ -171,6 +171,9 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
             prefs.setHighScore(bestScore);
             prefs.save();
 
+            // Leaderboards
+            ((PlayScreen) game.getCurrentScreen()).submitScore(bestScore);
+
             // Audio effect
             AudioManager.getInstance().playSound(assets.getSounds().getNewAchievement());
         }

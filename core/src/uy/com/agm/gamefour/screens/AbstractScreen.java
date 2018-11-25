@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 
 import uy.com.agm.gamefour.admob.IAdsController;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.playservices.IPlayServices;
 
 /**
  * Created by AGMCORP on 17/9/2018.
@@ -17,10 +18,12 @@ public abstract class AbstractScreen implements Screen {
 
     protected GameFour game;
     IAdsController adsController;
+    IPlayServices playServices;
 
     public AbstractScreen(GameFour game) {
         this.game = game;
         adsController =  game.getAdsController();
+        playServices = game.getPlayServices();
 
         // Sets whether the BACK button on Android should be caught.
         // This will prevent the app from being paused. Will have no effect on the desktop/html.
@@ -51,6 +54,33 @@ public abstract class AbstractScreen implements Screen {
         } else {
             Gdx.app.debug(TAG, "**** Not connected to the internet");
         }
+    }
+
+    // todo
+    protected void signIn() {
+        if (playServices.isWifiConnected() && !playServices.isSignedIn()) {
+            playServices.signIn();
+        }
+    }
+
+    protected void showLeaderboards() {
+        playServices.submitScore(99);
+        if (playServices.isSignedIn()) {
+            Gdx.app.debug(TAG, "INVOCO A SHOW()");
+            playServices.showLeaderboards();
+        } else {
+            Gdx.app.debug(TAG, "NO INVOCO A SHOW()");
+        }
+    }
+
+    public void submitScore(int highscore) {
+        if (playServices.isSignedIn()) {
+            playServices.submitScore(highscore);
+        }
+    }
+
+    protected void rateGame() {
+        playServices.rateGame();
     }
 
     /** Called by {@link uy.com.agm.gamefour.game.DirectedGame} when this screen becomes the current screen. */

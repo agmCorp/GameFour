@@ -1,14 +1,20 @@
 package uy.com.agm.gamefour;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.ads.AdListener;
@@ -17,28 +23,44 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.LeaderboardsClient;
+import com.google.android.gms.games.Player;
+import com.google.android.gms.games.PlayersClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import uy.com.agm.gamefour.admob.IAdsController;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.playservices.IPlayServices;
 
 import static com.badlogic.gdx.Gdx.app;
 
-public class AndroidLauncher extends AndroidApplication implements IAdsController {
+public class AndroidLauncher extends AndroidApplication implements IAdsController, IPlayServices {
 	private static final String TAG = AndroidLauncher.class.getName();
 
-	// Constants
-	private static final String ADMOB_APP_ID = "ca-app-pub-3296591416050248~2841626548";
-	private static final String TEST_DEVICE = "09AD9BE37BC1E30FF7C8E88C672B3404";
-	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3296591416050248/4067078303";
-	private static final String BANNER_AD_UNIT_ID_TEST = "ca-app-pub-3940256099942544/6300978111";
-	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3296591416050248/1636356084";
-	private static final String INTERSTITIAL_AD_UNIT_ID_TEST = "ca-app-pub-3940256099942544/1033173712";
+	// request codes we use when invoking an external activity
+	private static final int RC_UNUSED = 5001;
+	private static final int RC_SIGN_IN = 9001;
 
 	private AdView bannerAd;
 	private View gameView;
 	private InterstitialAd interstitialAd;
 	private Runnable callbackOnAdClose;
+	// Client used to sign in with Google APIs
+	private GoogleSignInClient mGoogleSignInClient;
+
+	// Client variables
+	private LeaderboardsClient mLeaderboardsClient;
+	private PlayersClient mPlayersClient;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -54,19 +76,23 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		config.hideStatusBar = true;
 
 		// Create a gameView
-		gameView = initializeForView(new GameFour(this), config);
+		gameView = initializeForView(new GameFour(this, this), config);
 
 		// Advertisements
-		MobileAds.initialize(this, ADMOB_APP_ID);
+		MobileAds.initialize(this, getString(R.string.admob_app_id));
 		setupBannerAd();
 		setupInterstitialAd();
+
+		// Create the client used to sign in to Google services.
+		mGoogleSignInClient = GoogleSignIn.getClient(this,
+				new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN).build());
 	}
 
 	private void setupBannerAd() {
 		bannerAd = new AdView(this);
 		bannerAd.setVisibility(View.INVISIBLE);
 		bannerAd.setBackgroundColor(Color.BLACK);
-		bannerAd.setAdUnitId(DebugConstants.TEST_ADS ? BANNER_AD_UNIT_ID_TEST : BANNER_AD_UNIT_ID);
+		bannerAd.setAdUnitId(DebugConstants.TEST_ADS ? getString(R.string.admob_banner_unit_id_test) : getString(R.string.admob_banner_unit_id));
 		bannerAd.setAdSize(AdSize.SMART_BANNER);
 
 		defineLayout();
@@ -74,7 +100,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 
 	private void loadBannerAd() {
 		AdRequest request = new AdRequest.Builder()
-				.addTestDevice(TEST_DEVICE)
+				.addTestDevice(getString(R.string.admob_test_device))
 				.build();
 		bannerAd.loadAd(request);
 	}
@@ -96,7 +122,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 
 	private void setupInterstitialAd() {
 		interstitialAd = new InterstitialAd(this);
-		interstitialAd.setAdUnitId(DebugConstants.TEST_ADS ? INTERSTITIAL_AD_UNIT_ID_TEST : INTERSTITIAL_AD_UNIT_ID);
+		interstitialAd.setAdUnitId(DebugConstants.TEST_ADS ? getString(R.string.admob_interstitial_unit_id_test) : getString(R.string.admob_interstitial_unit_id));
 		callbackOnAdClose = null;
 		setInterstitialAdListener();
 
@@ -155,7 +181,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 
 	private void loadInterstitialAd() {
 		AdRequest request = new AdRequest.Builder()
-				.addTestDevice(TEST_DEVICE)
+				.addTestDevice(getString(R.string.admob_test_device))
 				.build();
 		interstitialAd.loadAd(request);
 	}
@@ -224,5 +250,205 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 			isConnected = false;
 		}
 		return isConnected;
+	}
+
+	@Override
+	public void signIn() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startSignInIntent();
+            }
+        });
+	}
+
+	private void startSignInIntent() {
+		startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
+	}
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Since the state of the signed in user can change when the activity is not active
+        // it is recommended to try and sign in silently from when the app resumes.
+        signInSilently();
+    }
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent);
+		if (requestCode == RC_SIGN_IN) {
+			Task<GoogleSignInAccount> task =
+					GoogleSignIn.getSignedInAccountFromIntent(intent);
+
+			try {
+				GoogleSignInAccount account = task.getResult(ApiException.class);
+				onConnected(account);
+			} catch (ApiException apiException) {
+				String message = apiException.getMessage();
+				if (message == null || message.isEmpty()) {
+					message = getString(R.string.signin_other_error);
+				}
+
+				onDisconnected();
+
+				new AlertDialog.Builder(this)
+						.setMessage(message)
+						.setNeutralButton(android.R.string.ok, null)
+						.show();
+			}
+		}
+	}
+
+	private void signInSilently() {
+		Log.d(TAG, "signInSilently()");
+
+		mGoogleSignInClient.silentSignIn().addOnCompleteListener(this,
+				new OnCompleteListener<GoogleSignInAccount>() {
+					@Override
+					public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+						if (task.isSuccessful()) {
+							Log.d(TAG, "signInSilently(): success");
+							onConnected(task.getResult());
+						} else {
+							Log.d(TAG, "signInSilently(): failure", task.getException());
+							onDisconnected();
+						}
+					}
+				});
+	}
+
+	private void onConnected(GoogleSignInAccount googleSignInAccount) {
+		Gdx.app.debug(TAG, "******* ME CONECTE " + googleSignInAccount.getEmail());
+
+		mLeaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
+		mPlayersClient = Games.getPlayersClient(this, googleSignInAccount);
+
+		// Set the greeting appropriately on main menu
+		mPlayersClient.getCurrentPlayer()
+				.addOnCompleteListener(new OnCompleteListener<Player>() {
+					@Override
+					public void onComplete(@NonNull Task<Player> task) {
+						String displayName;
+						if (task.isSuccessful()) {
+							displayName = task.getResult().getDisplayName();
+						} else {
+							Exception e = task.getException();
+							handleException(e, getString(R.string.players_exception));
+							displayName = "???";
+						}
+						Gdx.app.debug(TAG, "******* Hello, " + displayName);
+					}
+				});
+	}
+
+	private void onDisconnected() {
+		Gdx.app.debug(TAG, "******* ME CONECTE DESCONECTE");
+
+		mLeaderboardsClient = null;
+		mPlayersClient = null;
+	}
+
+	@Override
+	public boolean isSignedIn() {
+		Gdx.app.debug(TAG, "****** ESTA LOGUEADO? " + (GoogleSignIn.getLastSignedInAccount(this) != null)); // esto siempre me devuelve true
+		return GoogleSignIn.getLastSignedInAccount(this) != null;
+	}
+
+	@Override
+	public void signOut() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                signOutImp();
+            }
+        });
+	}
+
+	private void signOutImp() {
+        if (!isSignedIn()) {
+            Gdx.app.debug(TAG, "**** signOut() called, but was not signed in!");
+        } else {
+            mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                    new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            boolean successful = task.isSuccessful();
+                            Gdx.app.debug(TAG, "**** signOut(): " + (successful ? "success" : "failed"));
+
+                            onDisconnected();
+                        }
+                    });
+        }
+    }
+
+	@Override
+	public void rateGame() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String str = "https://play.google.com/store/apps/details?id=uy.com.agm.gamefour"; // TODO
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
+            }
+        });
+	}
+
+	@Override
+	public void submitScore(final int highScore) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // update leaderboards
+                updateLeaderboards(highScore);
+            }
+        });
+	}
+
+    private void updateLeaderboards(int highScore) {
+		Gdx.app.debug(TAG, "********* MANDO " + highScore);
+        mLeaderboardsClient.submitScore(getString(R.string.gpgs_leaderboard), highScore);
+	}
+
+	@Override
+	public void showLeaderboards() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showLeaderboardsImp();
+            }
+        });
+	}
+
+	private void showLeaderboardsImp() {
+        mLeaderboardsClient.getAllLeaderboardsIntent()
+                .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                    @Override
+                    public void onSuccess(Intent intent) {
+                        startActivityForResult(intent, RC_UNUSED);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        handleException(e, getString(R.string.leaderboards_exception));
+                    }
+                });
+    }
+
+	private void handleException(Exception e, String details) {
+		int status = 0;
+
+		if (e instanceof ApiException) {
+			ApiException apiException = (ApiException) e;
+			status = apiException.getStatusCode();
+		}
+
+		String message = getString(R.string.status_exception_error, details, status, e);
+
+		new AlertDialog.Builder(this)
+				.setMessage(message)
+				.setNeutralButton(android.R.string.ok, null)
+				.show();
 	}
 }
