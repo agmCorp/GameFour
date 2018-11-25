@@ -105,6 +105,9 @@ public class SplashScreen extends GUIAbstractScreen {
 
         // Load the rest of assets asynchronously
         Assets.getInstance().init(assetManager);
+
+        // Force sign out
+        playServices.signOut();
     }
 
     @Override
