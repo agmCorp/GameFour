@@ -1,4 +1,4 @@
-    // We must increase these values before publishing the apk in the PlayStore
+// We must increase these values before publishing the apk in the PlayStore
 project.ext {
     versionMajor = 1
     versionMinor = 0
