@@ -33,7 +33,6 @@ Se me ocurre extender la clase GameWorld, redefiniendo aquellos métodos que cre
 Luego hacer una helpScreen similar a PlayScreen pero bien sencilla (con hud -score y barrita-) y con infoscreenhelp que sería una manito.
 Creo que con eso basta. Tal vez tenga que definir un nuevo platformcontroller o extenderla también usandola en el gameworld extendido.
 El help aparecería siempre al presionar el boton play de la pantalla principal y luego el juego.
-- HACER OPENFAINT!
 - investigar por que en mobile browsers el audio se corta.
 
 DESEABLE PARA LIBERAR
