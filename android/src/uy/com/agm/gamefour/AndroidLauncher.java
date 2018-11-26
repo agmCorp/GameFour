@@ -359,8 +359,6 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 
 	@Override
 	public boolean isSignedIn() {
-		// TODO
-		Gdx.app.debug(TAG, "****** ESTA LOGUEADO? " + (GoogleSignIn.getLastSignedInAccount(this) != null)); // esto siempre me devuelve true
 		return GoogleSignIn.getLastSignedInAccount(this) != null;
 	}
 

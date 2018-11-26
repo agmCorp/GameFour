@@ -18,7 +18,7 @@
 
     el algoritmo general seria en lugar de setear el cambio de estado, invocar a un metodo que se llame initExposion() que hace setbounds y setea estado.
     La cosa que hice todo todo de la misma manera y no quiero programar todo de vuelta. Tal vez conviene dejar esta idea para un tercer juego.
-
+PASAR LA IDEA ANTERIOR A COPYPASTE Y REFERENCIARLA ACA EN LECCIONES APRENDIDAS.
 
 
 
@@ -34,7 +34,6 @@ Luego hacer una helpScreen similar a PlayScreen pero bien sencilla (con hud -sco
 Creo que con eso basta. Tal vez tenga que definir un nuevo platformcontroller o extenderla también usandola en el gameworld extendido.
 El help aparecería siempre al presionar el boton play de la pantalla principal y luego el juego.
 - HACER OPENFAINT!
-*- pull request (pr) a Typinglabel
 - investigar por que en mobile browsers el audio se corta.
 
 DESEABLE PARA LIBERAR

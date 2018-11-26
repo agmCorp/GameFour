@@ -301,7 +301,6 @@ public class MainMenuScreen extends GUIAbstractScreen {
         audio.addAction(moveBy(-BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
     }
 
-    // todo
     private void signIn() {
         if (playServices.isWifiConnected()) {
             playServices.signIn(new Runnable() {
