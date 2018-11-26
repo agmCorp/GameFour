@@ -44,6 +44,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private static final float BUTTONS_OFFSET_Y = 350.0f;
     private static final float BUTTONS_ANIM_DURATION = 1.0f;
     private static final float BUTTONS_MOVE_BY_AMOUNT = 110.0f;
+    private static final float BUTTON_OFFSET_X = 75.0f;
 
     private Assets assets;
     private AssetGUI assetGUI;
@@ -59,12 +60,10 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private AnimatedActor rocketForeground;
     private ImageButton play;
     private ImageButton info;
-    private ImageButton audio;
-    private ImageButton exit;
-
-    // TODO BOTONES PROVISORIOS
-    private ImageButton showLeaderboards;
     private ImageButton rateGame;
+    private ImageButton audio;
+    private ImageButton showLeaderboards;
+    private ImageButton exit;
 
     public MainMenuScreen(GameFour game) {
         super(game);
@@ -130,40 +129,12 @@ public class MainMenuScreen extends GUIAbstractScreen {
 
         // Buttons
         defineButtons();
+        stage.addActor(showLeaderboards);
         stage.addActor(audio);
+        stage.addActor(rateGame);
         stage.addActor(info);
         stage.addActor(exit);
         stage.addActor(play);
-
-        // todo
-        BASURA();
-    }
-
-    private void BASURA() {
-        // TODO ----------------- DEFINO BOTONES PROVISORIOS
-        showLeaderboards = new ImageButton(new TextureRegionDrawable(assetGUI.getShowLeaderboards()),
-                new TextureRegionDrawable(assetGUI.getShowLeaderboardsPressed()));
-        rateGame = new ImageButton(new TextureRegionDrawable(assetGUI.getRateGame()),
-                new TextureRegionDrawable(assetGUI.getRateGamePressed()));
-
-        showLeaderboards.addListener(ListenerHelper.runnableListener(new Runnable() {
-            @Override
-            public void run() {
-                showLeaderboards();
-            }
-        }));
-        rateGame.addListener(ListenerHelper.runnableListener(new Runnable() {
-            @Override
-            public void run() {
-                rateGame();
-            }
-        }));
-        stage.addActor(showLeaderboards);
-        stage.addActor(rateGame);
-
-        showLeaderboards.setPosition(0, 0);
-        rateGame.setPosition(100, 0);
-        // TODO ----------------- FIN DEFINO BOTONES PROVISORIOS
     }
 
     private void defineButtons() {
@@ -173,10 +144,16 @@ public class MainMenuScreen extends GUIAbstractScreen {
         info = new ImageButton(new TextureRegionDrawable(assetGUI.getInfo()),
                 new TextureRegionDrawable(assetGUI.getInfoPressed()));
 
+        rateGame = new ImageButton(new TextureRegionDrawable(assetGUI.getRateGame()),
+                new TextureRegionDrawable(assetGUI.getRateGamePressed()));
+
         audio = new ImageButton(new TextureRegionDrawable(assetGUI.getAudio()),
                 new TextureRegionDrawable(assetGUI.getAudioPressed()),
                 new TextureRegionDrawable(assetGUI.getAudioChecked()));
         audio.setChecked(!prefs.isAudio());
+
+        showLeaderboards = new ImageButton(new TextureRegionDrawable(assetGUI.getShowLeaderboards()),
+                new TextureRegionDrawable(assetGUI.getShowLeaderboardsPressed()));
 
         exit = new ImageButton(new TextureRegionDrawable(assetGUI.getExit()),
                 new TextureRegionDrawable(assetGUI.getExitPressed()));
@@ -184,12 +161,24 @@ public class MainMenuScreen extends GUIAbstractScreen {
         // Events
         play.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
         info.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.CREDITS, ScreenTransitionEnum.SLICE_UP_DOWN_10));
+        rateGame.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                rateGame();
+            }
+        }));
         audio.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
                 prefs.setAudio(!audio.isChecked());
                 prefs.save();
                 AudioManager.getInstance().onSettingsUpdated();
+            }
+        }));
+        showLeaderboards.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                showLeaderboards();
             }
         }));
         exit.addListener(ListenerHelper.runnableListener(new Runnable() {
@@ -241,7 +230,9 @@ public class MainMenuScreen extends GUIAbstractScreen {
         float x = play.getX() + play.getWidth() / 2 - audio.getWidth() / 2;
         float y = play.getY() + play.getHeight() / 2 - audio.getHeight() / 2;
         info.setPosition(x, y);
+        rateGame.setPosition(x, y);
         audio.setPosition(x, y);
+        showLeaderboards.setPosition(x, y);
         exit.setPosition(x, y);
 
         // Buttons Animations
@@ -252,13 +243,17 @@ public class MainMenuScreen extends GUIAbstractScreen {
         // Disable events
         play.setTouchable(Touchable.disabled);
         info.setTouchable(Touchable.disabled);
+        rateGame.setTouchable(Touchable.disabled);
         audio.setTouchable(Touchable.disabled);
+        showLeaderboards.setTouchable(Touchable.disabled);
         exit.setTouchable(Touchable.disabled);
 
         // Set actions
         play.clearActions();
         info.clearActions();
+        rateGame.clearActions();
         audio.clearActions();
+        showLeaderboards.clearActions();
 
         play.addAction(sequence(moveBy(0, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut),
                 run(new Runnable() {
@@ -266,12 +261,16 @@ public class MainMenuScreen extends GUIAbstractScreen {
                         // Enable events
                         play.setTouchable(Touchable.enabled);
                         info.setTouchable(Touchable.enabled);
+                        rateGame.setTouchable(Touchable.enabled);
                         audio.setTouchable(Touchable.enabled);
+                        showLeaderboards.setTouchable(Touchable.enabled);
                         exit.setTouchable(Touchable.enabled);
                     }
                 })));
         info.addAction(moveBy(BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
+        rateGame.addAction(moveBy(BUTTONS_MOVE_BY_AMOUNT + BUTTON_OFFSET_X, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
         audio.addAction(moveBy(-BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
+        showLeaderboards.addAction(moveBy(-(BUTTONS_MOVE_BY_AMOUNT + BUTTON_OFFSET_X), BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
     }
 
     private void showLeaderboards() {

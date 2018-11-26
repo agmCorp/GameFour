@@ -35,7 +35,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     private static final String TAG = PauseScreen.class.getName();
 
     private static final float TITLE_OFFSET_Y = 200.0f;
-    private static final float BUTTONS_OFFSET_Y = 100.0f;
+    private static final float BUTTONS_OFFSET_Y = 120.0f;
     private static final float BUTTONS_ANIM_DURATION = 1.0f;
     private static final float BUTTONS_MOVE_BY_AMOUNT = 110.0f;
     private static final float STAGE_ANIM_DURATION = 1.0f;
@@ -50,6 +50,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     private ImageButton play;
     private ImageButton home;
     private ImageButton audio;
+    private ImageButton rateGame;
     private ImageButton reload;
 
     public PauseScreen(GameFour game) {
@@ -82,6 +83,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         defineButtons();
         stage.addActor(home);
         stage.addActor(audio);
+        stage.addActor(rateGame);
         stage.addActor(reload);
         stage.addActor(play);
 
@@ -100,6 +102,9 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
                 new TextureRegionDrawable(assetGUI.getAudioPressed()),
                 new TextureRegionDrawable(assetGUI.getAudioChecked()));
         audio.setChecked(!prefs.isAudio());
+
+        rateGame = new ImageButton(new TextureRegionDrawable(assetGUI.getRateGame()),
+                new TextureRegionDrawable(assetGUI.getRateGamePressed()));
 
         reload = new ImageButton(new TextureRegionDrawable(assetGUI.getReload()),
                 new TextureRegionDrawable(assetGUI.getReloadPressed()));
@@ -120,6 +125,12 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
                 AudioManager.getInstance().onSettingsUpdated();
             }
         }));
+        rateGame.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                rateGame();
+            }
+        }));
         reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
     }
 
@@ -129,6 +140,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         play.setVisible(visible);
         home.setVisible(visible);
         audio.setVisible(visible);
+        rateGame.setVisible(visible);
         reload.setVisible(visible);
     }
 
@@ -162,6 +174,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         float y = play.getY() + play.getHeight() / 2 - audio.getHeight() / 2;
         home.setPosition(x, y);
         audio.setPosition(x, y);
+        rateGame.setPosition(x, y);
         reload.setPosition(x, y);
     }
 
@@ -174,12 +187,14 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         play.setTouchable(Touchable.disabled);
         home.setTouchable(Touchable.disabled);
         audio.setTouchable(Touchable.disabled);
+        rateGame.setTouchable(Touchable.disabled);
         reload.setTouchable(Touchable.disabled);
 
         // Set actions
         play.clearActions();
         home.clearActions();
         audio.clearActions();
+        rateGame.clearActions();
 
         play.addAction(sequence(moveBy(0, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut),
                 run(new Runnable() {
@@ -188,11 +203,13 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
                         play.setTouchable(Touchable.enabled);
                         home.setTouchable(Touchable.enabled);
                         audio.setTouchable(Touchable.enabled);
+                        rateGame.setTouchable(Touchable.enabled);
                         reload.setTouchable(Touchable.enabled);
                     }
                 })));
         home.addAction(moveBy(BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
         audio.addAction(moveBy(-BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
+        rateGame.addAction(moveBy(0, BUTTONS_MOVE_BY_AMOUNT * 2, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
     }
 
     @Override
@@ -242,5 +259,9 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
                 group.setTouchable(Touchable.enabled);
             }
         })));
+    }
+
+    private void rateGame() {
+        playServices.rateGame();
     }
 }
