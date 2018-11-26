@@ -282,6 +282,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
                 playServices.signIn(new Runnable() {
                     @Override
                     public void run() {
+                        playServices.submitScore(prefs.getHighScore());
                         playServices.showLeaderboards();
                     }
                 }, null);
