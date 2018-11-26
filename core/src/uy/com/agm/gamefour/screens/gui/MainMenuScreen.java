@@ -143,22 +143,27 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private void BASURA() {
         // TODO ----------------- DEFINO BOTONES PROVISORIOS
         ImageButton.ImageButtonStyle styleSignIn = new ImageButton.ImageButtonStyle();
-        styleSignIn.imageDisabled = new TextureRegionDrawable(assetGUI.getInfoPressed());
-        styleSignIn.imageUp = new TextureRegionDrawable(assetGUI.getInfo());
-        styleSignIn.imageDown = new TextureRegionDrawable(assetGUI.getInfoPressed());
+        styleSignIn.imageDisabled = new TextureRegionDrawable(assetGUI.getSignInDisabled());
+        styleSignIn.imageUp = new TextureRegionDrawable(assetGUI.getSignIn());
+        styleSignIn.imageDown = new TextureRegionDrawable(assetGUI.getSignInPressed());
 
         ImageButton.ImageButtonStyle styleShowLeaderboards = new ImageButton.ImageButtonStyle();
-        styleShowLeaderboards.imageDisabled = new TextureRegionDrawable(assetGUI.getReloadPressed());
-        styleShowLeaderboards.imageUp = new TextureRegionDrawable(assetGUI.getReload());
-        styleShowLeaderboards.imageDown = new TextureRegionDrawable(assetGUI.getReloadPressed());
+        styleShowLeaderboards.imageDisabled = new TextureRegionDrawable(assetGUI.getShowLeaderboardsDisabled());
+        styleShowLeaderboards.imageUp = new TextureRegionDrawable(assetGUI.getShowLeaderboards());
+        styleShowLeaderboards.imageDown = new TextureRegionDrawable(assetGUI.getShowLeaderboardsPressed());
 
         signIn = new ImageButton(styleSignIn);
         showLeaderboards = new ImageButton(styleShowLeaderboards);
-        rateGame = new ImageButton(new TextureRegionDrawable(assetGUI.getInfo()),
-                new TextureRegionDrawable(assetGUI.getInfoPressed()));
+        rateGame = new ImageButton(new TextureRegionDrawable(assetGUI.getRateGame()),
+                new TextureRegionDrawable(assetGUI.getRateGamePressed()));
 
-        showLeaderboards.setTouchable(Touchable.disabled);
-        showLeaderboards.setDisabled(true);
+        // Buttons state
+        boolean isSignedIn = playServices.isSignedIn();
+        signIn.setTouchable(isSignedIn ? Touchable.disabled : Touchable.enabled);
+        signIn.setDisabled(isSignedIn);
+
+        showLeaderboards.setTouchable(isSignedIn ? Touchable.enabled : Touchable.disabled);
+        showLeaderboards.setDisabled(!isSignedIn);
 
         signIn.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
@@ -298,7 +303,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
 
     // todo
     private void signIn() {
-        if (playServices.isWifiConnected() && !playServices.isSignedIn()) {
+        if (playServices.isWifiConnected()) {
             playServices.signIn(new Runnable() {
                 @Override
                 public void run() {
@@ -320,7 +325,9 @@ public class MainMenuScreen extends GUIAbstractScreen {
     }
 
     private void showLeaderboards() {
-        playServices.showLeaderboards();
+        if (playServices.isWifiConnected()) {
+            playServices.showLeaderboards();
+        }
     }
 
     private void rateGame() {

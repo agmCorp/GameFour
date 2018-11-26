@@ -20,6 +20,14 @@ public class AssetGUI {
     private TextureRegion infoPressed;
     private TextureRegion exit;
     private TextureRegion exitPressed;
+    private TextureRegion signIn;
+    private TextureRegion signInPressed;
+    private TextureRegion signInDisabled;
+    private TextureRegion showLeaderboards;
+    private TextureRegion showLeaderboardsPressed;
+    private TextureRegion showLeaderboardsDisabled;
+    private TextureRegion rateGame;
+    private TextureRegion rateGamePressed;
     private TextureRegion reload;
     private TextureRegion reloadPressed;
     private TextureRegion bigReload;
@@ -46,6 +54,14 @@ public class AssetGUI {
         infoPressed = atlasGUI.findRegion("infoPressed");
         exit = atlasGUI.findRegion("exit");
         exitPressed = atlasGUI.findRegion("exitPressed");
+        signIn = atlasGUI.findRegion("signIn");
+        signInPressed = atlasGUI.findRegion("signInPressed");
+        signInDisabled = atlasGUI.findRegion("signInDisabled");
+        showLeaderboards = atlasGUI.findRegion("showLeaderboards");
+        showLeaderboardsPressed = atlasGUI.findRegion("showLeaderboardsPressed");
+        showLeaderboardsDisabled = atlasGUI.findRegion("showLeaderboardsDisabled");
+        rateGame = atlasGUI.findRegion("rateGame");
+        rateGamePressed = atlasGUI.findRegion("rateGamePressed");
         reload = atlasGUI.findRegion("reload");
         reloadPressed = atlasGUI.findRegion("reloadPressed");
         bigReload = atlasGUI.findRegion("bigReload");
@@ -97,6 +113,38 @@ public class AssetGUI {
 
     public TextureRegion getExitPressed() {
         return exitPressed;
+    }
+
+    public TextureRegion getSignIn() {
+        return signIn;
+    }
+
+    public TextureRegion getSignInPressed() {
+        return signInPressed;
+    }
+
+    public TextureRegion getSignInDisabled() {
+        return signInDisabled;
+    }
+
+    public TextureRegion getShowLeaderboards() {
+        return showLeaderboards;
+    }
+
+    public TextureRegion getShowLeaderboardsPressed() {
+        return showLeaderboardsPressed;
+    }
+
+    public TextureRegion getShowLeaderboardsDisabled() {
+        return showLeaderboardsDisabled;
+    }
+
+    public TextureRegion getRateGame() {
+        return rateGame;
+    }
+
+    public TextureRegion getRateGamePressed() {
+        return rateGamePressed;
     }
 
     public TextureRegion getReload() {
