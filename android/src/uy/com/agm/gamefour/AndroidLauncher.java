@@ -322,21 +322,6 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		}
 	}
 
-	private void signInSilently() {
-		googleSignInClient.silentSignIn().addOnCompleteListener(this,
-				new OnCompleteListener<GoogleSignInAccount>() {
-					@Override
-					public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-						if (task.isSuccessful()) {
-							onConnected(task.getResult());
-						} else {
-							Gdx.app.debug(TAG, "**** signInSilently(): failure " + task.getException());
-							onDisconnected();
-						}
-					}
-				});
-	}
-
 	private void onConnected(GoogleSignInAccount googleSignInAccount) {
 		leaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
 
@@ -454,14 +439,5 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		String message = getString(R.string.status_exception_error, details, status, e);
 
 		Gdx.app.debug(TAG, "**** handleException(): " + message);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		// Since the state of the signed in user can change when the activity is not active
-		// it is recommended to try and sign in silently from when the app resumes.
-		signInSilently();
 	}
 }

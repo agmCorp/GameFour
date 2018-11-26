@@ -63,7 +63,6 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private ImageButton exit;
 
     // TODO BOTONES PROVISORIOS
-    private ImageButton signIn;
     private ImageButton showLeaderboards;
     private ImageButton rateGame;
 
@@ -142,35 +141,11 @@ public class MainMenuScreen extends GUIAbstractScreen {
 
     private void BASURA() {
         // TODO ----------------- DEFINO BOTONES PROVISORIOS
-        ImageButton.ImageButtonStyle styleSignIn = new ImageButton.ImageButtonStyle();
-        styleSignIn.imageDisabled = new TextureRegionDrawable(assetGUI.getSignInDisabled());
-        styleSignIn.imageUp = new TextureRegionDrawable(assetGUI.getSignIn());
-        styleSignIn.imageDown = new TextureRegionDrawable(assetGUI.getSignInPressed());
-
-        ImageButton.ImageButtonStyle styleShowLeaderboards = new ImageButton.ImageButtonStyle();
-        styleShowLeaderboards.imageDisabled = new TextureRegionDrawable(assetGUI.getShowLeaderboardsDisabled());
-        styleShowLeaderboards.imageUp = new TextureRegionDrawable(assetGUI.getShowLeaderboards());
-        styleShowLeaderboards.imageDown = new TextureRegionDrawable(assetGUI.getShowLeaderboardsPressed());
-
-        signIn = new ImageButton(styleSignIn);
-        showLeaderboards = new ImageButton(styleShowLeaderboards);
+        showLeaderboards = new ImageButton(new TextureRegionDrawable(assetGUI.getShowLeaderboards()),
+                new TextureRegionDrawable(assetGUI.getShowLeaderboardsPressed()));
         rateGame = new ImageButton(new TextureRegionDrawable(assetGUI.getRateGame()),
                 new TextureRegionDrawable(assetGUI.getRateGamePressed()));
 
-        // Buttons state
-        boolean isSignedIn = playServices.isSignedIn();
-        signIn.setTouchable(isSignedIn ? Touchable.disabled : Touchable.enabled);
-        signIn.setDisabled(isSignedIn);
-
-        showLeaderboards.setTouchable(isSignedIn ? Touchable.enabled : Touchable.disabled);
-        showLeaderboards.setDisabled(!isSignedIn);
-
-        signIn.addListener(ListenerHelper.runnableListener(new Runnable() {
-            @Override
-            public void run() {
-                signIn();
-            }
-        }));
         showLeaderboards.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
@@ -183,13 +158,11 @@ public class MainMenuScreen extends GUIAbstractScreen {
                 rateGame();
             }
         }));
-        stage.addActor(signIn);
         stage.addActor(showLeaderboards);
         stage.addActor(rateGame);
 
-        signIn.setPosition(0, 0);
-        showLeaderboards.setPosition(100, 0);
-        rateGame.setPosition(200, 0);
+        showLeaderboards.setPosition(0, 0);
+        rateGame.setPosition(100, 0);
         // TODO ----------------- FIN DEFINO BOTONES PROVISORIOS
     }
 
@@ -301,31 +274,18 @@ public class MainMenuScreen extends GUIAbstractScreen {
         audio.addAction(moveBy(-BUTTONS_MOVE_BY_AMOUNT, BUTTONS_MOVE_BY_AMOUNT, BUTTONS_ANIM_DURATION, Interpolation.bounceOut));
     }
 
-    private void signIn() {
-        if (playServices.isWifiConnected()) {
-            playServices.signIn(new Runnable() {
-                @Override
-                public void run() {
-                    signIn.setTouchable(Touchable.disabled);
-                    signIn.setDisabled(true);
-                    showLeaderboards.setTouchable(Touchable.enabled);
-                    showLeaderboards.setDisabled(false);
-                }
-            }, new Runnable() {
-                @Override
-                public void run() {
-                    signIn.setTouchable(Touchable.enabled);
-                    signIn.setDisabled(false);
-                    showLeaderboards.setTouchable(Touchable.disabled);
-                    showLeaderboards.setDisabled(true);
-                }
-            });
-        }
-    }
-
     private void showLeaderboards() {
         if (playServices.isWifiConnected()) {
-            playServices.showLeaderboards();
+            if (playServices.isSignedIn()) {
+                playServices.showLeaderboards();
+            } else {
+                playServices.signIn(new Runnable() {
+                    @Override
+                    public void run() {
+                        playServices.showLeaderboards();
+                    }
+                }, null);
+            }
         }
     }
 
