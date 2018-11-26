@@ -63,6 +63,8 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	private LeaderboardsClient leaderboardsClient;
 
 	// GPGS Callbacks
+	private Runnable callbackOnSilentlyConnected;
+	private Runnable callbackOnSilentlyDisconnected;
 	private Runnable callbackOnConnected;
 	private Runnable callbackOnDisconnected;
 
@@ -104,6 +106,8 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		leaderboardsClient = null;
 
 		// GPGS Callbacks
+		callbackOnSilentlyConnected = null;
+		callbackOnSilentlyDisconnected = null;
 		callbackOnConnected = null;
 		callbackOnDisconnected = null;
 	}
@@ -281,6 +285,42 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	}
 
 	@Override
+	public void signInSilently(Runnable callbackOnSilentlyConnected, Runnable callbackOnSilentlyDisconnected) {
+		// Code that is executed on connection success or on connection failure
+		this.callbackOnSilentlyConnected = callbackOnSilentlyConnected;
+		this.callbackOnSilentlyDisconnected = callbackOnSilentlyDisconnected;
+
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				startSignInSilently();
+			}
+		});
+	}
+
+	private void startSignInSilently() {
+		GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+		if (googleSignInAccount != null) {
+			Gdx.app.debug(TAG, "**** signInSilently(): already signed in");
+			onSilentlyConnected(googleSignInAccount);
+		} else {
+			googleSignInClient.silentSignIn().addOnCompleteListener(this,
+					new OnCompleteListener<GoogleSignInAccount>() {
+						@Override
+						public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+							if (task.isSuccessful()) {
+								Gdx.app.debug(TAG, "**** signInSilently(): success");
+								onSilentlyConnected(task.getResult());
+							} else {
+								Gdx.app.debug(TAG, "**** signInSilently(): failure " + task.getException());
+								onSilentlyDisconnected();
+							}
+						}
+					});
+		}
+	}
+
+	@Override
 	public void signIn(Runnable callbackOnConnected, Runnable callbackOnDisconnected) {
 		// Code that is executed on connection success or on connection failure
 		this.callbackOnConnected = callbackOnConnected;
@@ -295,7 +335,11 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 	}
 
 	private void startSignInIntent() {
-		if (!isSignedIn()) {
+		GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+		if (googleSignInAccount != null) {
+			Gdx.app.debug(TAG, "**** startSignInIntent(): already signed in");
+			onConnected(googleSignInAccount);
+		} else {
 			startActivityForResult(googleSignInClient.getSignInIntent(), RC_SIGN_IN);
 		}
 	}
@@ -306,29 +350,57 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		if (requestCode == RC_SIGN_IN) {
 			Task<GoogleSignInAccount> task =
 					GoogleSignIn.getSignedInAccountFromIntent(intent);
-
 			try {
 				GoogleSignInAccount account = task.getResult(ApiException.class);
+				Gdx.app.debug(TAG, "**** onActivityResult(): success");
 				onConnected(account);
 			} catch (ApiException apiException) {
 				String message = apiException.getMessage();
 				if (message == null || message.isEmpty()) {
 					message = getString(R.string.signin_other_error);
 				}
-
 				Gdx.app.debug(TAG, "**** onActivityResult(): failure " + message);
 				onDisconnected();
 			}
 		}
 	}
+	private void onSilentlyConnected(GoogleSignInAccount googleSignInAccount) {
+		getLeaderboardsClient(googleSignInAccount);
+		doSilentlyCallback();
+	}
 
 	private void onConnected(GoogleSignInAccount googleSignInAccount) {
-		leaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
+		getLeaderboardsClient(googleSignInAccount);
+		doCallback();
+	}
 
+	private void getLeaderboardsClient(GoogleSignInAccount googleSignInAccount) {
+		leaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
+	}
+
+	private void doSilentlyCallback() {
+		if (callbackOnSilentlyConnected != null) {
+			// Instead of running callbackOnSilentlyConnected in the UI thread (callbackOnSilentlyConnected.run), we run it in
+			// the badlogic rendering thread.
+			app.postRunnable(callbackOnSilentlyConnected);
+		}
+	}
+
+	private void doCallback() {
 		if (callbackOnConnected != null) {
 			// Instead of running callbackOnConnected in the UI thread (callbackOnConnected.run), we run it in
 			// the badlogic rendering thread.
 			app.postRunnable(callbackOnConnected);
+		}
+	}
+
+	private void onSilentlyDisconnected() {
+		leaderboardsClient = null;
+
+		if (callbackOnSilentlyDisconnected != null) {
+			// Instead of running callbackOnSilentlyDisconnected in the UI thread (callbackOnSilentlyDisconnected.run), we run it in
+			// the badlogic rendering thread.
+			app.postRunnable(callbackOnSilentlyDisconnected);
 		}
 	}
 
@@ -364,6 +436,7 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 						@Override
 						public void onComplete(@NonNull Task<Void> task) {
 							boolean successful = task.isSuccessful();
+							Gdx.app.debug(TAG, "**** signOut(): " + (successful ? "success" : "failed"));
 							onDisconnected();
 						}
 					});
