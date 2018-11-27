@@ -17,6 +17,7 @@ import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.GameSettings;
+import uy.com.agm.gamefour.playservices.DummyPlayServices;
 import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
@@ -189,6 +190,9 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         audio.setTouchable(Touchable.disabled);
         rateGame.setTouchable(Touchable.disabled);
         reload.setTouchable(Touchable.disabled);
+
+        // Only available on Android version
+        rateGame.setVisible(!(playServices instanceof DummyPlayServices));
 
         // Set actions
         play.clearActions();

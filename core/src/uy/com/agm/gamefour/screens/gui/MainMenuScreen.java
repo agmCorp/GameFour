@@ -15,6 +15,7 @@ import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.assets.sprites.AssetSprites;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.GameSettings;
+import uy.com.agm.gamefour.playservices.DummyPlayServices;
 import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
@@ -247,6 +248,10 @@ public class MainMenuScreen extends GUIAbstractScreen {
         audio.setTouchable(Touchable.disabled);
         showLeaderboards.setTouchable(Touchable.disabled);
         exit.setTouchable(Touchable.disabled);
+
+        // Only available on Android version
+        rateGame.setVisible(!(playServices instanceof DummyPlayServices));
+        showLeaderboards.setVisible(!(playServices instanceof DummyPlayServices));
 
         // Set actions
         play.clearActions();
