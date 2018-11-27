@@ -12,4 +12,5 @@ public interface IPlayServices {
     void submitScore(int highScore);
     void showLeaderboards();
     boolean isWifiConnected();
+    void showToast(String message);
 }

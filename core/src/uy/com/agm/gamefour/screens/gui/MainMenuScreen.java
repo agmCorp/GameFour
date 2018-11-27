@@ -286,6 +286,8 @@ public class MainMenuScreen extends GUIAbstractScreen {
                     }
                 }, null);
             }
+        } else {
+            playServices.showToast(i18NGameThreeBundle.format("mainMenuScreen.wifiError"));
         }
     }
 

@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -284,7 +285,18 @@ public class AndroidLauncher extends AndroidApplication implements IAdsControlle
 		return isConnected;
 	}
 
-	@Override
+    @Override
+    public void showToast(final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(AndroidLauncher.this, message, Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+    }
+
+    @Override
 	public void signInSilently(Runnable callbackOnSilentlyConnected, Runnable callbackOnSilentlyDisconnected) {
 		// Code that is executed on connection success or on connection failure
 		this.callbackOnSilentlyConnected = callbackOnSilentlyConnected;

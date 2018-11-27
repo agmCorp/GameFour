@@ -43,4 +43,9 @@ public class DummyPlayServices implements IPlayServices {
     public boolean isWifiConnected() {
         return false;
     }
+
+    @Override
+    public void showToast(String message) {
+        // Nothing to do here
+    }
 }
