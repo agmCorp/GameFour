@@ -30,10 +30,11 @@ public class PlayScreen extends PlayAbstractScreen {
     private GameWorld gameWorld;
     private WorldRenderer worldRenderer;
     private GameSettings prefs;
-    private boolean levelCompleted;
     private boolean endGame;
+    private boolean showGameControllersHelp;
+    private boolean levelCompleted;
 
-    public PlayScreen(GameFour game) {
+    public PlayScreen(GameFour game, Boolean showGameControllersHelp) {
         super(game);
 
         hud = new Hud(game);
@@ -44,8 +45,9 @@ public class PlayScreen extends PlayAbstractScreen {
         gameWorld = worldController.getGameWorld();
         worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
         prefs = GameSettings.getInstance();
-        levelCompleted = false;
         endGame = false;
+        this.showGameControllersHelp = showGameControllersHelp;
+        levelCompleted = false;
 
         // Play level music
         AudioManager.getInstance().playMusic(Assets.getInstance().getMusic().getSongGame());
@@ -85,6 +87,12 @@ public class PlayScreen extends PlayAbstractScreen {
             // We evaluate mutual exclusion conditions.
             // A boolean value is used to avoid nested if/else sentences.
             boolean finish = false;
+
+            finish = !finish && showGameControllersHelp;
+            if (finish) {
+                infoScreen.showGameControllersHelp();
+                showGameControllersHelp = false;
+            }
 
             finish = !finish && levelCompleted;
             if (finish) {

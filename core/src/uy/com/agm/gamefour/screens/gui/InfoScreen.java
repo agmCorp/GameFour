@@ -1,12 +1,17 @@
 package uy.com.agm.gamefour.screens.gui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -43,7 +48,8 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     private AssetFonts assetFonts;
     private AssetGUI assetGUI;
     private Array<String> titleKeys;
-    private Table mainTable;
+    private Table gameOverTable;
+    private Table gameControllersHelpTable;
     private ImageButton pause;
     private Label gameOverLabel;
     private Label scoreLabel;
@@ -64,8 +70,11 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
 
     @Override
     public void build() {
-        mainTable = getMainTable();
-        stage.addActor(mainTable);
+        gameOverTable = getGameOverTable();
+        stage.addActor(gameOverTable);
+
+        gameControllersHelpTable = getGameControllersHelpTable();
+        stage.addActor(gameControllersHelpTable);
 
         // Pause button
         pause = new ImageButton(new TextureRegionDrawable(assetGUI.getPause()),
@@ -80,7 +89,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         stage.addActor(pause);
     }
 
-    private Table getMainTable() {
+    private Table getGameOverTable() {
         Label.LabelStyle labelStyleBig = new Label.LabelStyle();
         labelStyleBig.font = assetFonts.getBig();
 
@@ -97,9 +106,9 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
-        table.setFillParent(true);
+        table.setFillParent(true); // todo
         table.add(gameOverLabel).row();
-        table.add(getButtonsTable()).row();
+        table.add(getGameOverButtonsTable()).row();
         table.add(scoreLabel).row();
         table.add(highScoreLabel);
         table.setVisible(false);
@@ -107,7 +116,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         return table;
     }
 
-    private Table getButtonsTable() {
+    private Table getGameOverButtonsTable() {
         AssetGUI assetGUI = Assets.getInstance().getGUI();
 
         ImageButton reload = new ImageButton(new TextureRegionDrawable(assetGUI.getBigReload()),
@@ -116,7 +125,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         ImageButton home = new ImageButton(new TextureRegionDrawable(assetGUI.getBigHome()),
                 new TextureRegionDrawable(assetGUI.getBigHomePressed()));
 
-        reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
+        reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE, false));
         home.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_DOWN));
 
         Table table = new Table();
@@ -124,6 +133,36 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         table.center();
         table.add(reload).width(BUTTON_WIDTH);
         table.add(home).width(BUTTON_WIDTH);
+        return table;
+    }
+
+    private Table getGameControllersHelpTable() {
+        Table table = new Table();
+        table.setDebug(DebugConstants.DEBUG_LINES);
+        table.center();
+        table.setFillParent(true); // todo
+        table.add(new Image(new Texture(Gdx.files.internal("basura/MOCKUP.PNG")))).row();
+        table.add(getGameControllersHelpButtonsTable());
+        table.setVisible(false);
+
+        return table;
+    }
+
+    private Table getGameControllersHelpButtonsTable() {
+        AssetGUI assetGUI = Assets.getInstance().getGUI();
+
+        ImageButton reload = new ImageButton(new TextureRegionDrawable(assetGUI.getBigReload()),
+                new TextureRegionDrawable(assetGUI.getBigReloadPressed()));
+        reload.addListener(ListenerHelper.runnableListener(new Runnable() {
+            @Override
+            public void run() {
+                setStageAnimation(false);
+            }
+        }));
+        Table table = new Table();
+        table.setDebug(DebugConstants.DEBUG_LINES);
+        table.center();
+        table.add(reload).width(BUTTON_WIDTH);
         return table;
     }
 
@@ -148,13 +187,13 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         }
     }
 
-    private void setStageAnimation() {
+    private void setStageAnimation(boolean down) {
         float h = stage.getHeight();
         final Group group = stage.getRoot();
         group.setY(h);
         group.setTouchable(Touchable.disabled);
         group.clearActions();
-        group.addAction(sequence(moveBy(0, -h, ANIMATION_DURATION, Interpolation.bounceOut), run(new Runnable() {
+        group.addAction(sequence(moveBy(0, down ? -h : h, ANIMATION_DURATION, Interpolation.bounceOut), run(new Runnable() {
             public void run () {
                 group.setTouchable(Touchable.enabled);
             }
@@ -185,8 +224,14 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         }
         scoreLabel.setText(i18NGameThreeBundle.format("infoScreen.score", currentScore));
         highScoreLabel.setText(i18NGameThreeBundle.format("infoScreen.highScore", bestScore));
-        mainTable.setVisible(true);
+        gameOverTable.setVisible(true);
         pause.setVisible(false);
-        setStageAnimation();
+        setStageAnimation(true);
+    }
+
+    public void showGameControllersHelp() {
+        gameControllersHelpTable.setVisible(true);
+        pause.setVisible(false);
+        setStageAnimation(true);
     }
 }

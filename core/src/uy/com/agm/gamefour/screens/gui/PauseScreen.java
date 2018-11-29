@@ -132,7 +132,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
                 rateGame();
             }
         }));
-        reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
+        reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE, false));
     }
 
     private void setVisible(boolean visible) {
