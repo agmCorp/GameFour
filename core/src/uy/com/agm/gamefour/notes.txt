@@ -19,7 +19,7 @@
     el algoritmo general seria en lugar de setear el cambio de estado, invocar a un metodo que se llame initExposion() que hace setbounds y setea estado.
     La cosa que hice todo todo de la misma manera y no quiero programar todo de vuelta. Tal vez conviene dejar esta idea para un tercer juego.
 PASAR LA IDEA ANTERIOR A COPYPASTE Y REFERENCIARLA ACA EN LECCIONES APRENDIDAS.
-
+------------ la mieda de acá arriba comentarla y ponerla en copy paste -----------
 
 
 
@@ -185,3 +185,12 @@ git push origin  master
 - se sube a mi fork en github y puedo verlo allí
 Luego en hitHub uso el botón New pull request, selecciono las branches a comparar (la del dueño del proyecto y la mia) y le doy comparar.
 Relleno el formulario con algún comentario y listo.
+
+6)    Google play game services
+utilicé este manual: https://www.versionpb.com/tutorials/step-step-tutorials-libgdx-basic-setup-libgdx/implementing-google-play-services-leaderboards-in-libgdx/
+Me sirve más que nada para la parte de la Google Play Console porque la parte de implementación cambió totalmente.
+Linked applications:
+	8A:14:9F:36:36:91:AC:2D:9D:21:32:30:C9:0E:C3:61:A0:F0:AD:8D <- power jump debug work (clave sha1 de la maquina del trabajo)
+	C4:9C:EB:0B:FE:14:98:2C:68:D5:06:74:16:29:FC:AA:66:42:C6:F6 <- power jump debug casa (clave sha1 de la maquina de casa)
+	8F:9D:43:56:86:42:0C:5C:95:6E:45:39:80:1E:FC:60:D5:34:B4:D4 <- esta es la de mi jks release
+	A8:A5:F6:C1:6B:73:C9:5D:27:14:6C:91:A9:16:15:35:D9:7F:3C:A1 <- esto me lo trajo google por defecto, no se que  es esto, la dejé.
