@@ -225,11 +225,13 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         scoreLabel.setText(i18NGameThreeBundle.format("infoScreen.score", currentScore));
         highScoreLabel.setText(i18NGameThreeBundle.format("infoScreen.highScore", bestScore));
         gameOverTable.setVisible(true);
+        gameControllersHelpTable.setVisible(false);
         pause.setVisible(false);
         setStageAnimation(true);
     }
 
     public void showGameControllersHelp() {
+        gameOverTable.setVisible(false);
         gameControllersHelpTable.setVisible(true);
         pause.setVisible(false);
         setStageAnimation(true);
