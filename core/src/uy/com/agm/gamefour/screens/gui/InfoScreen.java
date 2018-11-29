@@ -187,6 +187,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         }
     }
 
+    // todo anda mal esto a la subida
     private void setStageAnimation(boolean down) {
         float h = stage.getHeight();
         final Group group = stage.getRoot();
