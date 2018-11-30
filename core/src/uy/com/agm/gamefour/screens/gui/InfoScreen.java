@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -20,6 +21,7 @@ import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.GameSettings;
+import uy.com.agm.gamefour.screens.AbstractScreen;
 import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
@@ -47,7 +49,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     private AssetGUI assetGUI;
     private Array<String> titleKeys;
     private Table gameOverTable;
-    private Table gameControllersHelpTable;
+    private Table helpTable;
     private ImageButton pause;
     private Label gameOverLabel;
     private Label scoreLabel;
@@ -69,10 +71,18 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     @Override
     public void build() {
         gameOverTable = getGameOverTable();
-        stage.addActor(gameOverTable);
+        helpTable = getHelpTable();
 
-        gameControllersHelpTable = getGameControllersHelpTable();
-        stage.addActor(gameControllersHelpTable);
+        Stack stack = new Stack();
+        stack.add(gameOverTable);
+        stack.add(helpTable);
+
+        Table mainTable = new Table();
+        mainTable.setDebug(DebugConstants.DEBUG_LINES);
+        mainTable.center();
+        mainTable.setFillParent(true);
+        mainTable.add(stack);
+        stage.addActor(mainTable);
 
         // Pause button
         pause = new ImageButton(new TextureRegionDrawable(assetGUI.getPause()),
@@ -104,19 +114,15 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
-        table.setFillParent(true); // todo
         table.add(gameOverLabel).row();
         table.add(getGameOverButtonsTable()).row();
         table.add(scoreLabel).row();
         table.add(highScoreLabel);
         table.setVisible(false);
-
         return table;
     }
 
     private Table getGameOverButtonsTable() {
-        AssetGUI assetGUI = Assets.getInstance().getGUI();
-
         ImageButton reload = new ImageButton(new TextureRegionDrawable(assetGUI.getBigReload()),
                 new TextureRegionDrawable(assetGUI.getBigReloadPressed()));
 
@@ -134,28 +140,29 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         return table;
     }
 
-    private Table getGameControllersHelpTable() {
+    private Table getHelpTable() {
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
-        table.setFillParent(true); // todo
-        table.add(new Image(new Texture(Gdx.files.internal("basura/MOCKUP.PNG")))).row();
-        table.add(getGameControllersHelpButtonsTable());
+        table.add(new Image(new Texture(Gdx.files.internal("basura/MOCKUP.PNG")))).row(); // todo
+        table.add(getHelpButtonsTable());
         table.setVisible(false);
-
         return table;
     }
 
-    private Table getGameControllersHelpButtonsTable() {
-        AssetGUI assetGUI = Assets.getInstance().getGUI();
-
+    private Table getHelpButtonsTable() {
         ImageButton reload = new ImageButton(new TextureRegionDrawable(assetGUI.getBigReload()),
-                new TextureRegionDrawable(assetGUI.getBigReloadPressed()));
+                new TextureRegionDrawable(assetGUI.getBigReloadPressed())); // todo
         reload.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
-                setStageAnimation(false);
-                pause.setVisible(true);
+                game.getCurrentScreen().resume();
+                setStageAnimation(true, new Runnable() {
+                    @Override
+                    public void run() {
+                        pause.setVisible(true); // todo, acá el boton pause ya está arriba del todo, hay que posicionarlo!
+                    }
+                });
             }
         }));
         Table table = new Table();
@@ -186,16 +193,20 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         }
     }
 
-    // todo anda mal esto a la subida
-    private void setStageAnimation(boolean down) {
+
+    // todo: usar esto en pause screen!!!
+    private void setStageAnimation(boolean up, final Runnable runnable) {
         float h = stage.getHeight();
         final Group group = stage.getRoot();
-        group.setY(h);
+        group.setY(up ? 0 : h);
         group.setTouchable(Touchable.disabled);
         group.clearActions();
-        group.addAction(sequence(moveBy(0, down ? -h : h, ANIMATION_DURATION, Interpolation.bounceOut), run(new Runnable() {
+        group.addAction(sequence(moveBy(0, up ? h : -h, ANIMATION_DURATION, Interpolation.bounceOut), run(new Runnable() {
             public void run () {
                 group.setTouchable(Touchable.enabled);
+                if (runnable != null) {
+                    runnable.run();
+                }
             }
         })));
     }
@@ -224,16 +235,22 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         }
         scoreLabel.setText(i18NGameThreeBundle.format("infoScreen.score", currentScore));
         highScoreLabel.setText(i18NGameThreeBundle.format("infoScreen.highScore", bestScore));
+
         gameOverTable.setVisible(true);
-        gameControllersHelpTable.setVisible(false);
+        helpTable.setVisible(false);
         pause.setVisible(false);
-        setStageAnimation(true);
+        setStageAnimation(false, null);
     }
 
-    public void showGameControllersHelp() {
+    public void showHelp() {
         gameOverTable.setVisible(false);
-        gameControllersHelpTable.setVisible(true);
+        helpTable.setVisible(true);
         pause.setVisible(false);
-        setStageAnimation(true);
+        setStageAnimation(false, new Runnable() {
+            @Override
+            public void run() {
+                ((AbstractScreen) game.getCurrentScreen()).stop();
+            }
+        });
     }
 }

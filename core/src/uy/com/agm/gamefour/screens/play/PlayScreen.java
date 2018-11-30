@@ -90,7 +90,7 @@ public class PlayScreen extends PlayAbstractScreen {
 
             finish = !finish && showGameControllersHelp;
             if (finish) {
-                infoScreen.showGameControllersHelp();
+                infoScreen.showHelp();
                 showGameControllersHelp = false;
             }
 
