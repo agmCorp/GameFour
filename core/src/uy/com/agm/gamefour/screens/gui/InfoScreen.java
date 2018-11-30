@@ -156,7 +156,8 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         reload.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
-                game.getCurrentScreen().resume();
+                //game.getCurrentScreen().resume();
+                Gdx.input.setInputProcessor(((PlayScreen)game.getCurrentScreen()).getInputProcessor());
                 setStageAnimation(true, new Runnable() {
                     @Override
                     public void run() {
@@ -251,7 +252,8 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         setStageAnimation(false, new Runnable() {
             @Override
             public void run() {
-                ((AbstractScreen) game.getCurrentScreen()).stop();
+                // ((AbstractScreen) game.getCurrentScreen()).stop();
+                Gdx.input.setInputProcessor(stage);
             }
         });
     }
