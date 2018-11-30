@@ -160,7 +160,9 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
                 setStageAnimation(true, new Runnable() {
                     @Override
                     public void run() {
-                        pause.setVisible(true); // todo, acá el boton pause ya está arriba del todo, hay que posicionarlo!
+                        pause.setVisible(true);
+                        helpTable.setVisible(false);
+                        stage.getRoot().setY(0);
                     }
                 });
             }
