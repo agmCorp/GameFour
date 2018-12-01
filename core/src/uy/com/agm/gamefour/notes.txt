@@ -19,6 +19,13 @@
     el algoritmo general seria en lugar de setear el cambio de estado, invocar a un metodo que se llame initExposion() que hace setbounds y setea estado.
     La cosa que hice todo todo de la misma manera y no quiero programar todo de vuelta. Tal vez conviene dejar esta idea para un tercer juego.
 PASAR LA IDEA ANTERIOR A COPYPASTE Y REFERENCIARLA ACA EN LECCIONES APRENDIDAS.
+
+
+
+OTRO PROBLEMA QUE TENGO ES EL MANEJO DE MULTIPLES PANTALLAS SUPERPUESTAS.
+LOGRO CAMBIAR EL INPUTPROCESSOR PERO NO SE COMO HACER PARA QUE ESTE UNA EN CADA ARCHIVO Y LUEGO MOSTRAR LA ADECUADA.
+LAS COSAS SE COMPLICAN SI SE SUPERPONEN, PORQUE EL INPUT PROCESSOR NO VOLVERIA A LA DE ATRAS NO SE.
+HABRIA QUE HACER UN MANAGER.
 ------------ la mieda de acá arriba comentarla y ponerla en copy paste -----------
 
 

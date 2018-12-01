@@ -209,7 +209,13 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         helpTable.setVisible(false);
         pause.setVisible(false);
         hud.setVisible(false);
-        startStageAnimation(false, null);
+        startStageAnimation(false, new Runnable() {
+            @Override
+            public void run() {
+                // Only InfoScreen responds to events
+                Gdx.input.setInputProcessor(stage);
+            }
+        });
     }
 
     public void showHelp() {

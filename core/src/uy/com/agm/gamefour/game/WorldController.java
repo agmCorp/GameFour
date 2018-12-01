@@ -100,8 +100,7 @@ public class WorldController implements Disposable {
          * when I return true in the fling event the touchUp is canceled. If I return false both are executed.
          * */
         InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(playScreen.getPauseScreen().getInputProcessor()); // PauseScreen also receives events
-        multiplexer.addProcessor(playScreen.getInfoScreen().getInputProcessor()); // InfoScreen also receives events
+        multiplexer.addProcessor(playScreen.getInfoScreen().getInputProcessor()); // InfoScreen also receives events (pause button)
         multiplexer.addProcessor(new GestureDetector(gameController)); // Detects gestures (tap, long press, fling, pan, zoom, pinch)
         multiplexer.addProcessor(gameController); // User input handler
         return multiplexer;
