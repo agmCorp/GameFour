@@ -1,11 +1,7 @@
 package uy.com.agm.gamefour.screens.gui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -21,16 +17,11 @@ import uy.com.agm.gamefour.assets.gui.AssetGUI;
 import uy.com.agm.gamefour.game.DebugConstants;
 import uy.com.agm.gamefour.game.GameFour;
 import uy.com.agm.gamefour.game.GameSettings;
-import uy.com.agm.gamefour.screens.AbstractScreen;
 import uy.com.agm.gamefour.screens.ListenerHelper;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
 import uy.com.agm.gamefour.tools.AudioManager;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Created by AGMCORP on 10/14/2018.
@@ -39,10 +30,10 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 public class InfoScreen extends GUIOverlayAbstractScreen {
     private static final String TAG = InfoScreen.class.getName();
 
-    private static final float ANIMATION_DURATION = 1.0f;
     private static final float BUTTON_WIDTH = 180.0f;
     private static final int MAX_TITLE_KEYS = 15;
 
+    private PlayScreen playScreen;
     private Assets assets;
     private I18NBundle i18NGameThreeBundle;
     private AssetFonts assetFonts;
@@ -55,9 +46,10 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     private Label scoreLabel;
     private Label highScoreLabel;
 
-    public InfoScreen(GameFour game) {
+    public InfoScreen(GameFour game, PlayScreen playScreen) {
         super(game);
 
+        this.playScreen = playScreen;
         assets = Assets.getInstance();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
         assetFonts = assets.getFonts();
@@ -91,7 +83,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         pause.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
-                ((PlayScreen) game.getCurrentScreen()).setGameStatePaused();
+                playScreen.setGameStatePaused();
             }
         }));
         stage.addActor(pause);
@@ -144,21 +136,21 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
-        table.add(new Image(new Texture(Gdx.files.internal("basura/MOCKUP.PNG")))).row(); // todo
+        table.add(new Image(assetGUI.getHelp())).row();
         table.add(getHelpButtonsTable());
         table.setVisible(false);
         return table;
     }
 
     private Table getHelpButtonsTable() {
-        ImageButton reload = new ImageButton(new TextureRegionDrawable(assetGUI.getBigReload()),
-                new TextureRegionDrawable(assetGUI.getBigReloadPressed())); // todo
-        reload.addListener(ListenerHelper.runnableListener(new Runnable() {
+        ImageButton gotIt = new ImageButton(new TextureRegionDrawable(assetGUI.getGotIt()),
+                new TextureRegionDrawable(assetGUI.getGotItPressed()));
+        gotIt.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
-                //game.getCurrentScreen().resume();
-                Gdx.input.setInputProcessor(((PlayScreen)game.getCurrentScreen()).getInputProcessor());
-                setStageAnimation(true, new Runnable() {
+                // Enable input for PlayScreen
+                Gdx.input.setInputProcessor(playScreen.getInputProcessor());
+                startStageAnimation(true, new Runnable() {
                     @Override
                     public void run() {
                         pause.setVisible(true);
@@ -168,19 +160,16 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
                 });
             }
         }));
+
         Table table = new Table();
         table.setDebug(DebugConstants.DEBUG_LINES);
         table.center();
-        table.add(reload).width(BUTTON_WIDTH);
+        table.add(gotIt).width(BUTTON_WIDTH);
         return table;
     }
 
     @Override
     public void update(float deltaTime) {
-        Group group = stage.getRoot();
-        if (!group.isTouchable()) {
-            group.setTouchable(Touchable.enabled);
-        }
         stage.act();
     }
 
@@ -189,34 +178,9 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         stage.draw();
     }
 
-    public void disableEvents() {
-        Group group = stage.getRoot();
-        if (group.isTouchable()) {
-            group.setTouchable(Touchable.disabled);
-        }
-    }
-
-
-    // todo: usar esto en pause screen!!!
-    private void setStageAnimation(boolean up, final Runnable runnable) {
-        float h = stage.getHeight();
-        final Group group = stage.getRoot();
-        group.setY(up ? 0 : h);
-        group.setTouchable(Touchable.disabled);
-        group.clearActions();
-        group.addAction(sequence(moveBy(0, up ? h : -h, ANIMATION_DURATION, Interpolation.bounceOut), run(new Runnable() {
-            public void run () {
-                group.setTouchable(Touchable.enabled);
-                if (runnable != null) {
-                    runnable.run();
-                }
-            }
-        })));
-    }
-
     public void showGameOver() {
         GameSettings prefs = GameSettings.getInstance();
-        Hud hud = ((PlayScreen) game.getCurrentScreen()).getHud();
+        Hud hud = playScreen.getHud();
         int currentScore = hud.getScore();
         int bestScore = prefs.getHighScore();
         if (currentScore > bestScore) {
@@ -242,17 +206,17 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         gameOverTable.setVisible(true);
         helpTable.setVisible(false);
         pause.setVisible(false);
-        setStageAnimation(false, null);
+        startStageAnimation(false, null);
     }
 
     public void showHelp() {
         gameOverTable.setVisible(false);
         helpTable.setVisible(true);
         pause.setVisible(false);
-        setStageAnimation(false, new Runnable() {
+        startStageAnimation(false, new Runnable() {
             @Override
             public void run() {
-                // ((AbstractScreen) game.getCurrentScreen()).stop();
+                // Only InfoScreen responds to events
                 Gdx.input.setInputProcessor(stage);
             }
         });

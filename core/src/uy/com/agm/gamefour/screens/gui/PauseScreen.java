@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -39,9 +38,9 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     private static final float BUTTONS_OFFSET_Y = 120.0f;
     private static final float BUTTONS_ANIM_DURATION = 1.0f;
     private static final float BUTTONS_MOVE_BY_AMOUNT = 110.0f;
-    private static final float STAGE_ANIM_DURATION = 1.0f;
     private static final float DIM_ALPHA = 0.8f;
 
+    private PlayScreen playScreen;
     private Assets assets;
     private AssetGUI assetGUI;
     private I18NBundle i18NGameThreeBundle;
@@ -54,9 +53,10 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     private ImageButton rateGame;
     private ImageButton reload;
 
-    public PauseScreen(GameFour game) {
+    public PauseScreen(GameFour game, PlayScreen playScreen) {
         super(game);
 
+        this.playScreen = playScreen;
         assets = Assets.getInstance();
         assetGUI = assets.getGUI();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
@@ -114,7 +114,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         play.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override
             public void run() {
-                ((PlayScreen) game.getCurrentScreen()).setGameStateRunning();
+                playScreen.setGameStateRunning();
             }
         }));
         home.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_DOWN));
@@ -228,41 +228,34 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
 
     public void showPauseScreen() {
         if (!isPauseScreenVisible()) {
-            ((PlayScreen) game.getCurrentScreen()).doPause();
+            playScreen.doPause();
             setVisible(true);
-            setStageAnimation();
+            startStageAnimation(false, new Runnable() {
+                @Override
+                public void run() {
+                    setButtonsAnimation();
+                }
+            });
+
+            // Only PauseScreen responds to events
+            Gdx.input.setInputProcessor(stage);
         }
     }
 
     public void hidePauseScreen() {
         if (isPauseScreenVisible()) {
-            float h = stage.getHeight();
-            final Group group = stage.getRoot();
-            group.setY(0);
-            group.setTouchable(Touchable.disabled);
-            group.clearActions();
-            group.addAction(sequence(moveBy(0, h, STAGE_ANIM_DURATION, Interpolation.bounceOut), run(new Runnable() {
-                public void run () {
+            startStageAnimation(true, new Runnable() {
+                @Override
+                public void run() {
                     setVisible(false);
                     placeButtons(stage.getWidth(), stage.getHeight());
-                    game.getCurrentScreen().resume();
-                }
-            })));
-        }
-    }
+                    playScreen.resume();
 
-    private void setStageAnimation() {
-        float h = stage.getHeight();
-        final Group group = stage.getRoot();
-        group.setY(h);
-        group.setTouchable(Touchable.disabled);
-        group.clearActions();
-        group.addAction(sequence(moveBy(0, -h, STAGE_ANIM_DURATION, Interpolation.bounceOut), run(new Runnable() {
-            public void run () {
-                setButtonsAnimation();
-                group.setTouchable(Touchable.enabled);
-            }
-        })));
+                    // Enable input for PlayScreen
+                    Gdx.input.setInputProcessor(playScreen.getInputProcessor());
+                }
+            });
+        }
     }
 
     private void rateGame() {

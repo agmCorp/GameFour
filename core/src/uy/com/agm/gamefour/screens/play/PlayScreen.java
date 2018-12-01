@@ -31,22 +31,22 @@ public class PlayScreen extends PlayAbstractScreen {
     private WorldRenderer worldRenderer;
     private GameSettings prefs;
     private boolean endGame;
-    private boolean showGameControllersHelp;
+    private boolean showHelp;
     private boolean levelCompleted;
 
-    public PlayScreen(GameFour game, Boolean showGameControllersHelp) {
+    public PlayScreen(GameFour game, Boolean showHelp) {
         super(game);
 
         hud = new Hud(game);
-        infoScreen = new InfoScreen(game);
-        pauseScreen = new PauseScreen(game);
+        infoScreen = new InfoScreen(game, this);
+        pauseScreen = new PauseScreen(game, this);
 
         worldController = new WorldController(this);
         gameWorld = worldController.getGameWorld();
         worldRenderer = new WorldRenderer(gameWorld, game.getGameBatch(), game.getGameShapeRenderer(), game.getBox2DDebugRenderer());
         prefs = GameSettings.getInstance();
         endGame = false;
-        this.showGameControllersHelp = showGameControllersHelp;
+        this.showHelp = showHelp;
         levelCompleted = false;
 
         // Play level music
@@ -88,10 +88,10 @@ public class PlayScreen extends PlayAbstractScreen {
             // A boolean value is used to avoid nested if/else sentences.
             boolean finish = false;
 
-            finish = !finish && showGameControllersHelp;
+            finish = !finish && showHelp;
             if (finish) {
                 infoScreen.showHelp();
-                showGameControllersHelp = false;
+                showHelp = false;
             }
 
             finish = !finish && levelCompleted;
@@ -142,7 +142,6 @@ public class PlayScreen extends PlayAbstractScreen {
 
     public void setGameStatePaused() {
         pauseScreen.showPauseScreen();
-        infoScreen.disableEvents();
     }
 
     public void setGameStateRunning() {

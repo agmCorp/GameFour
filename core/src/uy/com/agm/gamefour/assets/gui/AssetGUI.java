@@ -34,6 +34,9 @@ public class AssetGUI {
     private TextureRegion bigHomePressed;
     private TextureRegion pause;
     private TextureRegion pausePressed;
+    private TextureRegion gotIt;
+    private TextureRegion gotItPressed;
+    private TextureRegion help;
     private TextureRegion menuBg;
     private TextureRegion littleCloud;
     private TextureRegion trail;
@@ -64,6 +67,9 @@ public class AssetGUI {
         bigHomePressed = atlasGUI.findRegion("bigHomePressed");
         pause = atlasGUI.findRegion("pause");
         pausePressed = atlasGUI.findRegion("pausePressed");
+        gotIt = atlasGUI.findRegion("gotIt");
+        gotItPressed = atlasGUI.findRegion("gotItPressed");
+        help = atlasGUI.findRegion("help");
         menuBg = atlasGUI.findRegion("menuBg");
         littleCloud = atlasGUI.findRegion("littleCloud");
         trail = atlasGUI.findRegion("trail");
@@ -161,6 +167,18 @@ public class AssetGUI {
 
     public TextureRegion getPausePressed() {
         return pausePressed;
+    }
+
+    public TextureRegion getGotIt() {
+        return gotIt;
+    }
+
+    public TextureRegion getGotItPressed() {
+        return gotItPressed;
+    }
+
+    public TextureRegion getHelp() {
+        return help;
     }
 
     public TextureRegion getMenuBg() {
