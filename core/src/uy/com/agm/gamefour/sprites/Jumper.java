@@ -179,7 +179,7 @@ public class Jumper extends AbstractDynamicObject {
         // Current platform, score and level
         currentPlatform = platform;
         playScreen.getHud().addScore(SUCCESSFUL_JUMP_SCORE);
-        playScreen.levelCompleted();
+        playScreen.setLevelIsCompleted();
 
         // Reset bullets
         bullets = MAX_BULLETS;

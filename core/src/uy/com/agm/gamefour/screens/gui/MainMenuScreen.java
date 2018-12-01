@@ -160,7 +160,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
                 new TextureRegionDrawable(assetGUI.getExitPressed()));
 
         // Events
-        play.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE, true));
+        play.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
         info.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.CREDITS, ScreenTransitionEnum.SLICE_UP_DOWN_10));
         rateGame.addListener(ListenerHelper.runnableListener(new Runnable() {
             @Override

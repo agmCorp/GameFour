@@ -22,6 +22,7 @@ public class GameSettings {
     private static GameSettings instance;
 
     private int countdownAd; // No need to persist it
+    private boolean showHelp; // No need to persist it
     private Preferences prefs;
     private int highScore;
     private int backgroundId;
@@ -30,6 +31,7 @@ public class GameSettings {
     // Singleton: prevent instantiation from other classes
     private GameSettings() {
         countdownAd = DEF_COUNT_AD;
+        showHelp = true;
         prefs = Gdx.app.getPreferences(SETTINGS);
     }
 
@@ -64,6 +66,14 @@ public class GameSettings {
 
     public boolean isCountdownAdFinish() {
         return countdownAd <= 0;
+    }
+
+    public boolean mustShowHelp() {
+        return showHelp;
+    }
+
+    public void setShowHelp(boolean showHelp) {
+        this.showHelp = showHelp;
     }
 
     public int getHighScore() {

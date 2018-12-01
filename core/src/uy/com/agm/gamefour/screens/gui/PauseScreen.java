@@ -41,10 +41,10 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     private static final float DIM_ALPHA = 0.8f;
 
     private PlayScreen playScreen;
+    private GameSettings prefs;
     private Assets assets;
     private AssetGUI assetGUI;
     private I18NBundle i18NGameThreeBundle;
-    private GameSettings prefs;
     private Image screenPauseBg;
     private Label pauseLabel;
     private ImageButton play;
@@ -57,10 +57,10 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         super(game);
 
         this.playScreen = playScreen;
+        prefs = GameSettings.getInstance();
         assets = Assets.getInstance();
         assetGUI = assets.getGUI();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
-        prefs = GameSettings.getInstance();
     }
 
     @Override
@@ -132,7 +132,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
                 rateGame();
             }
         }));
-        reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE, false));
+        reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
     }
 
     private void setVisible(boolean visible) {

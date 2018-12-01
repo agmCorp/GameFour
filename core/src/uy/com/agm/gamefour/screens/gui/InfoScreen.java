@@ -34,6 +34,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     private static final int MAX_TITLE_KEYS = 15;
 
     private PlayScreen playScreen;
+    private GameSettings prefs;
     private Assets assets;
     private I18NBundle i18NGameThreeBundle;
     private AssetFonts assetFonts;
@@ -50,6 +51,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         super(game);
 
         this.playScreen = playScreen;
+        prefs = GameSettings.getInstance();
         assets = Assets.getInstance();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
         assetFonts = assets.getFonts();
@@ -121,7 +123,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         ImageButton home = new ImageButton(new TextureRegionDrawable(assetGUI.getBigHome()),
                 new TextureRegionDrawable(assetGUI.getBigHomePressed()));
 
-        reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE, false));
+        reload.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.PLAY_GAME, ScreenTransitionEnum.COLOR_FADE_WHITE));
         home.addListener(ListenerHelper.screenNavigationListener(ScreenEnum.MAIN_MENU, ScreenTransitionEnum.SLIDE_DOWN));
 
         Table table = new Table();
@@ -179,7 +181,6 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     }
 
     public void showGameOver() {
-        GameSettings prefs = GameSettings.getInstance();
         Hud hud = playScreen.getHud();
         int currentScore = hud.getScore();
         int bestScore = prefs.getHighScore();
