@@ -158,6 +158,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
                         pause.setVisible(true);
                         helpTable.setVisible(false);
                         stage.getRoot().setY(0);
+                        playScreen.getHud().setVisible(true);
                     }
                 });
             }
@@ -207,6 +208,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         gameOverTable.setVisible(true);
         helpTable.setVisible(false);
         pause.setVisible(false);
+        hud.setVisible(false);
         startStageAnimation(false, null);
     }
 
@@ -214,6 +216,7 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         gameOverTable.setVisible(false);
         helpTable.setVisible(true);
         pause.setVisible(false);
+        playScreen.getHud().setVisible(false);
         startStageAnimation(false, new Runnable() {
             @Override
             public void run() {

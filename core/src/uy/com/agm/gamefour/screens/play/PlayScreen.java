@@ -114,7 +114,6 @@ public class PlayScreen extends PlayAbstractScreen {
                 gameWorld.getGameCamera().shake(SHAKE_DURATION, true);
                 gameWorld.getJumper().onDead();
                 infoScreen.showGameOver();
-                hud.setVisible(false);
                 endGame = true;
             }
         }
