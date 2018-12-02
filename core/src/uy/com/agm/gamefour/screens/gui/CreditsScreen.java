@@ -41,8 +41,9 @@ public class CreditsScreen extends GUIAbstractScreen {
 
     private Assets assets;
     private AssetGUI assetGUI;
-    private AssetFonts assetFonts;
     private I18NBundle i18NGameThreeBundle;
+    private Label.LabelStyle labelStyleBig;
+    private Label.LabelStyle labelStyleCredits;
     private Label title;
     private Image creditsBg;
 
@@ -51,8 +52,15 @@ public class CreditsScreen extends GUIAbstractScreen {
 
         assets = Assets.getInstance();
         assetGUI = assets.getGUI();
-        assetFonts = assets.getFonts();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
+
+        // Styles
+        AssetFonts assetFonts = assets.getFonts();
+        labelStyleBig = new Label.LabelStyle();
+        labelStyleBig.font = assetFonts.getBig();
+
+        labelStyleCredits = new Label.LabelStyle();
+        labelStyleCredits.font = assetFonts.getCredits();
 
         // Play credits music
         AudioManager.getInstance().playMusic(assets.getMusic().getSongCredits());
@@ -80,13 +88,9 @@ public class CreditsScreen extends GUIAbstractScreen {
         stage.addActor(creditsBg);
 
         // Title
-        Label.LabelStyle labelStyleBig = new Label.LabelStyle();
-        labelStyleBig.font = assetFonts.getBig();
         title = new Label(i18NGameThreeBundle.format("creditsScreen.title"), labelStyleBig);
 
         // Message
-        Label.LabelStyle labelStyleCredits = new Label.LabelStyle();
-        labelStyleCredits.font = assetFonts.getCredits();
         TypingLabelWorkaround msgLabel = new TypingLabelWorkaround(i18NGameThreeBundle.format("creditsScreen.msg"), labelStyleCredits);
         msgLabel.setAlignment(Align.center);
         msgLabel.setWrap(true);

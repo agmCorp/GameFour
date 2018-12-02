@@ -45,6 +45,7 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
     private Assets assets;
     private AssetGUI assetGUI;
     private I18NBundle i18NGameThreeBundle;
+    private Label.LabelStyle labelStyleBig;
     private Image screenPauseBg;
     private Label pauseLabel;
     private ImageButton play;
@@ -61,6 +62,10 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         assets = Assets.getInstance();
         assetGUI = assets.getGUI();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
+
+        // Styles
+        labelStyleBig = new Label.LabelStyle();
+        labelStyleBig.font = assets.getFonts().getBig();
     }
 
     @Override
@@ -75,8 +80,6 @@ public class PauseScreen extends GUIOverlayAbstractScreen {
         stage.addActor(screenPauseBg);
 
         // Title
-        Label.LabelStyle labelStyleBig = new Label.LabelStyle();
-        labelStyleBig.font = assets.getFonts().getBig();
         pauseLabel = new Label(i18NGameThreeBundle.format("pauseScreen.title"), labelStyleBig);
         stage.addActor(pauseLabel);
 

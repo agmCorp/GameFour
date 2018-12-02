@@ -37,9 +37,11 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     private GameSettings prefs;
     private Assets assets;
     private I18NBundle i18NGameThreeBundle;
-    private AssetFonts assetFonts;
     private AssetGUI assetGUI;
     private Array<String> titleKeys;
+    private Label.LabelStyle labelStyleBig;
+    private Label.LabelStyle labelStyleNormal;
+    private Label.LabelStyle labelStyleSmall;
     private Table gameOverTable;
     private Table helpTable;
     private ImageButton pause;
@@ -54,12 +56,22 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
         prefs = GameSettings.getInstance();
         assets = Assets.getInstance();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
-        assetFonts = assets.getFonts();
         assetGUI = assets.getGUI();
         titleKeys = new Array<String>();
         for(int i = 0; i < MAX_TITLE_KEYS; i++) {
             titleKeys.add(i18NGameThreeBundle.format("infoScreen.title" + i));
         }
+
+        // Styles
+        AssetFonts assetFonts = assets.getFonts();
+        labelStyleBig = new Label.LabelStyle();
+        labelStyleBig.font = assetFonts.getBig();
+
+        labelStyleNormal = new Label.LabelStyle();
+        labelStyleNormal.font = assetFonts.getNormal();
+
+        labelStyleSmall = new Label.LabelStyle();
+        labelStyleSmall.font = assetFonts.getSmall();
     }
 
     @Override
@@ -92,15 +104,6 @@ public class InfoScreen extends GUIOverlayAbstractScreen {
     }
 
     private Table getGameOverTable() {
-        Label.LabelStyle labelStyleBig = new Label.LabelStyle();
-        labelStyleBig.font = assetFonts.getBig();
-
-        Label.LabelStyle labelStyleNormal = new Label.LabelStyle();
-        labelStyleNormal.font = assetFonts.getNormal();
-
-        Label.LabelStyle labelStyleSmall = new Label.LabelStyle();
-        labelStyleSmall.font = assetFonts.getSmall();
-
         gameOverLabel = new Label("GAME OVER", labelStyleBig);
         scoreLabel = new Label("SCORE", labelStyleNormal);
         highScoreLabel = new Label("HIGH_SCORE", labelStyleSmall);

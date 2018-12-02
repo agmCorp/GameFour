@@ -29,27 +29,15 @@ HABRIA QUE HACER UN MANAGER.
 ------------ la mieda de acá arriba comentarla y ponerla en copy paste -----------
 
 
-
 - Debo usar una skin
 - para la proxima, no poner metodos getWidth() y getHeight() dentro de la clase AssetMiSprite porque me obliga a tener una instancia de
 AssetMiSprite para poder consultar su ancho y alto. Mejor hacerlo como antes, con constantes públicas.
 
+BUGS CONOCIDOS
+- investigar como solucionar el problema de que en la version html solo se pueda escuchar un audio por vez.
+- a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas del parallax.
+
 HACER
-- hacer un help o algo (hold and release to jump. Tap on the screen to get this little nosy bird out)
-Se me ocurre extender la clase GameWorld, redefiniendo aquellos métodos que crea necesarios.
-Luego hacer una helpScreen similar a PlayScreen pero bien sencilla (con hud -score y barrita-) y con infoscreenhelp que sería una manito.
-Creo que con eso basta. Tal vez tenga que definir un nuevo platformcontroller o extenderla también usandola en el gameworld extendido.
-El help aparecería siempre al presionar el boton play de la pantalla principal y luego el juego.
-- investigar por que en mobile browsers el audio se corta.
-
-DESEABLE PARA LIBERAR
-- a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas.
-- agregar mas fondos
-
-OTROS
-- hacer un skin
-- Poner una zona de salto perfecto. Si el pajaro cae justo ahi (su x en medio de la plataforma + delta) saco algun cartel y/o doy
-puntos extra.
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
 
 LECCIONES APRENDIDAS

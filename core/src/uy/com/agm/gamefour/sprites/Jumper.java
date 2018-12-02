@@ -21,6 +21,7 @@ import uy.com.agm.gamefour.assets.sprites.AssetJumper;
 import uy.com.agm.gamefour.game.GameCamera;
 import uy.com.agm.gamefour.game.GameWorld;
 import uy.com.agm.gamefour.game.tools.WorldContactListener;
+import uy.com.agm.gamefour.screens.gui.Hud;
 import uy.com.agm.gamefour.screens.play.PlayScreen;
 import uy.com.agm.gamefour.tools.AudioManager;
 
@@ -38,6 +39,8 @@ public class Jumper extends AbstractDynamicObject {
     private static final float SCALE_IMPULSE_X = 30.0f;
     private static final float POWER_JUMP_OFFSET_Y = 1.0f;
     private static final int SUCCESSFUL_JUMP_SCORE = 2;
+    private static final int PERFECT_JUMP_SCORE = 3;
+    private static final float PERFECT_JUMP_TOLERANCE = 0.1f;
     private static final float MIN_SPEAK_TIME = 7.0f;
     private static final float MAX_SPEAK_TIME = 10.0f;
     private static final int MAX_BULLETS = 1;
@@ -172,19 +175,38 @@ public class Jumper extends AbstractDynamicObject {
     }
 
     public void onSuccessfulJump(Platform platform) {
+        Hud hud = playScreen.getHud();
+
         // Particle effect
         fireworks.setPosition(body.getPosition().x, body.getPosition().y);
         fireworks.start();
 
         // Current platform, score and level
         currentPlatform = platform;
-        playScreen.getHud().addScore(SUCCESSFUL_JUMP_SCORE);
+        if (isPerfectJump(platform)) {
+            hud.showPerfect();
+            hud.addScore(PERFECT_JUMP_SCORE);
+
+            // Audio effect
+            AudioManager.getInstance().playSound(Assets.getInstance().getSounds().getPerfect());
+        } else {
+            hud.addScore(SUCCESSFUL_JUMP_SCORE);
+        }
         playScreen.setLevelIsCompleted();
 
         // Reset bullets
         bullets = MAX_BULLETS;
 
         onLanding();
+    }
+
+    private boolean isPerfectJump(Platform platform) {
+        float platformCenter = platform.getBodyPosition().x;
+        float jumperCenter = body.getPosition().x;
+        float left = platformCenter - PERFECT_JUMP_TOLERANCE;
+        float right = platformCenter + PERFECT_JUMP_TOLERANCE;
+
+        return gameWorld.getLevel() > 1 && left <= jumperCenter && jumperCenter <= right;
     }
 
     public void onLanding() {

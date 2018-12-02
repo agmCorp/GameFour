@@ -52,6 +52,7 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private AssetSprites assetSprites;
     private I18NBundle i18NGameThreeBundle;
     private GameSettings prefs;
+    private Label.LabelStyle labelStyleGameTitle;
     private Image menuBg;
     private Label gameTitle;
     private Image littleCloud;
@@ -74,6 +75,10 @@ public class MainMenuScreen extends GUIAbstractScreen {
         assetSprites = assets.getSprites();
         i18NGameThreeBundle = assets.getI18NGameFour().getI18NGameFourBundle();
         prefs = GameSettings.getInstance();
+
+        // Styles
+        labelStyleGameTitle = new Label.LabelStyle();
+        labelStyleGameTitle.font = assets.getFonts().getGameTitle();
 
         // Play menu music
         AudioManager.getInstance().playMusic(Assets.getInstance().getMusic().getSongMainMenu());
@@ -103,8 +108,6 @@ public class MainMenuScreen extends GUIAbstractScreen {
         stage.addActor(menuBg);
 
         // Title
-        Label.LabelStyle labelStyleGameTitle = new Label.LabelStyle();
-        labelStyleGameTitle.font = assets.getFonts().getGameTitle();
         gameTitle = new Label(i18NGameThreeBundle.format("mainMenuScreen.gameTitle"), labelStyleGameTitle);
         stage.addActor(gameTitle);
 

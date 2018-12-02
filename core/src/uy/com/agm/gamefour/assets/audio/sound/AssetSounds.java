@@ -23,6 +23,7 @@ public class AssetSounds {
     private Sound bloodSplash;
     private Sound voice;
     private Sound throwEgg;
+    private Sound perfect;
 
     public AssetSounds(AssetManager am) {
         jump = new Array<Sound>();
@@ -45,6 +46,7 @@ public class AssetSounds {
         bloodSplash = am.get(Assets.FX_FILE_BLOOD_SPLASH, Sound.class);
         voice = am.get(Assets.FX_FILE_VOICE, Sound.class);
         throwEgg = am.get(Assets.FX_FILE_THROW, Sound.class);
+        perfect = am.get(Assets.FX_FILE_PERFECT, Sound.class);
     }
 
     public Sound getJump() {
@@ -81,5 +83,9 @@ public class AssetSounds {
 
     public Sound getThrowEgg() {
         return throwEgg;
+    }
+
+    public Sound getPerfect() {
+        return perfect;
     }
 }

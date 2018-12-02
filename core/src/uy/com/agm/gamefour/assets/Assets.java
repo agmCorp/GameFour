@@ -46,6 +46,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public static final String FX_FILE_BLOOD_SPLASH = "audio/sounds/bloodSplash.ogg";
     public static final String FX_FILE_VOICE = "audio/sounds/voice.ogg";
     public static final String FX_FILE_THROW = "audio/sounds/throw.ogg";
+    public static final String FX_FILE_PERFECT = "audio/sounds/perfect.ogg";
 
     // Music
     public static final String MUSIC_FILE_MAIN_MENU = "audio/music/songMainMenu.ogg";
@@ -158,6 +159,7 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.load(FX_FILE_BLOOD_SPLASH, Sound.class);
         assetManager.load(FX_FILE_VOICE, Sound.class);
         assetManager.load(FX_FILE_THROW, Sound.class);
+        assetManager.load(FX_FILE_PERFECT, Sound.class);
     }
 
     private void loadMusic() {
