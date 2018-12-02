@@ -1,5 +1,3 @@
-private static final float IMPULSE_Y = 7.0f;//9.0f;
-private static final float SCALE_IMPULSE_X = 27.0f;//37.0f;
 -----------------------------------------------------------------
 Los enemigos se crean en la zona que existe entre la cuarta y quinta plataforma, debajo de la más alta.
 Si quisiera crear un enemigo en cada nuevo nivel (es decir, en level = 1, luego level = 2, luego level = 3, etc), podría
@@ -18,3 +16,28 @@ Es allí que yo debería esperar a que haya un reposition de plataforma para hac
 El único que sabe cuando una plataforma se reposicionó es PlatformController y no quisiera agregar un aviso a PlayScreen desde
 allí dentro (es decir, setear un booleano de playscreen "isLevelComplete2") para sincronizar gameResults.
 -----------------------------------------------------------------
+    private void stateKnockBack(float deltaTime) {
+        updateSpritePosition(deltaTime);
+        holdEnemy();
+
+        knockBackTime += deltaTime;
+        if (knockBackTime > KNOCK_BACK_SECONDS) {
+            body.setLinearVelocity(0.0f, 0.0f);
+            currentState = State.EXPLOSION;
+            stateTime = 0;
+        }
+    }
+Antes de setear el esado EXPLOSION, debería setear los bounds con el nuevo tamaño del sprite y el setRegion explosion. Porque al cambiar estado
+en el draw ya se cambia el color del knockback a default y me está dibujando el pájaro verde (antes de explotar).
+
+Lo mismo cuando termina de explotar y pasa a SPLAT. Ahí hay una inconsistencia entre el estado y el sprite (setRegion) que dibujo.
+
+El algoritmo general sería en lugar de setear el cambio de estado, invocar a un metodo que se llame initExposion() que hace setbounds, setRegion y setea estado.
+De esa manera logro que cada estado tenga un paso previo de inicialización sacándome los booleanos init de encima.
+Si hago un próximo juego, usar esta técnica.
+-----------------------------------------------------------------
+Otro probelma que tengo es el manejo de múltiples pantallas superpuestas (infoScreen).
+Si algunas son modal y otras no se complica.
+Puedo jugar como hice en este juego con Gdx.input.setInputProcessor(..), pero si tengo un stack de pantallas volver al input processor anterior parece
+complicado. Existe getInputProcessor pero no lo probé.
+Debería hacer un manager o investigar el uso de window en libgdx que parecería ser la manera.

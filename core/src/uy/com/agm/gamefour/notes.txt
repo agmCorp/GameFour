@@ -1,41 +1,16 @@
-    private void stateKnockBack(float deltaTime) {
-        updateSpritePosition(deltaTime);
-        holdEnemy();
-
-        knockBackTime += deltaTime;
-        if (knockBackTime > KNOCK_BACK_SECONDS) {
-            body.setLinearVelocity(0.0f, 0.0f);
-            currentState = State.EXPLOSION;
-            stateTime = 0;
-        }
-    }
-
-
-    yo antes de setear el esado explosion, deberia setear los boudns con el nuevo tamaño y el sprite explosion. POrque al cambiar estado
-    en el draw ya se cambia el color y me está dibujando el pajaro verde (antes de explotar) luego del knockback negro.
-
-    lo mismo cuando termina de explotar y pasa a splat. Ahi ya me puedo sacar los booleanos de arriba init.
-
-    el algoritmo general seria en lugar de setear el cambio de estado, invocar a un metodo que se llame initExposion() que hace setbounds y setea estado.
-    La cosa que hice todo todo de la misma manera y no quiero programar todo de vuelta. Tal vez conviene dejar esta idea para un tercer juego.
-PASAR LA IDEA ANTERIOR A COPYPASTE Y REFERENCIARLA ACA EN LECCIONES APRENDIDAS.
-
-
-
-OTRO PROBLEMA QUE TENGO ES EL MANEJO DE MULTIPLES PANTALLAS SUPERPUESTAS.
-LOGRO CAMBIAR EL INPUTPROCESSOR PERO NO SE COMO HACER PARA QUE ESTE UNA EN CADA ARCHIVO Y LUEGO MOSTRAR LA ADECUADA.
-LAS COSAS SE COMPLICAN SI SE SUPERPONEN, PORQUE EL INPUT PROCESSOR NO VOLVERIA A LA DE ATRAS NO SE.
-HABRIA QUE HACER UN MANAGER.
------------- la mieda de acá arriba comentarla y ponerla en copy paste -----------
-
-
-- Debo usar una skin
+PARA PRÓXIMOS JUEGOS
+- Debo usar una skin si o si
 - para la proxima, no poner metodos getWidth() y getHeight() dentro de la clase AssetMiSprite porque me obliga a tener una instancia de
 AssetMiSprite para poder consultar su ancho y alto. Mejor hacerlo como antes, con constantes públicas.
+- leer copyPaste.txt
 
 BUGS CONOCIDOS
 - investigar como solucionar el problema de que en la version html solo se pueda escuchar un audio por vez.
-- a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas del parallax.
+- a medida que pasa el tiempo (level 50) la brecha se agranda entre las texturas del parallax. Tal vez el shakeScreen tenga algo que ver.
+No encontré la causa ni lo puedo reproducir.
+- No entiendo mucho la función del signInSilently in splashScreen. Generalmente no loguea nada. Investigué otros juegos y todos resuleven mal algo.
+Una solución podría ser poner en la splash siempre el login con interface (signIn) y si el usuario no quiere loguearse no insistir nunca más. Otra
+podría ser insisitir siempre que entra al juego lo cual es muy molesto. No está claro que hacer, nadie lo hace bien.
 
 HACER
 - MAS NADA, LA FUNCIONALIDAD ES ESA.
