@@ -32,8 +32,8 @@ public class Hud extends GUIOverlayAbstractScreen {
     private static final int POWER_BAR_WIDTH = 250;
     private static final int POWER_BAR_HEIGHT = 15;
     private static final int AVERAGE_SCORE = 8;
-    private static final float SCALE_TO_DURATION = 0.5f;
-    private static final float FADE_OUT_DURATION = 0.5f;
+    private static final float SCALE_TO_DURATION = 0.7f;
+    private static final float FADE_OUT_DURATION = 0.6f;
 
     private I18NBundle i18NGameThreeBundle;
     private PowerBar powerBar;
