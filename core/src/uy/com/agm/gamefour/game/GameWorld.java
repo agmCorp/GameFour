@@ -98,9 +98,6 @@ public class GameWorld {
         int backgroundId = prefs.getBackgroundId();
         prefs.setBackgroundId((backgroundId % AssetBackgrounds.MAX_BACKGROUNDS) + 1);
         prefs.save();
-
-
-        backgroundId = 10;
         switch (backgroundId) {
             case 1:
                 assetBackgrounds.getDesert().build(parallaxSB);
@@ -124,7 +121,7 @@ public class GameWorld {
                 break;
             case 6:
                 assetBackgrounds.getCastle().build(parallaxSB);
-                jumper.setColor(Color.OLIVE);
+                jumper.setColor(Color.ORANGE);
                 break;
             case 7:
                 assetBackgrounds.getZombie().build(parallaxSB);
@@ -144,7 +141,7 @@ public class GameWorld {
                 break;
             case 11:
                 assetBackgrounds.getCandy().build(parallaxSB);
-                jumper.setColor(Color.ORANGE);
+                jumper.setColor(Color.LIGHT_GRAY);
                 break;
             default:
                 break;
