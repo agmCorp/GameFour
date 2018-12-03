@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 public class AssetBackgrounds {
     private static final String TAG = AssetBackgrounds.class.getName();
 
-    public static final int MAX_BACKGROUNDS = 6;
+    public static final int MAX_BACKGROUNDS = 11;
 
     private AssetDesert desert;
     private AssetForest forest;
@@ -18,6 +18,11 @@ public class AssetBackgrounds {
     private AssetHills hills;
     private AssetWaterfall waterfall;
     private AssetCastle castle;
+    private AssetZombie zombie;
+    private AssetSpider spider;
+    private AssetGhost ghost;
+    private AssetNight night;
+    private AssetCandy candy;
 
     public AssetBackgrounds(TextureAtlas atlasBackgrounds) {
         desert = new AssetDesert(atlasBackgrounds);
@@ -26,6 +31,11 @@ public class AssetBackgrounds {
         hills = new AssetHills(atlasBackgrounds);
         waterfall = new AssetWaterfall(atlasBackgrounds);
         castle = new AssetCastle(atlasBackgrounds);
+        zombie = new AssetZombie(atlasBackgrounds);
+        spider = new AssetSpider(atlasBackgrounds);
+        ghost = new AssetGhost(atlasBackgrounds);
+        night = new AssetNight(atlasBackgrounds);
+        candy = new AssetCandy(atlasBackgrounds);
     }
 
     public AssetDesert getDesert() {
@@ -50,5 +60,25 @@ public class AssetBackgrounds {
 
     public AssetCastle getCastle() {
         return castle;
+    }
+
+    public AssetZombie getZombie() {
+        return zombie;
+    }
+
+    public AssetSpider getSpider() {
+        return spider;
+    }
+
+    public AssetGhost getGhost() {
+        return ghost;
+    }
+
+    public AssetNight getNight() {
+        return night;
+    }
+
+    public AssetCandy getCandy() {
+        return candy;
     }
 }
