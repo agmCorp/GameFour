@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import uy.com.agm.gamefour.assets.Assets;
 import uy.com.agm.gamefour.game.GameFour;
+import uy.com.agm.gamefour.game.GameSettings;
 import uy.com.agm.gamefour.screens.ScreenEnum;
 import uy.com.agm.gamefour.screens.ScreenManager;
 import uy.com.agm.gamefour.screens.ScreenTransitionEnum;
@@ -106,8 +107,28 @@ public class SplashScreen extends GUIAbstractScreen {
         // Load the rest of assets asynchronously
         Assets.getInstance().init(assetManager);
 
-        // Sign in silently on Google play game services
-        playServices.signInSilently(null, null);
+        // Sign in on Google play game services
+        if (playServices.isWifiConnected()) {
+            playServices.signInSilently(new Runnable() {
+                @Override
+                public void run() {
+                    submitScore();
+                }
+            }, null);
+
+            if (!playServices.isSignedIn()) {
+                playServices.signIn(new Runnable() {
+                    @Override
+                    public void run() {
+                        submitScore();
+                    }
+                }, null);
+            }
+        } // I18NGameFourBundle probably hasn't been loaded yet
+    }
+
+    private void submitScore() {
+        playServices.submitScore(GameSettings.getInstance().getHighScore());
     }
 
     @Override

@@ -284,19 +284,22 @@ public class MainMenuScreen extends GUIAbstractScreen {
     private void showLeaderboards() {
         if (playServices.isWifiConnected()) {
             if (playServices.isSignedIn()) {
-                playServices.showLeaderboards();
+                showLeaderboardsImp();
             } else {
                 playServices.signIn(new Runnable() {
                     @Override
                     public void run() {
-                        playServices.submitScore(prefs.getHighScore());
-                        playServices.showLeaderboards();
-                    }
+                        showLeaderboardsImp();                    }
                 }, null);
             }
         } else {
             playServices.showToast(i18NGameThreeBundle.format("mainMenuScreen.wifiError"));
         }
+    }
+
+    private void showLeaderboardsImp() {
+        playServices.submitScore(prefs.getHighScore());
+        playServices.showLeaderboards();
     }
 
     private void rateGame() {
