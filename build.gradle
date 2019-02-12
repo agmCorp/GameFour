@@ -2,7 +2,7 @@
 project.ext {
     versionMajor = 1
     versionMinor = 0
-    versionPatch = 3
+    versionPatch = 4
 }
 
 // Returns date (String)
