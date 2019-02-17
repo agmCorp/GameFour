@@ -41,3 +41,53 @@ Si algunas son modal y otras no se complica.
 Puedo jugar como hice en este juego con Gdx.input.setInputProcessor(..), pero si tengo un stack de pantallas volver al input processor anterior parece
 complicado. Existe getInputProcessor pero no lo probé.
 Debería hacer un manager o investigar el uso de window en libgdx que parecería ser la manera.
+-----------------------------------------------------------------
+DISCORD
+@aclaveri, I don't like the control scheme of Wipe them out! There is no point to the tapping. The repetitive motion is unnecessary busy work.
+Just make automatic fire the default. The scrolling shooters I like on mobile adhere to that mindset. The graphics selection is good.
+It's weird how the player rotates as you change direction. It seems like a weird oversight. The boss fight doesn't gel well with me. Since the update,
+it seems that the game takes too long to load.
+
+I listened to the story. I find it a little odd that you address the player as "you". Isn't the player supposed to be Drako?
+You shouldn't include the second person perspective if that's the case.
+
+I see 3D graphics mixed with 2D. You need to focus on a single style. Right now this game is all over the place.
+
+The settings need some tweaking. What does "pretty good" even mean. You need to notate that it is the difficulty.
+You can even do away with the difficulty altogether and let that develop naturally as the player progresses.
+I came across a red screen with a thumbs up button. No explanation. I guess you still have some stuff to work out there.
+Overall, I think this game can use some work and a redesign. I'm sorry to come off a little gruff, but I think you have the talent to make something amazing.
+I'd suggest focusing you're creative pursuits to something with a unique gimmick. This game feels generic.
+
+The second game is much more fun in terms of gameplay. Power Jump is so weird! I like weird, but you really need to make a cohesive art style once again.
+I think it would be better if it was all your art even if it isn't at the same quality as these art packs you use. It's worth it. Otherwise it doesn't feel
+authentic. I can really see myself getting good at your game with practice. Keep making progress, keep making games. You can only get better with time. Good luck!
+
+@raeleus Thanks so much for all your suggestions.
+Wipe them out! is my first complete game after several frustrated attempts (that's why internally it's called 'gamethree').
+I was inspired by the games I liked as a child (80's-90's).
+My strength is programming, however I'm a complete beginner in everything else that is required to make a good game.
+The game was developed as a hobby, I'm not a team let alone a company, it's just me :)
+I enjoined to much learning to use libgdx from scratch, as well as the basics of graphic design (I have very little knowledge) and sound edition.
+It was really worth it because it was fun.
+I agree with all your suggestions, the game has many poorly resolved and weak points.
+I don't have a good command of english (I'm from Uruguay and I speak spanish), for that reason the story is a little 'odd' hahaha.
+I mixed 2d and 3d graphics by pure ignorance, I know almost nothing about graphic design. I would have loved to hire a graphic designer but since the game
+is only a hobby I didn't want to spend money (for that reason I don't intend to earn money with ads either).
+Many friends complained that my game was too difficult, too many enemies in general. That's why I included a global setting of difficulty.
+The text is not clear, I'm going to change it and write only "difficulty" instead of "chicken", "pretty good", "oh yeah"
+The red screen with a thumbs up button is a bug! It's difficult to correct because it only appears on certain devices in a random way.
+I've not been able to detect the cause, but certainly it's a programming error (my fault).
+
+@raeleus Power jump is my second game. I applied certain knowledge acquired from wipe them out! so its internal architecture is cleaner.
+I still fail in art because I do not have the ability.
+
+If I made a third game, I would invest some money in a professional art style.
+As you said, "you can only get better with time". Totally agree.
+In these 2 little games that I published I have learned innumerable things and it's an extremely fun hobby for me.
+I take note of all your feedback and I will try to correct them as much as I can.
+I greatly appreciate your comments! thanks!
+
+Thank you both for responding to my feedback. I really like how we're all open to constructive criticism.
+Whenever you make significant changes to your games, feel free to post here again so we can see how they've progressed.
+Keep fighting the good fight folks, game designers are a rare breed.
