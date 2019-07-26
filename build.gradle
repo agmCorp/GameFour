@@ -32,7 +32,7 @@ allprojects {
     version = "build-" + getDate() + "-$project.versionMajor.$project.versionMinor.$project.versionPatch"
     ext {
         appName = "GameFour"
-        gdxVersion = '1.9.8'
+        gdxVersion = '1.9.10'
         roboVMVersion = '2.3.1'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
