@@ -29,8 +29,10 @@ scaling1: 1.0
 timelineCount: 2
 timeline0: 0.0
 timeline1: 1.0
+independent: false
 - Life Offset - 
 active: false
+independent: false
 - X Offset - 
 active: false
 - Y Offset - 
